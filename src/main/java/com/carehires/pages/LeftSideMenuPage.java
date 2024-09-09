@@ -1,0 +1,18 @@
+package com.carehires.pages;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class LeftSideMenuPage {
+    @FindBy(xpath = "//img[@title='Agencies']")
+    public WebElement agencies;
+
+    @FindBy(xpath = "//img[@title='Agencies']/../..//p[text()='Create']")
+    public WebElement agencyCreate;
+
+    @FindBy(xpath = "//img[@title='Agencies']/../..//p[text()='View']")
+    public WebElement agencyView;
+
+    @FindBy(xpath = "//img[@title='Workers']")
+    public WebElement workers;
+}

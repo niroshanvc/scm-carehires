@@ -1,0 +1,12 @@
+Basic-info:
+  agency-post-code: BL0 9YX
+  phone-number: 07412001245
+
+Location:
+staff:
+  name: John
+  surname: Smith
+  position: Manager
+  basic-info:
+    agency-post-code: BL0 9YX
+    phone-number: 07412001245
