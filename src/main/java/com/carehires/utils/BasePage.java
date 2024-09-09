@@ -38,10 +38,19 @@ public class BasePage {
             WebDriverManager.chromedriver().clearDriverCache().setup();
             WebDriverManager.chromedriver().clearResolutionCache().setup();
             WebDriverManager.chromedriver().setup();
+
+            // Check if the tests are running in CI environment (such as CircleCI)
             ChromeOptions options = new ChromeOptions();
+            if (System.getenv("CI") != null) {
+                logger.info("Running in CircleCI, configuring Chrome for headless execution.");
+                options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+            }
+
+            // Standard options for both local and CI
             options.addArguments("--remote-allow-origins=*");
             options.addArguments("--start-maximized");
             options.addArguments("--disable-notifications");
+
             driver = new ChromeDriver(options);
         } else if (browser.equalsIgnoreCase("Edge")) {
             WebDriverManager.edgedriver().setup();
@@ -220,6 +229,7 @@ public class BasePage {
     }
 
     public static void mouseHoverAndClick(WebElement element, WebElement subElement) {
+        waitUntilElementClickable(element, 30);
         Actions actions = new Actions(driver);
         actions.moveToElement(element).moveToElement(subElement).click().build().perform();
     }

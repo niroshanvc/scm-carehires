@@ -1,7 +1,9 @@
 BasicInfo:
   BusinessName: Automation Agency 101
-  agency-post-code: BL0 9YX
-  phone-number: 07412001245
+  BusinessRegistrationNumber: 12345678
+  AlsoKnownAs: 101Auto
+  PostCode: BL0 9YX
+  PhoneNumber: "07412001245"
 
 Location:
 staff:
@@ -10,4 +12,4 @@ staff:
   position: Manager
   basic-info:
     agency-post-code: BL0 9YX
-    phone-number: 07412001245
+    phone-number: "07412001245"
