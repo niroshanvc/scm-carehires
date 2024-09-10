@@ -10,9 +10,17 @@ public class CreateAgencyBasicInfoPage {
     @FindBy(id = "business-registration-number")
     public WebElement businessRegistrationNumber;
 
+    @FindBy(xpath = "//span[contains(@class, 'image-edit')]")
+    public WebElement uploadLogo;
+
+    @FindBy(xpath = "//input[@type='file']")
+    public WebElement fileInputButton;
+
+    @FindBy(xpath = "//button[contains(text(),'Save')]")
+    public WebElement saveButton;
+
     @FindBy(xpath = "(//input[@id='business-name'])[2]")
     public WebElement alsoKnownAs;
-
 
     @FindBy(id = "nb-autocomplete-0")
     public WebElement autoSuggestAddresses;
@@ -23,6 +31,9 @@ public class CreateAgencyBasicInfoPage {
     @FindBy(xpath = "//input[@formcontrolname='phoneNumber']")
     public WebElement phoneNumberInput;
 
-    @FindBy(xpath = "//button[contains(@class, 'float-end')]")
-    public WebElement saveButton;
+    @FindBy(xpath = "(//button[contains(@class, 'float-end')])[2]")
+    public WebElement imageSaveButton;
+
+    @FindBy(xpath = "//button[contains(text(), 'Skip')]")
+    public WebElement skipButton;
 }

@@ -1,6 +1,7 @@
 package com.carehires.utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
@@ -13,6 +14,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.time.Duration;
 import java.util.List;
@@ -232,5 +236,48 @@ public class BasePage {
         waitUntilElementClickable(element, 30);
         Actions actions = new Actions(driver);
         actions.moveToElement(element).moveToElement(subElement).click().build().perform();
+    }
+
+    //upload file
+    public static void uploadFile(WebElement element, String filePath) {
+        logger.info("Uploading file: %s to %s", filePath, element);
+        element.sendKeys(filePath);
+        genericWait(3000);
+    }
+
+    public static void genericWait(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            logger.info(String.valueOf(Level.WARN), "Interrupted", e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public static void setClipboardData(String string) {
+        StringSelection stringSelection = new StringSelection(string);
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+    }
+
+    public static void uploadFile(String filePath) throws AWTException {
+        // Set the file path to the clipboard
+        setClipboardData(filePath);
+
+        // Create an instance of Robot class
+        Robot robot = new Robot();
+
+        // Press Enter
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+
+        // Press Ctrl+V (paste)
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+
+        // Press Enter again to confirm the file selection
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
     }
 }

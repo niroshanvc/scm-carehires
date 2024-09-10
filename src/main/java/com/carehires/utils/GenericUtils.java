@@ -1,6 +1,5 @@
 package com.carehires.utils;
 
-import com.carehires.actions.CreateAgencyBasicActions;
 import com.carehires.pages.CreateAgencyBasicInfoPage;
 import com.carehires.pages.GenericElementsPage;
 import org.apache.logging.log4j.LogManager;
@@ -8,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
@@ -32,9 +30,8 @@ public class GenericUtils {
         return BasePage.getDriver();
     }
 
-    public void fillAddress(WebElement postcodeInput) {
+    public void fillAddress(WebElement postcodeInput, String postcode) {
         logger.info("fillAddress");
-        String postcode = DataConfigurationReader.readDataFromYmlFile("agency-create", "BasicInfo", "PostCode");
         BasePage.typeWithStringBuilder(postcodeInput, postcode);
         BasePage.waitUntilElementPresent(createAgencyBasicInfoPage.autoSuggestAddresses, 60);
         List<WebElement> addresses = getDriverInstance().findElements(By.xpath("//nb-option[contains(@id, 'nb-option')]"));
