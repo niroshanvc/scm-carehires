@@ -8,7 +8,7 @@ public class OverviewSteps {
 
     @Then("verifies the title of the landing page")
     public void verifiesTheTitleOfTheLandingPage() {
-        overviewActions.waitUntilElementDisplayed();
+        overviewActions.waitAndAcceptCookies();
         overviewActions.verifyPageTitle();
     }
 }

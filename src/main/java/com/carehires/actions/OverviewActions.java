@@ -15,8 +15,8 @@ public class OverviewActions {
         PageFactory.initElements(BasePage.getDriver(), overview);
     }
 
-    public void waitUntilElementDisplayed() {
-        BasePage.waitUntilElementPresent(overview.overviewMenu, 60);
+    public void waitAndAcceptCookies() {
+        BasePage.waitUntilElementPresent(overview.overviewMenu, 90);
         BasePage.clickWithJavaScript(overview.acceptCookie);
     }
 

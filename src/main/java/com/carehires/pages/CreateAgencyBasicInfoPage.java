@@ -22,7 +22,7 @@ public class CreateAgencyBasicInfoPage {
     @FindBy(xpath = "(//input[@id='business-name'])[2]")
     public WebElement alsoKnownAs;
 
-    @FindBy(id = "nb-autocomplete-0")
+    @FindBy(xpath = "//nb-option-list[contains(@id, 'nb-autocomplete')]")
     public WebElement autoSuggestAddresses;
 
     @FindBy(xpath = "//input[@formcontrolname='postcode']")
@@ -36,4 +36,6 @@ public class CreateAgencyBasicInfoPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Skip')]")
     public WebElement skipButton;
+
+    public static final String BASIC_INFORMATION_SUB_XPATHS = "//h6[text()='Basic Information']/..//*";
 }

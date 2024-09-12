@@ -68,7 +68,7 @@ public class CreateAgencyCreditServicePage {
     @FindBy(xpath = "//h3[text()='Add Legal Representative']/ancestor::nb-accordion-item")
     public WebElement addLegalRepresentativeHeader;
 
-    @FindBy(xpath = "//h3[text()='Add Legal Representative']/ancestor::nb-accordion-item")
+    @FindBy(xpath = "//h3[text()='Add Legal Representative']/ancestor::nb-accordion-item-header//nb-icon")
     public WebElement addLegalRepresentativeExpand;
 
     @FindBy(xpath = "//button[contains(text(),'Save')]")

@@ -3,11 +3,13 @@ package com.carehires.actions;
 import com.carehires.pages.CreateAgencyCreditServicePage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
+import com.carehires.utils.GenericUtils;
 import org.openqa.selenium.support.PageFactory;
 
 public class CreateAgencyCreditServiceActions {
 
     CreateAgencyCreditServicePage creditServicePage;
+    GenericUtils genericUtils = new GenericUtils();
 
     private static final String YML_FILE = "agency-create";
     private static final String YML_HEADER = "CreditService";
@@ -19,6 +21,7 @@ public class CreateAgencyCreditServiceActions {
     }
 
     public void enterCreditServiceInformation() {
+        BasePage.scrollToWebElement(creditServicePage.firstName);
         String firstName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalFirstName");
         BasePage.clearAndEnterTexts(creditServicePage.firstName, firstName);
 
@@ -44,14 +47,17 @@ public class CreateAgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.personalIdNumber, personalId);
 
         String postcode = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "PostCode");
-        BasePage.clearAndEnterTexts(creditServicePage.postcode, postcode);
+        genericUtils.fillAddress(creditServicePage.postcode, postcode);
 
+        BasePage.scrollToWebElement(creditServicePage.addLegalRepresentativeHeader);
         String ownership = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "OwnershipPercentage");
         BasePage.clearAndEnterTexts(creditServicePage.ownershipPercentage, ownership);
 
+        //expand and enter legal rep data
         expandAddLegalRep();
         BasePage.waitUntilElementPresent(creditServicePage.legalFirstName, 5);
 
+        BasePage.scrollToWebElement(creditServicePage.legalMaidenName);
         String legalRepFirstName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepLegalFirstName");
         BasePage.clearAndEnterTexts(creditServicePage.legalFirstName, legalRepFirstName);
 
@@ -77,10 +83,13 @@ public class CreateAgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.legalPersonalIdNumber, legalRepPersonalId);
 
         String legalRepPostcode = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepPostCode");
+        genericUtils.fillAddress(creditServicePage.legalPostcode, legalRepPostcode);
         BasePage.clearAndEnterTexts(creditServicePage.legalPostcode, legalRepPostcode);
 
         String legalRepOwnership = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepOwnershipPercentage");
         BasePage.clearAndEnterTexts(creditServicePage.legalOwnershipPercentage, legalRepOwnership);
+
+        BasePage.clickWithJavaScript(creditServicePage.saveButton);
     }
 
     private void expandAddLegalRep() {

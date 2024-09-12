@@ -13,7 +13,4 @@ public class SignInPage {
 
     @FindBy(xpath = "//button[@type='submit']")
     public WebElement signin;
-
-    @FindBy(id = "hs-eu-confirmation-button")
-    public WebElement acceptCookie;
 }
