@@ -1,0 +1,10 @@
+---
+fullClassName: "com.carehires.actions.CreateAgencyBasicInformationActionsSapientGeneratedTestNgCodelessTest"
+testMethodExecutions:
+- targetMethod: "void enterBasicInfo()"
+  tests:
+  - testName: "enterBasicInfoTest"
+    testExecutionStatus: "SKIPPED"
+    resultValue: "void"
+    timestamp: 1726021921487
+    failureLineNumber: 86

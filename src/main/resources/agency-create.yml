@@ -1,0 +1,39 @@
+BasicInfo:
+  BusinessName: Automation Agency 104
+  BusinessRegistrationNumber: 12345678
+  CompanyLogo: Agency101.jpg
+  AlsoKnownAs: 101Auto
+  PostCode: BL0 9YX
+  PhoneNumber: "07412001245"
+
+CreditService:
+  LegalFirstName: John
+  LegalLastName: Smith
+  MaidenName: Smith
+  JobTitle: Manager
+  EmailAddress: niroshancarehires+agency104@gmail.com
+  Phone: "07412001245"
+  DateOfBirth: 01-01-1999
+  PersonalIdNumber: 12345678
+  PostCode: "BL0 9YX "
+  OwnershipPercentage: 100
+  LegalRepLegalFirstName: Mark
+  LegalRepLegalLastName: Writer
+  LegalRepMaidenName: Smith
+  LegalRepJobTitle: Legal Manager
+  LegalRepEmailAddress: niroshancarehires+legal104@gmail.com
+  LegalRepPhone: "07412001245"
+  LegalRepDateOfBirth: 01-01-1999
+  LegalRepPersonalIdNumber: 12345678
+  LegalRepPostCode: "BL0 9YX "
+  LegalRepOwnershipPercentage: 100
+
+
+Location:
+staff:
+  name: John
+  surname: Smith
+  position: Manager
+  basic-info:
+    agency-post-code: BL0 9YX
+    phone-number: "07412001245"
