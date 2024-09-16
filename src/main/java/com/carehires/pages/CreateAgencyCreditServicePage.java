@@ -73,4 +73,34 @@ public class CreateAgencyCreditServicePage {
 
     @FindBy(xpath = "//button[contains(text(),'Save')]")
     public WebElement saveButton;
+
+    @FindBy(xpath = "(//input[@type='file'])[1]")
+    public WebElement uploadAgencyOwner;
+
+    @FindBy(xpath = "(//input[@type='file'])[2]")
+    public WebElement uploadLegalRepresentative;
+
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isExecutiveManager']//input)[1]")
+    public WebElement agencyOwnerExecutiveManagerCheckbox;
+
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='owns25Percent']//input)[1]")
+    public WebElement agencyOwnerOwns25Checkbox;
+
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isBoardMember']//input)[1]")
+    public WebElement agencyOwnerBoardMemberCheckbox;
+
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isPrimaryRepresentative']//input)[1]")
+    public WebElement agencyOwnerPrimaryRepresentativeCheckbox;
+
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isExecutiveManager']//input)[2]")
+    public WebElement legalRepExecutiveManagerCheckbox;
+
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='owns25Percent']//input)[2]")
+    public WebElement legalRepOwns25Checkbox;
+
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isBoardMember']//input)[2]")
+    public WebElement legalRepBoardMemberCheckbox;
+
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isPrimaryRepresentative']//input)[2]")
+    public WebElement legalRepPrimaryRepresentativeCheckbox;
 }

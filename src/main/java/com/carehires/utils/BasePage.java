@@ -280,4 +280,11 @@ public class BasePage {
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
     }
+
+    public static void clickWithJavaScript(String xpath) {
+        WebElement ele = driver.findElement(By.xpath(xpath));
+        waitUntilElementPresent(ele, 30);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].click();", ele);
+    }
 }

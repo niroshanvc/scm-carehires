@@ -36,7 +36,7 @@ public class CreateAgencyBasicInformationActions {
 
         //upload a logo
         String providerLogo = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "CompanyLogo");
-        String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Logo\\" + providerLogo;
+        String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + providerLogo;
         BasePage.clickWithJavaScript(createAgencyBasicInfoPage.uploadLogo);
         BasePage.uploadFile(createAgencyBasicInfoPage.fileInputButton, absoluteFilePath);
         BasePage.clickWithJavaScript(createAgencyBasicInfoPage.imageSaveButton);

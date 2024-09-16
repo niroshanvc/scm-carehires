@@ -47,15 +47,26 @@ public class CreateAgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.personalIdNumber, personalId);
 
         String postcode = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "PostCode");
-        genericUtils.fillAddress(creditServicePage.postcode, postcode);
+//        genericUtils.fillAddress(creditServicePage.postcode, postcode);
 
         BasePage.scrollToWebElement(creditServicePage.addLegalRepresentativeHeader);
         String ownership = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "OwnershipPercentage");
         BasePage.clearAndEnterTexts(creditServicePage.ownershipPercentage, ownership);
 
+        //upload verification document
+        String agencyOwnerDoc = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "AgencyOwnerDocument");
+        String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + agencyOwnerDoc;
+        BasePage.typeWithStringBuilder(creditServicePage.uploadAgencyOwner, absoluteFilePath);
+
+        //do check agency owner checkboxes
+        BasePage.clickWithJavaScript(creditServicePage.agencyOwnerExecutiveManagerCheckbox);
+        BasePage.clickWithJavaScript(creditServicePage.agencyOwnerOwns25Checkbox);
+        BasePage.clickWithJavaScript(creditServicePage.agencyOwnerBoardMemberCheckbox);
+        BasePage.clickWithJavaScript(creditServicePage.agencyOwnerPrimaryRepresentativeCheckbox);
+
         //expand and enter legal rep data
         expandAddLegalRep();
-        BasePage.waitUntilElementPresent(creditServicePage.legalFirstName, 5);
+        BasePage.waitUntilElementPresent(creditServicePage.legalFirstName, 10);
 
         BasePage.scrollToWebElement(creditServicePage.legalMaidenName);
         String legalRepFirstName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepLegalFirstName");
@@ -83,11 +94,20 @@ public class CreateAgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.legalPersonalIdNumber, legalRepPersonalId);
 
         String legalRepPostcode = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepPostCode");
-        genericUtils.fillAddress(creditServicePage.legalPostcode, legalRepPostcode);
-        BasePage.clearAndEnterTexts(creditServicePage.legalPostcode, legalRepPostcode);
+//        genericUtils.fillAddress(creditServicePage.legalPostcode, legalRepPostcode);
 
         String legalRepOwnership = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepOwnershipPercentage");
         BasePage.clearAndEnterTexts(creditServicePage.legalOwnershipPercentage, legalRepOwnership);
+
+        //upload verification document
+        String legalRepDoc = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepDocument");
+        String repFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + legalRepDoc;
+        BasePage.typeWithStringBuilder(creditServicePage.uploadLegalRepresentative, repFilePath);
+
+        //do check legal representative checkboxes
+        BasePage.clickWithJavaScript(creditServicePage.legalRepExecutiveManagerCheckbox);
+        BasePage.clickWithJavaScript(creditServicePage.legalRepOwns25Checkbox);
+        BasePage.clickWithJavaScript(creditServicePage.legalRepBoardMemberCheckbox);
 
         BasePage.clickWithJavaScript(creditServicePage.saveButton);
     }
