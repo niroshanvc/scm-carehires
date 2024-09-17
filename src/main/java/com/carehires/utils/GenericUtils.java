@@ -1,6 +1,6 @@
 package com.carehires.utils;
 
-import com.carehires.pages.CreateAgencyBasicInfoPage;
+import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
 import com.carehires.pages.GenericElementsPage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
+import java.util.Random;
 
 public class GenericUtils {
 

@@ -1,5 +1,5 @@
 BasicInfo:
-  BusinessName: Automation Agency 108
+  BusinessName: Automation Agency 117
   BusinessRegistrationNumber: 12345678
   CompanyLogo: Agency101.jpg
   AlsoKnownAs: 101Auto
@@ -11,7 +11,7 @@ CreditService:
   LegalLastName: Smith
   MaidenName: Smith
   JobTitle: Manager
-  EmailAddress: niroshancarehires+agency108@gmail.com
+  EmailAddress: niroshancarehires+agency117@gmail.com
   Phone: "07412001245"
   DateOfBirth: 01-01-1999
   PersonalIdNumber: 12345678
@@ -22,7 +22,7 @@ CreditService:
   LegalRepLegalLastName: Writer
   LegalRepMaidenName: Smith
   LegalRepJobTitle: Legal Manager
-  LegalRepEmailAddress: niroshancarehires+legal107@gmail.com
+  LegalRepEmailAddress: niroshancarehires+legal117@gmail.com
   LegalRepPhone: "07412001245"
   LegalRepDateOfBirth: 01-01-1999
   LegalRepPersonalIdNumber: 12345678
@@ -32,17 +32,29 @@ CreditService:
 
 Location:
   BusinessLocation: North London
-  BusinessEmailAddress: niroshancarehires+businessEmail108@gmail.com
+  BusinessEmailAddress: niroshancarehires+businessEmail117@gmail.com
   City: City of London
-  JobNotificationAddress: niroshancarehires+jobNot108@gmail.com
-  ApprovalNotificationAddress: niroshancarehires+appNot108@gmail.com
+  JobNotificationAddress: niroshancarehires+jobNot117@gmail.com
+  ApprovalNotificationAddress: niroshancarehires+appNot117@gmail.com
 
-
-staff:
-  Location: North London
-  WorkerType: Pharmacist
+Staff:
+  WorkerType: Care Assistant
   NoOfWorkers: 20
-  WorkerSkills:
+  WorkerSkills: NVQ L3,Elderly,Home Care,Care Certificate,End of life Care
   MonthlyHoursAvailable: 200
   MinChargeHourlyRate: 10
   EmployeeType: PSC
+
+BillingProfileManagement:
+  AttentionTo: IWS Solutions
+  BillingAddress: "10 Downing Street, London, SW1A 2AA"
+  CostCenter: "<uniqueNumber>"
+  DigitalBillingAddress: niroshancarehires+digital117@gmail.com
+  CCDigitalBillingAddress: niroshancarehires+ccdigital117@gmail.com
+  PhoneNumber: "07412001245"
+  BillingCycle: Monthly
+  CreditTerm: 30 Days
+  BankName: HSBC
+  AccountNumber: "3243252522"
+  AccountName: IWS Solutions
+  SortCode: 34-34-44

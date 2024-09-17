@@ -1,4 +1,4 @@
-package com.carehires.pages;
+package com.carehires.pages.agency;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

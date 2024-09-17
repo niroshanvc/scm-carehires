@@ -6,6 +6,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
 import java.util.Map;
+import java.util.Random;
 
 public class DataConfigurationReader {
 
@@ -30,6 +31,11 @@ public class DataConfigurationReader {
 
             if (value != null) {
                 data = value.toString();
+
+                // Check if the data contains a placeholder for unique number
+                if (data.equals("<uniqueNumber>")) {
+                    data = generateUniqueNumber();  // Replace with unique number
+                }
             } else {
                 logger.error("Key not found in YAML: " + String.join(" -> ", keys));
             }
@@ -37,5 +43,12 @@ public class DataConfigurationReader {
             ex.printStackTrace();
         }
         return data;
+    }
+
+    // Method to generate a unique number with max 10 digits
+    private static String generateUniqueNumber() {
+        long seed = System.nanoTime();
+        Random random = new Random(seed);
+        return String.format("%010d", random.nextInt(1000000000));
     }
 }

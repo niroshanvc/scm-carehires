@@ -1,6 +1,6 @@
-package com.carehires.steps;
+package com.carehires.steps.agency;
 
-import com.carehires.actions.CreateAgencyStaffActions;
+import com.carehires.actions.agency.CreateAgencyStaffActions;
 import io.cucumber.java.en.And;
 
 public class CreateAgencyStaffSteps {

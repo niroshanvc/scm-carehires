@@ -1,6 +1,6 @@
-package com.carehires.actions;
+package com.carehires.actions.agency;
 
-import com.carehires.pages.CreateAgencyBusinessLocationsPage;
+import com.carehires.pages.agency.CreateAgencyBusinessLocationsPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import org.openqa.selenium.support.PageFactory;
@@ -39,6 +39,7 @@ public class CreateAgencyBusinessLocationsActions {
 
         String approvalNotification = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "ApprovalNotificationAddress");
         BasePage.clearAndEnterTexts(locationsPage.approvalNotificationAddress, approvalNotification);
+        BasePage.genericWait(5000);
 
         BasePage.clickWithJavaScript(locationsPage.addButton);
 
@@ -54,7 +55,7 @@ public class CreateAgencyBusinessLocationsActions {
     }
 
     private void isBusinessLocationSaved() {
-        BasePage.waitUntilElementPresent(locationsPage.locationName, 30);
+        BasePage.waitUntilElementPresent(locationsPage.locationName, 60);
         String actualLocationName = BasePage.getText(locationsPage.locationName);
         String expectedLocationName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "BusinessLocation");
         assertThat("Business Location is not saved", actualLocationName, is(expectedLocationName));

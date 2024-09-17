@@ -1,6 +1,6 @@
-package com.carehires.actions;
+package com.carehires.actions.agency;
 
-import com.carehires.pages.CreateAgencyBasicInfoPage;
+import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.GenericUtils;

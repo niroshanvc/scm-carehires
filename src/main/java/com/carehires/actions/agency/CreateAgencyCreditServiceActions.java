@@ -1,6 +1,6 @@
-package com.carehires.actions;
+package com.carehires.actions.agency;
 
-import com.carehires.pages.CreateAgencyCreditServicePage;
+import com.carehires.pages.agency.CreateAgencyCreditServicePage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.GenericUtils;
@@ -47,7 +47,7 @@ public class CreateAgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.personalIdNumber, personalId);
 
         String postcode = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "PostCode");
-//        genericUtils.fillAddress(creditServicePage.postcode, postcode);
+        genericUtils.fillAddress(creditServicePage.postcode, postcode);
 
         BasePage.scrollToWebElement(creditServicePage.addLegalRepresentativeHeader);
         String ownership = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "OwnershipPercentage");

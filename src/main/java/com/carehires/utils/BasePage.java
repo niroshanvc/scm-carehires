@@ -135,16 +135,19 @@ public class BasePage {
     public static void typeWithStringBuilder(WebElement element, String data) {
         logger.info("Type using StringBuilder in %s", element);
         StringBuilder sb = new StringBuilder(data);
+        waitUntilElementPresent(element, 30);
         element.sendKeys(sb);
     }
 
     public static String getText(WebElement element) {
         logger.info("Get text in %s", element);
+        waitUntilElementPresent(element, 30);
         return element.getText();
     }
 
     public static String getAttributeValue(WebElement element, String attribute) {
         logger.info("Get attribute value from %s and %s", element, attribute);
+        waitUntilElementPresent(element, 30);
         return element.getAttribute(attribute);
     }
 
@@ -212,6 +215,7 @@ public class BasePage {
 
     public static void clearAndEnterTexts(WebElement element, String texts) {
         logger.info("Clear and enter texts in %s", element);
+        waitUntilElementPresent(element, 30);
         element.clear();
         typeWithStringBuilder(element, texts);
     }

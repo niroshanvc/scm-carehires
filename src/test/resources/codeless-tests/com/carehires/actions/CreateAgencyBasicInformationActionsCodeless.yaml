@@ -1,5 +1,5 @@
 ---
-class: "com.carehires.actions.CreateAgencyBasicInformationActions"
+class: "com.carehires.actions.agency.CreateAgencyBasicInformationActions"
 fields:
 - "GenericUtils genericUtils"
 imports:
@@ -11,7 +11,7 @@ imports:
 - "org.openqa.selenium.WebDriver"
 - "com.carehires.utils.DataConfigurationReader"
 - "org.openqa.selenium.support.PageFactory"
-- "com.carehires.pages.CreateAgencyBasicInfoPage"
+- "com.carehires.pages.agency.CreateAgencyBasicInfoPage"
 methods:
 - targetMethod: "enterBasicInfo(): void result"
   tests:

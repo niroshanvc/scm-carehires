@@ -1,6 +1,6 @@
-package com.carehires.steps;
+package com.carehires.steps.agency;
 
-import com.carehires.actions.CreateAgencyBasicInformationActions;
+import com.carehires.actions.agency.CreateAgencyBasicInformationActions;
 import io.cucumber.java.en.When;
 
 public class CreateAgencyBasicInformationSteps {
