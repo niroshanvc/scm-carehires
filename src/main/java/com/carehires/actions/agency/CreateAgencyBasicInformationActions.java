@@ -74,4 +74,10 @@ public class CreateAgencyBasicInformationActions {
 
         assertThat("Basic information is not saved",hasIdDone, is(true));
     }
+
+    public void verifyProfileStatus() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        String actual = BasePage.getText(createAgencyBasicInfoPage.status).toLowerCase().trim();
+        assertThat("Agent profile is not valid", actual, is("draft"));
+    }
 }

@@ -1,5 +1,5 @@
 BasicInfo:
-  BusinessName: Automation Agency 117
+  BusinessName: Automation Agency 124
   BusinessRegistrationNumber: 12345678
   CompanyLogo: Agency101.jpg
   AlsoKnownAs: 101Auto
@@ -11,7 +11,7 @@ CreditService:
   LegalLastName: Smith
   MaidenName: Smith
   JobTitle: Manager
-  EmailAddress: niroshancarehires+agency117@gmail.com
+  EmailAddress: niroshancarehires+agency124@gmail.com
   Phone: "07412001245"
   DateOfBirth: 01-01-1999
   PersonalIdNumber: 12345678
@@ -22,7 +22,7 @@ CreditService:
   LegalRepLegalLastName: Writer
   LegalRepMaidenName: Smith
   LegalRepJobTitle: Legal Manager
-  LegalRepEmailAddress: niroshancarehires+legal117@gmail.com
+  LegalRepEmailAddress: niroshancarehires+legal124@gmail.com
   LegalRepPhone: "07412001245"
   LegalRepDateOfBirth: 01-01-1999
   LegalRepPersonalIdNumber: 12345678
@@ -32,10 +32,10 @@ CreditService:
 
 Location:
   BusinessLocation: North London
-  BusinessEmailAddress: niroshancarehires+businessEmail117@gmail.com
+  BusinessEmailAddress: niroshancarehires+businessEmail124@gmail.com
   City: City of London
-  JobNotificationAddress: niroshancarehires+jobNot117@gmail.com
-  ApprovalNotificationAddress: niroshancarehires+appNot117@gmail.com
+  JobNotificationAddress: niroshancarehires+jobNot124@gmail.com
+  ApprovalNotificationAddress: niroshancarehires+appNot124@gmail.com
 
 Staff:
   WorkerType: Care Assistant
@@ -49,12 +49,21 @@ BillingProfileManagement:
   AttentionTo: IWS Solutions
   BillingAddress: "10 Downing Street, London, SW1A 2AA"
   CostCenter: "<uniqueNumber>"
-  DigitalBillingAddress: niroshancarehires+digital117@gmail.com
-  CCDigitalBillingAddress: niroshancarehires+ccdigital117@gmail.com
+  DigitalBillingAddress: niroshancarehires+digital124@gmail.com
+  CCDigitalBillingAddress: niroshancarehires+ccdigital124@gmail.com
   PhoneNumber: "07412001245"
   BillingCycle: Monthly
   CreditTerm: 30 Days
-  BankName: HSBC
-  AccountNumber: "3243252522"
+  BankName: United Bank
+  AccountNumber: "<uniqueNumber>"
   AccountName: IWS Solutions
   SortCode: 34-34-44
+
+User:
+  email: niroshancarehires+agencyuser124@gmail.com
+  Name: William Brook
+  JobTitle: Assistant Executive
+  Location: Select All Locations
+  Phone: "07412001245"
+  City: City of London
+  UserAccessLevel: Onboarding Admin,Shift Admin

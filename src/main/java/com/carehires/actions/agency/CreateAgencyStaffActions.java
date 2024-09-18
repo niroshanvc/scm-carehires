@@ -78,7 +78,7 @@ public class CreateAgencyStaffActions {
         BasePage.waitUntilElementPresent(staffPage.locationName, 60);
         String actual = BasePage.getText(staffPage.locationName);
         String expected = DataConfigurationReader.readDataFromYmlFile(YML_FILE, LOCATION_YML_HEADER, "BusinessLocation");
-        assertThat("Staff is not saved", actual, is(expected));
+        assertThat("Staff is not added", actual, is(expected));
     }
 
     private String getDropdownOptionXpath(String city) {

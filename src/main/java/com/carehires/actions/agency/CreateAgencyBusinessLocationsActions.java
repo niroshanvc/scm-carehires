@@ -29,17 +29,19 @@ public class CreateAgencyBusinessLocationsActions {
 
         String emailAddress = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "BusinessEmailAddress");
         BasePage.clearAndEnterTexts(locationsPage.businessEmailAddress, emailAddress);
-
+        BasePage.genericWait(5000);
 
         String city = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "City");
         BasePage.clickWithJavaScript(locationsPage.selectCity);
         BasePage.clickWithJavaScript(getCityXpath(city));
+        BasePage.genericWait(1000);
+
         String jobNotification = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "JobNotificationAddress");
         BasePage.clearAndEnterTexts(locationsPage.jobNotificationAddress, jobNotification);
 
         String approvalNotification = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "ApprovalNotificationAddress");
         BasePage.clearAndEnterTexts(locationsPage.approvalNotificationAddress, approvalNotification);
-        BasePage.genericWait(5000);
+        BasePage.genericWait(6000);
 
         BasePage.clickWithJavaScript(locationsPage.addButton);
 

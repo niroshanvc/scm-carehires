@@ -67,6 +67,7 @@ public class CreateBillingProfileManagementActions {
         BasePage.typeWithStringBuilder(billingPage.sortCode, sortCode);
 
         BasePage.clickWithJavaScript(billingPage.saveButton);
+        BasePage.genericWait(3000);
         isBasicInfoSaved();
     }
 
