@@ -13,4 +13,16 @@ public class SubContractingAgreementPage {
 
     @FindBy(xpath = "//a[contains(text(), 'No')]")
     public WebElement noButton;
+
+    @FindBy(xpath = "//input[@type='file']")
+    public WebElement  uploadFile;
+
+    @FindBy(xpath = "//button[contains(text(),'Attach Sub Contract Document')]")
+    public WebElement attachSubContractDocumentButton;
+
+    @FindBy(xpath = "//textarea")
+    public WebElement noteTextarea;
+
+    @FindBy(xpath = "//button[contains(text(), 'Save')]")
+    public WebElement saveButton;
 }

@@ -8,7 +8,12 @@ public class SubContractingAgreementStep {
     SubContractingAgreementActions subContract = new SubContractingAgreementActions();
 
     @When("User clicks on the Invite button on the Sub Contracting Agreement page")
-    public void clickOnInviteButton() {
+    public void inviteButton() {
         subContract.clickOnInviteButton();
+    }
+
+    @When("User clicks on the Complete Profile button on the Sub Contracting Agreement page")
+    public void completeProfileButton() {
+        subContract.clickOnCompleteProfileButton();
     }
 }

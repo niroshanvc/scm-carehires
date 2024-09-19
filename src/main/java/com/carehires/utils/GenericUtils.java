@@ -10,7 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
-import java.util.Random;
 
 public class GenericUtils {
 
@@ -33,7 +32,7 @@ public class GenericUtils {
 
     public void fillAddress(WebElement postcodeInput, String postcode) {
         logger.info("fillAddress");
-        BasePage.typeWithStringBuilder(postcodeInput, postcode);
+        BasePage.typeWithStringBuilderAndDelay(postcodeInput, postcode, 500);
         BasePage.waitUntilElementPresent(createAgencyBasicInfoPage.autoSuggestAddresses, 60);
         List<WebElement> addresses = getDriverInstance().findElements(By.xpath("//nb-option[contains(@id, 'nb-option')]"));
         if (!addresses.isEmpty()) {

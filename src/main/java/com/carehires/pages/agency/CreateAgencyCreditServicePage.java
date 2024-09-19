@@ -75,10 +75,10 @@ public class CreateAgencyCreditServicePage {
     public WebElement saveButton;
 
     @FindBy(xpath = "(//input[@type='file'])[1]")
-    public WebElement uploadAgencyOwner;
+    public WebElement agencyOwnerIdentityVerificationDoc;
 
     @FindBy(xpath = "(//input[@type='file'])[2]")
-    public WebElement uploadLegalRepresentative;
+    public WebElement legalRepresentativeIdentityVerificationDoc;
 
     @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isExecutiveManager']//input)[1]")
     public WebElement agencyOwnerExecutiveManagerCheckbox;

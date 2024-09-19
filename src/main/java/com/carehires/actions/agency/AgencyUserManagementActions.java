@@ -59,7 +59,7 @@ public class AgencyUserManagementActions {
 
         BasePage.genericWait(6000);
         BasePage.clickWithJavaScript(userManagement.addButton);
-        BasePage.genericWait(2000);
+        BasePage.genericWait(5000);
         isUserAdded();
 
         BasePage.clickWithJavaScript(userManagement.updateButton);

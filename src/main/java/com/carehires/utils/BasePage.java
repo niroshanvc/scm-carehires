@@ -83,6 +83,7 @@ public class BasePage {
     }
 
     public static void waitUntilElementPresent(WebElement element, int timeOutSeconds) {
+        logger.info("Wait until element present: %s", element);
         wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
         wait.until(ExpectedConditions.visibilityOf(element));
     }
@@ -94,11 +95,13 @@ public class BasePage {
     }
 
     public static void scrollToWebElement(WebElement ele) {
+        logger.info("Scroll to web element %s", ele);
         JavascriptExecutor js = ((JavascriptExecutor) driver);
         js.executeScript("arguments[0].scrollIntoView(true);", ele);
     }
 
     public static void clickWithJavaScript(WebElement ele) {
+        logger.info("Clicking on the web element %s", ele);
         waitUntilElementPresent(ele, 30);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].click();", ele);
@@ -157,6 +160,7 @@ public class BasePage {
     }
 
     public static void waitUntilElementClickable(WebElement element, int timeOutSeconds) {
+        logger.info("Wait until element clickable: %s", element);
         wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
@@ -226,6 +230,7 @@ public class BasePage {
     }
 
     public static void waitUntilPageCompletelyLoaded() {
+        logger.info("Wait until page completely loaded");
         for (int i = 1; i < 60; i++) {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             boolean ready = Objects.requireNonNull(js.executeScript("return document.readyState"))
@@ -251,6 +256,7 @@ public class BasePage {
 
     public static void genericWait(int time) {
         try {
+            logger.info("Waiting for %s milliseconds", time);
             Thread.sleep(time);
         } catch (InterruptedException e) {
             logger.info(String.valueOf(Level.WARN), "Interrupted", e.getMessage());
@@ -290,5 +296,25 @@ public class BasePage {
         waitUntilElementPresent(ele, 30);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].click();", ele);
+    }
+
+    public static String getCurrentUrl() {
+        return driver.getCurrentUrl();
+    }
+
+    public static void clickOnEnterKey(WebElement element) {
+        logger.info("Click on enter key");
+        element.sendKeys(Keys.ENTER);
+    }
+
+    public static void typeWithStringBuilderAndDelay(WebElement element, String data, int seconds) {
+        logger.info("Type using StringBuilder in %s with %d seconds delay", element, seconds);
+        StringBuilder sb = new StringBuilder(data);
+        waitUntilElementPresent(element, 30);
+        String[] strs = sb.toString().split("");
+        for (String  character : strs) {
+            element.sendKeys(character);
+            genericWait(seconds);
+        }
     }
 }

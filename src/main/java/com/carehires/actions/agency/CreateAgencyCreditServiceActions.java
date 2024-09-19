@@ -56,7 +56,7 @@ public class CreateAgencyCreditServiceActions {
         //upload verification document
         String agencyOwnerDoc = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "AgencyOwnerDocument");
         String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + agencyOwnerDoc;
-        BasePage.typeWithStringBuilder(creditServicePage.uploadAgencyOwner, absoluteFilePath);
+        BasePage.typeWithStringBuilder(creditServicePage.agencyOwnerIdentityVerificationDoc, absoluteFilePath);
 
         //do check agency owner checkboxes
         BasePage.clickWithJavaScript(creditServicePage.agencyOwnerExecutiveManagerCheckbox);
@@ -94,7 +94,7 @@ public class CreateAgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.legalPersonalIdNumber, legalRepPersonalId);
 
         String legalRepPostcode = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepPostCode");
-//        genericUtils.fillAddress(creditServicePage.legalPostcode, legalRepPostcode);
+        genericUtils.fillAddress(creditServicePage.legalPostcode, legalRepPostcode);
 
         String legalRepOwnership = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepOwnershipPercentage");
         BasePage.clearAndEnterTexts(creditServicePage.legalOwnershipPercentage, legalRepOwnership);
@@ -102,7 +102,7 @@ public class CreateAgencyCreditServiceActions {
         //upload verification document
         String legalRepDoc = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepDocument");
         String repFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + legalRepDoc;
-        BasePage.typeWithStringBuilder(creditServicePage.uploadLegalRepresentative, repFilePath);
+        BasePage.typeWithStringBuilder(creditServicePage.legalRepresentativeIdentityVerificationDoc, repFilePath);
 
         //do check legal representative checkboxes
         BasePage.clickWithJavaScript(creditServicePage.legalRepExecutiveManagerCheckbox);

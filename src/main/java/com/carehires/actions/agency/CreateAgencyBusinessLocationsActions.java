@@ -29,7 +29,6 @@ public class CreateAgencyBusinessLocationsActions {
 
         String emailAddress = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "BusinessEmailAddress");
         BasePage.clearAndEnterTexts(locationsPage.businessEmailAddress, emailAddress);
-        BasePage.genericWait(5000);
 
         String city = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "City");
         BasePage.clickWithJavaScript(locationsPage.selectCity);
@@ -41,9 +40,9 @@ public class CreateAgencyBusinessLocationsActions {
 
         String approvalNotification = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "ApprovalNotificationAddress");
         BasePage.clearAndEnterTexts(locationsPage.approvalNotificationAddress, approvalNotification);
-        BasePage.genericWait(6000);
 
         BasePage.clickWithJavaScript(locationsPage.addButton);
+        BasePage.genericWait(5000);
 
         isBusinessLocationSaved();
 

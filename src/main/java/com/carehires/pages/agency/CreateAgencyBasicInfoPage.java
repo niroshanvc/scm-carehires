@@ -39,6 +39,6 @@ public class CreateAgencyBasicInfoPage {
 
     public static final String BASIC_INFORMATION_SUB_XPATHS = "//h6[text()='Basic Information']/..//*";
 
-    @FindBy(xpath = "//div[contains(@class, 'status')]")
-    public WebElement status;
+    @FindBy(xpath = "//div[contains(@class, 'profileStatus')]//div[contains(@class, 'text')]")
+    public WebElement profileStatus;
 }

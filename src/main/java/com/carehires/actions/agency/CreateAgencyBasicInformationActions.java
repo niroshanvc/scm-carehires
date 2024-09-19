@@ -77,7 +77,9 @@ public class CreateAgencyBasicInformationActions {
 
     public void verifyProfileStatus() {
         BasePage.waitUntilPageCompletelyLoaded();
-        String actual = BasePage.getText(createAgencyBasicInfoPage.status).toLowerCase().trim();
-        assertThat("Agent profile is not valid", actual, is("draft"));
+        BasePage.genericWait(2000);
+        BasePage.waitUntilElementPresent(createAgencyBasicInfoPage.profileStatus, 60);
+        String actual = BasePage.getText(createAgencyBasicInfoPage.profileStatus).toLowerCase().trim();
+        assertThat("Agent profile is not valid", actual, is("profile complete"));
     }
 }
