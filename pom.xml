@@ -16,7 +16,7 @@
     <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <extentreports.version>5.1.2</extentreports.version>
-    <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
+    <maven.surefire.plugin.version>3.5.0</maven.surefire.plugin.version>
   </properties>
   <dependencies>
     <dependency>
@@ -94,11 +94,6 @@
       <version>5.2.0</version>
       <scope>test</scope>
     </dependency>
-    <!--<dependency>
-      <groupId>com.sun.mail</groupId>
-      <artifactId>javax.mail</artifactId>
-      <version>1.6.2</version>
-    </dependency>-->
     <!-- https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail -->
     <dependency>
       <groupId>com.sun.mail</groupId>
@@ -106,7 +101,7 @@
       <version>2.0.1</version>
     </dependency>
   </dependencies>
-  <build>
+  <!--<build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -127,5 +122,29 @@
         </configuration>
       </plugin>
     </plugins>
+  </build>-->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.9.0</version> <!-- Update to a version that supports Java 17 -->
+        <configuration>
+          <source>17</source>
+          <target>17</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.plugin.version}</version>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>testng.xml</suiteXmlFile>
+          </suiteXmlFiles>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
+
 </project>
