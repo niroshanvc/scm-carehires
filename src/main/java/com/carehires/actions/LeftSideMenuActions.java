@@ -19,8 +19,4 @@ public class LeftSideMenuActions {
     public void gotoAgencyViewPage() {
         BasePage.mouseHoverAndClick(leftSideMenu.agencies, leftSideMenu.agencyView);
     }
-
-    public void gotoWorkerCreatePage() {
-        BasePage.mouseHoverAndClick(leftSideMenu.workers, leftSideMenu.workerCreateIndividual);
-    }
 }

@@ -15,10 +15,4 @@ public class LeftSideMenuSteps {
     public void moveToAgencyViewPage() {
         leftSideMenuActions.gotoAgencyViewPage();
     }
-
-    @And("^User navigates to Worker Create page$")
-    public void moveToWorkerCreatePage() {
-        leftSideMenuActions.gotoWorkerCreatePage();
-    }
-
 }
