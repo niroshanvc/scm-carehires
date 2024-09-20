@@ -3,7 +3,7 @@ package com.carehires.steps.agency;
 import com.carehires.actions.agency.CreateAgencyCreditServiceActions;
 import io.cucumber.java.en.And;
 
-public class CreateAgencyCreaditServiceSteps {
+public class CreateAgencyCreditServiceSteps {
 
     CreateAgencyCreditServiceActions creditServiceActions = new CreateAgencyCreditServiceActions();
 

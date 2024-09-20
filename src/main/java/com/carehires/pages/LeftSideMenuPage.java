@@ -15,4 +15,7 @@ public class LeftSideMenuPage {
 
     @FindBy(xpath = "//img[@title='Workers']")
     public WebElement workers;
+
+    @FindBy(xpath = "//img[@title='Workers']/../..//p[text()='Create - Individual']")
+    public WebElement workerCreateIndividual;
 }
