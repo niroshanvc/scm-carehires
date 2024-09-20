@@ -1,5 +1,5 @@
 BasicInfo:
-  BusinessName: Automation Agency 140
+  BusinessName: Automation Agency 144
   BusinessRegistrationNumber: 12345678
   CompanyLogo: Agency101.jpg
   AlsoKnownAs: 101Auto
@@ -11,7 +11,7 @@ CreditService:
   LegalLastName: Smith
   MaidenName: Smith
   JobTitle: Manager
-  EmailAddress: niroshancarehires+agency140@gmail.com
+  EmailAddress: niroshancarehires+agency144@gmail.com
   Phone: "07412001245"
   DateOfBirth: 01-01-1999
   PersonalIdNumber: 12345678
@@ -22,7 +22,7 @@ CreditService:
   LegalRepLegalLastName: Writer
   LegalRepMaidenName: Smith
   LegalRepJobTitle: Legal Manager
-  LegalRepEmailAddress: niroshancarehires+legal140gmail.com
+  LegalRepEmailAddress: niroshancarehires+legal144gmail.com
   LegalRepPhone: "07412001245"
   LegalRepDateOfBirth: 01-01-1999
   LegalRepPersonalIdNumber: 12345678
@@ -32,10 +32,10 @@ CreditService:
 
 Location:
   BusinessLocation: North London
-  BusinessEmailAddress: niroshancarehires+businessEmail139@gmail.com
+  BusinessEmailAddress: niroshancarehires+businessEmail144@gmail.com
   City: City of London
-  JobNotificationAddress: niroshancarehires+jobNot139@gmail.com
-  ApprovalNotificationAddress: niroshancarehires+appNot139@gmail.com
+  JobNotificationAddress: niroshancarehires+jobNot144@gmail.com
+  ApprovalNotificationAddress: niroshancarehires+appNot44@gmail.com
 
 Staff:
   WorkerType: Care Assistant
@@ -49,8 +49,8 @@ BillingProfileManagement:
   AttentionTo: IWS Solutions
   BillingAddress: "10 Downing Street, London, SW1A 2AA"
   CostCenter: "<uniqueNumber>"
-  DigitalBillingAddress: niroshancarehires+digital132@gmail.com
-  CCDigitalBillingAddress: niroshancarehires+ccdigital132@gmail.com
+  DigitalBillingAddress: niroshancarehires+digital144@gmail.com
+  CCDigitalBillingAddress: niroshancarehires+ccdigital144@gmail.com
   PhoneNumber: "07412001245"
   BillingCycle: Monthly
   CreditTerm: 30 Days
@@ -60,7 +60,7 @@ BillingProfileManagement:
   SortCode: 34-34-44
 
 User:
-  email: niroshancarehires+agencyuser132@gmail.com
+  email: niroshancarehires+agencyuser144@gmail.com
   Name: William Brook
   JobTitle: Assistant Executive
   Location: Select All Locations
