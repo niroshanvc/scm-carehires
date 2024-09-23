@@ -42,9 +42,9 @@ public class GenericUtils {
         }
     }
 
-    public void fillPhoneNumber(WebElement phoneNumberInput) {
+    public void fillPhoneNumber(String ymlFile, String key, String subKey, WebElement phoneNumberInput) {
         logger.info("fillPhoneNumber");
-        String phoneNumber = DataConfigurationReader.readDataFromYmlFile("agency-create", "BasicInfo", "PhoneNumber");
+        String phoneNumber = DataConfigurationReader.readDataFromYmlFile(ymlFile, key, subKey);
         BasePage.clickWithJavaScript(genericElementsPage.phoneNumberDropdown);
         BasePage.clickWithJavaScript(genericElementsPage.mobile);
         BasePage.typeWithStringBuilder(phoneNumberInput, phoneNumber);

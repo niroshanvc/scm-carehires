@@ -23,4 +23,8 @@ public class LeftSideMenuActions {
     public void gotoWorkerCreatePage() {
         BasePage.mouseHoverAndClick(leftSideMenu.workers, leftSideMenu.workerCreateIndividual);
     }
+
+    public void gotoProviderCreatePage() {
+        BasePage.mouseHoverAndClick(leftSideMenu.providers, leftSideMenu.providerCreate);
+    }
 }

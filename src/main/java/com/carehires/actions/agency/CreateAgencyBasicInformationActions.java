@@ -35,8 +35,8 @@ public class CreateAgencyBasicInformationActions {
         BasePage.clearAndEnterTexts(createAgencyBasicInfoPage.businessRegistrationNumber, businessRegistrationNumber);
 
         //upload a logo
-        String providerLogo = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "CompanyLogo");
-        String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + providerLogo;
+        String companyLogo = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "CompanyLogo");
+        String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + companyLogo;
         BasePage.clickWithJavaScript(createAgencyBasicInfoPage.uploadLogo);
         BasePage.uploadFile(createAgencyBasicInfoPage.fileInputButton, absoluteFilePath);
         BasePage.clickWithJavaScript(createAgencyBasicInfoPage.imageSaveButton);
@@ -49,7 +49,7 @@ public class CreateAgencyBasicInformationActions {
         genericUtils.fillAddress(createAgencyBasicInfoPage.postcode, postcode);
 
         //enter phone number
-        genericUtils.fillPhoneNumber(createAgencyBasicInfoPage.phoneNumberInput);
+        genericUtils.fillPhoneNumber(YML_FILE, YML_HEADER, "PhoneNumber", createAgencyBasicInfoPage.phoneNumberInput);
         BasePage.clickTabKey(createAgencyBasicInfoPage.phoneNumberInput);
         BasePage.genericWait(5000);
 

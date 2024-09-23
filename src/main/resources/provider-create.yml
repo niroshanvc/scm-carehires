@@ -1,0 +1,14 @@
+CompanyInformation:
+  ProviderLogo: Provider101.png
+  CompanyName: Automation Provider 101
+  BusinessRegistrationNumber: 12345678
+  CompanyType: Limited Company
+  Website: www.automationproviders.com
+  ProviderPostCode: BL0 9YX
+  PhoneNumber: "07412001245"
+  AreYouVatRegistered: No
+  VatRegisterDocumentName: VAT-Reg-doc.pdf
+  AreYouVatExempt: Yes
+  AnnualCompanyTurnOverIs: Under 10.2M
+  CompanyBalanceSheetTotalIs: Under 5.2M
+  AverageNumberOfEmployees: Under 50

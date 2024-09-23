@@ -2,11 +2,12 @@ package com.carehires.steps;
 
 import com.carehires.actions.LeftSideMenuActions;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 
 public class LeftSideMenuSteps {
     LeftSideMenuActions leftSideMenuActions = new LeftSideMenuActions();
 
-    @And("^User navigates to Agency Create page$")
+    @Given("^User navigates to Agency Create page$")
     public void moveToAgencyCreatePage() {
         leftSideMenuActions.gotoAgencyCreatePage();
     }
@@ -21,4 +22,8 @@ public class LeftSideMenuSteps {
         leftSideMenuActions.gotoWorkerCreatePage();
     }
 
+    @Given("User navigates to Provider Create page")
+    public void moveToProviderCreatePage() {
+        leftSideMenuActions.gotoProviderCreatePage();
+    }
 }
