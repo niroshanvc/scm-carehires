@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -34,46 +33,71 @@ public class BasePage {
 
     private BasePage() {
         String browser = getProperty("BROWSER");
-        logger.info("Open browser: %s", browser);
+        logger.info("Starting WebDriver initialization.");
+        logger.info("Detected browser: %s", browser);
+
+        // Log system environment variables for debugging in CI
+        String jenkinsUrl = System.getenv("JENKINS_URL");
+        String ciEnvironment = System.getenv("CI");
+        logger.info("JENKINS_URL: %s", jenkinsUrl != null ? jenkinsUrl : "Not Set");
+        logger.info("CI: %s", ciEnvironment != null ? ciEnvironment : "Not Set");
 
         // Detect if running in CI (Jenkins or CircleCI)
-        boolean isCIRunning = System.getenv("CI") != null || System.getenv("JENKINS_URL") != null;
+        boolean isCIRunning = ciEnvironment != null || jenkinsUrl != null;
+        logger.info("Running in CI environment: %s", isCIRunning);
 
-        if (browser.equalsIgnoreCase("Firefox")) {
-            WebDriverManager.firefoxdriver().setup();
-            FirefoxOptions options = new FirefoxOptions();
+        try {
+            if (browser.equalsIgnoreCase("Firefox")) {
+                logger.info("Setting up WebDriver for Firefox.");
+                WebDriverManager.firefoxdriver().setup();
+                FirefoxOptions options = new FirefoxOptions();
 
-            // Run headless in Jenkins or CI environments
-            if (isCIRunning) {
-                logger.info("Running in CI, configuring Firefox for headless execution.");
-                options.addArguments("--headless");
+                if (isCIRunning) {
+                    logger.info("Running in CI, configuring Firefox for headless execution.");
+                    options.addArguments("--headless");
+                    options.addArguments("--no-sandbox");
+                    options.addArguments("--disable-dev-shm-usage");
+                }
+
+                driver = new FirefoxDriver(options);
+                logger.info("Firefox WebDriver initialized successfully.");
+
+            } else if (browser.equalsIgnoreCase("Chrome")) {
+                logger.info("Setting up WebDriver for Chrome.");
+                WebDriverManager.chromedriver().clearDriverCache().setup();
+                ChromeOptions options = new ChromeOptions();
+
+                if (isCIRunning) {
+                    logger.info("Running in CI, configuring Chrome for headless execution.");
+                    options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+                }
+
+                options.addArguments("--remote-allow-origins=*");
+                options.addArguments("--start-maximized");
+                options.addArguments("--disable-notifications");
+
+                driver = new ChromeDriver(options);
+                logger.info("Chrome WebDriver initialized successfully.");
+
+            } else if (browser.equalsIgnoreCase("Edge")) {
+                logger.info("Setting up WebDriver for Edge.");
+                WebDriverManager.edgedriver().setup();
+                driver = new EdgeDriver();
+                logger.info("Edge WebDriver initialized successfully.");
+
+            } else {
+                logger.error("Invalid browser name: %s", browser);
             }
 
-            driver = new FirefoxDriver();
-            driver.manage().window().maximize();
-        } else if (browser.equalsIgnoreCase("Chrome")) {
-            WebDriverManager.chromedriver().clearDriverCache().setup();
-            ChromeOptions options = new ChromeOptions();
-
-            // Headless configuration for CI environments
-            if (isCIRunning) {
-                logger.info("Running in CI, configuring Chrome for headless execution.");
-                options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+            // Additional logging for successful WebDriver setup
+            if (driver != null) {
+                driver.manage().window().maximize();
+                logger.info("Browser window maximized successfully.");
             }
 
-            // Common settings
-            options.addArguments("--remote-allow-origins=*");
-            options.addArguments("--start-maximized");
-            options.addArguments("--disable-notifications");
-
-            driver =  new ChromeDriver(options);
-            driver.manage().window().maximize();
-        } else if (browser.equalsIgnoreCase("Edge")) {
-            WebDriverManager.edgedriver().setup();
-            driver = new EdgeDriver();
-            driver.manage().window().maximize();
-        } else {
-            logger.info("Browser name %s is invalid.", browser);
+        } catch (Exception e) {
+            // Log detailed exception stack trace if WebDriver fails to initialize
+            logger.error("Error occurred during WebDriver initialization: ", e);
         }
     }
 
