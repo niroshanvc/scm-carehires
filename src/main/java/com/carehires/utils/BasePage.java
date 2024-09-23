@@ -19,9 +19,8 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.time.Duration;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.Properties;
 
 public class BasePage {
     private static BasePage basePage;
@@ -47,13 +46,21 @@ public class BasePage {
         try {
             if (browser.equalsIgnoreCase("Chrome")) {
                 logger.info("Setting up ChromeDriver.");
+                Map<String, Object> prefs = new HashMap<>();
+                prefs.put("safebrowsing.enabled", true);
                 WebDriverManager.chromedriver().setup();
                 ChromeOptions options = new ChromeOptions();
 
                 // CI-specific options
                 if (isCIRunning) {
                     logger.info("Running in CI environment, configuring Chrome headless options.");
-                    options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+                    options.addArguments("enable-automation");
+                    options.addArguments("--headless");
+                    options.addArguments("--disable-gpu");
+                    options.addArguments("--no-sandbox");
+                    options.addArguments("--disable-dev-shm-usage");
+                    options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+                    options.setExperimentalOption("prefs", prefs);
                 }
 
                 logger.info("Starting ChromeDriver with options: " + options.toString());
@@ -73,7 +80,7 @@ public class BasePage {
                 driver = new FirefoxDriver(options);
                 logger.info("FirefoxDriver started successfully.");
             } else {
-                logger.error("Invalid browser specified: " + browser);
+                logger.error("Invalid browser specified: {0}", browser);
             }
 
             if (driver != null) {
