@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
@@ -33,8 +32,6 @@ public class BasePage {
 
     private BasePage() {
         String browser = getProperty("BROWSER");
-        logger.info("Starting WebDriver initialization.");
-        logger.info("Detected browser: %s", browser);
 
         // Log system environment variables for debugging in CI
         String jenkinsUrl = System.getenv("JENKINS_URL");
@@ -46,60 +43,47 @@ public class BasePage {
         boolean isCIRunning = ciEnvironment != null || jenkinsUrl != null;
         logger.info("Running in CI environment: %s", isCIRunning);
 
+        logger.info("Initializing WebDriver for browser: " + browser);
         try {
-            if (browser.equalsIgnoreCase("Firefox")) {
-                logger.info("Setting up WebDriver for Firefox.");
+            if (browser.equalsIgnoreCase("Chrome")) {
+                logger.info("Setting up ChromeDriver.");
+                WebDriverManager.chromedriver().setup();
+                ChromeOptions options = new ChromeOptions();
+
+                // CI-specific options
+                if (isCIRunning) {
+                    logger.info("Running in CI environment, configuring Chrome headless options.");
+                    options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+                }
+
+                logger.info("Starting ChromeDriver with options: " + options.toString());
+                driver = new ChromeDriver(options);
+                logger.info("ChromeDriver started successfully.");
+
+            } else if (browser.equalsIgnoreCase("Firefox")) {
+                logger.info("Setting up FirefoxDriver.");
                 WebDriverManager.firefoxdriver().setup();
                 FirefoxOptions options = new FirefoxOptions();
 
                 if (isCIRunning) {
-                    logger.info("Running in CI, configuring Firefox for headless execution.");
+                    logger.info("Running in CI environment, configuring Firefox headless options.");
                     options.addArguments("--headless");
-                    options.addArguments("--no-sandbox");
-                    options.addArguments("--disable-dev-shm-usage");
                 }
 
                 driver = new FirefoxDriver(options);
-                logger.info("Firefox WebDriver initialized successfully.");
-
-            } else if (browser.equalsIgnoreCase("Chrome")) {
-                logger.info("Setting up WebDriver for Chrome.");
-                WebDriverManager.chromedriver().clearDriverCache().setup();
-                ChromeOptions options = new ChromeOptions();
-
-                if (isCIRunning) {
-                    logger.info("Running in CI, configuring Chrome for headless execution.");
-                    options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
-                }
-
-                options.addArguments("--remote-allow-origins=*");
-                options.addArguments("--start-maximized");
-                options.addArguments("--disable-notifications");
-
-                logger.info("Creating Chrome WebDriver instance...");
-                driver = new ChromeDriver(options);
-                logger.info("Chrome WebDriver initialized successfully.");
-
-            } else if (browser.equalsIgnoreCase("Edge")) {
-                logger.info("Setting up WebDriver for Edge.");
-                WebDriverManager.edgedriver().setup();
-                driver = new EdgeDriver();
-                logger.info("Edge WebDriver initialized successfully.");
-
+                logger.info("FirefoxDriver started successfully.");
             } else {
-                logger.error("Invalid browser name: %s", browser);
+                logger.error("Invalid browser specified: " + browser);
             }
 
-            // Additional logging for successful WebDriver setup
             if (driver != null) {
                 driver.manage().window().maximize();
-                logger.info("Browser window maximized successfully.");
+                logger.info("Browser window maximized.");
             }
-
         } catch (Exception e) {
-            // Log detailed exception stack trace if WebDriver fails to initialize
             logger.error("Error occurred during WebDriver initialization: ", e);
         }
+
     }
 
     public static String getProperty(String key) {
