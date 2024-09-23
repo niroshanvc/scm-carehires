@@ -76,6 +76,7 @@ public class BasePage {
                 options.addArguments("--start-maximized");
                 options.addArguments("--disable-notifications");
 
+                logger.info("Creating Chrome WebDriver instance...");
                 driver = new ChromeDriver(options);
                 logger.info("Chrome WebDriver initialized successfully.");
 
