@@ -5,10 +5,12 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -34,28 +36,38 @@ public class BasePage {
         String browser = getProperty("BROWSER");
         logger.info("Open browser: %s", browser);
 
+        // Detect if running in CI (Jenkins or CircleCI)
+        boolean isCIRunning = System.getenv("CI") != null || System.getenv("JENKINS_URL") != null;
+
         if (browser.equalsIgnoreCase("Firefox")) {
             WebDriverManager.firefoxdriver().setup();
+            FirefoxOptions options = new FirefoxOptions();
+
+            // Run headless in Jenkins or CI environments
+            if (isCIRunning) {
+                logger.info("Running in CI, configuring Firefox for headless execution.");
+                options.addArguments("--headless");
+            }
+
             driver = new FirefoxDriver();
             driver.manage().window().maximize();
         } else if (browser.equalsIgnoreCase("Chrome")) {
             WebDriverManager.chromedriver().clearDriverCache().setup();
-            WebDriverManager.chromedriver().clearResolutionCache().setup();
-            WebDriverManager.chromedriver().setup();
-
-            // Check if the tests are running in CI environment (such as CircleCI)
             ChromeOptions options = new ChromeOptions();
-            if (System.getenv("CI") != null) {
-                logger.info("Running in CircleCI, configuring Chrome for headless execution.");
+
+            // Headless configuration for CI environments
+            if (isCIRunning) {
+                logger.info("Running in CI, configuring Chrome for headless execution.");
                 options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
             }
 
-            // Standard options for both local and CI
+            // Common settings
             options.addArguments("--remote-allow-origins=*");
             options.addArguments("--start-maximized");
             options.addArguments("--disable-notifications");
 
-            driver = new ChromeDriver(options);
+            driver =  new ChromeDriver(options);
+            driver.manage().window().maximize();
         } else if (browser.equalsIgnoreCase("Edge")) {
             WebDriverManager.edgedriver().setup();
             driver = new EdgeDriver();
