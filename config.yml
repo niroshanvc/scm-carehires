@@ -1,0 +1,5 @@
+allure:
+  directory: allure-results
+  report:
+    issue_tracker_pattern: "http://your-issue-tracker/{issue}"
+    tms_pattern: "http://your-tms/{tms}"
