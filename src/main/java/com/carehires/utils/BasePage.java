@@ -26,7 +26,7 @@ public class BasePage {
     private static BasePage basePage;
     private static WebDriver driver;
     private static WebDriverWait wait;
-    private static final Logger logger = LogManager.getFormatterLogger();
+    private static final Logger logger = LogManager.getFormatterLogger(BasePage.class);
     static Properties prop;
 
     private BasePage() {
@@ -42,7 +42,7 @@ public class BasePage {
         boolean isCIRunning = ciEnvironment != null || jenkinsUrl != null;
         logger.info("Running in CI environment: %s", isCIRunning);
 
-        logger.info("Initializing WebDriver for browser: " + browser);
+        logger.info("Initializing WebDriver for browser: %s", browser);
         try {
             if (browser.equalsIgnoreCase("Chrome")) {
                 logger.info("Setting up ChromeDriver.");
@@ -63,7 +63,8 @@ public class BasePage {
                     options.setExperimentalOption("prefs", prefs);
                 }
 
-                logger.info("Starting ChromeDriver with options: " + options.toString());
+                String opString = options.toString();
+                logger.info("Starting ChromeDriver with options: %s", opString);
                 driver = new ChromeDriver(options);
                 logger.info("ChromeDriver started successfully.");
 
@@ -80,7 +81,7 @@ public class BasePage {
                 driver = new FirefoxDriver(options);
                 logger.info("FirefoxDriver started successfully.");
             } else {
-                logger.error("Invalid browser specified: {0}", browser);
+                logger.error("Invalid browser specified: %s", browser);
             }
 
             if (driver != null) {
@@ -282,10 +283,10 @@ public class BasePage {
         genericWait(3000);
     }
 
-    public static void genericWait(int time) {
+    public static void genericWait(int milliseconds) {
         try {
-            logger.info("Waiting for %s milliseconds", time);
-            Thread.sleep(time);
+            logger.info("Waiting for %s milliseconds", milliseconds);
+            Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
             logger.info(String.valueOf(Level.WARN), "Interrupted", e.getMessage());
             Thread.currentThread().interrupt();

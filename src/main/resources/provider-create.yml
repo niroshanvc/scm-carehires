@@ -1,14 +1,30 @@
 CompanyInformation:
   ProviderLogo: Provider101.png
-  CompanyName: Automation Provider 101
+  CompanyName: Automation Provider 109
   BusinessRegistrationNumber: 12345678
   CompanyType: Limited Company
-  Website: www.automationproviders.com
+  Website: https://www.automationproviders.com
   ProviderPostCode: BL0 9YX
   PhoneNumber: "07412001245"
-  AreYouVatRegistered: No
-  VatRegisterDocumentName: VAT-Reg-doc.pdf
-  AreYouVatExempt: Yes
-  AnnualCompanyTurnOverIs: Under 10.2M
-  CompanyBalanceSheetTotalIs: Under 5.2M
-  AverageNumberOfEmployees: Under 50
+  AreYouVatRegistered: "Yes"
+  VatNo: "1025200012"
+  VatRegisteredDocumentName: VAT-Reg-doc.pdf
+  AreYouVatExempt: "Yes"
+  VatExemptDocumentName: vat-exemption-certificate.pdf
+  AnnualCompanyTurnOverIs: Equal or Over 10.2M
+  CompanyBalanceSheetTotalIs: Equal or Over 5.2M
+  AverageNumberOfEmployees: Equal or Over 50
+
+SiteManagement:
+  SiteName: BioRevolution Care 109
+  SiteType: Hospital
+  SiteSpecialism: Adult,Autism,Childrens,Elderly,Nursing
+  AlsoKnownAs: BioRevolution102
+  SiteEmail: https://wpamelia.com/clinic-names/
+  PostalCode: BL0 9YX
+  NoOfBeds: 25
+  SiteCode: AC-01
+  PhoneType: "Office2"
+  PhoneNumber: "07412001245"
+  JobNotificationAddress: niroshancarehires+prjobnot109@gmail.com
+  ApprovalNotificationAddress: niroshancarehires+prappnot109@gmail.com

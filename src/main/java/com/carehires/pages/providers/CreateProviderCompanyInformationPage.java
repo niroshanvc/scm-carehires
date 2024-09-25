@@ -35,17 +35,25 @@ public class CreateProviderCompanyInformationPage {
     @FindBy(xpath = "//nb-radio-group[@formcontrolname='isVatRegistered']//input[@value='true']")
     public WebElement vatRegisteredYes;
 
-    @FindBy(xpath = "//input[@name='undefined' and @value='true']//ancestor::nb-radio-group//ancestor::div[@class='row'][1]//div[3]//div[contains(@class, 'table')]//input[@type='file']")
-    public WebElement vatRegisterDocument;
-
     @FindBy(xpath = "//nb-radio-group[@formcontrolname='isVatRegistered']//input[@value='false']")
     public WebElement vatRegisteredNo;
+
+    @FindBy(id = "vat-no")
+    public WebElement vatNumber;
+
+    @FindBy(xpath = "//input[@name='undefined' and @value='true']//ancestor::nb-radio-group//ancestor::" +
+            "div[@class='row'][1]//div[3]//div[contains(@class, 'table')]//input[@type='file']")
+    public WebElement vatRegisteredDocument;
 
     @FindBy(xpath = "//nb-radio-group[@formcontrolname='isVatExcempt']//input[@value='true']")
     public WebElement vatExemptYes;
 
     @FindBy(xpath = "//nb-radio-group[@formcontrolname='isVatExcempt']//input[@value='false']")
     public WebElement vatExemptNo;
+
+    @FindBy(xpath = "//input[@name='isVatExcempt' and @value='true']//ancestor::nb-radio-group//ancestor::" +
+            "div[@class='row'][1]/div[2]//div[contains(@class, 'table')]//input[@type='file']")
+    public WebElement vatExemptDocument;
 
     @FindBy(xpath = "//input[@name='isAnnualCompanyTurnOverAboveLimit' and @value='true']")
     public WebElement annualCompanyTurnOverOverTen;
@@ -68,8 +76,12 @@ public class CreateProviderCompanyInformationPage {
     @FindBy(xpath = "//button[contains(text(),'Save')]")
     public WebElement saveButton;
 
-    public static final String COMPANY_INFORMATION_SUB_XPATHS = "//h6[text()='Basic Information']/..//*";
+    public static final String COMPANY_INFORMATION_SUB_XPATHS = "//h6[text()='Company Information']/..//nb-icon/*/*" +
+            "/*[contains(@data-name, 'done')]";
 
     @FindBy(xpath = "//div[contains(@class, 'profileStatus')]//div[contains(@class, 'text')]")
     public WebElement profileStatus;
+
+    @FindBy(xpath = "//button[contains(text(), 'Update')]")
+    public WebElement updateButton;
 }
