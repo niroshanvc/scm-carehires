@@ -1,0 +1,40 @@
+package com.carehires.pages.providers;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class CreateWorkerStaffPage {
+
+    @FindBy(xpath = "//button[contains(@class, 'inserted') and (contains(@class, 'button'))]")
+    public WebElement addNewButton;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='careHome']/button")
+    public WebElement siteDropdown;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='workerType']/button")
+    public WebElement workerTypeDropdown;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='workerSkills']/button")
+    public WebElement skills;
+
+    @FindBy(id = "hourly-rate")
+    public WebElement hourlyRate;
+
+    @FindBy(id = "agency-hours")
+    public WebElement monthlyAgencyHours;
+
+    @FindBy(id = "agency-spend")
+    public WebElement monthlyAgencySpend;
+
+    @FindBy(xpath = "//input[@type='file']")
+    public WebElement proofOfDemandDocument;
+
+    @FindBy(xpath = "//button[contains(text(),'Add')]")
+    public WebElement addButton;
+
+    @FindBy(xpath = "//div[contains(@class, 'document-table-body')]/div[1]")
+    public WebElement addedWorkerType;
+
+    @FindBy(xpath = "//button[contains(text(), 'Update')]")
+    public WebElement updateButton;
+}

@@ -28,6 +28,7 @@ public class CreateProvidersSiteManagementActions {
 
     public void enterSiteManagementData() {
         BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(siteManagementPage.addNewButton);
 
         logger.info("Entering Site Name");
@@ -37,6 +38,7 @@ public class CreateProvidersSiteManagementActions {
         logger.info("Entering Site Type");
         String siteType = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "SiteType");
         BasePage.clickWithJavaScript(siteManagementPage.siteTypeDropdown);
+        BasePage.waitUntilElementClickable(getDropdownXpath(siteType), 30);
         BasePage.clickWithJavaScript(getDropdownXpath(siteType));
 
         logger.info("Entering Site Specialism");
@@ -81,6 +83,7 @@ public class CreateProvidersSiteManagementActions {
         String approvalNotification = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "ApprovalNotificationAddress");
         BasePage.typeWithStringBuilder(siteManagementPage.approvalNotificationAddress, approvalNotification);
 
+        BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(siteManagementPage.addButton);
         isSiteSaved();
 
@@ -91,7 +94,7 @@ public class CreateProvidersSiteManagementActions {
 
     private void isSiteSaved() {
         BasePage.waitUntilElementPresent(siteManagementPage.siteNameAddress, 90);
-        String actualSiteName = BasePage.getText(siteManagementPage.siteNameAddress);
+        String actualSiteName = BasePage.getText(siteManagementPage.siteNameAddress).trim();
         String expectedSiteName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "SiteName");
         assertThat("Site is not saved", actualSiteName, is(expectedSiteName));
     }

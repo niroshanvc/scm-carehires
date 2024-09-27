@@ -47,7 +47,7 @@ public class CreateProvidersSiteManagementPage {
     @FindBy(xpath = "//button[contains(text(),'Add')]")
     public WebElement addButton;
 
-    @FindBy(xpath = "(//div[contains(@class, 'common-document-table-body')]//p)[1]")
+    @FindBy(xpath = "(//div[contains(@class, 'common-document-table-body')]//p)[1]/b")
     public WebElement siteNameAddress;
 
     @FindBy(xpath = "//button[contains(text(), 'Update')]")

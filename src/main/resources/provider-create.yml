@@ -1,6 +1,6 @@
 CompanyInformation:
   ProviderLogo: Provider101.png
-  CompanyName: Automation Provider 109
+  CompanyName: Automation Provider 124
   BusinessRegistrationNumber: 12345678
   CompanyType: Limited Company
   Website: https://www.automationproviders.com
@@ -16,15 +16,22 @@ CompanyInformation:
   AverageNumberOfEmployees: Equal or Over 50
 
 SiteManagement:
-  SiteName: BioRevolution Care 109
+  SiteName: BioRevolution Care 124
   SiteType: Hospital
   SiteSpecialism: Adult,Autism,Childrens,Elderly,Nursing
-  AlsoKnownAs: BioRevolution102
-  SiteEmail: https://wpamelia.com/clinic-names/
+  AlsoKnownAs: BioRevolution124
+  SiteEmail: niroshancarehires+site1pr124@gmail.com
   PostalCode: BL0 9YX
   NoOfBeds: 25
   SiteCode: AC-01
   PhoneType: "Office2"
   PhoneNumber: "07412001245"
-  JobNotificationAddress: niroshancarehires+prjobnot109@gmail.com
-  ApprovalNotificationAddress: niroshancarehires+prappnot109@gmail.com
+  JobNotificationAddress: niroshancarehires+prjobnot124@gmail.com
+  ApprovalNotificationAddress: niroshancarehires+prappnot124@gmail.com
+
+WorkerStaffManagement:
+  WorkerType: Rehabilitation Worker
+  Skills: Elderly,Dementia,Home Care,NVQ L3,Driving
+  HourlyRate: 10.5
+  MonthlyAgencyHours: 300
+  ProofOfDemandDocument: Proof of demand document.pdf

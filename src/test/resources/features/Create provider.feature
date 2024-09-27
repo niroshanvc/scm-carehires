@@ -10,3 +10,6 @@ Feature: Test CareHires create agency with one location
     Given User navigates to Provider Create page
     And User enters valid provider - company information
     And User enters valid provider - site management data
+    When User enters valid worker staff data
+    Then User verifies calculated Monthly agency spend value
+    And User creates a new worker staff

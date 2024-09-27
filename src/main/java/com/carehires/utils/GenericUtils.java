@@ -32,7 +32,7 @@ public class GenericUtils {
 
     public void fillAddress(WebElement postcodeInput, String postcode) {
         logger.info("fillAddress");
-        BasePage.typeWithStringBuilderAndDelay(postcodeInput, postcode, 200);
+        BasePage.typeWithStringBuilderAndDelay(postcodeInput, postcode, 150);
         BasePage.waitUntilElementPresent(createAgencyBasicInfoPage.autoSuggestAddresses, 60);
         List<WebElement> addresses = getDriverInstance().findElements(By.xpath("//nb-option[contains(@id, 'nb-option')]"));
         if (!addresses.isEmpty()) {
