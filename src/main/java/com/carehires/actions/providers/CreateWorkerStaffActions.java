@@ -3,13 +3,9 @@ package com.carehires.actions.providers;
 import com.carehires.pages.providers.CreateWorkerStaffPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.text.DecimalFormat;
-import java.time.Duration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -68,6 +64,35 @@ public class CreateWorkerStaffActions {
     }
 
     public void verifyMonthlyAgencySpendValue() {
+        String expectMonthlyAgencySpendValue = getExpectedMonthlySpendValue();
+        String actual = BasePage.getAttributeValue(createWorkerStaffPage.monthlyAgencySpend, "value").trim();
+        assertThat("Monthly agency spend is not correctly calculate", actual, is(expectMonthlyAgencySpendValue));
+    }
+
+    public void addWorkerStaff() {
+        String proofOfDemandDocument = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "ProofOfDemandDocument");
+        String absoluteFilePathVatRegDoc = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Provider\\" + proofOfDemandDocument;
+        BasePage.uploadFile(createWorkerStaffPage.proofOfDemandDocument, absoluteFilePathVatRegDoc);
+        BasePage.clickWithJavaScript(createWorkerStaffPage.addButton);
+        isWorkerStaffAdded();
+    }
+
+    //verify worker is added
+    private void isWorkerStaffAdded() {
+        String expectedWorkerType = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "WorkerType");
+        BasePage.genericWait(5000);
+        BasePage.waitUntilElementPresent(createWorkerStaffPage.addedWorkerType, 90);
+        String actualWorkerType = BasePage.getText(createWorkerStaffPage.addedWorkerType).trim();
+        assertThat("Worker staff is not added", actualWorkerType, is(expectedWorkerType));
+    }
+
+    public void verifyMonthlySpendDisplayInTableGrid() {
+        String expectedValue = getExpectedMonthlySpendValue();
+        String actual = BasePage.getAttributeValue(createWorkerStaffPage.monthlySpendInTableGrid, "value").trim();
+        assertThat("Monthly agency spend is not correctly displaying.", actual, is(expectedValue));
+    }
+
+    private String getExpectedMonthlySpendValue() {
         String hourlyRate = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "HourlyRate");
         String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "MonthlyAgencyHours");
         double hourlyRateInt = Double.parseDouble(hourlyRate);
@@ -76,21 +101,12 @@ public class CreateWorkerStaffActions {
         BasePage.clickTabKey(createWorkerStaffPage.monthlyAgencyHours);
         BasePage.genericWait(500);
         DecimalFormat df = new DecimalFormat("#.##");
-        String expectMonthlyAgencySpendValue = df.format(monthlyAgencySpendValue);
-        String actual = BasePage.getAttributeValue(createWorkerStaffPage.monthlyAgencySpend, "value").trim();
-        assertThat("Monthly agency spend is not correctly calculate", actual, is(expectMonthlyAgencySpendValue));
+        return df.format(monthlyAgencySpendValue);
     }
 
-    public void addWorkerStaff() {
-        BasePage.clickWithJavaScript(createWorkerStaffPage.addButton);
-        isWorkerStaffAdded();
-    }
-
-    //verify worker is added
-    private void isWorkerStaffAdded() {
-        String expectedWorkerType = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "WorkerType");
-        BasePage.waitUntilElementPresent(createWorkerStaffPage.addedWorkerType, 90);
-        String actualWorkerType = BasePage.getText(createWorkerStaffPage.addedWorkerType).trim();
-        assertThat("Worker staff is not added", actualWorkerType, is(expectedWorkerType));
+    public void moveToUserManagementPage() {
+        BasePage.clickWithJavaScript(createWorkerStaffPage.updateButton);
+        BasePage.waitUntilElementPresent(createWorkerStaffPage.nextButton, 60);
+        BasePage.clickWithJavaScript(createWorkerStaffPage.nextButton);
     }
 }

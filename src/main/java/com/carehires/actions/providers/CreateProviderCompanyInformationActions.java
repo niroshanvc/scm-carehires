@@ -109,8 +109,8 @@ public class CreateProviderCompanyInformationActions {
         }
 
         logger.info("Entering company balance sheet");
-        String comapnyBalanceSheet = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "CompanyBalanceSheetTotalIs");
-        if (comapnyBalanceSheet.equalsIgnoreCase("Under 5.2M")) {
+        String companyBalanceSheet = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "CompanyBalanceSheetTotalIs");
+        if (companyBalanceSheet.equalsIgnoreCase("Under 5.2M")) {
             BasePage.clickWithJavaScript(companyInformationPage.balanceSheetTotalUnderFive);
         } else {
             BasePage.clickWithJavaScript(companyInformationPage.balanceSheetTotalOverFive);

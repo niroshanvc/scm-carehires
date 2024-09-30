@@ -23,4 +23,10 @@ public class CreateProviderWorkerStaffSteps {
     public void createNewWorkerStaff() {
         workerStaffActions.addWorkerStaff();
     }
+
+    @Then("User verifies calculated Monthly spend value displays in the table grid and moves to the next screen")
+    public void verifyMonthlySpendInTableGrid() {
+        workerStaffActions.verifyMonthlySpendDisplayInTableGrid();
+        workerStaffActions.moveToUserManagementPage();
+    }
 }

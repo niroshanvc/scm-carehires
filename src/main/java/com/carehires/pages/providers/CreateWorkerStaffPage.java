@@ -37,4 +37,10 @@ public class CreateWorkerStaffPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Update')]")
     public WebElement updateButton;
+
+    @FindBy(xpath = "//div[contains(@class, 'table-body-grid')]/div[5]")
+    public WebElement monthlySpendInTableGrid;
+
+    @FindBy(xpath = "//button[contains(text(), 'Next')]")
+    public WebElement nextButton;
 }

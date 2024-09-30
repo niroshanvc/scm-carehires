@@ -5,7 +5,7 @@ import com.carehires.actions.providers.CreateWorkerStaffActions;
 import com.carehires.utils.BasePage;
 import org.openqa.selenium.WebDriver;
 
-public class Mail {
+public class Main {
     public static void main(String[] args) {
         SignInPageActions signIn = new SignInPageActions();
         signIn.navigateToSignInPage();

@@ -65,10 +65,10 @@ public class CreateAgencyCreditServicePage {
     @FindBy(xpath = "(//input[@formcontrolname='ownership'])[2]")
     public WebElement legalOwnershipPercentage;
 
-    @FindBy(xpath = "//h3[text()='Add Legal Representative']/ancestor::nb-accordion-item")
+    @FindBy(xpath = "//h3[contains(text(),'Legal Representative')]/ancestor::nb-accordion-item")
     public WebElement addLegalRepresentativeHeader;
 
-    @FindBy(xpath = "//h3[text()='Add Legal Representative']/ancestor::nb-accordion-item-header//nb-icon")
+    @FindBy(xpath = "//h3[contains(text(),'Legal Representative')]/ancestor::nb-accordion-item-header//nb-icon")
     public WebElement addLegalRepresentativeExpand;
 
     @FindBy(xpath = "//button[contains(text(),'Save')]")
