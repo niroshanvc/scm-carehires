@@ -16,12 +16,12 @@ public class LoginSteps {
     }
 
     @When("^User enters valid username and password$")
-    public void userEntersValidAnd() {
+    public void userEntersValidAnd() throws Exception {
         signInPageActions.loginToCareHires();
     }
 
     @Given("User logins to carehires")
-    public void userLoginsToCarehires() {
+    public void userLoginsToCarehires() throws Exception {
         signInPageActions.navigateToSignInPage();
         signInPageActions.loginToCareHires();
         overviewActions.waitAndAcceptCookies();

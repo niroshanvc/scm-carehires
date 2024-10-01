@@ -6,7 +6,7 @@ import com.carehires.utils.BasePage;
 import org.openqa.selenium.WebDriver;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         SignInPageActions signIn = new SignInPageActions();
         signIn.navigateToSignInPage();
         signIn.loginToCareHires();
