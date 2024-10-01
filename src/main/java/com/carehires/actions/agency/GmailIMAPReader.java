@@ -15,7 +15,7 @@ public class GmailIMAPReader {
             //Connect to the GMail IMap server
             Session emailSession = Session.getDefaultInstance(properties);
             Store store = emailSession.getStore();
-            store.connect("imap.gmail.com", "niroshancarehires@gmail.com", "Lev3!n123");
+            store.connect("imap.gmail.com", "automation.qa@carehires.com", "Eutech#123");
 
             //Access the inbox folder
             Folder inbox = store.getFolder("INBOX");

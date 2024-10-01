@@ -1,4 +1,4 @@
-package com.carehires.steps;
+package com.carehires.steps.agency;
 
 import com.carehires.actions.agency.SubContractingAgreementActions;
 import io.cucumber.java.en.When;

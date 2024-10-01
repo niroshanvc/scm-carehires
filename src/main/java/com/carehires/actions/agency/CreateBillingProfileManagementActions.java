@@ -65,6 +65,7 @@ public class CreateBillingProfileManagementActions {
 
         String sortCode = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "SortCode");
         BasePage.typeWithStringBuilder(billingPage.sortCode, sortCode);
+        BasePage.genericWait(5000);
 
         BasePage.clickWithJavaScript(billingPage.saveButton);
         BasePage.genericWait(3000);

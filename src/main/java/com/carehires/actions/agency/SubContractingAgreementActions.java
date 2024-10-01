@@ -33,5 +33,8 @@ public class SubContractingAgreementActions {
         BasePage.uploadFile(subContractingAgreementPage.uploadFile, absoluteFilePath);
         BasePage.genericWait(10000);
         BasePage.clickWithJavaScript(subContractingAgreementPage.saveButton);
+
+        //wait until profile status got updated as 'Profile Complete'
+        BasePage.genericWait(10000);
     }
 }

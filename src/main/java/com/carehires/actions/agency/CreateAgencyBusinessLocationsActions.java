@@ -40,6 +40,7 @@ public class CreateAgencyBusinessLocationsActions {
 
         String approvalNotification = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "ApprovalNotificationAddress");
         BasePage.clearAndEnterTexts(locationsPage.approvalNotificationAddress, approvalNotification);
+        BasePage.genericWait(15000);
 
         BasePage.clickWithJavaScript(locationsPage.addButton);
         BasePage.genericWait(5000);

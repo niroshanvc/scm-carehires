@@ -16,8 +16,11 @@ public class SearchAgencyActions {
 
     public void searchByText() {
         BasePage.waitUntilPageCompletelyLoaded();
-        String agencyName = DataConfigurationReader.readDataFromYmlFile("agency-create", "SubContract", "BusinessName");
+        //wait until profile status get updated
+        BasePage.genericWait(10000);
+        String agencyName = DataConfigurationReader.readDataFromYmlFile("agency-create", "BasicInfo", "BusinessName");
         BasePage.typeWithStringBuilder(searchAgencyPage.searchByText, agencyName);
         BasePage.clickOnEnterKey(searchAgencyPage.searchByText);
+        BasePage.genericWait(10000);
     }
 }

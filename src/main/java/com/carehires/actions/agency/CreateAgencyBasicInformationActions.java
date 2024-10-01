@@ -74,12 +74,4 @@ public class CreateAgencyBasicInformationActions {
 
         assertThat("Basic information is not saved",hasIdDone, is(true));
     }
-
-    public void verifyProfileStatus() {
-        BasePage.waitUntilPageCompletelyLoaded();
-        BasePage.genericWait(2000);
-        BasePage.waitUntilElementPresent(createAgencyBasicInfoPage.profileStatus, 60);
-        String actual = BasePage.getText(createAgencyBasicInfoPage.profileStatus).toLowerCase().trim();
-        assertThat("Agent profile is not valid", actual, is("profile complete"));
-    }
 }

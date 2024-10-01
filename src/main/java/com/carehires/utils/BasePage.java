@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -354,5 +355,15 @@ public class BasePage {
         WebElement element = driver.findElement(By.xpath(xpath));
         wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
         wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    public static boolean isElementDisplayed(WebElement element) {
+        logger.info("****************** Checking element - %s is displayed:", element);
+        try {
+            genericWait(5000);
+            return element.isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
     }
 }
