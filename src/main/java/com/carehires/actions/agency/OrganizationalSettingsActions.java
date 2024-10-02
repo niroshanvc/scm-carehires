@@ -3,6 +3,8 @@ package com.carehires.actions.agency;
 import com.carehires.pages.agency.OrganizationalSettingsPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
 public class OrganizationalSettingsActions {
@@ -11,6 +13,7 @@ public class OrganizationalSettingsActions {
 
     private static final String YML_FILE = "agency-create";
     private static final String YML_HEADER = "Settings";
+    private static final Logger logger = LogManager.getFormatterLogger(OrganizationalSettingsActions.class);
 
     public OrganizationalSettingsActions() {
         settingsPage = new OrganizationalSettingsPage();
@@ -18,6 +21,7 @@ public class OrganizationalSettingsActions {
     }
 
     public void saveSettings() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Saving Organizational Settings >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.genericWait(5000);
 

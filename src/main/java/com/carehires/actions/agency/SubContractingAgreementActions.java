@@ -3,11 +3,15 @@ package com.carehires.actions.agency;
 import com.carehires.pages.agency.SubContractingAgreementPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
 public class SubContractingAgreementActions {
 
     SubContractingAgreementPage subContractingAgreementPage;
+
+    private static final Logger logger = LogManager.getFormatterLogger(SubContractingAgreementActions.class);
 
     public SubContractingAgreementActions() {
         subContractingAgreementPage = new SubContractingAgreementPage();
@@ -15,6 +19,7 @@ public class SubContractingAgreementActions {
     }
 
     public void clickOnInviteButton() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on Invite button >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(subContractingAgreementPage.inviteButton);
         BasePage.waitUntilElementClickable(subContractingAgreementPage.noButton, 60);
@@ -22,6 +27,7 @@ public class SubContractingAgreementActions {
     }
 
     public void clickOnCompleteProfileButton() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on Complete Profile button >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(subContractingAgreementPage.completeProfileButton);
         BasePage.waitUntilElementPresent(subContractingAgreementPage.attachSubContractDocumentButton, 60);

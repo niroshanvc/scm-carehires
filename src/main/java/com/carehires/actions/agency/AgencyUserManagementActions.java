@@ -3,6 +3,8 @@ package com.carehires.actions.agency;
 import com.carehires.pages.agency.AgencyUserManagementPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,6 +16,7 @@ public class AgencyUserManagementActions {
 
     private static final String YML_FILE = "agency-create";
     private static final String YML_HEADER = "User";
+    private static final Logger logger = LogManager.getFormatterLogger(AgencyUserManagementActions.class);
 
     public AgencyUserManagementActions() {
         userManagement = new AgencyUserManagementPage();
@@ -21,6 +24,7 @@ public class AgencyUserManagementActions {
     }
 
     public void addUser() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering user details >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(userManagement.addNewButton);
 
@@ -59,6 +63,7 @@ public class AgencyUserManagementActions {
 
         BasePage.genericWait(6000);
         BasePage.clickWithJavaScript(userManagement.addButton);
+
         BasePage.genericWait(5000);
         isUserAdded();
 

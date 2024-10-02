@@ -3,6 +3,8 @@ package com.carehires.actions.agency;
 import com.carehires.pages.agency.CreateAgencyStaffPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,6 +17,7 @@ public class CreateAgencyStaffActions {
     private static final String YML_FILE = "agency-create";
     private static final String YML_HEADER = "Staff";
     private static final String LOCATION_YML_HEADER = "Location";
+    private static final Logger logger = LogManager.getFormatterLogger(CreateAgencyStaffActions.class);
 
     public CreateAgencyStaffActions() {
         staffPage = new CreateAgencyStaffPage();
@@ -22,6 +25,7 @@ public class CreateAgencyStaffActions {
     }
 
     public void addStaff() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering staff information >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(staffPage.addNewButton);
 

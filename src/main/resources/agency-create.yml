@@ -1,8 +1,8 @@
 BasicInfo:
-  BusinessName: Automation Agency 155
+  BusinessName: Automation Agency {{increment}}
   BusinessRegistrationNumber: 12345678
   CompanyLogo: Agency101.jpg
-  AlsoKnownAs: 101Auto
+  AlsoKnownAs: Auto{{increment}}
   PostCode: BL0 9YX
   PhoneNumber: "07412001245"
 
@@ -11,7 +11,7 @@ CreditService:
   LegalLastName: Smith
   MaidenName: Smith
   JobTitle: Manager
-  EmailAddress: automation.qa+agency155@carehires.com
+  EmailAddress: automation.qa+agency{{increment}}@carehires.com
   Phone: "07412001245"
   DateOfBirth: 01-01-1999
   PersonalIdNumber: 12345678
@@ -22,7 +22,7 @@ CreditService:
   LegalRepLegalLastName: Writer
   LegalRepMaidenName: Smith
   LegalRepJobTitle: Legal Manager
-  LegalRepEmailAddress: automation.qa+agencyleg155@carehires.com
+  LegalRepEmailAddress: automation.qa+agencyleg{{increment}}@carehires.com
   LegalRepPhone: "07412001245"
   LegalRepDateOfBirth: 01-01-1999
   LegalRepPersonalIdNumber: "12345678"
@@ -32,10 +32,10 @@ CreditService:
 
 Location:
   BusinessLocation: North London
-  BusinessEmailAddress: automation.qa+agencybuss155@carehires.com
+  BusinessEmailAddress: automation.qa+agencybuss{{increment}}@carehires.com
   City: City of London
-  JobNotificationAddress: automation.qa+agencyjobnot155@carehires.com
-  ApprovalNotificationAddress: automation.qa+agency155appnot@carehires.com
+  JobNotificationAddress: automation.qa+agencyjobnot{{increment}}@carehires.com
+  ApprovalNotificationAddress: automation.qa+agencyappnot{{increment}}@carehires.com
 
 Staff:
   WorkerType: Care Assistant
@@ -49,8 +49,8 @@ BillingProfileManagement:
   AttentionTo: IWS Solutions
   BillingAddress: "10 Downing Street, London, SW1A 2AA"
   CostCenter: "<uniqueNumber>"
-  DigitalBillingAddress: automation.qa+agencydigi155@carehires.com
-  CCDigitalBillingAddress: automation.qa+agencyccdigi155@carehires.com
+  DigitalBillingAddress: automation.qa+agencydigi{{increment}}@carehires.com
+  CCDigitalBillingAddress: automation.qa+agencyccdigi{{increment}}@carehires.com
   PhoneNumber: "07412001245"
   BillingCycle: Monthly
   CreditTerm: 30 Days
@@ -60,8 +60,8 @@ BillingProfileManagement:
   SortCode: 10-88-00
 
 User:
-  email: automation.qa+agencyuser154@carehires.com
-  Name: William Brook155
+  email: automation.qa+agencyuser{{increment}}@carehires.com
+  Name: William Brook{{increment}}
   JobTitle: Assistant Executive
   Location: Select All Locations
   Phone: "07412001245"

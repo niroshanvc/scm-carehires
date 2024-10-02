@@ -4,6 +4,8 @@ import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.GenericUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -20,6 +22,7 @@ public class CreateAgencyBasicInformationActions {
 
     private static final String YML_FILE = "agency-create";
     private static final String YML_HEADER = "BasicInfo";
+    private static final Logger logger = LogManager.getLogger(CreateAgencyBasicInformationActions.class);
 
     public CreateAgencyBasicInformationActions() {
         createAgencyBasicInfoPage = new CreateAgencyBasicInfoPage();
@@ -27,6 +30,7 @@ public class CreateAgencyBasicInformationActions {
     }
 
     public void enterBasicInfo() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering basic information >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         String businessName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "BusinessName");
         BasePage.clearAndEnterTexts(createAgencyBasicInfoPage.businessName, businessName);

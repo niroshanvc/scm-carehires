@@ -11,6 +11,8 @@ public class EncryptAndDecrypt {
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding";  // Use AES with CBC and PKCS5Padding
     private static final String KEY = "ThereIsPasswordEncryptionProcess"; // 32-character key
 
+
+
     public static String encrypt(String password) throws Exception {
         // Generate a random IV (Initialization Vector)
         SecureRandom secureRandom = new SecureRandom();

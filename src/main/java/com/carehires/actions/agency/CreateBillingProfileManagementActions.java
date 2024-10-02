@@ -3,6 +3,8 @@ package com.carehires.actions.agency;
 import com.carehires.pages.agency.CreateBillingProfileManagementPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -18,6 +20,7 @@ public class CreateBillingProfileManagementActions {
 
     private static final String YML_FILE = "agency-create";
     private static final String YML_HEADER = "BillingProfileManagement";
+    private static final Logger logger = LogManager.getLogger(CreateBillingProfileManagementActions.class);
 
     public CreateBillingProfileManagementActions() {
         billingPage = new CreateBillingProfileManagementPage();
@@ -25,6 +28,7 @@ public class CreateBillingProfileManagementActions {
     }
 
     public void addBilling() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering billing information >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         String addressBills = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "AttentionTo");
         BasePage.typeWithStringBuilder(billingPage.addressBillsInAttentionTo, addressBills);
@@ -68,6 +72,7 @@ public class CreateBillingProfileManagementActions {
         BasePage.genericWait(5000);
 
         BasePage.clickWithJavaScript(billingPage.saveButton);
+
         BasePage.genericWait(3000);
         isBasicInfoSaved();
     }

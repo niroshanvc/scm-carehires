@@ -5,6 +5,8 @@ import com.carehires.pages.agency.CreateAgencyCreditServicePage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.GenericUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -21,7 +23,7 @@ public class CreateAgencyCreditServiceActions {
 
     private static final String YML_FILE = "agency-create";
     private static final String YML_HEADER = "CreditService";
-
+    private static final Logger logger = LogManager.getLogger(CreateAgencyCreditServiceActions.class);
 
     public CreateAgencyCreditServiceActions() {
         creditServicePage = new CreateAgencyCreditServicePage();
@@ -29,6 +31,7 @@ public class CreateAgencyCreditServiceActions {
     }
 
     public void enterCreditServiceInformation() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Credit Service information >>>>>>>>>>>>>>>>>>>>");
         BasePage.scrollToWebElement(creditServicePage.firstName);
         String firstName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalFirstName");
         BasePage.clearAndEnterTexts(creditServicePage.firstName, firstName);
@@ -118,6 +121,7 @@ public class CreateAgencyCreditServiceActions {
         BasePage.clickWithJavaScript(creditServicePage.legalRepBoardMemberCheckbox);
 
         BasePage.clickWithJavaScript(creditServicePage.saveButton);
+
         isCreditServiceInfoSaved();
     }
 
