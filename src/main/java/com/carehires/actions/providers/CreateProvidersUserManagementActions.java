@@ -3,6 +3,8 @@ package com.carehires.actions.providers;
 import com.carehires.pages.providers.CreateProvidersUserManagementPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,6 +17,7 @@ public class CreateProvidersUserManagementActions {
     private static final String YML_FILE = "provider-create";
     private static final String YML_HEADER = "User";
     private static final String YML_HEADER_SITE_MANAGEMENT = "SiteManagement";
+    private static final Logger logger = LogManager.getFormatterLogger(CreateProvidersUserManagementActions.class);
 
     public CreateProvidersUserManagementActions() {
         userManagement = new CreateProvidersUserManagementPage();
@@ -22,6 +25,7 @@ public class CreateProvidersUserManagementActions {
     }
 
     public void addUser() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering User Information >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(userManagement.addNewButton);
 

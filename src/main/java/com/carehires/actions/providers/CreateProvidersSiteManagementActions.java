@@ -27,7 +27,7 @@ public class CreateProvidersSiteManagementActions {
     }
 
     public void enterSiteManagementData() {
-        logger.info(" --------------------------- Moves to Site Management Page ---------------------------");
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Site Management Information >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(siteManagementPage.addNewButton);

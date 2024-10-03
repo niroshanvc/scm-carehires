@@ -3,6 +3,8 @@ package com.carehires.actions.providers;
 import com.carehires.pages.providers.CreateWorkerStaffPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
 import java.text.DecimalFormat;
@@ -17,6 +19,7 @@ public class CreateWorkerStaffActions {
     private static final String YML_FILE = "provider-create";
     private static final String YML_HEADER = "WorkerStaffManagement";
     private static final String YML_HEADER_SITE_MANAGEMENT_HEADER = "SiteManagement";
+    private static final Logger logger = LogManager.getFormatterLogger(CreateWorkerStaffActions.class);
 
     public CreateWorkerStaffActions() {
         createWorkerStaffPage = new CreateWorkerStaffPage();
@@ -25,6 +28,7 @@ public class CreateWorkerStaffActions {
 
     public void enterWorkerStaffData() {
         BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering staff information >>>>>>>>>>>>>>>>>>>>");
         BasePage.clickWithJavaScript(createWorkerStaffPage.addNewButton);
 
         //select site
@@ -64,12 +68,14 @@ public class CreateWorkerStaffActions {
     }
 
     public void verifyMonthlyAgencySpendValue() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Monthly Agency Spend Value >>>>>>>>>>>>>>>>>>>>");
         String expectMonthlyAgencySpendValue = getExpectedMonthlySpendValue();
         String actual = BasePage.getAttributeValue(createWorkerStaffPage.monthlyAgencySpend, "value").trim();
         assertThat("Monthly agency spend is not correctly calculate", actual, is(expectMonthlyAgencySpendValue));
     }
 
     public void addWorkerStaff() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Worker Staff Information >>>>>>>>>>>>>>>>>>>>");
         String proofOfDemandDocument = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "ProofOfDemandDocument");
         String absoluteFilePathVatRegDoc = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Provider\\" + proofOfDemandDocument;
         BasePage.uploadFile(createWorkerStaffPage.proofOfDemandDocument, absoluteFilePathVatRegDoc);
@@ -87,6 +93,7 @@ public class CreateWorkerStaffActions {
     }
 
     public void verifyMonthlySpendDisplayInTableGrid() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Monthly Agency Spend Value displaying in the table grid >>>>>>>>>>>>>>>>>>>>");
         String expectedValue = getExpectedMonthlySpendValue();
         String actual = BasePage.getAttributeValue(createWorkerStaffPage.monthlySpendInTableGrid, "value").trim();
         assertThat("Monthly agency spend is not correctly displaying.", actual, is(expectedValue));

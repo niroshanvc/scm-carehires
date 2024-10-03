@@ -1,6 +1,6 @@
 CompanyInformation:
   ProviderLogo: Provider101.png
-  CompanyName: Automation Provider 126
+  CompanyName: Automation Provider 127
   BusinessRegistrationNumber: 12345678
   CompanyType: Limited Company
   Website: https://www.automationproviders.com
@@ -16,18 +16,18 @@ CompanyInformation:
   AverageNumberOfEmployees: Equal or Over 50
 
 SiteManagement:
-  SiteName: BioRevolution Care 126
+  SiteName: BioRevolution Care 127
   SiteType: Hospital
   SiteSpecialism: Adult,Autism,Childrens,Elderly,Nursing
-  AlsoKnownAs: BioRevolution126
-  SiteEmail: niroshancarehires+site1pr126@gmail.com
+  AlsoKnownAs: BioRevolution127
+  SiteEmail: automation.qa+site1pr127@gmail.com
   PostalCode: BL0 9YX
   NoOfBeds: 25
   SiteCode: AC-01
   PhoneType: "Office2"
   PhoneNumber: "07412001245"
-  JobNotificationAddress: niroshancarehires+prjobnot126@gmail.com
-  ApprovalNotificationAddress: niroshancarehires+prappnot126@gmail.com
+  JobNotificationAddress: automation.qa+prjobnot127@gmail.com
+  ApprovalNotificationAddress: automation.qa+prappnot127@gmail.com
 
 WorkerStaffManagement:
   WorkerType: Rehabilitation Worker
@@ -37,8 +37,8 @@ WorkerStaffManagement:
   ProofOfDemandDocument: Proof of demand document.pdf
 
 User:
-  email: niroshancarehires+prouser126@gmail.com
-  Name: Patrick Sams126
+  email: automation.qa+prouser127@gmail.com
+  Name: Patrick Sams127
   JobTitle: Assistant Executive
   Phone: "07412001245"
   MarkAsAnAuthoriser: Yes

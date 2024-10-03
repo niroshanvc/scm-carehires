@@ -33,6 +33,7 @@ public class CreateProviderCompanyInformationActions {
 
     public void enterCompanyInformation() {
         BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Company Information >>>>>>>>>>>>>>>>>>>>");
 
         //upload a logo
         logger.info("Uploading a logo");
