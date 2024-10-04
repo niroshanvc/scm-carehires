@@ -9,4 +9,7 @@ public class GenericElementsPage {
 
     @FindBy(id = "nb-option-4")
     public WebElement mobile;
+
+    @FindBy(xpath = "//p[contains(text(), 'Validate Email')]")
+    public WebElement validateEmailTextLink;
 }

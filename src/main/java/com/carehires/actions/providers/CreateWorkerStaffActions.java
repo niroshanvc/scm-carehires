@@ -86,16 +86,18 @@ public class CreateWorkerStaffActions {
     //verify worker is added
     private void isWorkerStaffAdded() {
         String expectedWorkerType = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "WorkerType");
-        BasePage.genericWait(5000);
+        BasePage.genericWait(10000);
         BasePage.waitUntilElementPresent(createWorkerStaffPage.addedWorkerType, 90);
-        String actualWorkerType = BasePage.getText(createWorkerStaffPage.addedWorkerType).trim();
+        String fullText = BasePage.getText(createWorkerStaffPage.addedWorkerType).trim();
+        String actualWorkerType = fullText.split("\n")[0];
+
         assertThat("Worker staff is not added", actualWorkerType, is(expectedWorkerType));
     }
 
     public void verifyMonthlySpendDisplayInTableGrid() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Monthly Agency Spend Value displaying in the table grid >>>>>>>>>>>>>>>>>>>>");
         String expectedValue = getExpectedMonthlySpendValue();
-        String actual = BasePage.getAttributeValue(createWorkerStaffPage.monthlySpendInTableGrid, "value").trim();
+        String actual = BasePage.getText(createWorkerStaffPage.monthlySpendInTableGrid).trim();
         assertThat("Monthly agency spend is not correctly displaying.", actual, is(expectedValue));
     }
 
@@ -105,7 +107,7 @@ public class CreateWorkerStaffActions {
         double hourlyRateInt = Double.parseDouble(hourlyRate);
         double monthlyAgencyHoursInt = Double.parseDouble(monthlyAgencyHours);
         double monthlyAgencySpendValue = hourlyRateInt * monthlyAgencyHoursInt;
-        BasePage.clickTabKey(createWorkerStaffPage.monthlyAgencyHours);
+        BasePage.clickTabKey(createWorkerStaffPage.updateButton);
         BasePage.genericWait(500);
         DecimalFormat df = new DecimalFormat("#.##");
         return df.format(monthlyAgencySpendValue);

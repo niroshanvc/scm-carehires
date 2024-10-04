@@ -3,6 +3,7 @@ package com.carehires.actions.providers;
 import com.carehires.pages.providers.CreateProvidersUserManagementPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
+import com.carehires.utils.GenericUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
@@ -13,6 +14,7 @@ import static org.hamcrest.core.Is.is;
 public class CreateProvidersUserManagementActions {
 
     CreateProvidersUserManagementPage userManagement;
+    GenericUtils genericUtils = new GenericUtils();
 
     private static final String YML_FILE = "provider-create";
     private static final String YML_HEADER = "User";
@@ -30,11 +32,9 @@ public class CreateProvidersUserManagementActions {
         BasePage.clickWithJavaScript(userManagement.addNewButton);
 
         String email = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "email");
-        BasePage.typeWithStringBuilder(userManagement.emailAddress,  email);
-        BasePage.clickWithJavaScript(userManagement.validateEmail);
 
-        //wait until email validated
-        BasePage.genericWait(10000);
+        //wait until email get validated
+        genericUtils.waitUntilEmailAddressValidatedForUniqueness(email, userManagement.emailAddress, userManagement.name);
 
         String name = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "Name");
         BasePage.typeWithStringBuilder(userManagement.name,  name);

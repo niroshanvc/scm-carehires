@@ -5,6 +5,7 @@ import com.carehires.pages.GenericElementsPage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -48,5 +49,29 @@ public class GenericUtils {
         BasePage.clickWithJavaScript(genericElementsPage.phoneNumberDropdown);
         BasePage.clickWithJavaScript(genericElementsPage.mobile);
         BasePage.typeWithStringBuilder(phoneNumberInput, phoneNumber);
+    }
+
+    public void waitUntilEmailAddressValidatedForUniqueness(String emailAddress, WebElement emailAddressInput,
+                                                            WebElement fieldToBeDisplayed) {
+        logger.info("waitUntilEmailAddressValidatedForUniqueness");
+
+        BasePage.waitUntilElementPresent(emailAddressInput, 60);
+        BasePage.typeWithStringBuilder(emailAddressInput, emailAddress);
+        BasePage.clickWithJavaScript(genericElementsPage.validateEmailTextLink);
+
+        try {
+            BasePage.waitUntilElementPresent(fieldToBeDisplayed, 60);
+        } catch (ElementNotInteractableException e) {
+            // Throw a dedicated exception with a more specific message
+            throw new EmailAddressNotUniqueException("Email address is not guaranteed to be unique. " +
+                    "Element remained hidden after validation.");
+        }
+    }
+
+    // Define a dedicated exception for email address uniqueness issue
+    public static class EmailAddressNotUniqueException extends RuntimeException {
+        public EmailAddressNotUniqueException(String message) {
+            super(message);
+        }
     }
 }
