@@ -26,7 +26,7 @@ public class CreateProvidersUserManagementPage {
     @FindBy(xpath = "//input[@formcontrolname='phone']")
     public WebElement phone;
 
-    @FindBy(xpath = "//nb-toggle[@formcontrolname='isAuthorizer']//input")
+    @FindBy(xpath = "(//input[@type='checkbox' and @role='switch'])[1]/following-sibling::div")
     public WebElement markAsAnAuthoriserToggle;
 
     @FindBy(xpath = "//nb-select[@formcontrolname='userType']/button")
@@ -43,4 +43,7 @@ public class CreateProvidersUserManagementPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Next')]")
     public WebElement nextButton;
+
+    @FindBy(xpath = "//nb-toast//span")
+    public WebElement successMessage;
 }

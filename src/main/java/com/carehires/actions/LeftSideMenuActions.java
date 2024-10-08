@@ -36,4 +36,9 @@ public class LeftSideMenuActions {
         BasePage.mouseHoverAndClick(leftSideMenu.providers, leftSideMenu.providerCreate);
         logger.info(" --------------------------- Moves to Provider Create Page ---------------------------");
     }
+
+    public void gotoProviderViewPage() {
+        BasePage.mouseHoverAndClick(leftSideMenu.providers, leftSideMenu.providerView);
+        logger.info(" --------------------------- Moves to Provider View Page ---------------------------");
+    }
 }

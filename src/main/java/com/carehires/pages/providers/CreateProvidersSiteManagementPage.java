@@ -70,4 +70,7 @@ public class CreateProvidersSiteManagementPage {
 
     @FindBy(xpath = "//nb-option[contains(text(), 'Mobile')]")
     public WebElement mobileOption;
+
+    @FindBy(xpath = "//nb-toast//span")
+    public WebElement successMessage;
 }

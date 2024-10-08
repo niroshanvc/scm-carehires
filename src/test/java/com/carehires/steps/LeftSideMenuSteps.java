@@ -26,4 +26,9 @@ public class LeftSideMenuSteps {
     public void moveToProviderCreatePage() {
         leftSideMenuActions.gotoProviderCreatePage();
     }
+
+    @And("^User navigates to Provider View page$")
+    public void moveToProviderViewPage() {
+        leftSideMenuActions.gotoProviderViewPage();
+    }
 }

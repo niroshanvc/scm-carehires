@@ -80,18 +80,7 @@ public class CreateWorkerStaffActions {
         String absoluteFilePathVatRegDoc = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Provider\\" + proofOfDemandDocument;
         BasePage.uploadFile(createWorkerStaffPage.proofOfDemandDocument, absoluteFilePathVatRegDoc);
         BasePage.clickWithJavaScript(createWorkerStaffPage.addButton);
-        isWorkerStaffAdded();
-    }
-
-    //verify worker is added
-    private void isWorkerStaffAdded() {
-        String expectedWorkerType = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "WorkerType");
-        BasePage.genericWait(10000);
-        BasePage.waitUntilElementPresent(createWorkerStaffPage.addedWorkerType, 90);
-        String fullText = BasePage.getText(createWorkerStaffPage.addedWorkerType).trim();
-        String actualWorkerType = fullText.split("\n")[0];
-
-        assertThat("Worker staff is not added", actualWorkerType, is(expectedWorkerType));
+        verifySuccessMessage();
     }
 
     public void verifyMonthlySpendDisplayInTableGrid() {
@@ -117,5 +106,13 @@ public class CreateWorkerStaffActions {
         BasePage.clickWithJavaScript(createWorkerStaffPage.updateButton);
         BasePage.waitUntilElementPresent(createWorkerStaffPage.nextButton, 60);
         BasePage.clickWithJavaScript(createWorkerStaffPage.nextButton);
+    }
+
+    private void verifySuccessMessage() {
+        BasePage.waitUntilElementPresent(createWorkerStaffPage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(createWorkerStaffPage.successMessage).toLowerCase().trim();
+        String expected = "Record created successfully";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Worker staff information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
     }
 }

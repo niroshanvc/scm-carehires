@@ -126,6 +126,7 @@ public class CreateProviderCompanyInformationActions {
         }
 
         BasePage.clickWithJavaScript(companyInformationPage.saveButton);
+        verifySuccessMessage();
         BasePage.waitUntilElementClickable(companyInformationPage.updateButton, 120);
         isBasicInfoSaved();
     }
@@ -150,11 +151,11 @@ public class CreateProviderCompanyInformationActions {
         assertThat("Basic information is not saved",hasIdDone, is(true));
     }
 
-    private void verifyProfileStatus() {
-        BasePage.waitUntilPageCompletelyLoaded();
-        BasePage.genericWait(2000);
-        BasePage.waitUntilElementPresent(companyInformationPage.profileStatus, 60);
-        String actual = BasePage.getText(companyInformationPage.profileStatus).toLowerCase().trim();
-        assertThat("Agent profile is not valid", actual, is("profile complete"));
+    private void verifySuccessMessage() {
+        BasePage.waitUntilElementPresent(companyInformationPage.successMessage, 90);
+        String actualInLowerCase = BasePage.getText(companyInformationPage.successMessage).toLowerCase().trim();
+        String expected = "Data saved Successfully";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Company information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
     }
 }

@@ -84,8 +84,9 @@ public class CreateProvidersSiteManagementActions {
         String approvalNotification = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "ApprovalNotificationAddress");
         BasePage.typeWithStringBuilder(siteManagementPage.approvalNotificationAddress, approvalNotification);
 
-        BasePage.genericWait(5000);
+        BasePage.genericWait(10000);
         BasePage.clickWithJavaScript(siteManagementPage.addButton);
+        verifySuccessMessage();
         isSiteSaved();
 
         BasePage.clickWithJavaScript(siteManagementPage.updateButton);
@@ -134,5 +135,13 @@ public class CreateProvidersSiteManagementActions {
                 throw new IllegalArgumentException("Invalid phone number type");
         }
         BasePage.typeWithStringBuilder(phoneNumberInput, phoneNumber);
+    }
+
+    private void verifySuccessMessage() {
+        BasePage.waitUntilElementPresent(siteManagementPage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(siteManagementPage.successMessage).toLowerCase().trim();
+        String expected = "Record created successfully";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Site management information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
     }
 }

@@ -113,7 +113,7 @@ public class BasePage {
     }
 
     public static void waitUntilElementPresent(WebElement element, int timeOutSeconds) {
-        logger.info("****************** Wait until element present: %s", element);
+        logger.info("****************** Wait until element present: %s, in seconds: %s", element, timeOutSeconds);
         wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
         wait.until(ExpectedConditions.visibilityOf(element));
     }
@@ -365,5 +365,21 @@ public class BasePage {
         } catch (NoSuchElementException e) {
             return false;
         }
+    }
+
+    public static void waitUntilElementDisplayed(WebElement element, int seconds) {
+        logger.info("****************** Wait until element displayed: %s, and seconds: %s", element, seconds);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        wait.until(d -> element.isDisplayed());
+    }
+
+    public static List<WebElement> findListOfWebElements(By locator) {
+        List<WebElement> els = null;
+        try {
+            els = getDriver().findElements(locator);
+        } catch (Exception ex) {
+            logger.error("****************** Object not found at the locator: %s", locator);
+        }
+        return els;
     }
 }

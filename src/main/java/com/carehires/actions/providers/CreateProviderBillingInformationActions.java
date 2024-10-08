@@ -7,6 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+
 public class CreateProviderBillingInformationActions {
 
     CreateProviderBillingInformationPage billingInformationPage;
@@ -60,16 +63,22 @@ public class CreateProviderBillingInformationActions {
 
         String contactPhone = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, YML_HEADER_SUB, "PhoneNumberContact");
         BasePage.typeWithStringBuilder(billingInformationPage.phoneNumberBillingContact, contactPhone);
+        BasePage.genericWait(5000);
 
         BasePage.clickWithJavaScript(billingInformationPage.saveButton);
 
-        //wait until success message displayed
-        BasePage.waitUntilElementPresent(billingInformationPage.successMessage, 60);
-
-        BasePage.clickWithJavaScript(billingInformationPage.continueButton);
+        verifySuccessMessage();
     }
 
     private String getDropdownOptionXpath(String city) {
         return String.format("//nb-option[contains(text(),'%s')]", city);
+    }
+
+    private void verifySuccessMessage() {
+        BasePage.waitUntilElementPresent(billingInformationPage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(billingInformationPage.successMessage).toLowerCase().trim();
+        String expected = "Billing info added successfully.";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Site management information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
     }
 }

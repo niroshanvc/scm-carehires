@@ -17,9 +17,9 @@ Feature: Test CareHires create agency with one location
     And User clicks on the Complete Profile button on the Sub Contracting Agreement page
     And User navigates to Agency View page
     When User finds recently created agency
-    Then User verifies the agent profile status as Profile Complete
+    Then User verifies the agency profile status as Profile Complete
     And User completes the profile approve status
     And User saves the organizational settings
     And User again navigates to the Agency Profile page
     And User completes the profile approve status
-    Then User verifies the agent profile status as Approved
+    And User verifies the agency profile status as Approved

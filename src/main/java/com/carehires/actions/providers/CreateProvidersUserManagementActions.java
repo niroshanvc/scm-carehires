@@ -63,13 +63,17 @@ public class CreateProvidersUserManagementActions {
             BasePage.clickWithJavaScript(getDropdownOptionXpath(accessLevel));
         }
 
-        BasePage.genericWait(6000);
+        //closing the user access level multi select dropdown
+        BasePage.clickWithJavaScript(userManagement.phone);
+
+        BasePage.genericWait(10000);
         BasePage.clickWithJavaScript(userManagement.addButton);
-        BasePage.genericWait(5000);
+        verifySuccessMessage();
         isUserAdded();
 
         BasePage.clickWithJavaScript(userManagement.updateButton);
         BasePage.waitUntilElementClickable(userManagement.nextButton, 60);
+        BasePage.genericWait(1500);
         BasePage.clickWithJavaScript(userManagement.nextButton);
     }
 
@@ -83,5 +87,13 @@ public class CreateProvidersUserManagementActions {
         String actual = nameWithJob.split("\n")[0].trim();
         String expected = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "Name");
         assertThat("User is not added", actual, is(expected));
+    }
+
+    private void verifySuccessMessage() {
+        BasePage.waitUntilElementPresent(userManagement.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(userManagement.successMessage).toLowerCase().trim();
+        String expected = "Record created successfully";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("User management information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
     }
 }

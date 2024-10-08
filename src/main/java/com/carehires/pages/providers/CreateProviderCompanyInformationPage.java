@@ -84,4 +84,7 @@ public class CreateProviderCompanyInformationPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Update')]")
     public WebElement updateButton;
+
+    @FindBy(xpath = "//nb-toast//span")
+    public WebElement successMessage;
 }

@@ -18,7 +18,7 @@ public class AgencyProfileSteps {
         agencyProfileActions.moveToProfilePage();
     }
 
-    @Then("^User verifies the agent profile status as (.*)$")
+    @Then("^User verifies the agency profile status as (.*)$")
     public void verifyProfileStatus(String status) {
         agencyProfileActions.verifyProfileStatus(status);
     }
