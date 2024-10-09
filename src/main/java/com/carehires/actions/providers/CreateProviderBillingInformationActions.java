@@ -27,6 +27,7 @@ public class CreateProviderBillingInformationActions {
     public void fillGeneralBillingInformation() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering General Billing Information >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementDisplayed(billingInformationPage.addressBillsInAttentionTo, 20);
 
         String attentionTo = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, YML_HEADER_SUB, "AddressBillsInAttentionTo");
         BasePage.typeWithStringBuilder(billingInformationPage.addressBillsInAttentionTo, attentionTo);
@@ -80,5 +81,6 @@ public class CreateProviderBillingInformationActions {
         String expected = "Billing info added successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Site management information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(billingInformationPage.successMessage, 20);
     }
 }

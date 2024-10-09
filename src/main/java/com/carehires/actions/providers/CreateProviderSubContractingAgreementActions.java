@@ -33,7 +33,7 @@ public class CreateProviderSubContractingAgreementActions {
 
         String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Provider\\" + "subContractDocument.pdf";
         BasePage.uploadFile(subContractingAgreementPage.uploadFile, absoluteFilePath);
-        BasePage.genericWait(5000);
+        waitUntilDocumentUploaded();
         BasePage.clickWithJavaScript(subContractingAgreementPage.saveButton);
 
         verifySuccessMessage();
@@ -46,6 +46,7 @@ public class CreateProviderSubContractingAgreementActions {
         String expected = "Contract Signed successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Contract agreement success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(subContractingAgreementPage.successMessage, 20);
     }
 
     // get auto generated provider id and save it on the memory
@@ -56,5 +57,11 @@ public class CreateProviderSubContractingAgreementActions {
         String headerText = BasePage.getText(subContractingAgreementPage.providerId).trim();
         String providerId = headerText.split("\n")[0];
         GlobalVariables.setVariable("providerId", providerId);
+    }
+
+    private void waitUntilDocumentUploaded() {
+        BasePage.waitUntilElementDisplayed(subContractingAgreementPage.previewSubContractDocument, 60);
+        BasePage.mouseHoverOverElement(subContractingAgreementPage.previewSubContractDocument);
+        BasePage.waitUntilElementDisplayed(subContractingAgreementPage.removeAttachment, 60);
     }
 }

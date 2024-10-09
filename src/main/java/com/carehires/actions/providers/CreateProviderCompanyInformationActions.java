@@ -157,5 +157,6 @@ public class CreateProviderCompanyInformationActions {
         String expected = "Data saved Successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Company information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(companyInformationPage.successMessage, 20);
     }
 }

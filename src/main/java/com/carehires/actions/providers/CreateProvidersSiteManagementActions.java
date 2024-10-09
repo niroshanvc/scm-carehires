@@ -143,5 +143,6 @@ public class CreateProvidersSiteManagementActions {
         String expected = "Record created successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Site management information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(siteManagementPage.successMessage, 20);
     }
 }

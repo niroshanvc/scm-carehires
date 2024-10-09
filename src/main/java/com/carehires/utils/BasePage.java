@@ -192,7 +192,14 @@ public class BasePage {
     public static void waitUntilElementClickable(WebElement element, int timeOutSeconds) {
         logger.info("****************** Wait until element clickable: %s", element);
         wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
-        wait.until(ExpectedConditions.elementToBeClickable(element));
+
+        try {
+            // Wait for element to be visible
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+        } catch (TimeoutException e) {
+            logger.error("Element was not clickable after waiting for %s seconds. Locator: %s", timeOutSeconds, element);
+            throw e;  // Re-throw the exception after logging
+        }
     }
 
     public static void selectFirstOption(String xpath) {
@@ -369,8 +376,17 @@ public class BasePage {
 
     public static void waitUntilElementDisplayed(WebElement element, int seconds) {
         logger.info("****************** Wait until element displayed: %s, and seconds: %s", element, seconds);
+
+        // Create a wait instance with the provided timeout
         wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
-        wait.until(d -> element.isDisplayed());
+
+        try {
+            // Wait for element to be visible
+            wait.until(ExpectedConditions.visibilityOf(element));
+        } catch (TimeoutException e) {
+            logger.error("Element was not visible after waiting for %s seconds. Locator: %s", seconds, element);
+            throw e;  // Re-throw the exception after logging
+        }
     }
 
     public static List<WebElement> findListOfWebElements(By locator) {
@@ -381,5 +397,25 @@ public class BasePage {
             logger.error("****************** Object not found at the locator: %s", locator);
         }
         return els;
+    }
+
+    public static void mouseHoverOverElement(WebElement element) {
+        waitUntilElementClickable(element, 30);
+        Actions actions = new Actions(driver);
+        actions.moveToElement(element).build().perform();
+    }
+
+    public static void waitUntilElementDisappeared(WebElement element, int seconds) {
+        logger.info("****************** Wait until element disappeared: %s, and seconds: %s", element, seconds);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        wait.until(ExpectedConditions.invisibilityOf(element));
+    }
+
+    public static void waitAndIgnoreStaleException(WebElement element, int seconds) {
+        logger.info("****************** Wait until element displayed by ignoring stale element exception: %s, " +
+                "and seconds: %s", element, seconds);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        wait.ignoring(StaleElementReferenceException.class)
+                .until(ExpectedConditions.visibilityOf(element));
     }
 }

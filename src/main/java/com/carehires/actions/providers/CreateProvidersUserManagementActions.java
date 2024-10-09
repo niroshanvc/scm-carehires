@@ -72,8 +72,8 @@ public class CreateProvidersUserManagementActions {
         isUserAdded();
 
         BasePage.clickWithJavaScript(userManagement.updateButton);
-        BasePage.waitUntilElementClickable(userManagement.nextButton, 60);
-        BasePage.genericWait(1500);
+        BasePage.waitUntilElementDisplayed(userManagement.nextButton, 60);
+        BasePage.waitUntilElementClickable(userManagement.nextButton, 20);
         BasePage.clickWithJavaScript(userManagement.nextButton);
     }
 
@@ -95,5 +95,6 @@ public class CreateProvidersUserManagementActions {
         String expected = "Record created successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("User management information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(userManagement.successMessage, 20);
     }
 }

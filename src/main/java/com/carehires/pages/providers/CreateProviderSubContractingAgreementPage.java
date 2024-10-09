@@ -34,4 +34,10 @@ public class CreateProviderSubContractingAgreementPage {
 
     @FindBy(xpath = "//div[contains(@class, 'profile-steps')]/div[1]")
     public WebElement companyInformationRightSideMenu;
+
+    @FindBy(xpath = "//div[contains(@class, 'proof-preview')]")
+    public WebElement previewSubContractDocument;
+
+    @FindBy(xpath = "//button[contains(@class, 'remove-button')]")
+    public WebElement removeAttachment;
 }

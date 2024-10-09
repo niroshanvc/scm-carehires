@@ -24,6 +24,7 @@ public class ProviderProfileActions {
     public void updateProfileAsApprove() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating the profile as Approve >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementDisplayed(profilePage.approveButton, 20);
         BasePage.clickWithJavaScript(profilePage.approveButton);
         verifySuccessMessage();
     }
@@ -54,5 +55,7 @@ public class ProviderProfileActions {
         String expected = "Provider approved successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Provider status updating message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(profilePage.successMessage, 20);
+
     }
 }

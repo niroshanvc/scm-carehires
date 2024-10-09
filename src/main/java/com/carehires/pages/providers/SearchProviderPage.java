@@ -3,6 +3,8 @@ package com.carehires.pages.providers;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.List;
+
 public class SearchProviderPage {
 
     @FindBy(xpath = "//input[(@id='business-name') and (not(@formcontrolname))]")
@@ -15,4 +17,10 @@ public class SearchProviderPage {
 
     @FindBy(xpath = "//div[contains(@class, 'content-empty')]//h5")
     public WebElement noResultText;
+
+    @FindBy(xpath = "//div[@class= 'result' or contains(@class, 'result-active')]//p[contains(@class, 'id')]")
+    public List<WebElement> providerIds;
+
+    @FindBy(xpath = "//div[@class= 'result' or contains(@class, 'result-active')][1]//p[contains(@class, 'id')]")
+    public WebElement firstProviderId;
 }

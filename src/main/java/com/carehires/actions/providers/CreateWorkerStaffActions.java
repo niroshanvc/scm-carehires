@@ -114,5 +114,6 @@ public class CreateWorkerStaffActions {
         String expected = "Record created successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Worker staff information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(createWorkerStaffPage.successMessage, 20);
     }
 }

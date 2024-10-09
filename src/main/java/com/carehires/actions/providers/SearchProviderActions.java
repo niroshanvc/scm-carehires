@@ -3,17 +3,10 @@ package com.carehires.actions.providers;
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.providers.SearchProviderPage;
 import com.carehires.utils.BasePage;
-import com.carehires.utils.DataConfigurationReader;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
 
 public class SearchProviderActions {
 
@@ -26,45 +19,40 @@ public class SearchProviderActions {
 
     public void searchByText() {
         BasePage.waitUntilPageCompletelyLoaded();
+
         String id = GlobalVariables.getVariable("providerId", String.class);
         BasePage.waitUntilElementDisplayed(searchPage.searchByText, 30);
-        BasePage.typeWithStringBuilder(searchPage.searchByText, id);
-        BasePage.clickOnEnterKey(searchPage.searchByText);
-        waitUntilSearchIsOver();
-    }
 
-    private void waitUntilSearchIsOver() {
-        By providerLocator = By.xpath(SearchProviderPage.PROVIDER_XPATH);
+        // Wait until search results are available (e.g. providerIds list is populated)
+        BasePage.waitUntilElementPresent(searchPage.firstProviderId, 30);
 
-        WebDriverWait wait = new WebDriverWait(BasePage.getDriver(), Duration.ofSeconds(30));
+        int row = getProviderFromTheList(id);
 
-        // Wait until either the provider list contains elements or "No matching results found" is displayed.
-        wait.until(driver -> {
-            List<WebElement> listOfWebElements = driver.findElements(providerLocator);
-
-            boolean noResultsMessage = BasePage.findListOfWebElements(String.valueOf(searchPage.noResultText)).size() > 0;
-
-            // Wait until either a valid result or the "No matching results found" message appears
-            return !listOfWebElements.isEmpty() || noResultsMessage;
-        });
-
-        // Check if the "No matching results found" message is displayed
-        if (BasePage.isElementDisplayed(searchPage.noResultText)) {
-            throw new AssertionError("No matching results found");
-        }
-
-        // Now the list should contain 1 valid result
-        List<WebElement> listOfWebElements = BasePage.findListOfWebElements(providerLocator);
-        if (!listOfWebElements.isEmpty()) {
-            WebElement firstElement = listOfWebElements.get(0);
-
-            // Wait until the first result is displayed
-            BasePage.waitUntilElementDisplayed(firstElement, 20);
-
-            // Verify the actual provider name with the expected name from YAML file
-            String actualText = BasePage.getText(firstElement).trim();
-            String provider = DataConfigurationReader.readDataFromYmlFile("provider-create", "CompanyInformation", "CompanyName");
-            assertThat("Provider name is not matching", actualText, is(provider));
+        // Check if row is valid before trying to click
+        if (row >= 0 && row < searchPage.providerIds.size()) {
+            BasePage.clickWithJavaScript((searchPage.providerIds).get(row));
+        } else {
+            throw new IllegalStateException("Provider ID not found in the list.");
         }
     }
+
+    private int getProviderFromTheList(String providerId) {
+        List<WebElement> ids = searchPage.providerIds;
+
+        // Check if the list is empty
+        if (ids.isEmpty()) {
+            throw new IllegalStateException("No providers found in the list.");
+        }
+
+        // Loop through the list to find the matching providerId
+        for (int i = 0; i < ids.size(); i++) {
+            if (BasePage.getText(ids.get(i)).equals(providerId)) {
+                return i;
+            }
+        }
+
+        // If no match found, return -1 to indicate it
+        return -1;
+    }
+
 }
