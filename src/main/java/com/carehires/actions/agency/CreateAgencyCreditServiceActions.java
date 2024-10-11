@@ -1,5 +1,6 @@
 package com.carehires.actions.agency;
 
+import com.carehires.common.GlobalVariables;
 import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
 import com.carehires.pages.agency.CreateAgencyCreditServicePage;
 import com.carehires.utils.BasePage;
@@ -21,6 +22,7 @@ public class CreateAgencyCreditServiceActions {
     CreateAgencyCreditServicePage creditServicePage;
     GenericUtils genericUtils = new GenericUtils();
 
+    private static final String ENTITY = "agency";
     private static final String YML_FILE = "agency-create";
     private static final String YML_HEADER = "CreditService";
     private static final Logger logger = LogManager.getLogger(CreateAgencyCreditServiceActions.class);
@@ -32,36 +34,40 @@ public class CreateAgencyCreditServiceActions {
 
     public void enterCreditServiceInformation() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Credit Service information >>>>>>>>>>>>>>>>>>>>");
+
+        // Use the increment value retrieved in the Hooks
+        int incrementValue = GlobalVariables.getVariable("incrementValue", Integer.class);
+
         BasePage.scrollToWebElement(creditServicePage.firstName);
-        String firstName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalFirstName");
+        String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalFirstName");
         BasePage.clearAndEnterTexts(creditServicePage.firstName, firstName);
 
-        String lastName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalLastName");
+        String lastName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalLastName");
         BasePage.clearAndEnterTexts(creditServicePage.lastName, lastName);
 
-        String jobTitle = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "JobTitle");
+        String jobTitle = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "JobTitle");
         BasePage.clearAndEnterTexts(creditServicePage.jobTitle, jobTitle);
 
-        String email = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "EmailAddress");
-        BasePage.clearAndEnterTexts(creditServicePage.email, email);
+        String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "EmailAddress");
+        BasePage.clearAndEnterTexts(creditServicePage.email, (email + incrementValue));
 
-        String phone = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "Phone");
+        String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Phone");
         BasePage.clearAndEnterTexts(creditServicePage.phoneNumber, phone);
 
-        String dob = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "DateOfBirth");
+        String dob = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "DateOfBirth");
         BasePage.clearAndEnterTexts(creditServicePage.dateOfBirth, dob);
 
-        String personalId = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "PersonalIdNumber");
+        String personalId = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PersonalIdNumber");
         BasePage.clearAndEnterTexts(creditServicePage.personalIdNumber, personalId);
 
-        String postcode = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "PostCode");
+        String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PostCode");
         genericUtils.fillAddress(creditServicePage.postcode, postcode);
 
-        String ownership = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "OwnershipPercentage");
+        String ownership = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "OwnershipPercentage");
         BasePage.clearAndEnterTexts(creditServicePage.ownershipPercentage, ownership);
 
         //upload verification document
-        String agencyOwnerDoc = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "AgencyOwnerDocument");
+        String agencyOwnerDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "AgencyOwnerDocument");
         String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + agencyOwnerDoc;
         BasePage.uploadFile(creditServicePage.agencyOwnerIdentityVerificationDoc, absoluteFilePath);
         //wait until document is uploaded
@@ -80,36 +86,36 @@ public class CreateAgencyCreditServiceActions {
         BasePage.waitUntilElementPresent(creditServicePage.legalFirstName, 10);
 
         BasePage.scrollToWebElement(creditServicePage.legalEmail);
-        String legalRepFirstName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepLegalFirstName");
+        String legalRepFirstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepLegalFirstName");
         BasePage.clearAndEnterTexts(creditServicePage.legalFirstName, legalRepFirstName);
 
-        String legalRepLastName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepLegalLastName");
+        String legalRepLastName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepLegalLastName");
         BasePage.clearAndEnterTexts(creditServicePage.legalLastName, legalRepLastName);
 
-        String legalRepJobTitle = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepJobTitle");
+        String legalRepJobTitle = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepJobTitle");
         BasePage.clearAndEnterTexts(creditServicePage.legalJobTitle, legalRepJobTitle);
 
-        String legalRepEmail = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepEmailAddress");
-        BasePage.clearAndEnterTexts(creditServicePage.legalEmail, legalRepEmail);
+        String legalRepEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepEmailAddress");
+        BasePage.clearAndEnterTexts(creditServicePage.legalEmail, (legalRepEmail + incrementValue));
 
         BasePage.scrollToWebElement(creditServicePage.legalRepBoardMemberCheckbox);
-        String legalRepPhone = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepPhone");
+        String legalRepPhone = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepPhone");
         BasePage.clearAndEnterTexts(creditServicePage.legalPhoneNumber, legalRepPhone);
 
-        String legalRepDob = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepDateOfBirth");
+        String legalRepDob = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepDateOfBirth");
         BasePage.clearAndEnterTexts(creditServicePage.legalDateOfBirth, legalRepDob);
 
-        String legalRepPersonalId = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepPersonalIdNumber");
+        String legalRepPersonalId = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepPersonalIdNumber");
         BasePage.clearAndEnterTexts(creditServicePage.legalPersonalIdNumber, legalRepPersonalId);
 
-        String legalRepPostcode = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepPostCode");
+        String legalRepPostcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepPostCode");
         genericUtils.fillAddress(creditServicePage.legalPostcode, legalRepPostcode);
 
-        String legalRepOwnership = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepOwnershipPercentage");
+        String legalRepOwnership = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepOwnershipPercentage");
         BasePage.clearAndEnterTexts(creditServicePage.legalOwnershipPercentage, legalRepOwnership);
 
         //upload verification document
-        String legalRepDoc = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "LegalRepDocument");
+        String legalRepDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepDocument");
         String repFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + legalRepDoc;
         BasePage.uploadFile(creditServicePage.legalRepresentativeIdentityVerificationDoc, repFilePath);
         //wait until document is uploaded

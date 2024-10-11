@@ -38,4 +38,7 @@ public class CreateAgencyBasicInfoPage {
     public WebElement skipButton;
 
     public static final String BASIC_INFORMATION_SUB_XPATHS = "//h6[text()='Basic Information']/..//*";
+
+    @FindBy(xpath = "//nb-toast//span")
+    public WebElement successMessage;
 }

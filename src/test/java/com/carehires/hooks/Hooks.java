@@ -1,58 +1,58 @@
 package com.carehires.hooks;
 
+import com.carehires.common.GlobalVariables;
 import com.carehires.utils.BasePage;
+import com.carehires.utils.DataConfigurationReader;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
 public class Hooks {
 
+    private static final Logger logger = LogManager.getLogger(Hooks.class);
+
     @Before
-    public static void setup() {
+    public void setup(Scenario scenario) {
         BasePage.setUpDriver();
+
+        // Determine the entity type (agency, provider, etc.) based on scenario tags
+        String entityType = determineEntityTypeFromScenario(scenario);
+
+        // Get the current increment value from the DataConfigurationReader
+        int incrementValue = DataConfigurationReader.getCurrentIncrementValue(entityType);
+
+        // Store the increment value in GlobalVariables for use across steps
+        GlobalVariables.storeIncrementedValue(entityType, incrementValue);
+        logger.info("Storing increment value in GlobalVariables: {}", incrementValue);
     }
 
     @After
-    public static void tearDown(Scenario scenario) {
+    public void tearDown(Scenario scenario) {
         final byte[] screenshot = ((TakesScreenshot) BasePage.getDriver()).getScreenshotAs(OutputType.BYTES);
         scenario.attach(screenshot, "image/png", scenario.getName());
         BasePage.tearDown();
+
+        // This will run after each scenario
+        if (scenario.isFailed()) {
+            logger.info("Test failed. No increment value will be updated.");
+        }
     }
 
-    /*public static void initDriver() {
-        String browser = System.getProperty("BROWSER");
-        if (browser == null) {
-            browser = BasePage.getProperty("BROWSER");
+    // Determine the entity type based on the scenario tags
+    private String determineEntityTypeFromScenario(Scenario scenario) {
+        if (scenario.getSourceTagNames().contains("@Provider")) {
+            return "provider";
+        } else if (scenario.getSourceTagNames().contains("@Agency")) {
+            return "agency";
+        } else if (scenario.getSourceTagNames().contains("@Worker")) {
+            return "worker";
         }
-
-        if (browser.equalsIgnoreCase("Firefox")) {
-            WebDriverManager.firefoxdriver().setup();
-            BasePage.driver = new FirefoxDriver();
-            BasePage.driver.manage().window().maximize();
-        } else if (browser.equalsIgnoreCase("Chrome")) {
-            WebDriverManager.chromedriver().clearDriverCache().setup();
-            WebDriverManager.chromedriver().clearResolutionCache().setup();
-            WebDriverManager.chromedriver().setup();
-
-            ChromeOptions options = new ChromeOptions();
-            if (System.getenv("CI") != null) {
-                BasePage.logger.info("Running in CircleCI, configuring Chrome for headless execution.");
-                options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
-            }
-
-            options.addArguments("--remote-allow-origins=*");
-            options.addArguments("--start-maximized");
-            options.addArguments("--disable-notifications");
-
-            BasePage.driver = new ChromeDriver(options);
-        } else if (browser.equalsIgnoreCase("Edge")) {
-            WebDriverManager.edgedriver().setup();
-            BasePage.driver = new EdgeDriver();
-            BasePage.driver.manage().window().maximize();
-        } else {
-            BasePage.logger.info("Browser name %s is invalid.", browser);
-        }
-    }*/
+        // If no matching entity type is found, log the issue and return "default"
+        logger.error("Unknown entity type for scenario: {}", scenario.getName());
+        return "default";
+    }
 }

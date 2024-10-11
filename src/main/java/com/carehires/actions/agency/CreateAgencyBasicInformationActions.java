@@ -1,5 +1,6 @@
 package com.carehires.actions.agency;
 
+import com.carehires.common.GlobalVariables;
 import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -20,6 +21,7 @@ public class CreateAgencyBasicInformationActions {
     CreateAgencyBasicInfoPage createAgencyBasicInfoPage;
     GenericUtils genericUtils = new GenericUtils();
 
+    private static final String ENTITY = "agency";
     private static final String YML_FILE = "agency-create";
     private static final String YML_HEADER = "BasicInfo";
     private static final Logger logger = LogManager.getLogger(CreateAgencyBasicInformationActions.class);
@@ -31,29 +33,33 @@ public class CreateAgencyBasicInformationActions {
 
     public void enterBasicInfo() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering basic information >>>>>>>>>>>>>>>>>>>>");
-        BasePage.waitUntilPageCompletelyLoaded();
-        String businessName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "BusinessName");
-        BasePage.clearAndEnterTexts(createAgencyBasicInfoPage.businessName, businessName);
 
-        String businessRegistrationNumber = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "BusinessRegistrationNumber");
+        // Use the increment value retrieved in the Hooks
+        int incrementValue = GlobalVariables.getVariable("incrementValue", Integer.class);
+
+        BasePage.waitUntilPageCompletelyLoaded();
+        String businessName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "BusinessName");
+        BasePage.clearAndEnterTexts(createAgencyBasicInfoPage.businessName, (businessName + incrementValue));
+
+        String businessRegistrationNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "BusinessRegistrationNumber");
         BasePage.clearAndEnterTexts(createAgencyBasicInfoPage.businessRegistrationNumber, businessRegistrationNumber);
 
         //upload a logo
-        String companyLogo = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "CompanyLogo");
+        String companyLogo = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "CompanyLogo");
         String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + companyLogo;
         BasePage.clickWithJavaScript(createAgencyBasicInfoPage.uploadLogo);
         BasePage.uploadFile(createAgencyBasicInfoPage.fileInputButton, absoluteFilePath);
         BasePage.clickWithJavaScript(createAgencyBasicInfoPage.imageSaveButton);
 
-        String alsoKnownAs = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "AlsoKnownAs");
-        BasePage.clearAndEnterTexts(createAgencyBasicInfoPage.alsoKnownAs, alsoKnownAs);
+        String alsoKnownAs = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "AlsoKnownAs");
+        BasePage.clearAndEnterTexts(createAgencyBasicInfoPage.alsoKnownAs, (alsoKnownAs + incrementValue));
 
         //enter postcode and select a valid address
-        String postcode = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "PostCode");
+        String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PostCode");
         genericUtils.fillAddress(createAgencyBasicInfoPage.postcode, postcode);
 
         //enter phone number
-        genericUtils.fillPhoneNumber(YML_FILE, YML_HEADER, "PhoneNumber", createAgencyBasicInfoPage.phoneNumberInput);
+        genericUtils.fillPhoneNumber(ENTITY, YML_FILE, YML_HEADER, "PhoneNumber", createAgencyBasicInfoPage.phoneNumberInput);
         BasePage.clickTabKey(createAgencyBasicInfoPage.phoneNumberInput);
         BasePage.genericWait(5000);
 
@@ -61,6 +67,12 @@ public class CreateAgencyBasicInformationActions {
         BasePage.waitUntilElementClickable(createAgencyBasicInfoPage.skipButton, 90);
 
         isBasicInfoSaved();
+
+        // if basic info is entered successfully, persist the increment value
+        if (GlobalVariables.getVariable("currentEntityType").equals(ENTITY)) {
+            DataConfigurationReader.storeNewIncrementValue(ENTITY);
+        }
+        GlobalVariables.setVariable("isBasicInfoSaved", true);
     }
 
     //verify if basic information is saved
@@ -77,5 +89,6 @@ public class CreateAgencyBasicInformationActions {
                 .anyMatch(element -> Objects.equals(element.getAttribute("id"), "Icon_material-done"));
 
         assertThat("Basic information is not saved",hasIdDone, is(true));
+        BasePage.waitUntilElementDisappeared(createAgencyBasicInfoPage.successMessage, 20);
     }
 }

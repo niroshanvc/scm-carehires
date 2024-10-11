@@ -28,7 +28,7 @@ public class CreateProviderSubContractingAgreementActions {
         BasePage.clickWithJavaScript(subContractingAgreementPage.completeProfileButton);
         BasePage.waitUntilElementPresent(subContractingAgreementPage.attachSubContractDocumentButton, 60);
 
-        String note = DataConfigurationReader.readDataFromYmlFile("agency-create", "SubContract", "Note");
+        String note = DataConfigurationReader.readDataFromYmlFile("provider","provider-create", "SubContract", "Note");
         BasePage.typeWithStringBuilder(subContractingAgreementPage.noteTextarea, note);
 
         String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Provider\\" + "subContractDocument.pdf";

@@ -1,5 +1,6 @@
 package com.carehires.actions.providers;
 
+import com.carehires.common.GlobalVariables;
 import com.carehires.pages.providers.CreateProviderCompanyInformationPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -20,6 +21,7 @@ public class CreateProviderCompanyInformationActions {
     CreateProviderCompanyInformationPage companyInformationPage;
     GenericUtils genericUtils = new GenericUtils();
 
+    private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
     private static final String YML_HEADER = "CompanyInformation";
     private static final String FOLDER_PATH = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Provider\\";
@@ -35,50 +37,53 @@ public class CreateProviderCompanyInformationActions {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Company Information >>>>>>>>>>>>>>>>>>>>");
 
+        // Retrieve the current increment value for the provider (from the file)
+        int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
+
         //upload a logo
         logger.info("Uploading a logo");
-        String providerLogo = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "ProviderLogo");
+        String providerLogo = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "ProviderLogo");
         String absoluteFilePath = FOLDER_PATH + providerLogo;
         BasePage.clickWithJavaScript(companyInformationPage.uploadLogo);
         BasePage.uploadFile(companyInformationPage.fileInputButton, absoluteFilePath);
         BasePage.clickWithJavaScript(companyInformationPage.imageSaveButton);
 
         logger.info("Entering company name");
-        String companyName = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "CompanyName");
+        String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "CompanyName");
         BasePage.typeWithStringBuilder(companyInformationPage.companyName, companyName);
 
         logger.info("Entering business registration number");
-        String businessRegNum = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "BusinessRegistrationNumber");
+        String businessRegNum = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "BusinessRegistrationNumber");
         BasePage.typeWithStringBuilder(companyInformationPage.businessRegistrationNumber, businessRegNum);
 
         logger.info("Entering company type");
-        String companyType = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "CompanyType");
+        String companyType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "CompanyType");
         BasePage.clickWithJavaScript(companyInformationPage.companyTypeDropdown);
         BasePage.clickWithJavaScript(getDropdownOptionXpath(companyType));
 
         logger.info("Entering company website");
-        String website = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "Website");
+        String website = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "Website");
         BasePage.typeWithStringBuilder(companyInformationPage.website, website);
 
         //enter postcode and select a valid address
         logger.info("Entering postcode");
-        String providerPostcode = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "ProviderPostCode");
+        String providerPostcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "ProviderPostCode");
         genericUtils.fillAddress(companyInformationPage.postcode, providerPostcode);
 
         //enter phone number
         logger.info("Entering phone number");
-        genericUtils.fillPhoneNumber(YML_FILE, YML_HEADER, "PhoneNumber", companyInformationPage.phoneNumberInput);
+        genericUtils.fillPhoneNumber(ENTITY, YML_FILE, YML_HEADER, "PhoneNumber", companyInformationPage.phoneNumberInput);
         BasePage.clickTabKey(companyInformationPage.phoneNumberInput);
 
         logger.info("Entering VAT information");
-        String vatRegistered = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "AreYouVatRegistered");
+        String vatRegistered = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "AreYouVatRegistered");
         if (vatRegistered.equalsIgnoreCase("yes")) {
             BasePage.clickWithJavaScript(companyInformationPage.vatRegisteredYes);
             BasePage.waitUntilElementPresent(companyInformationPage.vatNumber, 10);
-            String vatNumber = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "VatNo");
+            String vatNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "VatNo");
             BasePage.typeWithStringBuilder(companyInformationPage.vatNumber, vatNumber);
 
-            String vatRegDoc = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "VatRegisteredDocumentName");
+            String vatRegDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "VatRegisteredDocumentName");
             String absoluteFilePathVatRegDoc = FOLDER_PATH + vatRegDoc;
             BasePage.uploadFile(companyInformationPage.vatRegisteredDocument, absoluteFilePathVatRegDoc);
         } else {
@@ -88,11 +93,11 @@ public class CreateProviderCompanyInformationActions {
         BasePage.scrollToWebElement(companyInformationPage.numberOfEmployeeUnderFifty);
 
         logger.info("Entering VAT exemption information");
-        String vatExempt = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "AreYouVatExempt");
+        String vatExempt = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "AreYouVatExempt");
         if (vatExempt.equalsIgnoreCase("yes")) {
             BasePage.waitUntilElementClickable(companyInformationPage.vatExemptYes, 30);
             BasePage.clickWithJavaScript(companyInformationPage.vatExemptYes);
-            String vatExemptDoc = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "VatExemptDocumentName");
+            String vatExemptDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "VatExemptDocumentName");
             String absoluteFilePathVatExemptDoc = FOLDER_PATH + vatExemptDoc;
             BasePage.genericWait(100);
             BasePage.uploadFile(companyInformationPage.vatExemptDocument, absoluteFilePathVatExemptDoc);
@@ -101,7 +106,7 @@ public class CreateProviderCompanyInformationActions {
         }
 
         logger.info("Entering annual company turnover");
-        String annualCompanyTurnOver = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "AnnualCompanyTurnOverIs");
+        String annualCompanyTurnOver = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "AnnualCompanyTurnOverIs");
         if (annualCompanyTurnOver.equalsIgnoreCase("Under 10.2M")) {
             BasePage.waitUntilElementClickable(companyInformationPage.annualCompanyTurnOverUnderTen, 30);
             BasePage.clickWithJavaScript(companyInformationPage.annualCompanyTurnOverUnderTen);
@@ -110,7 +115,7 @@ public class CreateProviderCompanyInformationActions {
         }
 
         logger.info("Entering company balance sheet");
-        String companyBalanceSheet = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "CompanyBalanceSheetTotalIs");
+        String companyBalanceSheet = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "CompanyBalanceSheetTotalIs");
         if (companyBalanceSheet.equalsIgnoreCase("Under 5.2M")) {
             BasePage.clickWithJavaScript(companyInformationPage.balanceSheetTotalUnderFive);
         } else {
@@ -118,7 +123,7 @@ public class CreateProviderCompanyInformationActions {
         }
 
         logger.info("Entering number of employees");
-        String averageNumEmp = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "AverageNumberOfEmployees");
+        String averageNumEmp = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "AverageNumberOfEmployees");
         if (averageNumEmp.equalsIgnoreCase("Under 50")) {
             BasePage.clickWithJavaScript(companyInformationPage.numberOfEmployeeUnderFifty);
         } else {
@@ -129,6 +134,12 @@ public class CreateProviderCompanyInformationActions {
         verifySuccessMessage();
         BasePage.waitUntilElementClickable(companyInformationPage.updateButton, 120);
         isBasicInfoSaved();
+
+        // After successfully entering the company information, update the increment value in the file
+        DataConfigurationReader.storeNewIncrementValue(ENTITY);
+
+        // Store the increment value in GlobalVariables for reuse in other steps
+        GlobalVariables.setVariable("providerIncrementValue", incrementValue+1);
     }
 
     private String getDropdownOptionXpath(String option) {

@@ -1,5 +1,6 @@
 package com.carehires.actions.agency;
 
+import com.carehires.common.GlobalVariables;
 import com.carehires.pages.agency.CreateBillingProfileManagementPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -18,6 +19,7 @@ public class CreateBillingProfileManagementActions {
 
     CreateBillingProfileManagementPage billingPage;
 
+    private static final String ENTITY = "agency";
     private static final String YML_FILE = "agency-create";
     private static final String YML_HEADER = "BillingProfileManagement";
     private static final Logger logger = LogManager.getLogger(CreateBillingProfileManagementActions.class);
@@ -29,45 +31,49 @@ public class CreateBillingProfileManagementActions {
 
     public void addBilling() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering billing information >>>>>>>>>>>>>>>>>>>>");
+
+        // Use the increment value retrieved in the Hooks
+        int incrementValue = GlobalVariables.getVariable("incrementValue", Integer.class);
+
         BasePage.waitUntilPageCompletelyLoaded();
-        String addressBills = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "AttentionTo");
+        String addressBills = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "AttentionTo");
         BasePage.typeWithStringBuilder(billingPage.addressBillsInAttentionTo, addressBills);
 
-        String billingAddress = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "BillingAddress");
+        String billingAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "BillingAddress");
         BasePage.typeWithStringBuilder(billingPage.billingAddress, billingAddress);
 
         //unique number
-        String costCenter = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "CostCenter");
+        String costCenter = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "CostCenter");
         BasePage.typeWithStringBuilder(billingPage.costCenter, costCenter);
 
-        String digitalBillingAddress = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "DigitalBillingAddress");
-        BasePage.typeWithStringBuilder(billingPage.digitalBillingAddress, digitalBillingAddress);
+        String digitalBillingAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "DigitalBillingAddress");
+        BasePage.typeWithStringBuilder(billingPage.digitalBillingAddress, (digitalBillingAddress + incrementValue));
 
-        String ccDigitalBillingAddress = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "CCDigitalBillingAddress");
-        BasePage.typeWithStringBuilder(billingPage.ccDigitalBillingAddress, ccDigitalBillingAddress);
+        String ccDigitalBillingAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "CCDigitalBillingAddress");
+        BasePage.typeWithStringBuilder(billingPage.ccDigitalBillingAddress, (ccDigitalBillingAddress + incrementValue));
 
-        String phoneNumber = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "PhoneNumber");
+        String phoneNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PhoneNumber");
         BasePage.typeWithStringBuilder(billingPage.phoneNumber, phoneNumber);
 
-        String billingCycle = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "BillingCycle");
+        String billingCycle = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "BillingCycle");
         BasePage.scrollToWebElement(billingPage.sortCode);
         BasePage.clickWithJavaScript(billingPage.billingCycleDropdown);
         BasePage.clickWithJavaScript(getDropdownOptionXpath(billingCycle));
 
-        String creditTerm = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "CreditTerm");
+        String creditTerm = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "CreditTerm");
         BasePage.clickWithJavaScript(billingPage.creditTermDropdown);
         BasePage.clickWithJavaScript(getDropdownOptionXpath(creditTerm));
 
-        String bankName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "BankName");
+        String bankName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "BankName");
         BasePage.typeWithStringBuilder(billingPage.bankName, bankName);
 
-        String accountNumber = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "AccountNumber");
+        String accountNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "AccountNumber");
         BasePage.typeWithStringBuilder(billingPage.accountNumber, accountNumber);
 
-        String accountName = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "AccountName");
+        String accountName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "AccountName");
         BasePage.typeWithStringBuilder(billingPage.accountName, accountName);
 
-        String sortCode = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "SortCode");
+        String sortCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "SortCode");
         BasePage.typeWithStringBuilder(billingPage.sortCode, sortCode);
         BasePage.genericWait(5000);
 

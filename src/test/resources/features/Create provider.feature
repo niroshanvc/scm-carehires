@@ -1,13 +1,14 @@
-Feature: Test CareHires create agency with one location
-
+@Regression
+@Provider
+@SuperAdminUser
+Feature: Test CareHires create provider with one location
 
   Background: login to carehires
     Given User logins to carehires
 
-  @Regression
-  @CreateProvider
+  @CreateProviderAndApprovingBySuperAdmin
   Scenario: Create agency with one location
-    Given User navigates to Provider Create page
+    When User navigates to Provider Create page
     And User enters valid provider - company information
     And User enters valid provider - site management data
     When User enters valid worker staff data

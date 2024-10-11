@@ -19,8 +19,9 @@ public class SignInPageActions {
     }
 
     public void loginToCareHires() throws Exception {
-        String username = DataConfigurationReader.readDataFromYmlFile("user-credentials", "SuperAdmin", "username");
-        String encryptedPassword = DataConfigurationReader.readDataFromYmlFile("user-credentials", "SuperAdmin", "password");
+
+        String username = DataConfigurationReader.getUserCredentials("SuperAdmin").get("username");
+        String encryptedPassword = DataConfigurationReader.getUserCredentials("SuperAdmin").get("password");
 
         String decryptedPassword = EncryptAndDecrypt.decrypt(encryptedPassword);
 

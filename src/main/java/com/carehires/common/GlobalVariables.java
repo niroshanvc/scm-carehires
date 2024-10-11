@@ -11,7 +11,7 @@ public class GlobalVariables {
     }
 
     // Store variables in a map
-    private static Map<String, Object> variables = new HashMap<>();
+    private static final Map<String, Object> variables = new HashMap<>();
 
     // Method to add or update variables
     public static void setVariable(String key, Object value) {
@@ -36,5 +36,15 @@ public class GlobalVariables {
     // Method to check if a variable exists
     public static boolean containsVariable(String key) {
         return variables.containsKey(key);
+    }
+
+    // Method to store the incremented value for an entity type (e.g., agency, provider)
+    public static void storeIncrementedValue(String entityType, int incrementValue) {
+        setVariable(entityType + "_incrementValue", incrementValue);
+    }
+
+    // Method to retrieve the incremented value for an entity type
+    public static int getIncrementedValue(String entityType) {
+        return (int) getVariable(entityType + "_incrementValue");
     }
 }

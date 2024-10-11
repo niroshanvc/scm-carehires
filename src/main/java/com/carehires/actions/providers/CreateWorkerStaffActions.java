@@ -16,6 +16,7 @@ public class CreateWorkerStaffActions {
 
     CreateWorkerStaffPage createWorkerStaffPage;
 
+    private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
     private static final String YML_HEADER = "WorkerStaffManagement";
     private static final String YML_HEADER_SITE_MANAGEMENT_HEADER = "SiteManagement";
@@ -32,7 +33,7 @@ public class CreateWorkerStaffActions {
         BasePage.clickWithJavaScript(createWorkerStaffPage.addNewButton);
 
         //select site
-        String site = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER_SITE_MANAGEMENT_HEADER, "SiteName");
+        String site = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SITE_MANAGEMENT_HEADER, "SiteName");
         BasePage.waitUntilElementClickable(createWorkerStaffPage.siteDropdown, 20);
         BasePage.clickWithJavaScript(createWorkerStaffPage.siteDropdown);
         BasePage.genericWait(1000);
@@ -40,12 +41,12 @@ public class CreateWorkerStaffActions {
 
         //select worker type
         BasePage.clickWithJavaScript(createWorkerStaffPage.workerTypeDropdown);
-        String workerType = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "WorkerType");
+        String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "WorkerType");
         BasePage.waitUntilElementClickable(getDropdownXpath(workerType), 20);
         BasePage.clickWithJavaScript(getDropdownXpath(workerType));
 
         //select skill(s)
-        String[] skills = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "Skills").split(",");
+        String[] skills = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Skills").split(",");
         BasePage.waitUntilElementClickable(createWorkerStaffPage.skills, 20);
         BasePage.clickWithJavaScript(createWorkerStaffPage.skills);
         BasePage.genericWait(1500);
@@ -54,12 +55,12 @@ public class CreateWorkerStaffActions {
         }
 
         //enter hourly rate
-        String hourlyRate = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "HourlyRate");
+        String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "HourlyRate");
         BasePage.clickWithJavaScript(createWorkerStaffPage.hourlyRate);
         BasePage.typeWithStringBuilder(createWorkerStaffPage.hourlyRate, hourlyRate);
 
         //enter monthly agency hours
-        String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "MonthlyAgencyHours");
+        String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "MonthlyAgencyHours");
         BasePage.typeWithStringBuilder(createWorkerStaffPage.monthlyAgencyHours, monthlyAgencyHours);
     }
 
@@ -76,7 +77,7 @@ public class CreateWorkerStaffActions {
 
     public void addWorkerStaff() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Worker Staff Information >>>>>>>>>>>>>>>>>>>>");
-        String proofOfDemandDocument = DataConfigurationReader.readDataFromYmlFile(YML_FILE,  YML_HEADER, "ProofOfDemandDocument");
+        String proofOfDemandDocument = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "ProofOfDemandDocument");
         String absoluteFilePathVatRegDoc = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Provider\\" + proofOfDemandDocument;
         BasePage.uploadFile(createWorkerStaffPage.proofOfDemandDocument, absoluteFilePathVatRegDoc);
         BasePage.clickWithJavaScript(createWorkerStaffPage.addButton);
@@ -91,8 +92,8 @@ public class CreateWorkerStaffActions {
     }
 
     private String getExpectedMonthlySpendValue() {
-        String hourlyRate = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "HourlyRate");
-        String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "MonthlyAgencyHours");
+        String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "HourlyRate");
+        String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "MonthlyAgencyHours");
         double hourlyRateInt = Double.parseDouble(hourlyRate);
         double monthlyAgencyHoursInt = Double.parseDouble(monthlyAgencyHours);
         double monthlyAgencySpendValue = hourlyRateInt * monthlyAgencyHoursInt;

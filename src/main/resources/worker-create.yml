@@ -1,12 +1,37 @@
-Basic-info:
-  agency-post-code: BL0 9YX
-  phone-number: 07412001245
+BasicInformation:
+  AgencyInformation:
 
-Location:
-staff:
-  name: John
-  surname: Smith
-  position: Manager
-  basic-info:
-    agency-post-code: BL0 9YX
-    phone-number: 07412001245
+  PersonalInformation:
+    WorkerLogo: Worker101.png
+    FirstName: Dillon
+    LastName: Johnson101
+    AlsoKnownAs: Dil101
+    WorkerEmailAddress: carehires+worker101@zohomail.com
+    PhoneNumberType: Mobile
+    PhoneNumber: "07412001246"
+    DateOfBirth: 01-01-2000
+    Gender: Male
+    Nationality: British
+
+  ResidentialAddressInformation:
+    Country: United Kingdom - GB
+    PostCode: BL0 9YX
+    CurrentlyLivingInThisAddress: "Yes"
+    From: 10-07-2016
+    ProofOfAddressDocument: Proof of Address Example.pdf
+
+  EmploymentInformation:
+    WorkerType: Rehabilitation Worker
+    Skills: Elderly,Dementia,Autism,NVQ L3,Senior
+    RegulatorySettings: Not Required (NR)
+    WorkerEmploymentType: PAYE
+    PayrollReferenceNumber: 0012390
+
+  PassportVisaDbsInformation:
+    NationalInsuranceNumber: "<uniqueNumber>"
+    DbsCertificateNumber: "00153557"
+    IsThereAnyConviction: "No"
+
+  TravelInformation:
+    PreferredTravelDistance: 30
+    DrivingLicence: "Yes"

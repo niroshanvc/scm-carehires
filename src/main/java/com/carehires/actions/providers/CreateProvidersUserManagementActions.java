@@ -1,5 +1,6 @@
 package com.carehires.actions.providers;
 
+import com.carehires.common.GlobalVariables;
 import com.carehires.pages.providers.CreateProvidersUserManagementPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -16,6 +17,7 @@ public class CreateProvidersUserManagementActions {
     CreateProvidersUserManagementPage userManagement;
     GenericUtils genericUtils = new GenericUtils();
 
+    private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
     private static final String YML_HEADER = "User";
     private static final String YML_HEADER_SITE_MANAGEMENT = "SiteManagement";
@@ -28,35 +30,43 @@ public class CreateProvidersUserManagementActions {
 
     public void addUser() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering User Information >>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        Integer incrementValue = GlobalVariables.getVariable("providerIncrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");
+        }
+
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(userManagement.addNewButton);
 
-        String email = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "email");
+        String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "email");
 
         //wait until email get validated
         genericUtils.waitUntilEmailAddressValidatedForUniqueness(email, userManagement.emailAddress, userManagement.name);
 
-        String name = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "Name");
-        BasePage.typeWithStringBuilder(userManagement.name,  name);
+        String name = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Name");
+        BasePage.typeWithStringBuilder(userManagement.name, name);
 
-        String jobTitle = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "JobTitle");
+        String jobTitle = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "JobTitle");
         BasePage.typeWithStringBuilder(userManagement.jobTitle,  jobTitle);
 
-        String site = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER_SITE_MANAGEMENT, "SiteName");
+        String site = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SITE_MANAGEMENT, "SiteName");
         BasePage.clickWithJavaScript(userManagement.assignToSiteDropdown);
         BasePage.waitUntilElementClickable(getDropdownOptionXpath(site), 20);
         BasePage.clickWithJavaScript(getDropdownOptionXpath(site));
 
-        String phone = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "Phone");
+        String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Phone");
         BasePage.clickWithJavaScript(userManagement.phone);
         BasePage.typeWithStringBuilder(userManagement.phone,  phone);
 
-        String authoriser = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "MarkAsAnAuthoriser");
+        String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "MarkAsAnAuthoriser");
         if(authoriser.equalsIgnoreCase("yes")) {
             BasePage.clickWithJavaScript(userManagement.markAsAnAuthoriserToggle);
         }
 
-        String[] userAccessLevel  = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "UserAccessLevel").split(",");
+        String[] userAccessLevel  = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "UserAccessLevel").split(",");
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
         BasePage.genericWait(1000);
         for (String accessLevel : userAccessLevel) {
@@ -85,7 +95,7 @@ public class CreateProvidersUserManagementActions {
         BasePage.waitUntilElementPresent(userManagement.fullNameCell, 60);
         String nameWithJob = BasePage.getText(userManagement.fullNameCell);
         String actual = nameWithJob.split("\n")[0].trim();
-        String expected = DataConfigurationReader.readDataFromYmlFile(YML_FILE, YML_HEADER, "Name");
+        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Name");
         assertThat("User is not added", actual, is(expected));
     }
 

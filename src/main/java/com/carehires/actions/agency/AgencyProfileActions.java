@@ -2,7 +2,6 @@ package com.carehires.actions.agency;
 
 import com.carehires.pages.agency.AgencyProfilePage;
 import com.carehires.utils.BasePage;
-import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
@@ -49,8 +48,5 @@ public class AgencyProfileActions {
         String actual = BasePage.getText(agencyProfile.profileStatus).toLowerCase().trim();
         String expected = status.toLowerCase();
         assertThat("Agent profile is not valid", actual, is(expected));
-
-        // After processing, store the updated increment value
-        DataConfigurationReader.storeNewIncrementValue();
     }
 }
