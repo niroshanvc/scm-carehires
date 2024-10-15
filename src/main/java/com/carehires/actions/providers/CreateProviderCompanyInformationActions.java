@@ -159,7 +159,7 @@ public class CreateProviderCompanyInformationActions {
         boolean hasIdDone = elementsWithIdAttribute.stream()
                 .anyMatch(element -> Objects.equals(element.getAttribute("id"), "Icon_material-done"));
 
-        assertThat("Basic information is not saved",hasIdDone, is(true));
+        assertThat("Company information is not saved",hasIdDone, is(true));
     }
 
     private void verifySuccessMessage() {

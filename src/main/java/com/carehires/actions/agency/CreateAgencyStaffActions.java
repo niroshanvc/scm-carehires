@@ -1,5 +1,6 @@
 package com.carehires.actions.agency;
 
+import com.carehires.common.GlobalVariables;
 import com.carehires.pages.agency.CreateAgencyStaffPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -27,6 +28,14 @@ public class CreateAgencyStaffActions {
 
     public void addStaff() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering staff information >>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        Integer incrementValue = GlobalVariables.getVariable("providerIncrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");
+        }
+
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(staffPage.addNewButton);
 
@@ -71,6 +80,8 @@ public class CreateAgencyStaffActions {
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(staffPage.addButton);
 
+        verifySuccessMessage();
+
         //verify if staff is added
         isStaffAdded();
 
@@ -92,5 +103,14 @@ public class CreateAgencyStaffActions {
 
     private String getWorkerSkillXpath(String skill) {
         return String.format("//nb-option[contains(@class,'multiple') and (contains(text(), '%s'))]", skill);
+    }
+
+    private void verifySuccessMessage() {
+        BasePage.waitUntilElementPresent(staffPage.successMessage, 90);
+        String actualInLowerCase = BasePage.getText(staffPage.successMessage).toLowerCase().trim();
+        String expected = "Record created successfully";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Staff information saved success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(staffPage.successMessage, 20);
     }
 }

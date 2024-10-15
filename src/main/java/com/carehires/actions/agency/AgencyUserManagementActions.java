@@ -28,21 +28,26 @@ public class AgencyUserManagementActions {
     public void addUser() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering user details >>>>>>>>>>>>>>>>>>>>");
 
-        // Use the increment value retrieved in the Hooks
-        int incrementValue = GlobalVariables.getVariable("incrementValue", Integer.class);
+        // Retrieve the incremented value
+        Integer incrementValue = GlobalVariables.getVariable("providerIncrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");
+        }
 
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(userManagement.addNewButton);
 
         String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "email");
-        BasePage.typeWithStringBuilder(userManagement.emailAddress,  (email + incrementValue));
+        BasePage.typeWithStringBuilder(userManagement.emailAddress, email);
         BasePage.clickWithJavaScript(userManagement.validateEmail);
 
         //wait until email validated
         BasePage.waitUntilElementPresent(userManagement.name, 30);
 
         String name = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Name");
-        BasePage.typeWithStringBuilder(userManagement.name,  (name + incrementValue));
+        BasePage.typeWithStringBuilder(userManagement.name, name);
 
         String jobTitle = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "JobTitle");
         BasePage.typeWithStringBuilder(userManagement.jobTitle,  jobTitle);
@@ -69,8 +74,7 @@ public class AgencyUserManagementActions {
 
         BasePage.genericWait(6000);
         BasePage.clickWithJavaScript(userManagement.addButton);
-
-        BasePage.genericWait(5000);
+        verifySuccessMessage();
         isUserAdded();
 
         BasePage.clickWithJavaScript(userManagement.updateButton);
@@ -88,5 +92,14 @@ public class AgencyUserManagementActions {
         String actual = nameWithJob.split("\n")[0].trim();
         String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Name");
         assertThat("User is not added", actual, is(expected));
+    }
+
+    private void verifySuccessMessage() {
+        BasePage.waitUntilElementPresent(userManagement.successMessage, 90);
+        String actualInLowerCase = BasePage.getText(userManagement.successMessage).toLowerCase().trim();
+        String expected = "Record created successfully";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("User information saved success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(userManagement.successMessage, 20);
     }
 }

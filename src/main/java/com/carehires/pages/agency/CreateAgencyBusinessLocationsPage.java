@@ -34,4 +34,7 @@ public class CreateAgencyBusinessLocationsPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Next')]")
     public WebElement nextButton;
+
+    @FindBy(xpath = "//nb-toast//span")
+    public WebElement successMessage;
 }

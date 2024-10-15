@@ -20,16 +20,16 @@ public class AgencyProfileActions {
         PageFactory.initElements(BasePage.getDriver(), agencyProfile);
     }
 
-    public void updateProfileAsApprove() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating the profile as Approve >>>>>>>>>>>>>>>>>>>>");
+    public void updateProfileAsProfileComplete() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating the profile as Profile Complete >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(agencyProfile.approveButton);
 
-        //Check if "Go to Settings" button is displayed
-        boolean isDisplayed = BasePage.isElementDisplayed(agencyProfile.goToSettingsButton);
-        if (isDisplayed) {
-            BasePage.clickWithJavaScript(agencyProfile.goToSettingsButton);
-        }
+        waitUntilCreatingPaymentProfilePopupGetDisappeared();
+
+        //Check on "Go to Settings" button
+        BasePage.waitUntilElementClickable(agencyProfile.goToSettingsButton, 90);
+        BasePage.clickWithJavaScript(agencyProfile.goToSettingsButton);
     }
 
     public void moveToProfilePage() {
@@ -41,12 +41,36 @@ public class AgencyProfileActions {
 
     public void verifyProfileStatus(String status) {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying the profile status >>>>>>>>>>>>>>>>>>>>");
-        BasePage.genericWait(5000);
         BasePage.refreshPage();
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(agencyProfile.profileStatus, 60);
         String actual = BasePage.getText(agencyProfile.profileStatus).toLowerCase().trim();
         String expected = status.toLowerCase();
-        assertThat("Agent profile is not valid", actual, is(expected));
+        assertThat("Agent profile status is not valid", actual, is(expected));
+    }
+
+    private void waitUntilCreatingPaymentProfilePopupGetDisappeared() {
+        BasePage.waitUntilElementDisplayed(agencyProfile.popupText, 90);
+        String expectedText = "Creating payment profile for organization.....";
+        //Successfully updated settings!
+
+        String actualText = BasePage.getText(agencyProfile.popupText);
+        assertThat("Creating payment profile popup message is not correct", actualText, is(expectedText));
+    }
+
+    public void updateProfileAsApprove() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating the profile as approve >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.clickWithJavaScript(agencyProfile.approveButton);
+        verifyProfileApprovedSuccessMessage();
+    }
+
+    private void verifyProfileApprovedSuccessMessage() {
+        BasePage.waitUntilElementPresent(agencyProfile.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(agencyProfile.successMessage).toLowerCase().trim();
+        String expected = "Agency approved successfully";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Agency approved success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(agencyProfile.successMessage, 20);
     }
 }

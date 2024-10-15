@@ -101,6 +101,6 @@ public class CreateAgencyCreditServicePage {
     @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isBoardMember']//input)[2]")
     public WebElement legalRepBoardMemberCheckbox;
 
-    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isPrimaryRepresentative']//input)[2]")
-    public WebElement legalRepPrimaryRepresentativeCheckbox;
+    @FindBy(xpath = "//nb-toast//span")
+    public WebElement successMessage;
 }

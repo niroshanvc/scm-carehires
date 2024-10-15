@@ -7,6 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+
 public class SubContractingAgreementActions {
 
     SubContractingAgreementPage subContractingAgreementPage;
@@ -32,15 +35,29 @@ public class SubContractingAgreementActions {
         BasePage.clickWithJavaScript(subContractingAgreementPage.completeProfileButton);
         BasePage.waitUntilElementPresent(subContractingAgreementPage.attachSubContractDocumentButton, 60);
 
-        String note = DataConfigurationReader.readDataFromYmlFile("agency-create", "SubContract", "Note");
+        String note = DataConfigurationReader.readDataFromYmlFile("agency","agency-create", "SubContract", "Note");
         BasePage.typeWithStringBuilder(subContractingAgreementPage.noteTextarea, note);
 
         String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + "subContractDocument.pdf";
         BasePage.uploadFile(subContractingAgreementPage.uploadFile, absoluteFilePath);
-        BasePage.genericWait(10000);
+        waitUntilDocumentUploaded();
         BasePage.clickWithJavaScript(subContractingAgreementPage.saveButton);
 
-        //wait until profile status got updated as 'Profile Complete'
-        BasePage.genericWait(10000);
+        verifySuccessMessage();
+    }
+
+    private void verifySuccessMessage() {
+        BasePage.waitUntilElementPresent(subContractingAgreementPage.successMessage, 1200);
+        String actualInLowerCase = BasePage.getText(subContractingAgreementPage.successMessage).toLowerCase().trim();
+        String expected = "Contract signed successfully";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Contract signed success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(subContractingAgreementPage.successMessage, 20);
+    }
+
+    private void waitUntilDocumentUploaded() {
+        BasePage.waitUntilElementDisplayed(subContractingAgreementPage.previewSubContractDocument, 60);
+        BasePage.mouseHoverOverElement(subContractingAgreementPage.previewSubContractDocument);
+        BasePage.waitUntilElementDisplayed(subContractingAgreementPage.removeAttachment, 60);
     }
 }

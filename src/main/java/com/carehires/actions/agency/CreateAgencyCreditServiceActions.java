@@ -8,6 +8,7 @@ import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.GenericUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -35,12 +36,24 @@ public class CreateAgencyCreditServiceActions {
     public void enterCreditServiceInformation() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Credit Service information >>>>>>>>>>>>>>>>>>>>");
 
-        // Use the increment value retrieved in the Hooks
-        int incrementValue = GlobalVariables.getVariable("incrementValue", Integer.class);
+        // Retrieve the incremented value
+        Integer incrementValue = GlobalVariables.getVariable("providerIncrementValue", Integer.class);
 
-        BasePage.scrollToWebElement(creditServicePage.firstName);
-        String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalFirstName");
-        BasePage.clearAndEnterTexts(creditServicePage.firstName, firstName);
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");
+        }
+
+        if (BasePage.isElementEnabled(creditServicePage.firstName) && BasePage.isElementDisplayed(creditServicePage.firstName)) {
+            String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalFirstName");
+            //Add a short wait to ensure the element is ready for interaction after the page or any JavaScript has fully executed.
+            BasePage.genericWait(1000);
+            BasePage.waitUntilElementClickable(creditServicePage.firstName, 60);
+            BasePage.scrollToWebElement(creditServicePage.firstName);
+            BasePage.clearAndEnterTexts(creditServicePage.firstName, firstName);
+        } else {
+            throw new InvalidElementStateException("First name field is not available");
+        }
 
         String lastName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalLastName");
         BasePage.clearAndEnterTexts(creditServicePage.lastName, lastName);
@@ -49,7 +62,7 @@ public class CreateAgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.jobTitle, jobTitle);
 
         String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "EmailAddress");
-        BasePage.clearAndEnterTexts(creditServicePage.email, (email + incrementValue));
+        BasePage.clearAndEnterTexts(creditServicePage.email, email);
 
         String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Phone");
         BasePage.clearAndEnterTexts(creditServicePage.phoneNumber, phone);
@@ -71,7 +84,7 @@ public class CreateAgencyCreditServiceActions {
         String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + agencyOwnerDoc;
         BasePage.uploadFile(creditServicePage.agencyOwnerIdentityVerificationDoc, absoluteFilePath);
         //wait until document is uploaded
-        BasePage.genericWait(4000);
+        waitUntilDocumentUploaded();
 
         //do check agency owner checkboxes
         BasePage.scrollToWebElement(creditServicePage.addLegalRepresentativeHeader);
@@ -96,7 +109,7 @@ public class CreateAgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.legalJobTitle, legalRepJobTitle);
 
         String legalRepEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepEmailAddress");
-        BasePage.clearAndEnterTexts(creditServicePage.legalEmail, (legalRepEmail + incrementValue));
+        BasePage.clearAndEnterTexts(creditServicePage.legalEmail, legalRepEmail );
 
         BasePage.scrollToWebElement(creditServicePage.legalRepBoardMemberCheckbox);
         String legalRepPhone = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepPhone");
@@ -119,15 +132,17 @@ public class CreateAgencyCreditServiceActions {
         String repFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + legalRepDoc;
         BasePage.uploadFile(creditServicePage.legalRepresentativeIdentityVerificationDoc, repFilePath);
         //wait until document is uploaded
-        BasePage.genericWait(4000);
+        waitUntilDocumentUploaded();
 
         //do check legal representative checkboxes
         BasePage.clickWithJavaScript(creditServicePage.legalRepExecutiveManagerCheckbox);
         BasePage.clickWithJavaScript(creditServicePage.legalRepOwns25Checkbox);
         BasePage.clickWithJavaScript(creditServicePage.legalRepBoardMemberCheckbox);
 
+        BasePage.genericWait(2000);
         BasePage.clickWithJavaScript(creditServicePage.saveButton);
 
+        verifySuccessMessage();
         isCreditServiceInfoSaved();
     }
 
@@ -151,5 +166,23 @@ public class CreateAgencyCreditServiceActions {
                 .anyMatch(element -> Objects.equals(element.getAttribute("id"), "Icon_material-done"));
 
         assertThat("Basic information is not saved",hasIdDone, is(true));
+    }
+
+    private void verifySuccessMessage() {
+        BasePage.waitUntilElementPresent(creditServicePage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(creditServicePage.successMessage).toLowerCase().trim();
+        String expected = "Business information updated successfully.";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Credit information saved success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(creditServicePage.successMessage, 20);
+    }
+
+    private void waitUntilDocumentUploaded() {
+        BasePage.waitUntilElementPresent(creditServicePage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(creditServicePage.successMessage).toLowerCase().trim();
+        String expected = "Document uploaded successfully.";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Document uploaded success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(creditServicePage.successMessage, 20);
     }
 }

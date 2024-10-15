@@ -297,7 +297,6 @@ public class BasePage {
     public static void uploadFile(WebElement element, String filePath) {
         logger.info("****************** Uploading file: %s to %s", filePath, element);
         element.sendKeys(filePath);
-        genericWait(3000);
     }
 
     public static void genericWait(int milliseconds) {
@@ -376,7 +375,6 @@ public class BasePage {
     public static boolean isElementDisplayed(WebElement element) {
         logger.info("****************** Checking element - %s is displayed:", element);
         try {
-            genericWait(5000);
             return element.isDisplayed();
         } catch (NoSuchElementException e) {
             return false;
@@ -426,5 +424,19 @@ public class BasePage {
         wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
         wait.ignoring(StaleElementReferenceException.class)
                 .until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public static boolean isElementEnabled(WebElement element) {
+        logger.info("****************** Checking element - %s is enabled:", element);
+        try {
+            return element.isEnabled();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public static WebDriverWait webdriverWait(int seconds) {
+        logger.info("****************** Waiting for %s seconds", seconds);
+        return new WebDriverWait(driver, Duration.ofSeconds(seconds));
     }
 }

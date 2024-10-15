@@ -28,8 +28,13 @@ public class CreateAgencyBusinessLocationsActions {
     public void enterLocationDetails() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Business Location Details >>>>>>>>>>>>>>>>>>>>");
 
-        // Use the increment value retrieved in the Hooks
-        int incrementValue = GlobalVariables.getVariable("incrementValue", Integer.class);
+        // Retrieve the incremented value
+        Integer incrementValue = GlobalVariables.getVariable("providerIncrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");
+        }
 
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(locationsPage.addNewButton);
@@ -38,7 +43,7 @@ public class CreateAgencyBusinessLocationsActions {
         BasePage.clearAndEnterTexts(locationsPage.businessLocation, location);
 
         String emailAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "BusinessEmailAddress");
-        BasePage.clearAndEnterTexts(locationsPage.businessEmailAddress, (emailAddress + incrementValue));
+        BasePage.clearAndEnterTexts(locationsPage.businessEmailAddress, emailAddress);
 
         String city = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "City");
         BasePage.clickWithJavaScript(locationsPage.selectCity);
@@ -46,14 +51,14 @@ public class CreateAgencyBusinessLocationsActions {
         BasePage.genericWait(1000);
 
         String jobNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "JobNotificationAddress");
-        BasePage.clearAndEnterTexts(locationsPage.jobNotificationAddress, (jobNotification + incrementValue));
+        BasePage.clearAndEnterTexts(locationsPage.jobNotificationAddress, jobNotification );
 
         String approvalNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "ApprovalNotificationAddress");
-        BasePage.clearAndEnterTexts(locationsPage.approvalNotificationAddress, (approvalNotification + incrementValue));
+        BasePage.clearAndEnterTexts(locationsPage.approvalNotificationAddress, approvalNotification);
         BasePage.genericWait(15000);
 
         BasePage.clickWithJavaScript(locationsPage.addButton);
-        BasePage.genericWait(5000);
+        verifySuccessMessage();
 
         isBusinessLocationSaved();
 
@@ -71,5 +76,14 @@ public class CreateAgencyBusinessLocationsActions {
         String actualLocationName = BasePage.getText(locationsPage.locationName);
         String expectedLocationName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "BusinessLocation");
         assertThat("Business Location is not saved", actualLocationName, is(expectedLocationName));
+    }
+
+    private void verifySuccessMessage() {
+        BasePage.waitUntilElementPresent(locationsPage.successMessage, 90);
+        String actualInLowerCase = BasePage.getText(locationsPage.successMessage).toLowerCase().trim();
+        String expected = "Record created successfully";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Location information saved success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(locationsPage.successMessage, 20);
     }
 }

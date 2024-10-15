@@ -8,6 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,8 +34,13 @@ public class CreateBillingProfileManagementActions {
     public void addBilling() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering billing information >>>>>>>>>>>>>>>>>>>>");
 
-        // Use the increment value retrieved in the Hooks
-        int incrementValue = GlobalVariables.getVariable("incrementValue", Integer.class);
+        // Retrieve the incremented value
+        Integer incrementValue = GlobalVariables.getVariable("providerIncrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");
+        }
 
         BasePage.waitUntilPageCompletelyLoaded();
         String addressBills = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "AttentionTo");
@@ -47,10 +54,10 @@ public class CreateBillingProfileManagementActions {
         BasePage.typeWithStringBuilder(billingPage.costCenter, costCenter);
 
         String digitalBillingAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "DigitalBillingAddress");
-        BasePage.typeWithStringBuilder(billingPage.digitalBillingAddress, (digitalBillingAddress + incrementValue));
+        BasePage.typeWithStringBuilder(billingPage.digitalBillingAddress, digitalBillingAddress);
 
         String ccDigitalBillingAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "CCDigitalBillingAddress");
-        BasePage.typeWithStringBuilder(billingPage.ccDigitalBillingAddress, (ccDigitalBillingAddress + incrementValue));
+        BasePage.typeWithStringBuilder(billingPage.ccDigitalBillingAddress, ccDigitalBillingAddress);
 
         String phoneNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PhoneNumber");
         BasePage.typeWithStringBuilder(billingPage.phoneNumber, phoneNumber);
@@ -78,8 +85,7 @@ public class CreateBillingProfileManagementActions {
         BasePage.genericWait(5000);
 
         BasePage.clickWithJavaScript(billingPage.saveButton);
-
-        BasePage.genericWait(3000);
+        waitUntilTwoBalloonPopupGetDisappeared();
         isBasicInfoSaved();
     }
 
@@ -101,5 +107,15 @@ public class CreateBillingProfileManagementActions {
                 .anyMatch(element -> Objects.equals(element.getAttribute("id"), "Icon_material-done"));
 
         assertThat("Billing information is not saved",hasIdDone, is(true));
+    }
+
+    private void waitUntilTwoBalloonPopupGetDisappeared() {
+        WebDriverWait wait = BasePage.webdriverWait(30);
+
+        // Wait for the first popup to disappear
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(billingPage.getFirstSuccessMessage()));
+
+        // Wait for the second popup to disappear
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(billingPage.getSecondSuccessMessage()));
     }
 }

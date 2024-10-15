@@ -10,7 +10,7 @@ public class AgencyProfileSteps {
 
     @And("User completes the profile approve status")
     public void updateProfile() {
-        agencyProfileActions.updateProfileAsApprove();
+        agencyProfileActions.updateProfileAsProfileComplete();
     }
 
     @And("User again navigates to the Agency Profile page")
@@ -21,5 +21,10 @@ public class AgencyProfileSteps {
     @Then("^User verifies the agency profile status as (.*)$")
     public void verifyProfileStatus(String status) {
         agencyProfileActions.verifyProfileStatus(status);
+    }
+
+    @And("User approves the profile approve status")
+    public void updateProfileAsApprove() {
+        agencyProfileActions.updateProfileAsApprove();
     }
 }

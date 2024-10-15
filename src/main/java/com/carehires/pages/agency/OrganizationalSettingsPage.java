@@ -25,4 +25,7 @@ public class OrganizationalSettingsPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     public WebElement saveButton;
+
+    @FindBy(xpath = "//nb-toast//span")
+    public WebElement successMessage;
 }

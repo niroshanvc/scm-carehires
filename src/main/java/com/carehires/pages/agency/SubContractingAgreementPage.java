@@ -25,4 +25,13 @@ public class SubContractingAgreementPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     public WebElement saveButton;
+
+    @FindBy(xpath = "//nb-toast//span")
+    public WebElement successMessage;
+
+    @FindBy(xpath = "//div[contains(@class, 'proof-preview')]")
+    public WebElement previewSubContractDocument;
+
+    @FindBy(xpath = "//button[contains(@class, 'remove-button')]")
+    public WebElement removeAttachment;
 }
