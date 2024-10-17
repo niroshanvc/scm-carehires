@@ -37,9 +37,6 @@ public class CreateWorkerBasicInformationPage {
     @FindBy(xpath = "//input[@formcontrolname='email']")
     public WebElement email;
 
-    @FindBy(xpath = "//nb-select[@formcontrolname='typeName']/button")
-    public WebElement phoneType;
-
     @FindBy(xpath = "//input[@formcontrolname='phoneNumber']")
     public WebElement phoneNumberInput;
 
@@ -69,9 +66,6 @@ public class CreateWorkerBasicInformationPage {
 
     @FindBy(xpath = "//input[@formcontrolname='livingto']")
     public WebElement livingTo;
-
-    @FindBy(xpath = "//label[contains(text(), 'Duration')]/../input")
-    public WebElement durationInAddress;
 
     @FindBy(xpath = "(//input[@type='file'])[1]")
     public WebElement proofOfAddressDocument;

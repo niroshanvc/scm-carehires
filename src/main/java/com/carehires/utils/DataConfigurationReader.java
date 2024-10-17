@@ -58,7 +58,7 @@ public class DataConfigurationReader {
                 }
 
             } else {
-                logger.error("Key not found in YAML: ", String.join(" -> ", keys));
+                logger.error("Key not found in YAML: {}", String.join(" -> ", keys));
             }
         } catch (Exception ex) {
             ex.printStackTrace();

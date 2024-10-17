@@ -46,16 +46,14 @@ public class GenericUtils {
 
     public void fillPhoneNumber(String entity, String ymlFile, WebElement phoneNumberInput, String... keys) {
         logger.info("fillPhoneNumber");
-        String phoneNumberType = "";
-        String phoneNumber = "";
         if (Arrays.toString(keys).equalsIgnoreCase("PhoneNumberType")) {
-            phoneNumberType = DataConfigurationReader.readDataFromYmlFile(entity, ymlFile, keys);
+            String phoneNumberType = DataConfigurationReader.readDataFromYmlFile(entity, ymlFile, keys);
             BasePage.waitUntilElementPresent(genericElementsPage.phoneNumberDropdown, 20);
             BasePage.clickWithJavaScript(genericElementsPage.phoneNumberDropdown);
             BasePage.clickWithJavaScript(getPhoneNumberTypeXpath(phoneNumberType));
         }
         if (Arrays.toString(keys).equalsIgnoreCase("PhoneNumber")) {
-            phoneNumber = DataConfigurationReader.readDataFromYmlFile(entity, ymlFile, keys);
+            String phoneNumber = DataConfigurationReader.readDataFromYmlFile(entity, ymlFile, keys);
             BasePage.typeWithStringBuilder(phoneNumberInput, phoneNumber);
         }
     }
