@@ -37,7 +37,7 @@ public class CreateAgencyCreditServiceActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Credit Service information >>>>>>>>>>>>>>>>>>>>");
 
         // Retrieve the incremented value
-        Integer incrementValue = GlobalVariables.getVariable("providerIncrementValue", Integer.class);
+        Integer incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
 
         // Check for null or default value
         if (incrementValue == null) {

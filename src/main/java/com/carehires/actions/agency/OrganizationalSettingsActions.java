@@ -44,9 +44,9 @@ public class OrganizationalSettingsActions {
         String hubspot = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "HubSpotLink");
         BasePage.typeWithStringBuilder(settingsPage.hubSpotLink, hubspot);
 
-        String theme = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "InvoiceBrandingTheme");
+        /*String theme = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "InvoiceBrandingTheme");
         BasePage.clickWithJavaScript(settingsPage.invoiceBrandingThemeDropdown);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(theme));
+        BasePage.clickWithJavaScript(getDropdownOptionXpath(theme));*/
 
         String salesPerson = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "SalesProcessCompletedBy");
         BasePage.clickWithJavaScript(settingsPage.salesProcessCompletedByDropdown);

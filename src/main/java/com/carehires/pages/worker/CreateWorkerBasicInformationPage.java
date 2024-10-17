@@ -3,7 +3,9 @@ package com.carehires.pages.worker;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CreateBasicInformationPage {
+import java.util.List;
+
+public class CreateWorkerBasicInformationPage {
 
     @FindBy(xpath = "//nb-select[@formcontrolname='agency']/button")
     public WebElement agencyDropdown;
@@ -17,6 +19,12 @@ public class CreateBasicInformationPage {
     @FindBy(xpath = "//span[contains(@class, 'image-edit')]")
     public WebElement uploadLogo;
 
+    @FindBy(xpath = "(//input[@type='file'])[2]")
+    public WebElement uploadLogoInput;
+
+    @FindBy(xpath = "(//button[contains(@class, 'float-end')])[2]")
+    public WebElement imageSaveButton;
+
     @FindBy(xpath = "//input[@formcontrolname='firstName']")
     public WebElement firstName;
 
@@ -29,6 +37,9 @@ public class CreateBasicInformationPage {
     @FindBy(xpath = "//input[@formcontrolname='email']")
     public WebElement email;
 
+    @FindBy(xpath = "//nb-select[@formcontrolname='typeName']/button")
+    public WebElement phoneType;
+
     @FindBy(xpath = "//input[@formcontrolname='phoneNumber']")
     public WebElement phoneNumberInput;
 
@@ -36,10 +47,13 @@ public class CreateBasicInformationPage {
     public WebElement dateOfBirth;
 
     @FindBy(xpath = "//input[@name='gender']")
-    public WebElement genderRadioButton;
+    public List<WebElement> genderRadioButton;
 
-    @FindBy(xpath = "//p[contains(text(), 'Residential Address Information')]/..")
+    @FindBy(xpath = "//p[contains(text(),'Residential Address Information ')]/ancestor::nb-accordion-item")
     public WebElement residentialAddressInformationHeader;
+
+    @FindBy(xpath = "//p[contains(text(),'Residential Address Information ')]/following-sibling::nb-icon")
+    public WebElement residentialAddressInformationHeaderExpandIcon;
 
     @FindBy(xpath = "//nb-select[@formcontrolname='country']/button")
     public WebElement countryDropdown;
@@ -48,19 +62,25 @@ public class CreateBasicInformationPage {
     public WebElement postcode;
 
     @FindBy(xpath = "//nb-checkbox[@formcontrolname='isCurrentlyResiding']//input")
-    public WebElement isCurrentlyResidingCheckbox;
+    public WebElement isCurrentlyLivingCheckbox;
 
     @FindBy(xpath = "//input[@formcontrolname='livingfrom']")
     public WebElement livingFrom;
 
+    @FindBy(xpath = "//input[@formcontrolname='livingto']")
+    public WebElement livingTo;
+
     @FindBy(xpath = "//label[contains(text(), 'Duration')]/../input")
     public WebElement durationInAddress;
 
-    @FindBy(xpath = "//input[@type='file']")
+    @FindBy(xpath = "(//input[@type='file'])[1]")
     public WebElement proofOfAddressDocument;
 
-    @FindBy(xpath = "//p[contains(text(), 'Employment Information')]/..")
+    @FindBy(xpath = "//p[contains(text(),'Employment Information')]/ancestor::nb-accordion-item")
     public WebElement employmentInformationHeader;
+
+    @FindBy(xpath = "//p[contains(text(),'Employment Information')]/following-sibling::nb-icon")
+    public WebElement employmentInformationHeaderExpandIcon;
 
     @FindBy(xpath = "//nb-select[@formcontrolname='workerType']/button")
     public WebElement workerTypeDropdown;
@@ -75,10 +95,13 @@ public class CreateBasicInformationPage {
     public WebElement payrollReferenceNumber;
 
     @FindBy(xpath = "//input[@name='employeeType']")
-    public WebElement employeeTypeRadioButton;
+    public List<WebElement> employeementTypeRadioButton;
 
-    @FindBy(xpath = "//p[contains(text(), 'Passport')]/..")
+    @FindBy(xpath = "//p[contains(text(),'Passport, Visa')]/ancestor::nb-accordion-item")
     public WebElement passportInformationHeader;
+
+    @FindBy(xpath = "//p[contains(text(),'Passport, Visa')]/following-sibling::nb-icon")
+    public WebElement passportInformationHeaderExpandIcon;
 
     @FindBy(xpath = "//input[@formcontrolname='nationalInsuranceNumber']")
     public WebElement nationalInsuranceNumber;
@@ -87,17 +110,25 @@ public class CreateBasicInformationPage {
     public WebElement dbsCertificateNumber;
 
     @FindBy(xpath = "//input[@name='hasConviction']")
-    public WebElement hasConvictionRadioButton;
+    public List<WebElement> hasConvictionRadioButton;
 
-    @FindBy(xpath = "//p[contains(text(), 'Travel')]/..")
+    @FindBy(xpath = "//p[contains(text(),'Travel &')]/ancestor::nb-accordion-item")
     public WebElement travelInformationHeader;
+
+    @FindBy(xpath = "//p[contains(text(),'Travel &')]/following-sibling::nb-icon")
+    public WebElement travelInformationHeaderExpandIcon;
 
     @FindBy(xpath = "//input[@formcontrolname='travelDistance']")
     public WebElement travelDistance;
 
     @FindBy(xpath = "//input[@name='hasDrivingLicense']")
-    public WebElement hasDrivingLicenseRadioButton;
+    public List<WebElement> hasDrivingLicenseRadioButton;
 
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     public WebElement saveButton;
+
+    @FindBy(xpath = "//p[contains(text(), 'Document is added')]")
+    public WebElement documentUploadedSuccessMessage;
+
+    public static final String AGENCY_LOCATION_CHECKBOXES = "//div[@id='cdk-overlay-1']//nb-option/nb-checkbox";
 }

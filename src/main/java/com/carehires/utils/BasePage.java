@@ -439,4 +439,28 @@ public class BasePage {
         logger.info("****************** Waiting for %s seconds", seconds);
         return new WebDriverWait(driver, Duration.ofSeconds(seconds));
     }
+
+    public static void waitUntilElementPresent(String xpath, int timeOutSeconds) {
+        logger.info("****************** Wait until element present at xpath: %s, in seconds: %s", xpath, timeOutSeconds);
+        WebElement element = driver.findElement(By.xpath(xpath));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
+        wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public static void scrollToWebElement(String xpath) {
+        logger.info("****************** Scroll to web element at xpath %s", xpath);
+        JavascriptExecutor js = ((JavascriptExecutor) driver);
+        WebElement element = driver.findElement(By.xpath(xpath));
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+    public static void waitUntilVisibilityOfElementLocated(By locator, int seconds) {
+        logger.info("****************** Wait until visibility of element located by %s, and seconds: %s", locator, seconds);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        } catch (TimeoutException e) {
+            logger.error("Element was not visible after waiting for %s seconds. Locator: %s", seconds, locator);
+        }
+    }
 }

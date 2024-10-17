@@ -47,6 +47,10 @@ public class DataConfigurationReader {
                     data = generateUniqueNumber();  // Replace with unique number
                 }
 
+                if (data.equals("<insuranceNumber>")) {
+                    data = generateNationalInsuranceNumber(); // Replace with national insurance number
+                }
+
                 // Replace the {{increment}} placeholder with the current increment value
                 if (data.contains("{{increment}}")) {
                     int incrementValue = GlobalVariables.getVariable(entityType + "_incrementValue", Integer.class);
@@ -128,5 +132,59 @@ public class DataConfigurationReader {
             ex.printStackTrace();
         }
         return credentials;
+    }
+
+    private static final String LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final Random random = new Random();
+
+    /**
+     * Generates a unique National Insurance Number in the format XX000000X.
+     *
+     * @return A unique National Insurance Number (e.g., AB123456C).
+     */
+    public static String generateNationalInsuranceNumber() {
+        // Generate the first two characters
+        StringBuilder niNumber = new StringBuilder();
+        niNumber.append(generateRandomLetter());  // First letter
+        niNumber.append(generateRandomLetter());  // Second letter
+
+        // Generate the 6-digit number part
+        String numericPart = String.format("%06d", random.nextInt(1000000));
+        niNumber.append(numericPart);
+
+        // Generate the last character
+        niNumber.append(generateRandomLetter());
+
+        return niNumber.toString();
+    }
+
+    /**
+     * Generates a random uppercase letter.
+     *
+     * @return A random letter from A-Z.
+     */
+    private static char generateRandomLetter() {
+        return LETTERS.charAt(random.nextInt(LETTERS.length()));
+    }
+
+    public static int getCurrentIncrementValueForWorkers(String entityType) {
+        // Load increment value from file if it's not set
+        Integer incrementValue = GlobalVariables.getVariable(entityType + "_incrementValue", Integer.class);
+
+        if (incrementValue == null) {
+            // Attempt to load it from file
+            incrementValue = loadIncrementValueFromFile(entityType);
+
+            // If still null, throw an exception
+            if (incrementValue == null) {
+                logger.error("Increment value is null for entity type: {}", entityType);
+                throw new RuntimeException("Increment value not initialized for " + entityType);
+            }
+
+            // Set the increment value in GlobalVariables for future use
+            GlobalVariables.setVariable(entityType + "_incrementValue", incrementValue);
+        }
+
+        return incrementValue;
     }
 }

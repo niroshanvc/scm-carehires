@@ -32,7 +32,7 @@ public class CreateProvidersSiteManagementActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Site Management Information >>>>>>>>>>>>>>>>>>>>");
 
         // Retrieve the incremented value
-        Integer incrementValue = GlobalVariables.getVariable("providerIncrementValue", Integer.class);
+        Integer incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
 
         // Check for null or default value
         if (incrementValue == null) {

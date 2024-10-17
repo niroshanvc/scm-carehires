@@ -72,7 +72,7 @@ public class CreateProviderCompanyInformationActions {
 
         //enter phone number
         logger.info("Entering phone number");
-        genericUtils.fillPhoneNumber(ENTITY, YML_FILE, YML_HEADER, "PhoneNumber", companyInformationPage.phoneNumberInput);
+        genericUtils.fillPhoneNumber(ENTITY, YML_FILE, companyInformationPage.phoneNumberInput, YML_HEADER, "PhoneNumber");
         BasePage.clickTabKey(companyInformationPage.phoneNumberInput);
 
         logger.info("Entering VAT information");
@@ -139,7 +139,7 @@ public class CreateProviderCompanyInformationActions {
         DataConfigurationReader.storeNewIncrementValue(ENTITY);
 
         // Store the increment value in GlobalVariables for reuse in other steps
-        GlobalVariables.setVariable("providerIncrementValue", incrementValue+1);
+        GlobalVariables.setVariable("provider_incrementValue", incrementValue+1);
     }
 
     private String getDropdownOptionXpath(String option) {

@@ -35,7 +35,7 @@ public class CreateBillingProfileManagementActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering billing information >>>>>>>>>>>>>>>>>>>>");
 
         // Retrieve the incremented value
-        Integer incrementValue = GlobalVariables.getVariable("providerIncrementValue", Integer.class);
+        Integer incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
 
         // Check for null or default value
         if (incrementValue == null) {
@@ -86,7 +86,7 @@ public class CreateBillingProfileManagementActions {
 
         BasePage.clickWithJavaScript(billingPage.saveButton);
         waitUntilTwoBalloonPopupGetDisappeared();
-        isBasicInfoSaved();
+        isBillingInfoSaved();
     }
 
     private String getDropdownOptionXpath(String city) {
@@ -94,7 +94,7 @@ public class CreateBillingProfileManagementActions {
     }
 
     //verify if basic information is saved
-    private void isBasicInfoSaved() {
+    private void isBillingInfoSaved() {
         List<WebElement> allElements = BasePage.findListOfWebElements(CreateBillingProfileManagementPage.BASIC_INFORMATION_SUB_XPATHS);
 
         //filter the elements that have an 'id' attribute

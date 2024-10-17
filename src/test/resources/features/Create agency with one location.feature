@@ -12,6 +12,7 @@ Feature: Test CareHires create agency with one location
     And User enters valid agency - basic information
     And User enters valid agency - Credit Service information
     And User adds agency business location
+#    add multiple locations
     And User adds agency staff data
     And User adds Billing Profile Management data
     And User adds User Management data

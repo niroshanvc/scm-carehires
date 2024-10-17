@@ -60,7 +60,7 @@ public class CreateAgencyBasicInformationActions {
         genericUtils.fillAddress(createAgencyBasicInfoPage.postcode, postcode);
 
         //enter phone number
-        genericUtils.fillPhoneNumber(ENTITY, YML_FILE, YML_HEADER, "PhoneNumber", createAgencyBasicInfoPage.phoneNumberInput);
+        genericUtils.fillPhoneNumber(ENTITY, YML_FILE, createAgencyBasicInfoPage.phoneNumberInput, YML_HEADER, "PhoneNumber");
         BasePage.clickTabKey(createAgencyBasicInfoPage.phoneNumberInput);
         BasePage.genericWait(5000);
 
@@ -73,7 +73,7 @@ public class CreateAgencyBasicInformationActions {
         DataConfigurationReader.storeNewIncrementValue(ENTITY);
 
         // Store the increment value in GlobalVariables for reuse in other steps
-        GlobalVariables.setVariable("providerIncrementValue", incrementValue+1);
+        GlobalVariables.setVariable("provider_incrementValue", incrementValue+1);
     }
 
     //verify if basic information is saved

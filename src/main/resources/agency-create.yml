@@ -4,6 +4,7 @@ BasicInfo:
   CompanyLogo: Agency101.jpg
   AlsoKnownAs: Auto{{increment}}
   PostCode: BL0 9YX
+  PhoneType: Home
   PhoneNumber: "07412001245"
 
 CreditService:

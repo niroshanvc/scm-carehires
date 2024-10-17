@@ -1,6 +1,7 @@
 package com.carehires.utils;
 
 import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
+import java.util.Arrays;
 import com.carehires.pages.GenericElementsPage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +34,7 @@ public class GenericUtils {
 
     public void fillAddress(WebElement postcodeInput, String postcode) {
         logger.info("fillAddress");
-        BasePage.typeWithStringBuilderAndDelay(postcodeInput, postcode, 150);
+        BasePage.typeWithStringBuilderAndDelay(postcodeInput, postcode, 190);
         BasePage.waitUntilElementPresent(createAgencyBasicInfoPage.autoSuggestAddresses, 60);
         List<WebElement> addresses = getDriverInstance().findElements(By.xpath("//nb-option[contains(@id, 'nb-option')]"));
         if (!addresses.isEmpty()) {
@@ -43,12 +44,20 @@ public class GenericUtils {
         }
     }
 
-    public void fillPhoneNumber(String entity, String ymlFile, String key, String subKey, WebElement phoneNumberInput) {
+    public void fillPhoneNumber(String entity, String ymlFile, WebElement phoneNumberInput, String... keys) {
         logger.info("fillPhoneNumber");
-        String phoneNumber = DataConfigurationReader.readDataFromYmlFile(entity, ymlFile, key, subKey);
-        BasePage.clickWithJavaScript(genericElementsPage.phoneNumberDropdown);
-        BasePage.clickWithJavaScript(genericElementsPage.mobile);
-        BasePage.typeWithStringBuilder(phoneNumberInput, phoneNumber);
+        String phoneNumberType = "";
+        String phoneNumber = "";
+        if (Arrays.toString(keys).equalsIgnoreCase("PhoneNumberType")) {
+            phoneNumberType = DataConfigurationReader.readDataFromYmlFile(entity, ymlFile, keys);
+            BasePage.waitUntilElementPresent(genericElementsPage.phoneNumberDropdown, 20);
+            BasePage.clickWithJavaScript(genericElementsPage.phoneNumberDropdown);
+            BasePage.clickWithJavaScript(getPhoneNumberTypeXpath(phoneNumberType));
+        }
+        if (Arrays.toString(keys).equalsIgnoreCase("PhoneNumber")) {
+            phoneNumber = DataConfigurationReader.readDataFromYmlFile(entity, ymlFile, keys);
+            BasePage.typeWithStringBuilder(phoneNumberInput, phoneNumber);
+        }
     }
 
     public void waitUntilEmailAddressValidatedForUniqueness(String emailAddress, WebElement emailAddressInput,
@@ -73,5 +82,9 @@ public class GenericUtils {
         public EmailAddressNotUniqueException(String message) {
             super(message);
         }
+    }
+
+    private String getPhoneNumberTypeXpath(String option) {
+        return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 }

@@ -1,10 +1,11 @@
 BasicInformation:
   AgencyInformation:
+    Agency: Automation Agency 190
 
   PersonalInformation:
     WorkerLogo: Worker101.png
     FirstName: Dillon
-    LastName: Johnson101
+    LastName: Johnson 101
     AlsoKnownAs: Dil101
     WorkerEmailAddress: carehires+worker101@zohomail.com
     PhoneNumberType: Mobile
@@ -14,21 +15,22 @@ BasicInformation:
     Nationality: British
 
   ResidentialAddressInformation:
-    Country: United Kingdom - GB
+    Country: United Kingdom
     PostCode: BL0 9YX
     CurrentlyLivingInThisAddress: "Yes"
     From: 10-07-2016
+    To:
     ProofOfAddressDocument: Proof of Address Example.pdf
 
   EmploymentInformation:
-    WorkerType: Rehabilitation Worker
-    Skills: Elderly,Dementia,Autism,NVQ L3,Senior
-    RegulatorySettings: Not Required (NR)
+    WorkerType: Care Assistant
+    Skills: NVQ L3,Elderly,Dementia,Home Care,Care Certificate
+    RegulatorySettings: Health and Care Professions Council (HCPC),Care Quality Commission (CQC),Scottish Social Services Council (SSSC),Care and Social Services Inspectorate Wales (CSSIW)
     WorkerEmploymentType: PAYE
     PayrollReferenceNumber: 0012390
 
   PassportVisaDbsInformation:
-    NationalInsuranceNumber: "<uniqueNumber>"
+    NationalInsuranceNumber: "<insuranceNumber>"
     DbsCertificateNumber: "00153557"
     IsThereAnyConviction: "No"
 
