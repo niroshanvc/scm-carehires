@@ -7,6 +7,7 @@ Feature: Test CareHires create worker
     Given User logins to carehires
 
   @CreateWorker
-  Scenario: Create agency with one location
+  Scenario: Create a worker where nationality is British
     When User navigates to Worker Create page
     And User enters valid worker - basic information
+    And User enters Document and Proof information

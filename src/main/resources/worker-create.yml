@@ -4,13 +4,13 @@ BasicInformation:
 
   PersonalInformation:
     WorkerLogo: Worker101.png
-    FirstName: Dillon
-    LastName: Johnson 101
-    AlsoKnownAs: Dil101
-    WorkerEmailAddress: carehires+worker101@zohomail.com
+    FirstName: Automation
+    LastName: Worker {{increment}}
+    AlsoKnownAs: AutoWorker {{increment}}
+    WorkerEmailAddress: carehires+worker{{increment}}@zohomail.com
     PhoneNumberType: Mobile
     PhoneNumber: "07412001246"
-    DateOfBirth: 01-01-2000
+    DateOfBirth: 18 Oct 2000
     Gender: Male
     Nationality: British
 
@@ -18,8 +18,8 @@ BasicInformation:
     Country: United Kingdom
     PostCode: BL0 9YX
     CurrentlyLivingInThisAddress: "Yes"
-    From: 10-07-2016
-    To:
+    From: 18 Oct 2011
+    To: 13 Nov 2019
     ProofOfAddressDocument: Proof of Address Example.pdf
 
   EmploymentInformation:
@@ -37,3 +37,20 @@ BasicInformation:
   TravelInformation:
     PreferredTravelDistance: 30
     DrivingLicence: "Yes"
+
+Documents and Proof:
+  CV:
+    Document: carer_CV_template.pdf
+  DBSCertificate:
+    ExpiryDate: 18 Oct 2025
+    Document: DBS_basic_certificate.pdf
+  Passport:
+    ExpiryDate: 18 Nov 2025
+    Document: passport.pdf
+  NationalInsurance:
+    Document: National insurance.pdf
+  ProofOfAddress:
+    Document: Proof of Address.pdf
+  DrivingLicence:
+    ExpiryDate: 18 Dec 2025
+    Document: driving_licence.pdf

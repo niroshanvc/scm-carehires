@@ -1,7 +1,6 @@
 package com.carehires.utils;
 
 import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
-import java.util.Arrays;
 import com.carehires.pages.GenericElementsPage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
+import java.util.Objects;
 
 public class GenericUtils {
 
@@ -45,16 +45,19 @@ public class GenericUtils {
     }
 
     public void fillPhoneNumber(String entity, String ymlFile, WebElement phoneNumberInput, String... keys) {
-        logger.info("fillPhoneNumber");
-        if (Arrays.toString(keys).equalsIgnoreCase("PhoneNumberType")) {
-            String phoneNumberType = DataConfigurationReader.readDataFromYmlFile(entity, ymlFile, keys);
-            BasePage.waitUntilElementPresent(genericElementsPage.phoneNumberDropdown, 20);
-            BasePage.clickWithJavaScript(genericElementsPage.phoneNumberDropdown);
-            BasePage.clickWithJavaScript(getPhoneNumberTypeXpath(phoneNumberType));
-        }
-        if (Arrays.toString(keys).equalsIgnoreCase("PhoneNumber")) {
-            String phoneNumber = DataConfigurationReader.readDataFromYmlFile(entity, ymlFile, keys);
-            BasePage.typeWithStringBuilder(phoneNumberInput, phoneNumber);
+        logger.info("fillPhoneNumber .........");
+
+        for (String key : keys) {
+            if (Objects.equals(key, "PhoneNumberType")) {
+                String phoneNumberType = DataConfigurationReader.readDataFromYmlFile(entity, ymlFile, keys);
+                BasePage.waitUntilElementPresent(genericElementsPage.phoneNumberDropdown, 20);
+                BasePage.clickWithJavaScript(genericElementsPage.phoneNumberDropdown);
+                BasePage.clickWithJavaScript(getPhoneNumberTypeXpath(phoneNumberType));
+            }
+            if (Objects.equals(key, "PhoneNumber")) {
+                String phoneNumber = DataConfigurationReader.readDataFromYmlFile(entity, ymlFile, keys);
+                BasePage.typeWithStringBuilder(phoneNumberInput, phoneNumber);
+            }
         }
     }
 

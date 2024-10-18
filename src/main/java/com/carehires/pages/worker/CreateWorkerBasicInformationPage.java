@@ -67,6 +67,9 @@ public class CreateWorkerBasicInformationPage {
     @FindBy(xpath = "//input[@formcontrolname='livingto']")
     public WebElement livingTo;
 
+    @FindBy(id = "hubspot-deals-reference-living-to")
+    public WebElement durationInAddress;
+
     @FindBy(xpath = "(//input[@type='file'])[1]")
     public WebElement proofOfAddressDocument;
 

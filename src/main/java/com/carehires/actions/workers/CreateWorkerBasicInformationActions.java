@@ -11,6 +11,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -30,6 +33,8 @@ public class CreateWorkerBasicInformationActions {
     private static final String YML_SUB_HEADER_4 = "EmploymentInformation";
     private static final String YML_SUB_HEADER_5 = "PassportVisaDbsInformation";
 
+    private static final String VALUE_TEXT = "value";
+
     private static final Logger logger = LogManager.getLogger(CreateWorkerBasicInformationActions.class);
 
     public CreateWorkerBasicInformationActions() {
@@ -38,7 +43,8 @@ public class CreateWorkerBasicInformationActions {
     }
 
     public void enterWorkerBasicInformationData() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Agency Information >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Creating a worker >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Basic Information >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
 
         // Retrieve the current increment value for the worker (from the file)
@@ -79,6 +85,8 @@ public class CreateWorkerBasicInformationActions {
 
         String workerEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_2, "WorkerEmailAddress");
         BasePage.typeWithStringBuilder(basicInfo.email, workerEmail);
+
+        BasePage.scrollToWebElement(basicInfo.passportInformationHeader);
 
         genericUtils.fillPhoneNumber(ENTITY, YML_FILE, basicInfo.phoneNumberInput, YML_HEADER, YML_SUB_HEADER_2, "PhoneNumberType");
         genericUtils.fillPhoneNumber(ENTITY, YML_FILE, basicInfo.phoneNumberInput, YML_HEADER, YML_SUB_HEADER_2, "PhoneNumber");
@@ -121,7 +129,14 @@ public class CreateWorkerBasicInformationActions {
         if(currentlyLivingThisAddress.equalsIgnoreCase("Yes")) {
             BasePage.clickWithJavaScript(basicInfo.isCurrentlyLivingCheckbox);
             BasePage.waitUntilElementDisappeared(basicInfo.livingTo, 20);
+        } else {
+            String to = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "To");
+            BasePage.clearAndEnterTexts(basicInfo.livingTo, to);
+            BasePage.clickTabKey(basicInfo.livingTo);
         }
+
+        // verify duration in address
+        verifyDurationInAddress();
 
         //upload proof of address document
         String document = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "ProofOfAddressDocument");
@@ -137,6 +152,8 @@ public class CreateWorkerBasicInformationActions {
         BasePage.waitUntilElementClickable(getWorkerTypeDropdownOptionXpath(workerType), 20);
         BasePage.clickWithJavaScript(getWorkerTypeDropdownOptionXpath(workerType));
 
+        //need to add a pause until skills are loading
+        BasePage.genericWait(2000);
         String[] skills = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_4, "Skills").split(",");
         BasePage.clickWithJavaScript(basicInfo.workerSkillsDropdown);
         BasePage.waitUntilElementClickable(getDropdownOptionXpath(skills[0]), 20);
@@ -235,5 +252,37 @@ public class CreateWorkerBasicInformationActions {
         if(BasePage.getAttributeValue(headerText, "class").equalsIgnoreCase("collapsed")) {
             BasePage.clickWithJavaScript(headerIcon);
         }
+    }
+
+    private void verifyDurationInAddress() {
+        String fromDate = BasePage.getAttributeValue(basicInfo.livingFrom, VALUE_TEXT);
+        String currentlyLivingThisAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "CurrentlyLivingInThisAddress");
+
+        // Define the date format (e.g., 13 Nov 2019)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+        String  toDate;
+        LocalDate to;
+        if (currentlyLivingThisAddress.equalsIgnoreCase("Yes")) {
+            to = LocalDate.now();
+        } else {
+            toDate = BasePage.getAttributeValue(basicInfo.livingTo, VALUE_TEXT);
+            to = LocalDate.parse(toDate, formatter);
+        }
+
+        // Parse the date Strings into LocalDate objects
+        LocalDate from = LocalDate.parse(fromDate, formatter);
+
+        // Calculate the duration between the two dates using the Period class
+        Period period = Period.between(from, to);
+
+        // Extract the years, months, and days from the Period
+        int years = period.getYears();
+        int months = period.getMonths();
+        int days = period.getDays();
+
+        // 8 years, 1 months, and 1 days
+        String expectedDuration = years +" years, "+ months + " months, and " + days + " days";
+        String actualDuration = BasePage.getAttributeValue(basicInfo.durationInAddress, VALUE_TEXT);
+        assertThat("Duration in address is wrong!", actualDuration, is(expectedDuration));
     }
 }

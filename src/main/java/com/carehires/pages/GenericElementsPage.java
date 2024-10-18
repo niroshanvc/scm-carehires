@@ -4,7 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class GenericElementsPage {
-    @FindBy(id = "phone-type-select")
+    @FindBy(xpath = "//label[contains(text(), 'Phone Number')]/following-sibling::div//nb-select/button")
     public WebElement phoneNumberDropdown;
 
     @FindBy(id = "nb-option-4")

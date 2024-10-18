@@ -4,6 +4,8 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -17,6 +19,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -251,12 +254,6 @@ public class BasePage {
         }
     }
 
-    public static void scrollDownUntilVisible(WebElement element) {
-        logger.info("****************** Scroll down until visible: %s", element);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView(true);", element);
-    }
-
     public static void scrollToBottomOfPage() {
         logger.info("****************** Scroll down to bottom of the page.");
         Actions actions = new Actions(driver);
@@ -462,5 +459,44 @@ public class BasePage {
         } catch (TimeoutException e) {
             logger.error("Element was not visible after waiting for %s seconds. Locator: %s", seconds, locator);
         }
+    }
+
+    public static void waitUntilElementAttributeGetChanged(WebElement element, String attribute, int seconds) {
+        logger.info("****************** Wait until element attribute get changed: %s, and seconds: %s", element, seconds);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        try {
+            String finalValue = element.getAttribute(attribute);
+            wait.until((ExpectedCondition<Boolean>) driver -> {
+                String newAttributeValue = element.getAttribute(attribute);
+                assert newAttributeValue != null;
+                return !newAttributeValue.equalsIgnoreCase(finalValue);
+            });
+        } catch (TimeoutException e) {
+            logger.error("Element attribute was not changed after waiting for %s seconds. Locator: %s", seconds, element);
+        }
+    }
+
+    /**
+     * Verifies if an element is present on the page after waiting for a specified time using Hamcrest assertion.
+     *
+     * @param locator     The By locator for the element.
+     * @param timeOutSeconds The number of seconds to wait for the element to be present.
+     */
+    public static void verifyElementIsPresentAfterWait(By locator, int timeOutSeconds) {
+        logger.info("****************** Verify element present: %s, in seconds: %s", locator, timeOutSeconds);
+
+        // Create a WebDriverWait instance
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
+
+        // Wait until at least one element is present
+        wait.until((ExpectedCondition<Boolean>) driver -> {
+            assert driver != null;
+            List<WebElement> elements = driver.findElements(locator);
+            return !elements.isEmpty(); // Return true if at least one element is found
+        });
+
+        // After waiting, assert that the element is present
+        List<WebElement> elements = driver.findElements(locator);
+        MatcherAssert.assertThat("Element should be present", elements.size(), Matchers.greaterThan(0));
     }
 }
