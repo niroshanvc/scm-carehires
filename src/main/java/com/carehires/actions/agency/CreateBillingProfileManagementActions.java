@@ -19,7 +19,7 @@ import static org.hamcrest.core.Is.is;
 
 public class CreateBillingProfileManagementActions {
 
-    CreateBillingProfileManagementPage billingPage;
+    private final CreateBillingProfileManagementPage billingPage;
 
     private static final String ENTITY = "agency";
     private static final String YML_FILE = "agency-create";

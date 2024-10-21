@@ -54,3 +54,13 @@ Documents and Proof:
   DrivingLicence:
     ExpiryDate: 18 Dec 2025
     Document: driving_licence.pdf
+
+Education and Training:
+  Data1:
+    Certificate: Autism Awareness
+    ValidUntil: 28 Feb 2027
+    UploadCertificate: certificate-autism.pdf
+  Data2:
+    Certificate: Autism Awareness
+    ValidUntil: 28 Feb 2027
+    UploadCertificate: certificate-autism.pdf

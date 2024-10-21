@@ -171,6 +171,7 @@ public class BasePage {
         try {
             By locator = By.xpath(xpath);
             els = getDriver().findElements(locator);
+            waitUntilElementPresent(els.get(0), 90);
         } catch (Exception ex) {
             logger.error("****************** Object not found: %s", xpath);
         }
@@ -461,15 +462,18 @@ public class BasePage {
         }
     }
 
-    public static void waitUntilElementAttributeGetChanged(WebElement element, String attribute, int seconds) {
+    public static void waitUntilElementAttributeGetChanged(WebElement element, String attribute, String attributeUpdatedValue, int seconds) {
         logger.info("****************** Wait until element attribute get changed: %s, and seconds: %s", element, seconds);
         wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
         try {
-            String finalValue = element.getAttribute(attribute);
-            wait.until((ExpectedCondition<Boolean>) driver -> {
-                String newAttributeValue = element.getAttribute(attribute);
-                assert newAttributeValue != null;
-                return !newAttributeValue.equalsIgnoreCase(finalValue);
+            wait.until(new ExpectedCondition<Boolean>() {
+                public Boolean apply(WebDriver driver) {
+                    String attributeValue = element.getAttribute(attribute);
+                    if(attributeValue.equals(attributeUpdatedValue))
+                        return true;
+                    else
+                        return false;
+                }
             });
         } catch (TimeoutException e) {
             logger.error("Element attribute was not changed after waiting for %s seconds. Locator: %s", seconds, element);

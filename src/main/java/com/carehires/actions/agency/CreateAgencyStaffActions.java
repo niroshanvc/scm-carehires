@@ -13,7 +13,7 @@ import static org.hamcrest.core.Is.is;
 
 public class CreateAgencyStaffActions {
 
-    CreateAgencyStaffPage staffPage;
+    private final CreateAgencyStaffPage staffPage;
 
     private static final String ENTITY = "agency";
     private static final String YML_FILE = "agency-create";

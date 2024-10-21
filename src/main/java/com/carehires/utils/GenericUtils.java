@@ -88,4 +88,11 @@ public class GenericUtils {
     private String getPhoneNumberTypeXpath(String option) {
         return String.format("//nb-option[contains(text(),'%s')]", option);
     }
+
+    public void selectDateOnCalendar(String dateToBeClicked) {
+        BasePage.waitUntilElementPresent(genericElementsPage.calendarPopup, 30);
+        By dateLocator = genericElementsPage.getDateLocator(dateToBeClicked);
+        WebElement dateElement = BasePage.getDriver().findElement(dateLocator);
+        BasePage.clickWithJavaScript(dateElement);
+    }
 }

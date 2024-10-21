@@ -1,6 +1,7 @@
 package com.carehires.actions.workers;
 
 import com.carehires.common.GlobalVariables;
+import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
 import com.carehires.pages.worker.CreateWorkerBasicInformationPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -15,14 +16,15 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 public class CreateWorkerBasicInformationActions {
 
-    CreateWorkerBasicInformationPage basicInfo;
-    GenericUtils genericUtils = new GenericUtils();
+    private final CreateWorkerBasicInformationPage basicInfo;
+    private static final GenericUtils genericUtils = new GenericUtils();
 
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
@@ -93,6 +95,8 @@ public class CreateWorkerBasicInformationActions {
 
         String dateOfBirth = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_2, "DateOfBirth");
         BasePage.typeWithStringBuilder(basicInfo.dateOfBirth, dateOfBirth);
+        String birthDate = dateOfBirth.split(" ")[0].trim();
+        genericUtils.selectDateOnCalendar(birthDate);
 
         String gender = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_2, "Gender");
         if (gender.equalsIgnoreCase("Male")) {
@@ -121,8 +125,10 @@ public class CreateWorkerBasicInformationActions {
         //scroll down to employment information
         BasePage.scrollToWebElement(basicInfo.employmentInformationHeader);
 
-        String fromDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "From");
-        BasePage.clearAndEnterTexts(basicInfo.livingFrom, fromDate);
+        String fromDateMonthYear = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "From");
+        BasePage.clearAndEnterTexts(basicInfo.livingFrom, fromDateMonthYear);
+        String fromDate = dateOfBirth.split(" ")[0].trim();
+        genericUtils.selectDateOnCalendar(fromDate);
         BasePage.clickTabKey(basicInfo.livingFrom);
 
         String currentlyLivingThisAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "CurrentlyLivingInThisAddress");
@@ -130,8 +136,10 @@ public class CreateWorkerBasicInformationActions {
             BasePage.clickWithJavaScript(basicInfo.isCurrentlyLivingCheckbox);
             BasePage.waitUntilElementDisappeared(basicInfo.livingTo, 20);
         } else {
-            String to = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "To");
-            BasePage.clearAndEnterTexts(basicInfo.livingTo, to);
+            String toDateMonthYear = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "To");
+            BasePage.clearAndEnterTexts(basicInfo.livingTo, toDateMonthYear);
+            String toDate = dateOfBirth.split(" ")[0].trim();
+            genericUtils.selectDateOnCalendar(toDate);
             BasePage.clickTabKey(basicInfo.livingTo);
         }
 
@@ -217,11 +225,13 @@ public class CreateWorkerBasicInformationActions {
 
         BasePage.clickWithJavaScript(basicInfo.saveButton);
 
+        isBasicInfoSaved();
+
         // After successfully entering the basic information, update the increment value in the file
         DataConfigurationReader.storeNewIncrementValue(ENTITY);
 
         // Store the increment value in GlobalVariables for reuse in other steps
-        GlobalVariables.setVariable("workerIncrementValue", incrementValue+1);
+        GlobalVariables.setVariable("worker_incrementValue", incrementValue+1);
     }
 
     private String getDropdownOptionXpath(String option) {
@@ -284,5 +294,22 @@ public class CreateWorkerBasicInformationActions {
         String expectedDuration = years +" years, "+ months + " months, and " + days + " days";
         String actualDuration = BasePage.getAttributeValue(basicInfo.durationInAddress, VALUE_TEXT);
         assertThat("Duration in address is wrong!", actualDuration, is(expectedDuration));
+    }
+
+    //verify if basic information is saved
+    private void isBasicInfoSaved() {
+        BasePage.waitUntilElementClickable(basicInfo.saveButton, 90);
+        List<WebElement> allElements = BasePage.findListOfWebElements(CreateAgencyBasicInfoPage.BASIC_INFORMATION_SUB_XPATHS);
+
+        //filter the elements that have an 'id' attribute
+        List<WebElement> elementsWithIdAttribute = allElements.stream()
+                .filter(element -> element.getAttribute("id") != null && !Objects.requireNonNull(element.getAttribute("id")).isEmpty())
+                .toList();
+
+        //check if any of the elements have an 'id' attribute equal to 'Icon_material-done'
+        boolean hasIdDone = elementsWithIdAttribute.stream()
+                .anyMatch(element -> Objects.equals(element.getAttribute("id"), "Icon_material-done"));
+
+        assertThat("Basic information is not saved",hasIdDone, is(true));
     }
 }

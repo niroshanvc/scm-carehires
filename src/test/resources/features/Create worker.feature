@@ -11,3 +11,4 @@ Feature: Test CareHires create worker
     When User navigates to Worker Create page
     And User enters valid worker - basic information
     And User enters Document and Proof information
+    And User enters Education and Training data

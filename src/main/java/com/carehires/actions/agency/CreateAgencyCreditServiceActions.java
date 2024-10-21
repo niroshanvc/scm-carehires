@@ -20,8 +20,8 @@ import static org.hamcrest.core.Is.is;
 
 public class CreateAgencyCreditServiceActions {
 
-    CreateAgencyCreditServicePage creditServicePage;
-    GenericUtils genericUtils = new GenericUtils();
+    private final CreateAgencyCreditServicePage creditServicePage;
+    private static final GenericUtils genericUtils = new GenericUtils();
 
     private static final String ENTITY = "agency";
     private static final String YML_FILE = "agency-create";

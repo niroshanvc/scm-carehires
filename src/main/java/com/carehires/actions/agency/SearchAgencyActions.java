@@ -8,7 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 public class SearchAgencyActions {
 
-    SearchAgencyPage searchAgencyPage;
+    private final SearchAgencyPage searchAgencyPage;
 
     public SearchAgencyActions() {
         searchAgencyPage = new SearchAgencyPage();

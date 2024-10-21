@@ -12,7 +12,7 @@ import static org.hamcrest.core.Is.is;
 
 public class SubContractingAgreementActions {
 
-    SubContractingAgreementPage subContractingAgreementPage;
+    private final SubContractingAgreementPage subContractingAgreementPage;
 
     private static final Logger logger = LogManager.getFormatterLogger(SubContractingAgreementActions.class);
 

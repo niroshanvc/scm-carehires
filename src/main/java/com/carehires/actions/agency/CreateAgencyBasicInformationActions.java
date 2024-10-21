@@ -19,7 +19,7 @@ import static org.hamcrest.core.Is.is;
 public class CreateAgencyBasicInformationActions {
 
     CreateAgencyBasicInfoPage createAgencyBasicInfoPage;
-    GenericUtils genericUtils = new GenericUtils();
+    private static final GenericUtils genericUtils = new GenericUtils();
 
     private static final String ENTITY = "agency";
     private static final String YML_FILE = "agency-create";

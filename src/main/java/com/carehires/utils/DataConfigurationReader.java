@@ -11,7 +11,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -186,5 +188,33 @@ public class DataConfigurationReader {
         }
 
         return incrementValue;
+    }
+
+    /**
+     * Parses the YAML file and counts the number of datasets under a specific section.
+     *
+     * @param sectionName the name of the section to count datasets for (e.g., "Education and Training").
+     * @param ymlFile the name of the YAML file to parse.
+     * @return the number of datasets in the section.
+     */
+    public int countDataSetsInSection(String sectionName, String ymlFile) {
+        Yaml yaml = new Yaml();
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(ymlFile)) {
+            if (inputStream == null) {
+                throw new RuntimeException("YAML file not found!");
+            }
+
+            Map<String, Object> data = yaml.load(inputStream);
+            if (data.containsKey(sectionName)) {
+                // The section is represented as a LinkedHashMap
+                LinkedHashMap<String, Object> sectionData = (LinkedHashMap<String, Object>) data.get(sectionName);
+                return sectionData.size();  // Return the number of datasets
+            } else {
+                throw new RuntimeException("Section not found in the YAML file!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 }

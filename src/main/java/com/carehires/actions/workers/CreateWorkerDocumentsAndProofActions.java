@@ -4,6 +4,7 @@ import com.carehires.common.GlobalVariables;
 import com.carehires.pages.worker.CreateWorkerDocumentsAndProofPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
+import com.carehires.utils.GenericUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -15,7 +16,7 @@ import static org.hamcrest.core.Is.is;
 
 public class CreateWorkerDocumentsAndProofActions {
 
-    CreateWorkerDocumentsAndProofPage documentsAndProofPage;
+    private final CreateWorkerDocumentsAndProofPage documentsAndProofPage;
 
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
@@ -26,13 +27,15 @@ public class CreateWorkerDocumentsAndProofActions {
 
     private static final Logger logger = LogManager.getLogger(CreateWorkerDocumentsAndProofActions.class);
 
+    private static final GenericUtils genericUtils = new GenericUtils();
+
     public CreateWorkerDocumentsAndProofActions() {
         documentsAndProofPage = new CreateWorkerDocumentsAndProofPage();
         PageFactory.initElements(BasePage.getDriver(), documentsAndProofPage);
     }
 
     public void enterDocumentsAndProofData() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Basic Information >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Document and Proof Information >>>>>>>>>>>>>>>>>>>>");
         // Retrieve the incremented value
         Integer incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
 
@@ -58,6 +61,8 @@ public class CreateWorkerDocumentsAndProofActions {
         String dbsExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "DBSCertificate", YML_SUB_HEADER_EXPIRY_DATE);
         String dbsFile = WORKER_DOCUMENTS_PATH + dbsDoc;
         BasePage.clearAndEnterTexts(documentsAndProofPage.dbsCertificateExpiryDate, dbsExpiryDate);
+        String date = dbsExpiryDate.split(" ")[0].trim();
+        genericUtils.selectDateOnCalendar(date);
         BasePage.uploadFile(documentsAndProofPage.dbsCertificateSelectFile, dbsFile);
         verifyDocumentUploadedSuccessfully(documentsAndProofPage.dbsCertificateStatus);
 
@@ -66,6 +71,8 @@ public class CreateWorkerDocumentsAndProofActions {
         String passportExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Passport", YML_SUB_HEADER_EXPIRY_DATE);
         String passportFile = WORKER_DOCUMENTS_PATH + passportDoc;
         BasePage.clearAndEnterTexts(documentsAndProofPage.passportDocumentExpiryDate, passportExpiryDate);
+        String passportDate = passportExpiryDate.split(" ")[0].trim();
+        genericUtils.selectDateOnCalendar(passportDate);
         BasePage.uploadFile(documentsAndProofPage.passportDocumentFile, passportFile);
         verifyDocumentUploadedSuccessfully(documentsAndProofPage.passportDocumentStatus);
 
@@ -86,14 +93,29 @@ public class CreateWorkerDocumentsAndProofActions {
         String drivingLicenseExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "DrivingLicence", YML_SUB_HEADER_EXPIRY_DATE);
         String drivingLicenseFile = WORKER_DOCUMENTS_PATH + drivingLicenseDoc;
         BasePage.clearAndEnterTexts(documentsAndProofPage.drivingLicenceExpiryDate, drivingLicenseExpiryDate);
+        String drivingLicense = drivingLicenseExpiryDate.split(" ")[0].trim();
+        genericUtils.selectDateOnCalendar(drivingLicense);
         BasePage.uploadFile(documentsAndProofPage.drivingLicenceSelectFile, drivingLicenseFile);
         verifyDocumentUploadedSuccessfully(documentsAndProofPage.drivingLicenceStatus);
+
+        BasePage.clickWithJavaScript(documentsAndProofPage.saveButton);
+        verifySuccessMessage();
     }
 
     private void verifyDocumentUploadedSuccessfully(WebElement fileStatus) {
-        BasePage.waitUntilElementAttributeGetChanged(fileStatus, "status", 60);
+        BasePage.waitUntilElementAttributeGetChanged(fileStatus, "status", "success", 60);
         String expectedStatus = "success";
         String actualStatus = BasePage.getAttributeValue(fileStatus, "status");
         assertThat("Document not uploaded", actualStatus, is(expectedStatus));
+    }
+
+    // success message: Record created successfully
+    private void verifySuccessMessage() {
+        BasePage.waitUntilElementPresent(documentsAndProofPage.successMessage, 90);
+        String actualInLowerCase = BasePage.getText(documentsAndProofPage.successMessage).toLowerCase().trim();
+        String expected = "Record created successfully";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Document and proof success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(documentsAndProofPage.successMessage, 20);
     }
 }

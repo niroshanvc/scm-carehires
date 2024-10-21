@@ -51,4 +51,10 @@ public class CreateWorkerDocumentsAndProofPage {
     public WebElement drivingLicenceStatus;
 
     public static final String DRIVING_LICENCE_FIELD_XPATH = "//p[contains(text(), 'Driving Licence')]";
+
+    @FindBy(xpath = "//button[contains(text(),'Save')]")
+    public WebElement saveButton;
+
+    @FindBy(xpath = "//nb-toast//span")
+    public WebElement successMessage;
 }
