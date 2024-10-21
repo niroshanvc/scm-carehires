@@ -466,14 +466,10 @@ public class BasePage {
         logger.info("****************** Wait until element attribute get changed: %s, and seconds: %s", element, seconds);
         wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
         try {
-            wait.until(new ExpectedCondition<Boolean>() {
-                public Boolean apply(WebDriver driver) {
-                    String attributeValue = element.getAttribute(attribute);
-                    if(attributeValue.equals(attributeUpdatedValue))
-                        return true;
-                    else
-                        return false;
-                }
+            wait.until((ExpectedCondition<Boolean>) driver -> {
+                String attributeValue = element.getAttribute(attribute);
+                assert attributeValue != null;
+                return attributeValue.equals(attributeUpdatedValue);
             });
         } catch (TimeoutException e) {
             logger.error("Element attribute was not changed after waiting for %s seconds. Locator: %s", seconds, element);
