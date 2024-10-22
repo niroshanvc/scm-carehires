@@ -62,6 +62,8 @@ public class CreateWorkerEducationAndTrainingActions {
         verifySuccessMessage();
         verifyCertificateValidityStatus();
 
+        //enter second set of data
+        BasePage.clickWithJavaScript(educationAndTrainingPage.addNewButton);
         String certificate2 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET2, "Certificate");
         BasePage.clickWithJavaScript(educationAndTrainingPage.certificateDropdown);
         BasePage.waitUntilElementPresent(getDropdownOptionXpath(certificate2), 20);
@@ -76,9 +78,17 @@ public class CreateWorkerEducationAndTrainingActions {
         String absoluteFilePath2 = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\" + uploadCertificate2;
         BasePage.uploadFile(educationAndTrainingPage.uploadCertificate, absoluteFilePath2);
 
-        // click on the Add button
         BasePage.clickWithJavaScript(educationAndTrainingPage.addButton);
         verifySuccessMessage();
+        verifyCertificateValidityStatus();
+
+        //moving to the next section
+        BasePage.clickWithJavaScript(educationAndTrainingPage.updateButton);
+        BasePage.waitUntilElementPresent(educationAndTrainingPage.saveButton, 60);
+        BasePage.clickWithJavaScript(educationAndTrainingPage.saveButton);
+
+        //move to next section
+        verifySaveButtonSuccessMessage();
     }
 
     private String getDropdownOptionXpath(String city) {
@@ -98,5 +108,14 @@ public class CreateWorkerEducationAndTrainingActions {
         String actual = BasePage.getText(educationAndTrainingPage.certificateValidityStatus).trim();
         String expected = "Certificate Valid";
         assertThat("Certificate Validity Status is not loading correctly!", actual, is(expected));
+    }
+
+    private void verifySaveButtonSuccessMessage() {
+        BasePage.waitUntilElementPresent(educationAndTrainingPage.successMessage, 90);
+        String actualInLowerCase = BasePage.getText(educationAndTrainingPage.successMessage).toLowerCase().trim();
+        String expected = "Certificates updated successfully.";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Unable to add certificate!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(educationAndTrainingPage.successMessage, 20);
     }
 }

@@ -24,6 +24,7 @@ public class DataConfigurationReader {
     private static final String INCREMENT_FILE_PATH_AGENCY = "src/main/resources/create_agency_increment_value.txt";
     private static final String INCREMENT_FILE_PATH_PROVIDER = "src/main/resources/create_provider_increment_value.txt";
     private static final String INCREMENT_FILE_PATH_WORKER = "src/main/resources/create_worker_increment_value.txt";
+    private static final String INCREMENT_VALUE = "_incrementValue";
 
     // Method to read data from the YAML file
     public static String readDataFromYmlFile(String entityType, String fileName, String... keys) {
@@ -55,7 +56,7 @@ public class DataConfigurationReader {
 
                 // Replace the {{increment}} placeholder with the current increment value
                 if (data.contains("{{increment}}")) {
-                    int incrementValue = GlobalVariables.getVariable(entityType + "_incrementValue", Integer.class);
+                    int incrementValue = GlobalVariables.getVariable(entityType + INCREMENT_VALUE, Integer.class);
                     data = data.replace("{{increment}}", String.valueOf(incrementValue));  // Change entityType based on the test
                 }
 
@@ -171,7 +172,7 @@ public class DataConfigurationReader {
 
     public static int getCurrentIncrementValueForWorkers(String entityType) {
         // Load increment value from file if it's not set
-        Integer incrementValue = GlobalVariables.getVariable(entityType + "_incrementValue", Integer.class);
+        Integer incrementValue = GlobalVariables.getVariable(entityType + INCREMENT_VALUE, Integer.class);
 
         if (incrementValue == null) {
             // Attempt to load it from file
@@ -184,7 +185,7 @@ public class DataConfigurationReader {
             }
 
             // Set the increment value in GlobalVariables for future use
-            GlobalVariables.setVariable(entityType + "_incrementValue", incrementValue);
+            GlobalVariables.setVariable(entityType + INCREMENT_VALUE, incrementValue);
         }
 
         return incrementValue;

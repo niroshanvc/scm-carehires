@@ -104,7 +104,6 @@ public class BasePage {
         } catch (Exception e) {
             logger.error("****************** Error occurred during WebDriver initialization: ", e);
         }
-
     }
 
     public static String getProperty(String key) {
@@ -127,7 +126,11 @@ public class BasePage {
     public static void waitUntilElementPresent(WebElement element, int timeOutSeconds) {
         logger.info("****************** Wait until element present: %s, in seconds: %s", element, timeOutSeconds);
         wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
-        wait.until(ExpectedConditions.visibilityOf(element));
+        try {
+            wait.until(ExpectedConditions.visibilityOf(element));
+        } catch (TimeoutException e) {
+            logger.error("Element %s not visible after waiting for %s seconds.", element, timeOutSeconds);
+        }
     }
 
     public static void clickAfterWait(WebElement element) {
@@ -273,15 +276,22 @@ public class BasePage {
         return driver.getTitle();
     }
 
+    /**
+     * Waits for the page to be fully loaded by checking the document's readyState.
+     */
     public static void waitUntilPageCompletelyLoaded() {
         logger.info("****************** Wait until page completely loaded");
-        for (int i = 1; i < 60; i++) {
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            boolean ready = Objects.requireNonNull(js.executeScript("return document.readyState"))
-                    .toString().equalsIgnoreCase("complete");
-            if (ready) {
-                return;
-            }
+        try {
+            wait = new WebDriverWait(driver, Duration.ofSeconds(90));
+            // Wait until the document's readyState is "complete"
+            ExpectedCondition<Boolean> pageLoadCondition = driver -> {
+                assert driver != null;
+                return Objects.equals(((JavascriptExecutor) driver).executeScript("return document.readyState"), "complete");
+            };
+            wait.until(pageLoadCondition);
+        } catch (TimeoutException timeoutException) {
+            logger.error("Page is not completely loaded after 90 seconds");
+            throw timeoutException;
         }
     }
 

@@ -3,19 +3,25 @@ package com.carehires.pages.worker;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CreateWorkerEducationAndTrainingPage {
+public class CreateWorkerVaccinationAndAllergyInformationPage {
 
-    @FindBy(xpath = "//button[contains(@class, 'inserted') and (contains(@class, 'button'))]")
+    @FindBy(xpath = "(//button[contains(text(), 'Add New')])[1]")
     public WebElement addNewButton;
 
-    @FindBy(xpath = "//nb-select[@formcontrolname='certificateName']/button")
-    public WebElement certificateDropdown;
+    @FindBy(xpath = "//button[contains(text(), 'Request to Complete')]")
+    public WebElement requestToCompleteButton;
 
-    @FindBy(xpath = "//input[@formcontrolname='expiryDate']")
-    public WebElement validUntilInput;
+    @FindBy(xpath = "//input[@formcontrolname='vaccinationType']")
+    public WebElement vaccinationType;
+
+    @FindBy(id = "vaccinationDate")
+    public WebElement vaccinationDate;
 
     @FindBy(xpath = "//input[@type='file']")
-    public WebElement uploadCertificate;
+    public WebElement selectFile;
+
+    @FindBy(xpath = "//nb-checkbox[@formcontrolname='isCovidApprovedVaccine']//input")
+    public WebElement covid19Checkbox;
 
     @FindBy(xpath = "//button[contains(text(),'Add')]")
     public WebElement addButton;
@@ -28,9 +34,6 @@ public class CreateWorkerEducationAndTrainingPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
-
-    @FindBy(xpath = "//div[contains(@class, 'document-table-body')]//span[contains(@class, 'success')]")
-    public WebElement certificateValidityStatus;
 
     @FindBy(xpath = "//button[contains(text(),'Save')]")
     public WebElement saveButton;

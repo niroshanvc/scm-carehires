@@ -61,6 +61,19 @@ Education and Training:
     ValidUntil: 28 Feb 2027
     UploadCertificate: certificate-autism.pdf
   Data2:
-    Certificate: Autism Awareness
+    Certificate: Anti-Bullying
     ValidUntil: 28 Feb 2027
-    UploadCertificate: certificate-autism.pdf
+    UploadCertificate: certificate-anti-bullying.pdf
+
+Emergency Information:
+  ContactName: Wilson Alexander {{increment}}
+  Relationship: Father
+  PrimaryContactNumber: "07413301246"
+  SecondaryContactNumber: "07412001226"
+
+Vaccination and Allergy Information:
+#  Hepatitis-B,Influenza,MMR,Varicella
+  NameOrType: Covid-19
+  VaccinationDate: 18 Dec 2023
+  VaccinationDocument: vaccination-covid19.pdf
+  IsCovid-19Vaccine: Yes
