@@ -23,7 +23,7 @@ public class Hooks {
         String entityType = determineEntityTypeFromScenario(scenario);
 
         // Get the current increment value from the DataConfigurationReader
-        int incrementValue = DataConfigurationReader.getCurrentIncrementValueForWorkers(entityType);
+        int incrementValue = DataConfigurationReader.getCurrentIncrementValue(entityType);
 
         // Store the increment value in GlobalVariables for use across steps
         GlobalVariables.storeIncrementedValue(entityType, incrementValue);

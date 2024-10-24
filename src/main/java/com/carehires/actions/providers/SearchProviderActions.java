@@ -54,5 +54,4 @@ public class SearchProviderActions {
         // If no match found, return -1 to indicate it
         return -1;
     }
-
 }

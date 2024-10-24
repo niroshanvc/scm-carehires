@@ -31,7 +31,7 @@ public class SignInPageActions {
 
         BasePage.clearAndEnterTexts(signin.email, username);
         BasePage.clearAndEnterTexts(signin.password, decryptedPassword);
-        BasePage.clickWithJavaScript(signin.signin);
+        BasePage.clickWithJavaScript(signin.signinButton);
         logger.info("successfully logged in to scm");
         BasePage.waitUntilPageCompletelyLoaded();
     }

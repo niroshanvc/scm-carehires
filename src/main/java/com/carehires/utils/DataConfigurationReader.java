@@ -170,27 +170,6 @@ public class DataConfigurationReader {
         return LETTERS.charAt(random.nextInt(LETTERS.length()));
     }
 
-    public static int getCurrentIncrementValueForWorkers(String entityType) {
-        // Load increment value from file if it's not set
-        Integer incrementValue = GlobalVariables.getVariable(entityType + INCREMENT_VALUE, Integer.class);
-
-        if (incrementValue == null) {
-            // Attempt to load it from file
-            incrementValue = loadIncrementValueFromFile(entityType);
-
-            // If still null, throw an exception
-            if (incrementValue == null) {
-                logger.error("Increment value is null for entity type: {}", entityType);
-                throw new RuntimeException("Increment value not initialized for " + entityType);
-            }
-
-            // Set the increment value in GlobalVariables for future use
-            GlobalVariables.setVariable(entityType + INCREMENT_VALUE, incrementValue);
-        }
-
-        return incrementValue;
-    }
-
     /**
      * Parses the YAML file and counts the number of datasets under a specific section.
      *

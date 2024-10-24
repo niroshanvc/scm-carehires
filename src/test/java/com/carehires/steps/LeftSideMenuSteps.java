@@ -22,6 +22,11 @@ public class LeftSideMenuSteps {
         leftSideMenuActions.gotoWorkerCreatePage();
     }
 
+    @When("^User navigates to Worker View page$")
+    public void moveToWorkerViewPage() {
+        leftSideMenuActions.gotoWorkerViewPage();
+    }
+
     @When("User navigates to Provider Create page")
     public void moveToProviderCreatePage() {
         leftSideMenuActions.gotoProviderCreatePage();

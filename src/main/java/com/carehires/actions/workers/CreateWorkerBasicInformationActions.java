@@ -29,11 +29,11 @@ public class CreateWorkerBasicInformationActions {
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
     private static final String YML_AGENCY_FILE = "agency-create";
-    private static final String YML_HEADER = "BasicInformation";
-    private static final String YML_SUB_HEADER_2 = "PersonalInformation";
-    private static final String YML_SUB_HEADER_3 = "ResidentialAddressInformation";
-    private static final String YML_SUB_HEADER_4 = "EmploymentInformation";
-    private static final String YML_SUB_HEADER_5 = "PassportVisaDbsInformation";
+    private static final String YML_HEADER = "Basic Information";
+    private static final String YML_SUB_HEADER_2 = "Personal Information";
+    private static final String YML_SUB_HEADER_3 = "Residential Address Information";
+    private static final String YML_SUB_HEADER_4 = "Employment Information";
+    private static final String YML_SUB_HEADER_5 = "Passport Visa DBS Information";
 
     private static final String VALUE_TEXT = "value";
 
@@ -50,11 +50,11 @@ public class CreateWorkerBasicInformationActions {
         BasePage.waitUntilPageCompletelyLoaded();
 
         // Retrieve the current increment value for the worker (from the file)
-        int incrementValue = DataConfigurationReader.getCurrentIncrementValueForWorkers(ENTITY);
+        int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
 
         BasePage.clickWithJavaScript(basicInfo.firstName);
 
-        String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "AgencyInformation", "Agency");
+        String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Agency Information", "Agency");
         BasePage.clickWithJavaScript(basicInfo.agencyDropdown);
         By by = By.xpath(getDropdownOptionXpath(agency));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
@@ -213,10 +213,10 @@ public class CreateWorkerBasicInformationActions {
 
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Travel & Other Information >>>>>>>>>>>>>>>>>>>>");
         expandSubSection(basicInfo.travelInformationHeader, basicInfo.travelInformationHeaderExpandIcon);
-        String travelDistance = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "TravelInformation", "PreferredTravelDistance");
+        String travelDistance = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Travel Information", "PreferredTravelDistance");
         BasePage.typeWithStringBuilder(basicInfo.travelDistance, travelDistance);
 
-        String isDrivingLicenceAvailable = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "TravelInformation", "DrivingLicence");
+        String isDrivingLicenceAvailable = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Travel Information", "DrivingLicence");
         if (isDrivingLicenceAvailable.equalsIgnoreCase("Yes")) {
             BasePage.clickWithJavaScript((basicInfo.hasDrivingLicenseRadioButton).get(0));
         } else {

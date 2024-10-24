@@ -20,8 +20,8 @@ public class CreateWorkerEducationAndTrainingActions {
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
     private static final String YML_HEADER = "Education and Training";
-    private static final String YML_HEADER_DATESET1 = "Data1";
-    private static final String YML_HEADER_DATESET2 = "Data2";
+    private static final String YML_HEADER_DATESET1 = "Dataset1";
+    private static final String YML_HEADER_DATESET2 = "Dataset2";
     private static final Logger logger = LogManager.getFormatterLogger(CreateWorkerEducationAndTrainingActions.class);
 
     public CreateWorkerEducationAndTrainingActions() {

@@ -19,11 +19,11 @@ public class SearchAgencyActions {
         BasePage.waitUntilPageCompletelyLoaded();
 
         // Retrieve the incremented value
-        Integer incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
+        Integer incrementValue = GlobalVariables.getVariable("agency_incrementValue", Integer.class);
 
         // Check for null or default value
         if (incrementValue == null) {
-            throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");
+            throw new NullPointerException("Increment value for agency is not set in GlobalVariables.");
         }
 
         //wait until profile status get updated

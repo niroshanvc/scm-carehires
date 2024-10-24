@@ -29,7 +29,12 @@ public class LeftSideMenuActions {
 
     public void gotoWorkerCreatePage() {
         BasePage.mouseHoverAndClick(leftSideMenu.workers, leftSideMenu.workerCreateIndividual);
-        logger.info(" --------------------------- Moves to Worker Create Page ---------------------------");
+        logger.info(" --------------------------- Moves to Worker Individual Create Page ---------------------------");
+    }
+
+    public void gotoWorkerViewPage() {
+        BasePage.mouseHoverAndClick(leftSideMenu.workers, leftSideMenu.workerView);
+        logger.info(" --------------------------- Moves to Worker View Page ---------------------------");
     }
 
     public void gotoProviderCreatePage() {

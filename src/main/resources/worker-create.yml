@@ -1,8 +1,8 @@
-BasicInformation:
-  AgencyInformation:
+Basic Information:
+  Agency Information:
     Agency: Automation Agency 190
 
-  PersonalInformation:
+  Personal Information:
     WorkerLogo: Worker101.png
     FirstName: Automation
     LastName: Worker {{increment}}
@@ -14,7 +14,7 @@ BasicInformation:
     Gender: Male
     Nationality: British
 
-  ResidentialAddressInformation:
+  Residential Address Information:
     Country: United Kingdom
     PostCode: BL0 9YX
     CurrentlyLivingInThisAddress: "Yes"
@@ -22,19 +22,19 @@ BasicInformation:
     To: 13 Nov 2019
     ProofOfAddressDocument: Proof of Address Example.pdf
 
-  EmploymentInformation:
+  Employment Information:
     WorkerType: Care Assistant
     Skills: NVQ L3,Elderly,Dementia,Home Care,Care Certificate
     RegulatorySettings: Health and Care Professions Council (HCPC),Care Quality Commission (CQC),Scottish Social Services Council (SSSC),Care and Social Services Inspectorate Wales (CSSIW)
     WorkerEmploymentType: PAYE
     PayrollReferenceNumber: 0012390
 
-  PassportVisaDbsInformation:
+  Passport Visa DBS Information:
     NationalInsuranceNumber: "<insuranceNumber>"
     DbsCertificateNumber: "00153557"
     IsThereAnyConviction: "No"
 
-  TravelInformation:
+  Travel Information:
     PreferredTravelDistance: 30
     DrivingLicence: "Yes"
 
@@ -56,11 +56,11 @@ Documents and Proof:
     Document: driving_licence.pdf
 
 Education and Training:
-  Data1:
+  Dataset1:
     Certificate: Autism Awareness
     ValidUntil: 28 Feb 2027
     UploadCertificate: certificate-autism.pdf
-  Data2:
+  Dataset2:
     Certificate: Anti-Bullying
     ValidUntil: 28 Feb 2027
     UploadCertificate: certificate-anti-bullying.pdf
@@ -76,4 +76,44 @@ Vaccination and Allergy Information:
   NameOrType: Covid-19
   VaccinationDate: 18 Dec 2023
   VaccinationDocument: vaccination-covid19.pdf
-  IsCovid-19Vaccine: Yes
+  IsCovid-19Vaccine: "Yes"
+
+Employment:
+  Worker History:
+    Dataset1:
+      EmploymentType: Full-time employment
+      IsCurrentlyWorkHere: "Yes"
+      CompanyName: Best Care
+      Designation: Development Manager
+      From: 29 Feb 2019
+      To: 15 Aug 2021
+      IsCareSectorRelatedExperience: "Yes"
+      ReasonForLeaving: Career Progression
+      AdditionalNote: >
+        Care workers play a crucial role in providing support and assistance to individuals in need, 
+        ensuring their well-being and comfort.
+    Dataset2:
+      EmploymentType: Full-time employment
+      IsCurrentlyWorkHere: "No"
+      CompanyName: Orange Pvt
+      Designation: Care Assistant
+      From: 29 Feb 2016
+      To: 14 Jan 2019
+      IsCareSectorRelatedExperience: "Yes"
+      ReasonForLeaving: Personal/Family
+      AdditionalNote: >
+        Care workers play a crucial role in providing support and assistance to individuals in need, 
+        ensuring their well-being and comfort.
+  Reference:
+    Dataset1:
+      ReferenceType: Professional Referee
+      UploadFile: Employment History Reference.pdf
+      ReferenceNote: >
+        When crafting your resume, highlight your experience in patient care, 
+        your ability to communicate effectively, and any relevant certifications you hold.
+    Dataset2:
+      ReferenceType: Academic Referee
+      UploadFile: Employment History Reference.pdf
+      ReferenceNote: >
+        When crafting your resume, highlight your experience in patient care, 
+        your ability to communicate effectively, and any relevant certifications you hold.

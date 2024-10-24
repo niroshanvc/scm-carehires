@@ -14,7 +14,7 @@ public class LoginSteps {
     OverviewActions overviewActions = new OverviewActions();
     DashboardActions dashboardActions = new DashboardActions();
 
-    @Given("^User navigates to the signin page$")
+    @Given("^User navigates to the signinButton page$")
     public void navigateToSingInPage() {
         signInPageActions.navigateToSignInPage();
     }

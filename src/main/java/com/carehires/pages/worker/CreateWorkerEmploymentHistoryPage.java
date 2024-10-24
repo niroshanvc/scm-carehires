@@ -38,23 +38,32 @@ public class CreateWorkerEmploymentHistoryPage {
     @FindBy(xpath = "//button[contains(text(), 'Add Work History')]")
     public WebElement addWorkHistoryButton;
 
+    @FindBy(xpath = "//div[contains(@class, 'compliance-issue-detected')]//p[1]/span")
+    public WebElement careSectorRelatedExperience;
+
+    @FindBy(xpath = "//div[contains(@class, 'compliance-issue-detected')]//p[2]/span")
+    public WebElement totalExperience;
+
     @FindBy(xpath = "(//button[contains(@class, 'inserted') and (contains(@class, 'button'))])[2]")
     public WebElement referenceAddNewButton;
 
-    @FindBy(xpath = "//button[contains(text(), 'Request to Complete')]")
-    public WebElement requestToCompleteButton;
+    @FindBy(xpath = "//nb-select[@formcontrolname='referenceType']/button")
+    public WebElement referenceTypeDropdown;
 
-    @FindBy(xpath = "//input[@formcontrolname='vaccinationType']")
-    public WebElement vaccinationType;
+    @FindBy(xpath = "//nb-select[@formcontrolname='organizationName']/button")
+    public WebElement selectWorkplaceDropdown;
 
-    @FindBy(id = "vaccinationDate")
-    public WebElement vaccinationDate;
+    @FindBy(xpath = "//textarea[@formcontrolname='referenceNote']")
+    public WebElement referenceNote;
 
     @FindBy(xpath = "//input[@type='file']")
-    public WebElement selectFile;
+    public WebElement uploadFile;
 
-    @FindBy(xpath = "//nb-checkbox[@formcontrolname='isCovidApprovedVaccine']//input")
-    public WebElement covid19Checkbox;
+    @FindBy(xpath = "//button[contains(text(), 'Add Reference')]")
+    public WebElement addReferenceButton;
+
+    @FindBy(xpath = "(//div[contains(@class, 'common-document-table-body')])[2]/div[3]/span")
+    public WebElement referenceTypeCheckingStatus;
 
     @FindBy(xpath = "//button[contains(text(),'Add')]")
     public WebElement addButton;
@@ -70,4 +79,16 @@ public class CreateWorkerEmploymentHistoryPage {
 
     @FindBy(xpath = "//button[contains(text(),'Save')]")
     public WebElement saveButton;
+
+    @FindBy(xpath = "//nb-dialog-container/*")
+    public WebElement successPopup;
+
+    @FindBy(xpath = "//nb-dialog-container/*//nb-card-body/h3")
+    public WebElement successPopupTitle;
+
+    @FindBy(xpath = "//nb-dialog-container/*//nb-card-footer/a")
+    public WebElement successPopupNoLink;
+
+    @FindBy(xpath = "//div[not(contains(@class, 'provider'))]//p/strong")
+    public WebElement workerId;
 }
