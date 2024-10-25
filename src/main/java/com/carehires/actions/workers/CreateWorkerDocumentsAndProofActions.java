@@ -60,9 +60,8 @@ public class CreateWorkerDocumentsAndProofActions {
         String dbsDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "DBSCertificate", YML_SUB_HEADER_DOCUMENT);
         String dbsExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "DBSCertificate", YML_SUB_HEADER_EXPIRY_DATE);
         String dbsFile = WORKER_DOCUMENTS_PATH + dbsDoc;
-        BasePage.clearAndEnterTexts(documentsAndProofPage.dbsCertificateExpiryDate, dbsExpiryDate);
-        String date = dbsExpiryDate.split(" ")[0].trim();
-        genericUtils.selectDateOnCalendar(date);
+        BasePage.clickWithJavaScript(documentsAndProofPage.dbsCertificateExpiryDate);
+        genericUtils.selectDateFromCalendar(dbsExpiryDate);
         BasePage.uploadFile(documentsAndProofPage.dbsCertificateSelectFile, dbsFile);
         verifyDocumentUploadedSuccessfully(documentsAndProofPage.dbsCertificateStatus);
 
@@ -70,9 +69,8 @@ public class CreateWorkerDocumentsAndProofActions {
         String passportDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Passport", YML_SUB_HEADER_DOCUMENT);
         String passportExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Passport", YML_SUB_HEADER_EXPIRY_DATE);
         String passportFile = WORKER_DOCUMENTS_PATH + passportDoc;
-        BasePage.clearAndEnterTexts(documentsAndProofPage.passportDocumentExpiryDate, passportExpiryDate);
-        String passportDate = passportExpiryDate.split(" ")[0].trim();
-        genericUtils.selectDateOnCalendar(passportDate);
+        BasePage.clickWithJavaScript(documentsAndProofPage.passportDocumentExpiryDate);
+        genericUtils.selectDateFromCalendar(passportExpiryDate);
         BasePage.uploadFile(documentsAndProofPage.passportDocumentFile, passportFile);
         verifyDocumentUploadedSuccessfully(documentsAndProofPage.passportDocumentStatus);
 
@@ -92,9 +90,8 @@ public class CreateWorkerDocumentsAndProofActions {
         String drivingLicenseDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "DrivingLicence", YML_SUB_HEADER_DOCUMENT);
         String drivingLicenseExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "DrivingLicence", YML_SUB_HEADER_EXPIRY_DATE);
         String drivingLicenseFile = WORKER_DOCUMENTS_PATH + drivingLicenseDoc;
-        BasePage.clearAndEnterTexts(documentsAndProofPage.drivingLicenceExpiryDate, drivingLicenseExpiryDate);
-        String drivingLicense = drivingLicenseExpiryDate.split(" ")[0].trim();
-        genericUtils.selectDateOnCalendar(drivingLicense);
+        BasePage.clickWithJavaScript(documentsAndProofPage.drivingLicenceExpiryDate);
+        genericUtils.selectDateFromCalendar(drivingLicenseExpiryDate);
         BasePage.uploadFile(documentsAndProofPage.drivingLicenceSelectFile, drivingLicenseFile);
         verifyDocumentUploadedSuccessfully(documentsAndProofPage.drivingLicenceStatus);
 

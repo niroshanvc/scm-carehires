@@ -14,7 +14,7 @@ CreditService:
   JobTitle: Manager
   EmailAddress: automation.qa+agency{{increment}}@carehires.com
   Phone: "07412001245"
-  DateOfBirth: 01-01-1999
+  DateOfBirth: 01 Jan 1993
   PersonalIdNumber: "AD787876Y"
   PostCode: BL0 9YX
   OwnershipPercentage: 21
@@ -25,7 +25,7 @@ CreditService:
   LegalRepJobTitle: Legal Manager
   LegalRepEmailAddress: automation.qa+agencyleg{{increment}}@carehires.com
   LegalRepPhone: "07412001245"
-  LegalRepDateOfBirth: 01-01-1999
+  LegalRepDateOfBirth: 01 Sep 1990
   LegalRepPersonalIdNumber: "AD787876Y"
   LegalRepPostCode: BL0 9YX
   LegalRepOwnershipPercentage: 24

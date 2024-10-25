@@ -10,6 +10,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -89,10 +91,35 @@ public class GenericUtils {
         return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 
-    public void selectDateOnCalendar(String dateToBeClicked) {
-        BasePage.waitUntilElementPresent(genericElementsPage.calendarPopup, 30);
-        By dateLocator = genericElementsPage.getDateLocator(dateToBeClicked);
-        WebElement dateElement = BasePage.getDriver().findElement(dateLocator);
-        BasePage.clickWithJavaScript(dateElement);
+    public void selectDateFromCalendar(String targetDate) {
+        // Parse the target date to get day, month, and year
+        LocalDate target = LocalDate.parse(targetDate, DateTimeFormatter.ofPattern("dd MMM yyyy"));
+        int targetDay = target.getDayOfMonth();
+        String tartDayString = String.valueOf(targetDay);
+        String targetMonthYear = target.format(DateTimeFormatter.ofPattern("MMMM yyyy"));  // e.g., "October 2024"
+
+        // Get the displayed month and year
+        BasePage.waitUntilElementPresent(genericElementsPage.monthAndYear, 20);
+        WebElement monthYearButton = BasePage.getDriver().findElement(By.xpath(GenericElementsPage.MONTH_YEAR_XPATH));
+        String displayingMonthYear = monthYearButton.getText().trim();
+        while (!displayingMonthYear.equalsIgnoreCase(targetMonthYear)) {
+            if (target.isAfter(LocalDate.now())) {
+                // Click to move to the next month
+                BasePage.clickWithJavaScript(genericElementsPage.nextMonthButton);
+            } else {
+                // Click to move to the previous month
+                BasePage.clickWithJavaScript(genericElementsPage.previousMonthButton);
+            }
+            // Update the displayed month and year after navigation
+            displayingMonthYear = BasePage.getDriver().findElement(By.xpath(GenericElementsPage.MONTH_YEAR_XPATH)).getText();
+        }
+
+        // Select the target day
+        for (WebElement el : genericElementsPage.calendarDays) {
+            if (BasePage.getText(el).trim().equals(tartDayString)) {
+                BasePage.clickWithJavaScript(el);
+                break;
+            }
+        }
     }
 }

@@ -49,9 +49,8 @@ public class CreateWorkerEducationAndTrainingActions {
         BasePage.clickWithJavaScript(getDropdownOptionXpath(certificate1));
 
         String validUntil1 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET1, "ValidUntil");
-        BasePage.clearAndEnterTexts(educationAndTrainingPage.validUntilInput, validUntil1);
-        String dateToBeClicked1 = validUntil1.split(" ")[0].trim();
-        genericUtils.selectDateOnCalendar(dateToBeClicked1);
+        BasePage.clickWithJavaScript(educationAndTrainingPage.validUntilInput);
+        genericUtils.selectDateFromCalendar(validUntil1);
 
         String uploadCertificate1 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET1, "UploadCertificate");
         String absoluteFilePath1 = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\" + uploadCertificate1;
@@ -70,9 +69,8 @@ public class CreateWorkerEducationAndTrainingActions {
         BasePage.clickWithJavaScript(getDropdownOptionXpath(certificate2));
 
         String validUntil2 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET2, "ValidUntil");
-        BasePage.clearAndEnterTexts(educationAndTrainingPage.validUntilInput, validUntil2);
-        String dateToBeClicked2 = validUntil2.split(" ")[0].trim();
-        genericUtils.selectDateOnCalendar(dateToBeClicked2);
+        BasePage.clickWithJavaScript(educationAndTrainingPage.validUntilInput);
+        genericUtils.selectDateFromCalendar(validUntil2);
 
         String uploadCertificate2 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET2, "UploadCertificate");
         String absoluteFilePath2 = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\" + uploadCertificate2;

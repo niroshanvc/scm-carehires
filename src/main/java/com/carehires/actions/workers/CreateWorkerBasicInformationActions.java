@@ -94,9 +94,8 @@ public class CreateWorkerBasicInformationActions {
         genericUtils.fillPhoneNumber(ENTITY, YML_FILE, basicInfo.phoneNumberInput, YML_HEADER, YML_SUB_HEADER_2, "PhoneNumber");
 
         String dateOfBirth = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_2, "DateOfBirth");
-        BasePage.typeWithStringBuilder(basicInfo.dateOfBirth, dateOfBirth);
-        String birthDate = dateOfBirth.split(" ")[0].trim();
-        genericUtils.selectDateOnCalendar(birthDate);
+        BasePage.clickWithJavaScript(basicInfo.dateOfBirth);
+        genericUtils.selectDateFromCalendar(dateOfBirth);
 
         String gender = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_2, "Gender");
         if (gender.equalsIgnoreCase("Male")) {
@@ -126,10 +125,8 @@ public class CreateWorkerBasicInformationActions {
         BasePage.scrollToWebElement(basicInfo.employmentInformationHeader);
 
         String fromDateMonthYear = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "From");
-        BasePage.clearAndEnterTexts(basicInfo.livingFrom, fromDateMonthYear);
-        String fromDate = dateOfBirth.split(" ")[0].trim();
-        genericUtils.selectDateOnCalendar(fromDate);
-        BasePage.clickTabKey(basicInfo.livingFrom);
+        BasePage.clickWithJavaScript(basicInfo.livingFrom);
+        genericUtils.selectDateFromCalendar(fromDateMonthYear);
 
         String currentlyLivingThisAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "CurrentlyLivingInThisAddress");
         if(currentlyLivingThisAddress.equalsIgnoreCase("Yes")) {
@@ -137,10 +134,8 @@ public class CreateWorkerBasicInformationActions {
             BasePage.waitUntilElementDisappeared(basicInfo.livingTo, 20);
         } else {
             String toDateMonthYear = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "To");
-            BasePage.clearAndEnterTexts(basicInfo.livingTo, toDateMonthYear);
-            String toDate = dateOfBirth.split(" ")[0].trim();
-            genericUtils.selectDateOnCalendar(toDate);
-            BasePage.clickTabKey(basicInfo.livingTo);
+            BasePage.clickWithJavaScript(basicInfo.livingTo);
+            genericUtils.selectDateFromCalendar(toDateMonthYear);
         }
 
         // verify duration in address

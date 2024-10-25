@@ -68,7 +68,8 @@ public class CreateAgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.phoneNumber, phone);
 
         String dob = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "DateOfBirth");
-        BasePage.clearAndEnterTexts(creditServicePage.dateOfBirth, dob);
+        BasePage.clickWithJavaScript(creditServicePage.dateOfBirth);
+        genericUtils.selectDateFromCalendar(dob);
 
         String personalId = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PersonalIdNumber");
         BasePage.clearAndEnterTexts(creditServicePage.personalIdNumber, personalId);
@@ -116,7 +117,8 @@ public class CreateAgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.legalPhoneNumber, legalRepPhone);
 
         String legalRepDob = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepDateOfBirth");
-        BasePage.clearAndEnterTexts(creditServicePage.legalDateOfBirth, legalRepDob);
+        BasePage.clickWithJavaScript(creditServicePage.legalDateOfBirth);
+        genericUtils.selectDateFromCalendar(legalRepDob);
 
         String legalRepPersonalId = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepPersonalIdNumber");
         BasePage.clearAndEnterTexts(creditServicePage.legalPersonalIdNumber, legalRepPersonalId);
