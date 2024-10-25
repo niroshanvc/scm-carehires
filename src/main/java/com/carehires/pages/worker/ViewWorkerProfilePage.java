@@ -36,4 +36,10 @@ public class ViewWorkerProfilePage {
 
     @FindBy(xpath = "//span[contains(text(), 'Review Profile')]/ancestor::button")
     public WebElement reviewProfileButton;
+
+    @FindBy(xpath = "//p[text()='General Compliance']/ancestor::div[contains(@class, 'multiple')]/div[@style]")
+    public WebElement generalComplianceStatusMessage;
+
+    @FindBy(xpath = "//button[contains(text(), 'Approve')]")
+    public WebElement approveButton;
 }

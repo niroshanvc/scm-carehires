@@ -3,6 +3,8 @@ package com.carehires.actions.workers;
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.worker.SearchWorkerPage;
 import com.carehires.utils.BasePage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -10,7 +12,8 @@ import java.util.List;
 
 public class SearchWorkerActions {
 
-    SearchWorkerPage searchPage;
+    private final SearchWorkerPage searchPage;
+    private static final Logger logger = LogManager.getFormatterLogger(SearchWorkerActions.class);
 
     public SearchWorkerActions() {
         searchPage = new SearchWorkerPage();
@@ -18,6 +21,8 @@ public class SearchWorkerActions {
     }
 
     public void searchByText() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Searching the relevant worker by using the auto generated worker id >>>>>>>>>>>>>>>>>>>>");
+
         BasePage.waitUntilPageCompletelyLoaded();
 
         String id = GlobalVariables.getVariable("workerId", String.class);

@@ -18,3 +18,8 @@ Feature: Test CareHires create worker
     And User navigates to Worker View page
     When User finds recently created worker
     Then User verifies the worker profile status as Profile Complete
+    And User accepts all the compliance
+    And User updates the worker profile as Submitted for Review
+    And User verifies the worker profile status as Submitted For Review
+    And User updates the worker profile as Approve
+    And User verifies the worker profile status as Approved
