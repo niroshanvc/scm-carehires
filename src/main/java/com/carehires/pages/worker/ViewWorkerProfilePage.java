@@ -13,14 +13,8 @@ public class ViewWorkerProfilePage {
     @FindBy(xpath = "//button[contains(@class, 'primary float')]")
     public WebElement submitForReviewButton;
 
-    @FindBy(xpath = "//div[contains(text(), 'Profile')]/../div/img")
-    public WebElement profileIcon;
-
     @FindBy(xpath = "//div[contains(@class, 'status')]/div/div")
     public WebElement profileStatus;
-
-    @FindBy(xpath = "//nb-dialog-container//h5")
-    public WebElement popupText;
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
