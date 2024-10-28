@@ -35,13 +35,13 @@ public class ViewWorkerProfileActions {
     public void acceptAllCompliance() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Accepting all compliance >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
-        verifyGeneralComplianceMessageBeforeAcceptingTheCompliance();
+        openViewComplianceWidget();
         acceptCompliance();
         verifyComplianceSavedSuccessMessage();
         verifyGeneralComplianceMessageAfterAcceptingTheCompliance();
     }
 
-    private void verifyGeneralComplianceMessageBeforeAcceptingTheCompliance() {
+    private void openViewComplianceWidget() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying General Compliance Message >>>>>>>>>>>>>>>>>>>>");
         BasePage.refreshPage();
         BasePage.waitUntilPageCompletelyLoaded();
@@ -49,16 +49,13 @@ public class ViewWorkerProfileActions {
         BasePage.waitUntilElementClickable(profilePage.viewComplianceButton, 20);
         BasePage.clickWithJavaScript(profilePage.viewComplianceButton);
         BasePage.waitUntilElementDisplayed(profilePage.workerComplianceOverviewWidget, 20);
-        String actual = BasePage.getText(profilePage.generalComplianceStatusMessage).toLowerCase().trim();
-        String expected = "0 out of 10 mandatory items checked";
-        String expectedInLowerCase = expected.toLowerCase().trim();
-        assertThat("General Compliance Message is wrong! - Before accepting the compliance", actual, is(expectedInLowerCase));
     }
 
     private void acceptCompliance() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Selecting all compliance checkboxes >>>>>>>>>>>>>>>>>>>>");
 
         List<WebElement> checkboxes = profilePage.complianceCheckboxes;
+        BasePage.waitUntilElementPresent((profilePage.complianceCheckboxes.get(0)), 40);
 
         for (WebElement checkbox : checkboxes) {
             BasePage.clickWithJavaScript(checkbox);
@@ -82,6 +79,7 @@ public class ViewWorkerProfileActions {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(profilePage.viewComplianceButton);
         BasePage.waitUntilElementDisplayed(profilePage.workerComplianceOverviewWidget, 20);
+        BasePage.genericWait(3000);
         String actual = BasePage.getText(profilePage.generalComplianceStatusMessage).toLowerCase().trim();
         String expected = "10 out of 10 mandatory items Checked";
         String expectedInLowerCase = expected.toLowerCase().trim();

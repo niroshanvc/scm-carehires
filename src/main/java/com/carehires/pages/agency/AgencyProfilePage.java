@@ -22,4 +22,7 @@ public class AgencyProfilePage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    @FindBy(xpath = "//img[contains(@src, 'settings')]/ancestor::div[@class='step-item']")
+    public WebElement settingsIcon;
 }

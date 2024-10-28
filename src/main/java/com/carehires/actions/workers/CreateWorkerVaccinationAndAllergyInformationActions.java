@@ -47,7 +47,7 @@ public class CreateWorkerVaccinationAndAllergyInformationActions {
 
         String vaccinationDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "VaccinationDate");
         BasePage.clickWithJavaScript(vaccinationPage.vaccinationDate);
-        genericUtils.selectDateFromCalendar(vaccinationDate);
+        genericUtils.selectDateFromCalendarPopup(vaccinationDate);
 
         String vaccinationDocument = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "VaccinationDocument");
         String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\" + vaccinationDocument;

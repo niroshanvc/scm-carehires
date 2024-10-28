@@ -95,7 +95,7 @@ public class CreateWorkerBasicInformationActions {
 
         String dateOfBirth = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_2, "DateOfBirth");
         BasePage.clickWithJavaScript(basicInfo.dateOfBirth);
-        genericUtils.selectDateFromCalendar(dateOfBirth);
+        genericUtils.selectDateFromCalendarPopup(dateOfBirth);
 
         String gender = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_2, "Gender");
         if (gender.equalsIgnoreCase("Male")) {
@@ -126,7 +126,7 @@ public class CreateWorkerBasicInformationActions {
 
         String fromDateMonthYear = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "From");
         BasePage.clickWithJavaScript(basicInfo.livingFrom);
-        genericUtils.selectDateFromCalendar(fromDateMonthYear);
+        genericUtils.selectDateFromCalendarPopup(fromDateMonthYear);
 
         String currentlyLivingThisAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "CurrentlyLivingInThisAddress");
         if(currentlyLivingThisAddress.equalsIgnoreCase("Yes")) {
@@ -135,7 +135,7 @@ public class CreateWorkerBasicInformationActions {
         } else {
             String toDateMonthYear = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "To");
             BasePage.clickWithJavaScript(basicInfo.livingTo);
-            genericUtils.selectDateFromCalendar(toDateMonthYear);
+            genericUtils.selectDateFromCalendarPopup(toDateMonthYear);
         }
 
         // verify duration in address

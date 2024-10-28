@@ -24,7 +24,7 @@ public class GenericElementsPage {
     public static final String MONTH_YEAR_XPATH = "//nb-calendar-view-mode/button";
 
     @FindBy(xpath = "//nb-calendar-view-mode/button")
-    public WebElement monthAndYear;
+    public WebElement monthAndYearDropdown;
 
     @FindBy(xpath = "//button[contains(@class, 'next-month')]")
     public WebElement nextMonthButton;
@@ -34,4 +34,18 @@ public class GenericElementsPage {
 
     @FindBy(xpath = "//nb-calendar-day-cell[not(contains(@class, 'bounding')) and not(contains(@class, 'disabled'))]/div")
     public List<WebElement> calendarDays;
+
+    @FindBy(xpath = "//nb-calendar-year-cell/div")
+    public List<WebElement> yearOptions;
+
+    @FindBy(xpath = "//nb-calendar-pageable-navigation/button[contains(@class, 'prev-month')]")
+    public WebElement previousYearButton;
+
+    @FindBy(xpath = "//nb-calendar-pageable-navigation/button[contains(@class, 'next-month')]")
+    public WebElement nextYearButton;
+
+    // Method to return a dynamic By locator for the calendar month based on the parse month
+    public By getMonthLocator(String selectedMonth) {
+        return By.xpath("//nb-calendar-month-cell/div[contains(text(), '" + selectedMonth + "')]");
+    }
 }

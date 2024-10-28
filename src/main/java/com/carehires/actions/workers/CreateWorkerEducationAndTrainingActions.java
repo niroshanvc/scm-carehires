@@ -50,7 +50,7 @@ public class CreateWorkerEducationAndTrainingActions {
 
         String validUntil1 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET1, "ValidUntil");
         BasePage.clickWithJavaScript(educationAndTrainingPage.validUntilInput);
-        genericUtils.selectDateFromCalendar(validUntil1);
+        genericUtils.selectDateFromCalendarPopup(validUntil1);
 
         String uploadCertificate1 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET1, "UploadCertificate");
         String absoluteFilePath1 = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\" + uploadCertificate1;
@@ -70,7 +70,7 @@ public class CreateWorkerEducationAndTrainingActions {
 
         String validUntil2 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET2, "ValidUntil");
         BasePage.clickWithJavaScript(educationAndTrainingPage.validUntilInput);
-        genericUtils.selectDateFromCalendar(validUntil2);
+        genericUtils.selectDateFromCalendarPopup(validUntil2);
 
         String uploadCertificate2 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET2, "UploadCertificate");
         String absoluteFilePath2 = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\" + uploadCertificate2;

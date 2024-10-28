@@ -45,7 +45,10 @@ public class CreateBillingProfileManagementPage {
     @FindBy(xpath = "//button[contains(text(),'Save')]")
     public WebElement saveButton;
 
-    public static final String BASIC_INFORMATION_SUB_XPATHS = "//h6[text()='Billing Profile Management']/..//*";
+    public static final String BASIC_INFORMATION_SUB_XPATHS = "//h6[text()='Billing Profile Management']/..//nb-icon/*/*/*";
+
+    @FindBy(xpath = "(//h6[text()='Billing Profile Management']/..//nb-icon/*/*/*)[2]")
+    public WebElement billingProfileManagementSavedIcon;
 
     public By getFirstSuccessMessage() {
         return firstSuccessMessage;

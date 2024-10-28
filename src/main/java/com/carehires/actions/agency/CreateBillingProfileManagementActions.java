@@ -96,6 +96,7 @@ public class CreateBillingProfileManagementActions {
     //verify if basic information is saved
     private void isBillingInfoSaved() {
         List<WebElement> allElements = BasePage.findListOfWebElements(CreateBillingProfileManagementPage.BASIC_INFORMATION_SUB_XPATHS);
+        BasePage.waitUntilElementPresent(billingPage.billingProfileManagementSavedIcon, 20);
 
         //filter the elements that have an 'id' attribute
         List<WebElement> elementsWithIdAttribute = allElements.stream()

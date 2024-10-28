@@ -61,7 +61,7 @@ public class CreateWorkerDocumentsAndProofActions {
         String dbsExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "DBSCertificate", YML_SUB_HEADER_EXPIRY_DATE);
         String dbsFile = WORKER_DOCUMENTS_PATH + dbsDoc;
         BasePage.clickWithJavaScript(documentsAndProofPage.dbsCertificateExpiryDate);
-        genericUtils.selectDateFromCalendar(dbsExpiryDate);
+        genericUtils.selectDateFromCalendarPopup(dbsExpiryDate);
         BasePage.uploadFile(documentsAndProofPage.dbsCertificateSelectFile, dbsFile);
         verifyDocumentUploadedSuccessfully(documentsAndProofPage.dbsCertificateStatus);
 
@@ -70,7 +70,7 @@ public class CreateWorkerDocumentsAndProofActions {
         String passportExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Passport", YML_SUB_HEADER_EXPIRY_DATE);
         String passportFile = WORKER_DOCUMENTS_PATH + passportDoc;
         BasePage.clickWithJavaScript(documentsAndProofPage.passportDocumentExpiryDate);
-        genericUtils.selectDateFromCalendar(passportExpiryDate);
+        genericUtils.selectDateFromCalendarPopup(passportExpiryDate);
         BasePage.uploadFile(documentsAndProofPage.passportDocumentFile, passportFile);
         verifyDocumentUploadedSuccessfully(documentsAndProofPage.passportDocumentStatus);
 
@@ -91,7 +91,7 @@ public class CreateWorkerDocumentsAndProofActions {
         String drivingLicenseExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "DrivingLicence", YML_SUB_HEADER_EXPIRY_DATE);
         String drivingLicenseFile = WORKER_DOCUMENTS_PATH + drivingLicenseDoc;
         BasePage.clickWithJavaScript(documentsAndProofPage.drivingLicenceExpiryDate);
-        genericUtils.selectDateFromCalendar(drivingLicenseExpiryDate);
+        genericUtils.selectDateFromCalendarPopup(drivingLicenseExpiryDate);
         BasePage.uploadFile(documentsAndProofPage.drivingLicenceSelectFile, drivingLicenseFile);
         verifyDocumentUploadedSuccessfully(documentsAndProofPage.drivingLicenceStatus);
 

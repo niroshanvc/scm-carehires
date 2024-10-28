@@ -99,7 +99,7 @@ public class GenericUtils {
         String targetMonthYear = target.format(DateTimeFormatter.ofPattern("MMMM yyyy"));  // e.g., "October 2024"
 
         // Get the displayed month and year
-        BasePage.waitUntilElementPresent(genericElementsPage.monthAndYear, 20);
+        BasePage.waitUntilElementPresent(genericElementsPage.monthAndYearDropdown, 20);
         WebElement monthYearButton = BasePage.getDriver().findElement(By.xpath(GenericElementsPage.MONTH_YEAR_XPATH));
         String displayingMonthYear = monthYearButton.getText().trim();
         while (!displayingMonthYear.equalsIgnoreCase(targetMonthYear)) {
@@ -118,6 +118,65 @@ public class GenericUtils {
         for (WebElement el : genericElementsPage.calendarDays) {
             if (BasePage.getText(el).trim().equals(tartDayString)) {
                 BasePage.clickWithJavaScript(el);
+                break;
+            }
+        }
+    }
+
+    public void selectDateFromCalendarPopup(String targetDate) {
+        // Parse the target date to get day, month, and year
+        LocalDate target = LocalDate.parse(targetDate, DateTimeFormatter.ofPattern("dd MMM yyyy"));
+        int targetDay = target.getDayOfMonth();
+        String targetMonth = target.format(DateTimeFormatter.ofPattern("MMM"));  // e.g., "Oct"
+        int targetYear = target.getYear();
+
+        // Step 1: Open the month/year dropdown
+        BasePage.clickWithJavaScript(genericElementsPage.monthAndYearDropdown);
+
+        // Step 2: Select the year
+        selectYear(targetYear);
+
+        // Step 3: Select the month
+        selectMonth(targetMonth);
+
+        // Step 4: Select the day
+        selectDay(targetDay);
+    }
+
+    // Helper method to select the year
+    private void selectYear(int targetYear) {
+        while (true) {
+            List<WebElement> yearsDisplayed = genericElementsPage.yearOptions; // Update locator as per dropdown structure
+            int firstYearDisplayed = Integer.parseInt(yearsDisplayed.get(0).getText().trim());
+            int lastYearDisplayed = Integer.parseInt(yearsDisplayed.get(yearsDisplayed.size() - 1).getText().trim());
+
+            if (targetYear >= firstYearDisplayed && targetYear <= lastYearDisplayed) {
+                for (WebElement yearOption : yearsDisplayed) {
+                    if (Integer.parseInt(yearOption.getText().trim()) == targetYear) {
+                        BasePage.clickWithJavaScript(yearOption);
+                        return;
+                    }
+                }
+            } else if (targetYear < firstYearDisplayed) {
+                BasePage.clickWithJavaScript(genericElementsPage.previousYearButton);
+            } else {
+                BasePage.clickWithJavaScript(genericElementsPage.nextYearButton);
+            }
+        }
+    }
+
+    // Helper method to select the month
+    private void selectMonth(String targetMonth) {
+        WebElement monthElement = BasePage.getDriver().findElement(genericElementsPage.getMonthLocator(targetMonth));
+        BasePage.clickWithJavaScript(monthElement);
+    }
+
+    // Helper method to select the day
+    private void selectDay(int targetDay) {
+        String targetDayString = String.valueOf(targetDay);
+        for (WebElement dayElement : genericElementsPage.calendarDays) {
+            if (BasePage.getText(dayElement).trim().equals(targetDayString)) {
+                BasePage.clickWithJavaScript(dayElement);
                 break;
             }
         }

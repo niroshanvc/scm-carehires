@@ -64,7 +64,7 @@ public class CreateWorkerEmploymentHistoryActions {
         } else {
             String toDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, YML_SUB_HEADER_DATASET1, "To");
             BasePage.clickWithJavaScript(employmentHistoryPage.to);
-            genericUtils.selectDateFromCalendar(toDate);
+            genericUtils.selectDateFromCalendarPopup(toDate);
 
             String reasonForLeaving = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, YML_SUB_HEADER_DATASET1, "ReasonForLeaving");
             BasePage.clickWithJavaScript(employmentHistoryPage.reasonForLeavingDropdown);
@@ -75,7 +75,7 @@ public class CreateWorkerEmploymentHistoryActions {
 
         String fromDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, YML_SUB_HEADER_DATASET1, "From");
         BasePage.clickWithJavaScript(employmentHistoryPage.from);
-        genericUtils.selectDateFromCalendar(fromDate);
+        genericUtils.selectDateFromCalendarPopup(fromDate);
 
         String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, YML_SUB_HEADER_DATASET1, "CompanyName");
         BasePage.clearAndEnterTexts(employmentHistoryPage.companyName, companyName);
@@ -101,7 +101,7 @@ public class CreateWorkerEmploymentHistoryActions {
         employmentType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, YML_SUB_HEADER_DATASET2, "EmploymentType");
         BasePage.clickWithJavaScript(employmentHistoryPage.employmentTypeDropdown);
         BasePage.genericWait(1000);
-        BasePage.waitUntilElementClickable(getDropdownOptionXpath(employmentType), 20);
+        BasePage.waitUntilElementPresent(getDropdownOptionXpath(employmentType), 20);
         BasePage.clickWithJavaScript(getDropdownOptionXpath(employmentType));
 
         currentlyWorkHere = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, YML_SUB_HEADER_DATASET2, "IsCurrentlyWorkHere");
@@ -110,7 +110,7 @@ public class CreateWorkerEmploymentHistoryActions {
         } else {
             String toDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, YML_SUB_HEADER_DATASET2, "To");
             BasePage.clickWithJavaScript(employmentHistoryPage.to);
-            genericUtils.selectDateFromCalendar(toDate);
+            genericUtils.selectDateFromCalendarPopup(toDate);
 
             String reasonForLeaving = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, YML_SUB_HEADER_DATASET2, "ReasonForLeaving");
             BasePage.clickWithJavaScript(employmentHistoryPage.reasonForLeavingDropdown);
@@ -121,7 +121,7 @@ public class CreateWorkerEmploymentHistoryActions {
 
         fromDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, YML_SUB_HEADER_DATASET2, "From");
         BasePage.clickWithJavaScript(employmentHistoryPage.from);
-        genericUtils.selectDateFromCalendar(fromDate);
+        genericUtils.selectDateFromCalendarPopup(fromDate);
 
         companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, YML_SUB_HEADER_DATASET2, "CompanyName");
         BasePage.clearAndEnterTexts(employmentHistoryPage.companyName, companyName);

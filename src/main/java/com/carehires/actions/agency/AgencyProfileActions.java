@@ -27,9 +27,12 @@ public class AgencyProfileActions {
 
         waitUntilCreatingPaymentProfilePopupGetDisappeared();
 
+        // verify the branding theme missing message
+        verifyBrandingThemeMissingMessage();
+
         //Check on "Go to Settings" button
-        BasePage.waitUntilElementClickable(agencyProfile.goToSettingsButton, 90);
-        BasePage.clickWithJavaScript(agencyProfile.goToSettingsButton);
+        BasePage.waitUntilElementClickable(agencyProfile.settingsIcon, 90);
+        BasePage.clickWithJavaScript(agencyProfile.settingsIcon);
     }
 
     public void moveToProfilePage() {
@@ -71,6 +74,15 @@ public class AgencyProfileActions {
         String expected = "Agency approved successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Agency approved success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(agencyProfile.successMessage, 20);
+    }
+
+    private void verifyBrandingThemeMissingMessage() {
+        BasePage.waitUntilElementPresent(agencyProfile.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(agencyProfile.successMessage).toLowerCase().trim();
+        String expected = "Agency does not have branding theme";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Branding theme missing message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(agencyProfile.successMessage, 20);
     }
 }
