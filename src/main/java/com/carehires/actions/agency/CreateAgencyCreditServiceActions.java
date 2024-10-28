@@ -172,6 +172,7 @@ public class CreateAgencyCreditServiceActions {
 
     private void verifySuccessMessage() {
         BasePage.waitUntilElementPresent(creditServicePage.successMessage, 30);
+        BasePage.genericWait(2000);
         String actualInLowerCase = BasePage.getText(creditServicePage.successMessage).toLowerCase().trim();
         String expected = "Business information updated successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();

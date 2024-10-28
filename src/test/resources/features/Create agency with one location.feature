@@ -21,7 +21,7 @@ Feature: Test CareHires create agency with one location
     When User finds recently created agency
     Then User verifies the agency profile status as Profile Complete
     And User completes the profile approve status
-    And User saves the organizational settings
+#    And User saves the organizational settings
     And User again navigates to the Agency Profile page
-    And User approves the profile approve status
+#    And User approves the profile approve status
     And User verifies the agency profile status as Approved

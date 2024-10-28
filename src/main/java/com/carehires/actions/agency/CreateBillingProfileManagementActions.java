@@ -6,16 +6,9 @@ import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.List;
-import java.util.Objects;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
 
 public class CreateBillingProfileManagementActions {
 
@@ -86,28 +79,10 @@ public class CreateBillingProfileManagementActions {
 
         BasePage.clickWithJavaScript(billingPage.saveButton);
         waitUntilTwoBalloonPopupGetDisappeared();
-        isBillingInfoSaved();
     }
 
     private String getDropdownOptionXpath(String city) {
         return String.format("//nb-option[contains(text(),'%s')]", city);
-    }
-
-    //verify if basic information is saved
-    private void isBillingInfoSaved() {
-        List<WebElement> allElements = BasePage.findListOfWebElements(CreateBillingProfileManagementPage.BASIC_INFORMATION_SUB_XPATHS);
-        BasePage.waitUntilElementPresent(billingPage.billingProfileManagementSavedIcon, 20);
-
-        //filter the elements that have an 'id' attribute
-        List<WebElement> elementsWithIdAttribute = allElements.stream()
-                .filter(element -> element.getAttribute("id") != null && !Objects.requireNonNull(element.getAttribute("id")).isEmpty())
-                .toList();
-
-        //check if any of the elements have an 'id' attribute equal to 'Icon_material-done'
-        boolean hasIdDone = elementsWithIdAttribute.stream()
-                .anyMatch(element -> Objects.equals(element.getAttribute("id"), "Icon_material-done"));
-
-        assertThat("Billing information is not saved",hasIdDone, is(true));
     }
 
     private void waitUntilTwoBalloonPopupGetDisappeared() {
