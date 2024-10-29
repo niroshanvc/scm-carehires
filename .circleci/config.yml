@@ -68,7 +68,7 @@ jobs:
 
       # Store build artifacts (like JARs)
       - store_artifacts:
-          path: target
+          path: target/surefire-reports
           destination: build-artifacts
 
 workflows:
