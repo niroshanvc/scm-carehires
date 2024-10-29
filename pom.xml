@@ -127,7 +127,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.9.0</version>
+        <version>${maven.compiler.plugin.version}</version>
         <configuration>
           <source>17</source>
           <target>17</target>
@@ -143,7 +143,8 @@
           <suiteXmlFiles>
             <suiteXmlFile>testng.xml</suiteXmlFile>
           </suiteXmlFiles>
-          <testFailureIgnore>true</testFailureIgnore>
+          <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+          <testFailureIgnore>true</testFailureIgnore> <!-- Optional: Continue even if tests fail -->
         </configuration>
       </plugin>
 
@@ -154,10 +155,10 @@
         <version>${maven.surefire.plugin.version}</version>
         <executions>
           <execution>
-            <id>surefire-report</id>
+            <id>generate-surefire-report</id>
             <phase>test</phase>
             <goals>
-              <goal>report-only</goal>
+              <goal>report</goal>
             </goals>
           </execution>
         </executions>
