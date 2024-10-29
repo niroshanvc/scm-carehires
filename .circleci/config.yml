@@ -55,12 +55,9 @@ jobs:
 
       # Run the tests
       - run:
-          name: Build and Test with Maven
-          command: mvn clean install
-
-      - run:
-          name: Run Cucumber Tests
-          command: mvn test -Dcucumber.options="--tags << parameters.cucumber_tag >>" -Denv=<< parameters.environment >>
+          name: Build, Test, and Run Cucumber Tests
+          command: |
+            mvn clean install && mvn test -Dcucumber.options="--tags << parameters.cucumber_tag >>" -Denv=<< parameters.environment >>
 
       # Store test results
       - store_test_results:
