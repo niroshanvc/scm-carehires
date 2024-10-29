@@ -80,4 +80,3 @@ workflows:
             branches:
               only:
                 - agency-create
-          cucumber_tag: "<< pipeline.parameters.cucumber_tag >>"
