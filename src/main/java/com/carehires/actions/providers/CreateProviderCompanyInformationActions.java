@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,7 +25,9 @@ public class CreateProviderCompanyInformationActions {
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
     private static final String YML_HEADER = "CompanyInformation";
-    private static final String FOLDER_PATH = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Provider\\";
+    private static final String FOLDER_PATH = System.getProperty("user.dir") + File.separator + "src" + File.separator
+            + "test" + File.separator + "resources" + File.separator + "Upload" + File.separator + "Provider"
+            + File.separator;
 
     private static final Logger logger = LogManager.getLogger(CreateProviderCompanyInformationActions.class);
     

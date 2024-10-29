@@ -12,6 +12,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -70,7 +71,9 @@ public class CreateWorkerBasicInformationActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Personal Information >>>>>>>>>>>>>>>>>>>>");
         //upload a logo
         String workerImage = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_2, "WorkerLogo");
-        String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\" + workerImage;
+        String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
+                + workerImage;
         BasePage.clickWithJavaScript(basicInfo.uploadLogo);
         BasePage.uploadFile(basicInfo.uploadLogoInput, absoluteFilePath);
         BasePage.waitUntilElementDisplayed(basicInfo.imageSaveButton, 60);
@@ -143,7 +146,9 @@ public class CreateWorkerBasicInformationActions {
 
         //upload proof of address document
         String document = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER_3, "ProofOfAddressDocument");
-        String absoluteFilePath1 = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\" + document;
+        String absoluteFilePath1 = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
+                + document;
         BasePage.uploadFile(basicInfo.proofOfAddressDocument, absoluteFilePath1);
         //wait until document is uploaded
         waitUntilDocumentUploaded();

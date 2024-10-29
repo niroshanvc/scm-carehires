@@ -9,6 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.File;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -53,7 +55,9 @@ public class CreateWorkerEducationAndTrainingActions {
         genericUtils.selectDateFromCalendarPopup(validUntil1);
 
         String uploadCertificate1 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET1, "UploadCertificate");
-        String absoluteFilePath1 = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\" + uploadCertificate1;
+        String absoluteFilePath1 = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
+                + uploadCertificate1;
         BasePage.uploadFile(educationAndTrainingPage.uploadCertificate, absoluteFilePath1);
 
         // click on the Add button
@@ -73,7 +77,9 @@ public class CreateWorkerEducationAndTrainingActions {
         genericUtils.selectDateFromCalendarPopup(validUntil2);
 
         String uploadCertificate2 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET2, "UploadCertificate");
-        String absoluteFilePath2 = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\" + uploadCertificate2;
+        String absoluteFilePath2 = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
+                + uploadCertificate2;
         BasePage.uploadFile(educationAndTrainingPage.uploadCertificate, absoluteFilePath2);
 
         BasePage.clickWithJavaScript(educationAndTrainingPage.addButton);

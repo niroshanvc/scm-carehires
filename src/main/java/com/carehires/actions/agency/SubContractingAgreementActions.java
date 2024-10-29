@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.File;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -38,7 +40,9 @@ public class SubContractingAgreementActions {
         String note = DataConfigurationReader.readDataFromYmlFile("agency","agency-create", "SubContract", "Note");
         BasePage.typeWithStringBuilder(subContractingAgreementPage.noteTextarea, note);
 
-        String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + "subContractDocument.pdf";
+        String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator
+                + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator + "subContractDocument.pdf";
         BasePage.uploadFile(subContractingAgreementPage.uploadFile, absoluteFilePath);
         waitUntilDocumentUploaded();
         BasePage.clickWithJavaScript(subContractingAgreementPage.saveButton);

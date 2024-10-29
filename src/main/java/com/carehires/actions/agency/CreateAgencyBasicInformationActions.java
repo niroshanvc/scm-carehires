@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,7 +47,8 @@ public class CreateAgencyBasicInformationActions {
 
         //upload a logo
         String companyLogo = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "CompanyLogo");
-        String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + companyLogo;
+        String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator + companyLogo;
         BasePage.clickWithJavaScript(createAgencyBasicInfoPage.uploadLogo);
         BasePage.uploadFile(createAgencyBasicInfoPage.fileInputButton, absoluteFilePath);
         BasePage.waitUntilElementDisplayed(createAgencyBasicInfoPage.imageSaveButton, 60);

@@ -12,6 +12,7 @@ import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
@@ -82,7 +83,9 @@ public class CreateAgencyCreditServiceActions {
 
         //upload verification document
         String agencyOwnerDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "AgencyOwnerDocument");
-        String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + agencyOwnerDoc;
+        String absoluteFilePath = System.getProperty("user.dir") + File.separator  + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator
+                + agencyOwnerDoc;
         BasePage.uploadFile(creditServicePage.agencyOwnerIdentityVerificationDoc, absoluteFilePath);
         //wait until document is uploaded
         waitUntilDocumentUploaded();
@@ -131,7 +134,9 @@ public class CreateAgencyCreditServiceActions {
 
         //upload verification document
         String legalRepDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepDocument");
-        String repFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Agency\\" + legalRepDoc;
+        String repFilePath = System.getProperty("user.dir") +  File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator
+                + legalRepDoc;
         BasePage.uploadFile(creditServicePage.legalRepresentativeIdentityVerificationDoc, repFilePath);
         //wait until document is uploaded
         waitUntilDocumentUploaded();

@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -160,7 +161,9 @@ public class CreateWorkerEmploymentHistoryActions {
         BasePage.clickWithJavaScript(getDropdownOptionXpath(companyName));
 
         String uploadFile = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER2, YML_SUB_HEADER_DATASET1, "UploadFile");
-        String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\" + uploadFile;
+        String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
+                + uploadFile;
         BasePage.uploadFile(employmentHistoryPage.uploadFile, absoluteFilePath);
 
         String referenceNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER2, YML_SUB_HEADER_DATASET1, "ReferenceNote");
@@ -183,7 +186,9 @@ public class CreateWorkerEmploymentHistoryActions {
         BasePage.clickWithJavaScript(getDropdownOptionXpath(companyName));
 
         uploadFile = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER2, YML_SUB_HEADER_DATASET2, "UploadFile");
-        absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\" + uploadFile;
+        absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
+                + uploadFile;
         BasePage.uploadFile(employmentHistoryPage.uploadFile, absoluteFilePath);
 
         referenceNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER2, YML_SUB_HEADER_DATASET2, "ReferenceNote");

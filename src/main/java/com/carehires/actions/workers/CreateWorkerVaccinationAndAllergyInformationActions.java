@@ -9,6 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.File;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -50,7 +52,8 @@ public class CreateWorkerVaccinationAndAllergyInformationActions {
         genericUtils.selectDateFromCalendarPopup(vaccinationDate);
 
         String vaccinationDocument = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "VaccinationDocument");
-        String absoluteFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\" + vaccinationDocument;
+        String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test" +
+                File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator + vaccinationDocument;
         BasePage.uploadFile(vaccinationPage.selectFile, absoluteFilePath);
 
         String isCovidRelated = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "IsCovid-19Vaccine");

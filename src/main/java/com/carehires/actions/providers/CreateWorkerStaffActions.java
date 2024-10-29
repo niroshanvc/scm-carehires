@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.File;
 import java.text.DecimalFormat;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -78,7 +79,8 @@ public class CreateWorkerStaffActions {
     public void addWorkerStaff() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Worker Staff Information >>>>>>>>>>>>>>>>>>>>");
         String proofOfDemandDocument = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,  YML_HEADER, "ProofOfDemandDocument");
-        String absoluteFilePathVatRegDoc = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Provider\\" + proofOfDemandDocument;
+        String absoluteFilePathVatRegDoc = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Provider" + File.separator + proofOfDemandDocument;
         BasePage.uploadFile(createWorkerStaffPage.proofOfDemandDocument, absoluteFilePathVatRegDoc);
         BasePage.clickWithJavaScript(createWorkerStaffPage.addButton);
         verifySuccessMessage();

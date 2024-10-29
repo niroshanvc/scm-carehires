@@ -11,6 +11,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.File;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -23,7 +25,8 @@ public class CreateWorkerDocumentsAndProofActions {
     private static final String YML_HEADER = "Documents and Proof";
     private static final String YML_SUB_HEADER_DOCUMENT = "Document";
     private static final String YML_SUB_HEADER_EXPIRY_DATE = "ExpiryDate";
-    private static final String WORKER_DOCUMENTS_PATH = System.getProperty("user.dir") + "\\src\\test\\resources\\Upload\\Worker\\";
+    private static final String WORKER_DOCUMENTS_PATH = System.getProperty("user.dir") + File.separator + "src"
+            + File.separator + "test" + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator;
 
     private static final Logger logger = LogManager.getLogger(CreateWorkerDocumentsAndProofActions.class);
 
