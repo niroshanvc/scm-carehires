@@ -15,8 +15,15 @@ executors:
       CHROME_VERSION: latest
 
 jobs:
-  build-and-test:
+  test-job:
     executor: maven-executor
+    parameters:
+      cucumber_tag:
+        type: string
+        default: "@smoke"  # Default Cucumber tag to run specific tests
+      environment:
+        type: string
+        default: "dev"     # Default environment, e.g., dev, staging, prod
     steps:
       - checkout
 
@@ -52,10 +59,8 @@ jobs:
           command: mvn clean install
 
       - run:
-          name: Run Cucumber Tests with Specific Tags
-          command: |
-            mvn test -Dtest="com.carehires.runner"
-        
+          name: Run Cucumber Tests
+          command: mvn test -Dcucumber.options="--tags << parameters.cucumber_tag >>" -Denv=<< parameters.environment >>
 
       # Store test results
       - store_test_results:
@@ -68,6 +73,7 @@ jobs:
 
 workflows:
   version: 2
-  build_and_test_workflow:
+  test_workflow:
     jobs:
-      - build-and-test
+      - test-job:
+          cucumber_tag: "<< pipeline.parameters.cucumber_tag >>"
