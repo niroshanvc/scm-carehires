@@ -41,8 +41,7 @@ public class SubContractingAgreementActions {
         BasePage.typeWithStringBuilder(subContractingAgreementPage.noteTextarea, note);
 
         String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
-                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator
-                + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator + "subContractDocument.pdf";
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator + "subContractDocument.pdf";
         BasePage.uploadFile(subContractingAgreementPage.uploadFile, absoluteFilePath);
         waitUntilDocumentUploaded();
         BasePage.clickWithJavaScript(subContractingAgreementPage.saveButton);
