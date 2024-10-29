@@ -76,4 +76,7 @@ workflows:
   test_workflow:
     jobs:
       - test-job:
-          cucumber_tag: "<< pipeline.parameters.cucumber_tag >>"
+          filters:
+            branches:
+              only:
+                - agency-create
