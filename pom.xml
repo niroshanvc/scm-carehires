@@ -142,6 +142,25 @@
           </suiteXmlFiles>
         </configuration>
       </plugin>
+      <!-- Add maven-surefire-report-plugin for CI-compatible test reports -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>${maven.surefire.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>surefire-report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report-only</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <outputDirectory>${project.build.directory}/surefire-reports</outputDirectory>
+          <reportFormat>xml</reportFormat>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
