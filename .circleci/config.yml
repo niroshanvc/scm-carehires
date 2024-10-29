@@ -65,6 +65,8 @@ jobs:
       # Store test results
       - store_test_results:
           path: target/surefire-reports
+          when: always
+          match: "*.xml" # This will match only .xml files directly under surefire-reports
 
       # Store build artifacts (like JARs)
       - store_artifacts:
