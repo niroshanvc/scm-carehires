@@ -13,32 +13,32 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-            - maven-{{ checksum "pom.xml" }}
-            - maven-
+#      - restore_cache:
+#          keys:
+#            - maven-{{ checksum "pom.xml" }}
+#            - maven-
 
-      - run:
-          name: Install dependencies
-          command: mvn dependency:resolve
+#      - run:
+#          name: Install dependencies
+#          command: mvn dependency:resolve
 
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: maven-{{ checksum "pom.xml" }}
+#      - save_cache:
+#          paths:
+#            - ~/.m2
+#          key: maven-{{ checksum "pom.xml" }}
 
   # Job for manual test execution
-  manual-test-job:
-    executor: maven-executor
-    parameters:
-      cucumber_tag:
-        type: string
-        default: "@smoke"  # Default Cucumber tag to run specific tests
-      environment:
-        type: string
-        default: "dev"     # Default environment, e.g., dev, staging, prod
-    steps:
-      - checkout
+#  manual-test-job:
+#    executor: maven-executor
+#    parameters:
+#      cucumber_tag:
+#        type: string
+#        default: "@smoke"  # Default Cucumber tag to run specific tests
+#      environment:
+#        type: string
+#        default: "dev"     # Default environment, e.g., dev, staging, prod
+#    steps:
+#      - checkout
 
       # Install Google Chrome
       - run:
@@ -52,54 +52,92 @@ jobs:
             sudo apt-get install -y google-chrome-stable
 
       # Cache Maven dependencies
-      - restore_cache:
-          keys:
-            - maven-{{ checksum "pom.xml" }}
-            - maven-
+#      - restore_cache:
+#          keys:
+#            - maven-{{ checksum "pom.xml" }}
+#            - maven-
 
+#     Install dependencies
       - run:
           name: Install dependencies
           command: mvn dependency:resolve
 
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: maven-{{ checksum "pom.xml" }}
+#      Build the project
+      - run:
+          name: Build the project
+          command: mvn clean install
+
+#      - save_cache:
+#          paths:
+#            - ~/.m2
+#          key: maven-{{ checksum "pom.xml" }}
 
       # Run the tests with parameters
-      - run:
-          name: Build, Test, and Run Cucumber Tests
-          command: |
-            mvn clean install && mvn test -Dcucumber.options="--tags << parameters.cucumber_tag >>" -Denv=<< parameters.environment >>
+#      - run:
+#          name: Build, Test, and Run Cucumber Tests
+#          command: |
+#            mvn clean install && mvn test -Dcucumber.options="--tags << parameters.cucumber_tag >>" -Denv=<< parameters.environment >>
 
       # Store test results
-      - store_test_results:
-          path: target/surefire-reports
-          when: always
-          match: "*.xml"
+#      - store_test_results:
+#          path: target/surefire-reports
+#          when: always
+#          match: "*.xml"
 
       # Store build artifacts (like JARs)
-      - store_artifacts:
-          path: target/surefire-reports
-          destination: build-artifacts
+#      - store_artifacts:
+#          path: target/surefire-reports
+#          destination: build-artifacts
+
+#       Define a job for running tests conditionally
+  manual-test-job:
+    executor: maven-executor
+    parameters:
+      run_tests:
+        type: boolean
+        default: false
+      cucumber_tag:
+        type: string
+        default: "@smoke"
+      environment:
+        type: string
+        default: "dev"
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: mvn dependency:resolve
+      - run:
+          name: Run tests
+          command: |
+            mvn test -Dcucumber.options="--tags << parameters.cucumber_tag >>" -Denv=<< parameters.environment >>
+        when: << parameters.run_tests >>
 
 workflows:
   version: 2
   workflow:
     jobs:
-      # Always run build-only job on code push
-      - build-only-job:
-          filters:
-            branches:
-              only:
-                - agency-create
-
-      # Manual and scheduled trigger for running tests
+      - build-only-job
       - manual-test-job:
+          # Run tests only if manually triggered with `run_tests: true`
+          parameters:
+            run_tests: << pipeline.parameters.run_tests >>
+            cucumber_tag: << pipeline.parameters.cucumber_tag >>
+            environment: << pipeline.parameters.environment >>
+          requires:
+            - build-only-job
           filters:
             branches:
-              only:
-                - agency-create
-#          parameters:
-#            cucumber_tag: "@smoke"     # Default tag, you can customize this when triggering manually
-#            environment: "dev"         # Default environment, customizable on manual trigger
+              ignore: "*"
+
+# Define pipeline parameters to use in manual triggers
+parameters:
+  run_tests:
+    type: boolean
+    default: false
+  cucumber_tag:
+    type: string
+    default: "@smoke"
+  environment:
+    type: string
+    default: "dev"
