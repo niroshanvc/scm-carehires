@@ -61,7 +61,7 @@ jobs:
           path: target/surefire-reports
           destination: build-artifacts
 
-# Define pipeline parameters to control execution
+# Define pipeline parameters for manual or scheduled workflows
 parameters:
   run_tests:
     type: boolean
@@ -75,16 +75,17 @@ parameters:
 
 workflows:
   version: 2
-  conditional-workflow:
+  # Workflow that runs automatically and only builds the project
+  build-only-workflow:
+    when: not << pipeline.parameters.run_tests >>
     jobs:
       - build-only-job
+
+  # Workflow for running tests, triggered manually or on schedule
+  test-workflow:
+    when: << pipeline.parameters.run_tests >>
+    jobs:
       - test-job:
-          requires:
-            - build-only-job
-          filters:
-            branches:
-              ignore: "*"
           parameters:
             cucumber_tag: << pipeline.parameters.cucumber_tag >>
             environment: << pipeline.parameters.environment >>
-          when: << pipeline.parameters.run_tests >>
