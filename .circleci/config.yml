@@ -7,38 +7,11 @@ executors:
     working_directory: ~/project
 
 jobs:
-  # Job for building only
+  # Define a job for building the project only
   build-only-job:
     executor: maven-executor
     steps:
       - checkout
-
-#      - restore_cache:
-#          keys:
-#            - maven-{{ checksum "pom.xml" }}
-#            - maven-
-
-#      - run:
-#          name: Install dependencies
-#          command: mvn dependency:resolve
-
-#      - save_cache:
-#          paths:
-#            - ~/.m2
-#          key: maven-{{ checksum "pom.xml" }}
-
-  # Job for manual test execution
-#  manual-test-job:
-#    executor: maven-executor
-#    parameters:
-#      cucumber_tag:
-#        type: string
-#        default: "@smoke"  # Default Cucumber tag to run specific tests
-#      environment:
-#        type: string
-#        default: "dev"     # Default environment, e.g., dev, staging, prod
-#    steps:
-#      - checkout
 
       # Install Google Chrome
       - run:
@@ -51,24 +24,18 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y google-chrome-stable
 
-      # Cache Maven dependencies
-#      - restore_cache:
-#          keys:
-#            - maven-{{ checksum "pom.xml" }}
-#            - maven-
-
-#     Install dependencies
+      # Install dependencies
       - run:
           name: Install dependencies
           command: mvn dependency:resolve
 
-#      Build the project
+      # Build the project
       - run:
           name: Build the project
           command: mvn clean install
 
-  # Define a job for running tests, only executed if triggered manually with `run_tests: true`
-  manual-test-job:
+  # Define a job for running tests
+  test-job:
     executor: maven-executor
     parameters:
       cucumber_tag:
@@ -94,22 +61,7 @@ jobs:
           path: target/surefire-reports
           destination: build-artifacts
 
-workflows:
-  version: 2
-  workflow:
-    jobs:
-      - build-only-job
-      - manual-test-job:
-          requires:
-            - build-only-job
-          filters:
-            branches:
-              ignore: "*"
-          parameters:
-            cucumber_tag: << pipeline.parameters.cucumber_tag >>
-            environment: << pipeline.parameters.environment >>
-
-# Define pipeline parameters to use in manual triggers
+# Define pipeline parameters to control execution
 parameters:
   run_tests:
     type: boolean
@@ -120,3 +72,19 @@ parameters:
   environment:
     type: string
     default: "dev"
+
+workflows:
+  version: 2
+  conditional-workflow:
+    jobs:
+      - build-only-job
+      - test-job:
+          requires:
+            - build-only-job
+          filters:
+            branches:
+              ignore: "*"
+          parameters:
+            cucumber_tag: << pipeline.parameters.cucumber_tag >>
+            environment: << pipeline.parameters.environment >>
+          when: << pipeline.parameters.run_tests >>
