@@ -100,6 +100,6 @@ workflows:
             branches:
               only:
                 - agency-create
-          parameters:
-            cucumber_tag: "@smoke"     # Default tag, you can customize this when triggering manually
-            environment: "dev"         # Default environment, customizable on manual trigger
+#          parameters:
+#            cucumber_tag: "@smoke"     # Default tag, you can customize this when triggering manually
+#            environment: "dev"         # Default environment, customizable on manual trigger
