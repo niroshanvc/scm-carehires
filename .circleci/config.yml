@@ -29,10 +29,10 @@ jobs:
           name: Install dependencies
           command: mvn dependency:resolve
 
-      # Build the project
+      # Build the project without running the tests
       - run:
           name: Build the project
-          command: mvn clean install
+          command: mvn clean install -DskipTests
 
   # Define a job for running tests
   test-job:
