@@ -67,35 +67,10 @@ jobs:
           name: Build the project
           command: mvn clean install
 
-#      - save_cache:
-#          paths:
-#            - ~/.m2
-#          key: maven-{{ checksum "pom.xml" }}
-
-      # Run the tests with parameters
-#      - run:
-#          name: Build, Test, and Run Cucumber Tests
-#          command: |
-#            mvn clean install && mvn test -Dcucumber.options="--tags << parameters.cucumber_tag >>" -Denv=<< parameters.environment >>
-
-      # Store test results
-#      - store_test_results:
-#          path: target/surefire-reports
-#          when: always
-#          match: "*.xml"
-
-      # Store build artifacts (like JARs)
-#      - store_artifacts:
-#          path: target/surefire-reports
-#          destination: build-artifacts
-
-#       Define a job for running tests conditionally
+  # Define a job for running tests, only executed if triggered manually with `run_tests: true`
   manual-test-job:
     executor: maven-executor
     parameters:
-      run_tests:
-        type: boolean
-        default: false
       cucumber_tag:
         type: string
         default: "@smoke"
@@ -111,7 +86,13 @@ jobs:
           name: Run tests
           command: |
             mvn test -Dcucumber.options="--tags << parameters.cucumber_tag >>" -Denv=<< parameters.environment >>
-        when: << parameters.run_tests >>
+      # Store test results
+      - store_test_results:
+          path: target/surefire-reports
+      # Store build artifacts (like JARs)
+      - store_artifacts:
+          path: target/surefire-reports
+          destination: build-artifacts
 
 workflows:
   version: 2
@@ -119,16 +100,14 @@ workflows:
     jobs:
       - build-only-job
       - manual-test-job:
-          # Run tests only if manually triggered with `run_tests: true`
-          parameters:
-            run_tests: << pipeline.parameters.run_tests >>
-            cucumber_tag: << pipeline.parameters.cucumber_tag >>
-            environment: << pipeline.parameters.environment >>
           requires:
             - build-only-job
           filters:
             branches:
               ignore: "*"
+          parameters:
+            cucumber_tag: << pipeline.parameters.cucumber_tag >>
+            environment: << pipeline.parameters.environment >>
 
 # Define pipeline parameters to use in manual triggers
 parameters:
