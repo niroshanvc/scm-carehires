@@ -65,20 +65,20 @@ public class CreateAgencyCreditServicePage {
     @FindBy(xpath = "(//input[@formcontrolname='ownership'])[2]")
     public WebElement legalOwnershipPercentage;
 
-    @FindBy(xpath = "//h3[text()='Add Legal Representative']/ancestor::nb-accordion-item")
+    @FindBy(xpath = "//h3[contains(text(),'Legal Representative')]/ancestor::nb-accordion-item")
     public WebElement addLegalRepresentativeHeader;
 
-    @FindBy(xpath = "//h3[text()='Add Legal Representative']/ancestor::nb-accordion-item-header//nb-icon")
+    @FindBy(xpath = "//h3[contains(text(),'Legal Representative')]/ancestor::nb-accordion-item-header//nb-icon")
     public WebElement addLegalRepresentativeExpand;
 
     @FindBy(xpath = "//button[contains(text(),'Save')]")
     public WebElement saveButton;
 
     @FindBy(xpath = "(//input[@type='file'])[1]")
-    public WebElement uploadAgencyOwner;
+    public WebElement agencyOwnerIdentityVerificationDoc;
 
     @FindBy(xpath = "(//input[@type='file'])[2]")
-    public WebElement uploadLegalRepresentative;
+    public WebElement legalRepresentativeIdentityVerificationDoc;
 
     @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isExecutiveManager']//input)[1]")
     public WebElement agencyOwnerExecutiveManagerCheckbox;
@@ -101,6 +101,6 @@ public class CreateAgencyCreditServicePage {
     @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isBoardMember']//input)[2]")
     public WebElement legalRepBoardMemberCheckbox;
 
-    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isPrimaryRepresentative']//input)[2]")
-    public WebElement legalRepPrimaryRepresentativeCheckbox;
+    @FindBy(xpath = "//nb-toast//span")
+    public WebElement successMessage;
 }

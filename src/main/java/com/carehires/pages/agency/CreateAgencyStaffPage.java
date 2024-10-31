@@ -42,4 +42,7 @@ public class CreateAgencyStaffPage {
 
     @FindBy(xpath = "(//div[contains(@class, 'common-document-table-body')]//p)[1]")
     public WebElement locationName;
+
+    @FindBy(xpath = "//nb-toast//span")
+    public WebElement successMessage;
 }

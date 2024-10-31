@@ -1,9 +1,10 @@
 BasicInfo:
-  BusinessName: Automation Agency 124
+  BusinessName: Automation Agency {{increment}}
   BusinessRegistrationNumber: 12345678
   CompanyLogo: Agency101.jpg
-  AlsoKnownAs: 101Auto
+  AlsoKnownAs: Auto{{increment}}
   PostCode: BL0 9YX
+  PhoneType: Home
   PhoneNumber: "07412001245"
 
 CreditService:
@@ -11,10 +12,10 @@ CreditService:
   LegalLastName: Smith
   MaidenName: Smith
   JobTitle: Manager
-  EmailAddress: niroshancarehires+agency124@gmail.com
+  EmailAddress: automation.qa+agency{{increment}}@carehires.com
   Phone: "07412001245"
-  DateOfBirth: 01-01-1999
-  PersonalIdNumber: 12345678
+  DateOfBirth: 01 Jan 1993
+  PersonalIdNumber: "AD787876Y"
   PostCode: BL0 9YX
   OwnershipPercentage: 21
   AgencyOwnerDocument: AgencyOwnerVerificationDocument.pdf
@@ -22,20 +23,20 @@ CreditService:
   LegalRepLegalLastName: Writer
   LegalRepMaidenName: Smith
   LegalRepJobTitle: Legal Manager
-  LegalRepEmailAddress: niroshancarehires+legal124@gmail.com
+  LegalRepEmailAddress: automation.qa+agencyleg{{increment}}@carehires.com
   LegalRepPhone: "07412001245"
-  LegalRepDateOfBirth: 01-01-1999
-  LegalRepPersonalIdNumber: 12345678
+  LegalRepDateOfBirth: 01 Sep 1990
+  LegalRepPersonalIdNumber: "AD787876Y"
   LegalRepPostCode: BL0 9YX
   LegalRepOwnershipPercentage: 24
   LegalRepDocument: LegalRepresentativeDocument.pdf
 
 Location:
   BusinessLocation: North London
-  BusinessEmailAddress: niroshancarehires+businessEmail124@gmail.com
+  BusinessEmailAddress: automation.qa+agencybuss{{increment}}@carehires.com
   City: City of London
-  JobNotificationAddress: niroshancarehires+jobNot124@gmail.com
-  ApprovalNotificationAddress: niroshancarehires+appNot124@gmail.com
+  JobNotificationAddress: automation.qa+agencyjobnot{{increment}}@carehires.com
+  ApprovalNotificationAddress: automation.qa+agencyappnot{{increment}}@carehires.com
 
 Staff:
   WorkerType: Care Assistant
@@ -49,21 +50,31 @@ BillingProfileManagement:
   AttentionTo: IWS Solutions
   BillingAddress: "10 Downing Street, London, SW1A 2AA"
   CostCenter: "<uniqueNumber>"
-  DigitalBillingAddress: niroshancarehires+digital124@gmail.com
-  CCDigitalBillingAddress: niroshancarehires+ccdigital124@gmail.com
+  DigitalBillingAddress: automation.qa+agencydigi{{increment}}@carehires.com
+  CCDigitalBillingAddress: automation.qa+agencyccdigi{{increment}}@carehires.com
   PhoneNumber: "07412001245"
   BillingCycle: Monthly
   CreditTerm: 30 Days
   BankName: United Bank
-  AccountNumber: "<uniqueNumber>"
+  AccountNumber: "00012345"
   AccountName: IWS Solutions
-  SortCode: 34-34-44
+  SortCode: 10-88-00
 
 User:
-  email: niroshancarehires+agencyuser124@gmail.com
-  Name: William Brook
+  email: automation.qa+agencyuser{{increment}}@carehires.com
+  Name: William Brook{{increment}}
   JobTitle: Assistant Executive
   Location: Select All Locations
   Phone: "07412001245"
   City: City of London
-  UserAccessLevel: Onboarding Admin,Shift Admin
+  UserAccessLevel: Onboarding Admin,Shift Admin,Org Admin
+
+SubContract:
+  Note: Sub contract agreement note is entered.
+
+Settings:
+  TimeFormat: 12 Hours
+  HubSpotLink: https://knowledge.hubspot.com/
+  InvoiceBrandingTheme: Royal Agency
+  SalesProcessCompletedBy: Fahim Jamal
+  OnboardedBDM: chathura uddeepana

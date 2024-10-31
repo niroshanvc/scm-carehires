@@ -12,5 +12,5 @@ public class SignInPage {
     public WebElement password;
 
     @FindBy(xpath = "//button[@type='submit']")
-    public WebElement signin;
+    public WebElement signinButton;
 }
