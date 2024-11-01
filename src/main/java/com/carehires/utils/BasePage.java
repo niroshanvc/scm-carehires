@@ -298,7 +298,9 @@ public class BasePage {
     public static void mouseHoverAndClick(WebElement element, WebElement subElement) {
         waitUntilElementClickable(element, 30);
         Actions actions = new Actions(driver);
-        actions.moveToElement(element).moveToElement(subElement).click().build().perform();
+        actions.moveToElement(element).perform();
+        waitUntilElementClickable(subElement, 20);
+        actions.moveToElement(subElement).click().build().perform();
     }
 
     //upload file
@@ -508,5 +510,14 @@ public class BasePage {
         // After waiting, assert that the element is present
         List<WebElement> elements = driver.findElements(locator);
         MatcherAssert.assertThat("Element should be present", elements.size(), Matchers.greaterThan(0));
+    }
+
+    // mouse hover and release webelement
+    public static void mouseHoverAndRelease(WebElement element, WebElement subElement) {
+        waitUntilElementClickable(element, 30);
+        Actions actions = new Actions(driver);
+        actions.moveToElement(element);
+        actions.moveToElement(subElement);
+        actions.release().build().perform();
     }
 }

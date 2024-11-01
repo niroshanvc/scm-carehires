@@ -23,7 +23,9 @@ public class LeftSideMenuActions {
     }
 
     public void gotoAgencyViewPage() {
+        BasePage.waitUntilPageCompletelyLoaded();
         BasePage.mouseHoverAndClick(leftSideMenu.agencies, leftSideMenu.agencyView);
+        BasePage.mouseHoverAndRelease(leftSideMenu.agencies, leftSideMenu.agencyView);
         logger.info(" --------------------------- Moves to Agency View Page ---------------------------");
     }
 

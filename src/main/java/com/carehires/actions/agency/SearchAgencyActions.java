@@ -36,10 +36,13 @@ public class SearchAgencyActions {
 
     // get auto generated provider id and save it on the memory
     private void getAgencyId() {
+
+    }
+
+    public void findDraftAgency() {
         BasePage.waitUntilPageCompletelyLoaded();
-        BasePage.waitUntilElementPresent(searchAgencyPage.agencyId, 30);
-        String headerText = BasePage.getText(searchAgencyPage.agencyId).trim();
-        String agencyId = headerText.split("\n")[0];
-        GlobalVariables.setVariable("agencyId", agencyId);
+        BasePage.clickWithJavaScript(searchAgencyPage.filterByDropdown);
+        BasePage.waitUntilElementClickable(searchAgencyPage.draftAgenciesOption, 10);
+        BasePage.clickWithJavaScript(searchAgencyPage.draftAgenciesOption);
     }
 }

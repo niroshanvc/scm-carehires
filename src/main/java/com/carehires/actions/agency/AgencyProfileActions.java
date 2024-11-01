@@ -2,6 +2,7 @@ package com.carehires.actions.agency;
 
 import com.carehires.pages.agency.AgencyProfilePage;
 import com.carehires.utils.BasePage;
+import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
@@ -13,6 +14,9 @@ public class AgencyProfileActions {
 
     AgencyProfilePage agencyProfile;
 
+    private static final String ENTITY = "agency";
+    private static final String YML_FILE = "agency-edit";
+    private static final String YML_HEADER = "Profile";
     private static final Logger logger = LogManager.getFormatterLogger(AgencyProfileActions.class);
 
     public AgencyProfileActions() {
@@ -78,5 +82,61 @@ public class AgencyProfileActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Branding theme missing message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(agencyProfile.successMessage, 20);
+    }
+
+    private void clickOnUpdateProfileLink() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on the update profile link >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(agencyProfile.topThreeDots, 30);
+        BasePage.mouseHoverAndClick(agencyProfile.topThreeDots, agencyProfile.updateProfileLink);
+        BasePage.waitUntilElementClickable(agencyProfile.saveButton, 30);
+    }
+
+    public void editProfile() {
+        selectFirstAvailableAgency();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Editing the profile >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        clickOnUpdateProfileLink();
+
+        // update existing business registration number
+        String businessRegistrationNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "BusinessRegistrationNumber");
+        BasePage.clearAndEnterTexts(agencyProfile.businessRegistrationNumber, businessRegistrationNumber);
+
+        // update existing phone number
+        String updatingNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "EditPhoneNumber");
+        BasePage.clearAndEnterTexts(agencyProfile.phoneNumberInput, updatingNumber);
+
+        // add new phone number
+        BasePage.clickWithJavaScript(agencyProfile.addAnotherPhoneNumberLink);
+        BasePage.waitUntilElementPresent(agencyProfile.removePhoneNumberInput, 20);
+        BasePage.clickWithJavaScript(agencyProfile.phoneNumberType2);
+        String phoneNumberType2 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PhoneNumberType");
+        BasePage.waitUntilElementPresent(getPhoneNumberTypeXpath(phoneNumberType2), 20);
+        BasePage.clickWithJavaScript(getPhoneNumberTypeXpath(phoneNumberType2));
+        String phoneNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PhoneNumber");
+        BasePage.clearAndEnterTexts(agencyProfile.phoneNumberInput2, phoneNumber);
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(agencyProfile.saveButton);
+        verifySuccessMessage();
+    }
+
+    public void selectFirstAvailableAgency() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Select on the first available agency >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.genericWait(7000);
+        BasePage.clickWithJavaScript(agencyProfile.firstResultInTheList);
+    }
+
+    private void verifySuccessMessage() {
+        BasePage.waitUntilElementPresent(agencyProfile.successMessage, 90);
+        String actualInLowerCase = BasePage.getText(agencyProfile.successMessage).toLowerCase().trim();
+        String expected = "Profile updated successfully.";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Profile updated success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(agencyProfile.successMessage, 20);
+    }
+
+    private String getPhoneNumberTypeXpath(String option) {
+        return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 }

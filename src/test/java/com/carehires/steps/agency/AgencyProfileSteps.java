@@ -27,4 +27,9 @@ public class AgencyProfileSteps {
     public void updateProfileAsApprove() {
         agencyProfileActions.updateProfileAsApprove();
     }
+
+    @And("User moves to the profile page and edit data")
+    public void moveToProfilePageAndEditData() {
+        agencyProfileActions.editProfile();
+    }
 }

@@ -1,7 +1,7 @@
 @Regression
 @Agency
 @SuperAdminUser
-Feature: Test CareHires create agency with one location
+Feature: Test CareHires create agency with no VAT Registered, one location
 
   Background: login to carehires
     Given User logins to carehires
