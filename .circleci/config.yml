@@ -6,6 +6,9 @@ executors:
       - image: cimg/openjdk:17.0
     working_directory: ~/project
 
+environment:
+  BROWSER: "Chrome"
+
 jobs:
   # Define a job for building the project only
   build-only-job:
@@ -32,7 +35,7 @@ jobs:
       # Build the project without running the tests
       - run:
           name: Build the project
-          command: mvn clean install -DskipTests
+          command: mvn clean install
 
   # Define a job for running tests
   test-job:
