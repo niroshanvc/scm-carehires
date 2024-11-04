@@ -29,9 +29,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -114,8 +112,10 @@ public class BasePage {
 
             try {
                 if ("Chrome".equalsIgnoreCase(browser)) {
+                    logger.info("****************** Setting up ChromeDriver.");
                     ChromeOptions options = new ChromeOptions();
                     if (isCIRunning) {
+                        logger.info("****************** Running in CI environment, configuring Chrome headless options.");
                         options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
                     }
                     WebDriverManager.chromedriver().setup();
@@ -151,6 +151,28 @@ public class BasePage {
         return prop.getProperty(key);
     }
 
+    public static WebDriver getDriver() {
+        if (driver == null) {
+            initializeDriver();
+        }
+        return driver;
+    }
+
+    public static void setUpDriver() {
+        /*if (basePage == null) {
+            basePage = new BasePage();
+        }*/
+        initializeDriver();
+    }
+
+    public static void tearDown() {
+        if (driver != null) {
+            driver.quit();
+            driver = null;
+        }
+//        basePage = null;
+    }
+
     public static void navigate(String urlKey) {
         String url = getProperty(urlKey);
         logger.info("****************** Navigating to %s", url);
@@ -184,28 +206,6 @@ public class BasePage {
         waitUntilElementPresent(ele, 30);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].click();", ele);
-    }
-
-    public static WebDriver getDriver() {
-        if (driver == null) {
-            initializeDriver();
-        }
-        return driver;
-    }
-
-    public static void setUpDriver() {
-        /*if (basePage == null) {
-            basePage = new BasePage();
-        }*/
-        initializeDriver();
-    }
-
-    public static void tearDown() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
-        }
-//        basePage = null;
     }
 
     public static List<WebElement> findListOfWebElements(String xpath) {
