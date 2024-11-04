@@ -35,7 +35,7 @@ jobs:
       # Build the project without running the tests
       - run:
           name: Build the project
-          command: mvn clean install -DskipTests
+          command: mvn clean install
 
   # Define a job for running tests
   test-job:
