@@ -6,6 +6,9 @@ executors:
       - image: cimg/openjdk:17.0
     working_directory: ~/project
 
+environment:
+  BROWSER: "Chrome"
+
 jobs:
   # Define a job for building the project only
   build-only-job:

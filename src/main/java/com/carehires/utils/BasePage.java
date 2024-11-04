@@ -42,7 +42,7 @@ public class BasePage {
     private static final Logger logger = LogManager.getFormatterLogger(BasePage.class);
     static Properties prop;
 
-    private BasePage() {
+    /*private BasePage() {
         String browser = getProperty("BROWSER");
 
         // Log system environment variables for debugging in CI
@@ -104,6 +104,40 @@ public class BasePage {
         } catch (Exception e) {
             logger.error("****************** Error occurred during WebDriver initialization: ", e);
         }
+    }*/
+
+    private static void initializeDriver() {
+        if (driver == null) {
+            String browser = getProperty("BROWSER");
+            boolean isCIRunning = System.getenv("CI") != null || System.getenv("JENKINS_URL") != null;
+            logger.info("Initializing WebDriver for browser: %s", browser);
+
+            try {
+                if ("Chrome".equalsIgnoreCase(browser)) {
+                    ChromeOptions options = new ChromeOptions();
+                    if (isCIRunning) {
+                        options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+                    }
+                    WebDriverManager.chromedriver().setup();
+                    driver = new ChromeDriver(options);
+
+                } else if ("Firefox".equalsIgnoreCase(browser)) {
+                    FirefoxOptions options = new FirefoxOptions();
+                    if (isCIRunning) {
+                        options.addArguments("--headless");
+                    }
+                    WebDriverManager.firefoxdriver().setup();
+                    driver = new FirefoxDriver(options);
+
+                } else {
+                    throw new IllegalArgumentException("Unsupported browser: " + browser);
+                }
+                driver.manage().window().maximize();
+                logger.info("WebDriver initialized successfully.");
+            } catch (Exception e) {
+                logger.error("Error initializing WebDriver: ", e);
+            }
+        }
     }
 
     public static String getProperty(String key) {
@@ -153,20 +187,25 @@ public class BasePage {
     }
 
     public static WebDriver getDriver() {
+        if (driver == null) {
+            initializeDriver();
+        }
         return driver;
     }
 
     public static void setUpDriver() {
-        if (basePage == null) {
+        /*if (basePage == null) {
             basePage = new BasePage();
-        }
+        }*/
+        initializeDriver();
     }
 
     public static void tearDown() {
         if (driver != null) {
             driver.quit();
+            driver = null;
         }
-        basePage = null;
+//        basePage = null;
     }
 
     public static List<WebElement> findListOfWebElements(String xpath) {
