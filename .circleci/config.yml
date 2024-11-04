@@ -37,13 +37,6 @@ jobs:
   # Define a job for running tests
   test-job:
     executor: maven-executor
-    parameters:
-      cucumber_tag:
-        type: string
-        default: "@smoke"
-      environment:
-        type: string
-        default: "dev"
     steps:
       - checkout
       - run:
@@ -52,7 +45,7 @@ jobs:
       - run:
           name: Run tests
           command: |
-            mvn test -Dcucumber.options="--tags << parameters.cucumber_tag >>" -Denv=<< parameters.environment >>
+            mvn test -Dcucumber.options="--tags ${CIRCLE_PIPELINE_PARAMETERS.cucumber_tag}" -Denv=${CIRCLE_PIPELINE_PARAMETERS.environment}
       # Store test results
       - store_test_results:
           path: target/surefire-reports
@@ -75,14 +68,16 @@ parameters:
 
 workflows:
   version: 2
-  # Workflow that runs automatically and only builds the project
-  build-only-workflow:
-    when: not << pipeline.parameters.run_tests >>
+  build-and-test:
     jobs:
-      - build-only-job
-
-  # Workflow for running tests, triggered manually or on schedule
-  test-workflow:
-    when: << pipeline.parameters.run_tests >>
-    jobs:
-      - test-job # Don't specify parameters here; they are handled within the job definition
+      - build-only-job:
+          filters:
+            branches:
+              only: main
+      - test-job:
+          requires:
+            - build-only-job
+          filters:
+            branches:
+              only: main
+          when: << pipeline.parameters.run_tests >>
