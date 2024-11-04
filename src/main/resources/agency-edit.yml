@@ -3,3 +3,32 @@ Profile:
   EditPhoneNumber: "07412001219"
   PhoneNumberType: Mobile
   PhoneNumber: "07412003245"
+
+Credit Service:
+  Agency Owner Information:
+    FirstName: Thomas
+    LastName: Perk
+    JobTitle: Manager
+    EmailAddress: automation.qa+agency{{increment}}@carehires.com
+    Phone: "07412001245"
+    DateOfBirth: 01 Apr 1997
+    NINumber: "AD787876Y"
+    PostCode: LL18 4FE
+    OwnershipPercentage: 21
+    IdentityVerificationDocument: AgencyOwnerVerificationDocument.pdf
+    This person is an executive: "Yes"
+    This person owns 25%: "Yes"
+    This person is a member: "Yes"
+    This person is authorised: "Yes"
+    This person is the legal representative: "Yes"
+    LegalRepLegalFirstName: Mark
+    LegalRepLegalLastName: Writer
+    LegalRepMaidenName: Smith
+    LegalRepJobTitle: Legal Manager
+    LegalRepEmailAddress: automation.qa+agencyleg{{increment}}@carehires.com
+    LegalRepPhone: "07412001245"
+    LegalRepDateOfBirth: 01 Sep 1990
+    LegalRepPersonalIdNumber: "AD787876Y"
+    LegalRepPostCode: BL0 9YX
+    LegalRepOwnershipPercentage: 24
+    LegalRepDocument: LegalRepresentativeDocument.pdf

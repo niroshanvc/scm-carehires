@@ -3,7 +3,7 @@ package com.carehires.pages.agency;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CreateAgencyCreditServicePage {
+public class AgencyCreditServicePage {
 
     @FindBy(xpath = "(//input[@formcontrolname='firstName'])[1]")
     public WebElement firstName;
@@ -83,14 +83,26 @@ public class CreateAgencyCreditServicePage {
     @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isExecutiveManager']//input)[1]")
     public WebElement agencyOwnerExecutiveManagerCheckbox;
 
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isExecutiveManager']//input)[1]/../span[1]")
+    public WebElement agencyOwnerExecutiveManagerCheckboxSpan;
+
     @FindBy(xpath = "(//nb-checkbox[@formcontrolname='owns25Percent']//input)[1]")
     public WebElement agencyOwnerOwns25Checkbox;
+
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='owns25Percent']//input)[1]/../span[1]")
+    public WebElement agencyOwnerOwns25CheckboxSpan;
 
     @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isBoardMember']//input)[1]")
     public WebElement agencyOwnerBoardMemberCheckbox;
 
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isBoardMember']//input)[1]/../span[1]")
+    public WebElement agencyOwnerBoardMemberCheckboxSpan;
+
     @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isPrimaryRepresentative']//input)[1]")
     public WebElement agencyOwnerPrimaryRepresentativeCheckbox;
+
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isPrimaryRepresentative']//input)[1]/../span[1]")
+    public WebElement agencyOwnerPrimaryRepresentativeCheckboxSpan;
 
     @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isExecutiveManager']//input)[2]")
     public WebElement legalRepExecutiveManagerCheckbox;
@@ -103,4 +115,16 @@ public class CreateAgencyCreditServicePage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isLegalRepresentative']//input)[1]")
+    public WebElement isAlsoTheLegalRepresentative;
+
+    @FindBy(xpath = "(//nb-checkbox[@formcontrolname='isLegalRepresentative']//input)[1]/../span[1]")
+    public WebElement isAlsoTheLegalRepresentativeSpan;
+
+    @FindBy(xpath = "//button[contains(text(), 'Update')]")
+    public WebElement updateButton;
+
+    @FindBy(xpath = "//nb-icon[@nbtooltip='Delete This File']")
+    public WebElement deleteUploadedFile;
 }

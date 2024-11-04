@@ -11,4 +11,4 @@ Feature: Test CareHires edit agency and make profile approved
     When User navigates to Agency View page
     And User searching an agency which is in Draft stage
     And User moves to the profile page and edit data
-
+    And User moves to Credit Service and edit data

@@ -7,7 +7,7 @@ BasicInfo:
   PhoneType: Home
   PhoneNumber: "07412001245"
 
-CreditService:
+Credit Service:
   LegalFirstName: John
   LegalLastName: Smith
   MaidenName: Smith

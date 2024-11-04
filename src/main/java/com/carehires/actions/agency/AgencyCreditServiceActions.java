@@ -2,7 +2,7 @@ package com.carehires.actions.agency;
 
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
-import com.carehires.pages.agency.CreateAgencyCreditServicePage;
+import com.carehires.pages.agency.AgencyCreditServicePage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.GenericUtils;
@@ -19,18 +19,28 @@ import java.util.Objects;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class CreateAgencyCreditServiceActions {
+public class AgencyCreditServiceActions {
 
-    private final CreateAgencyCreditServicePage creditServicePage;
+    private final AgencyCreditServicePage creditServicePage;
     private static final GenericUtils genericUtils = new GenericUtils();
+    private static final AgencyNavigationMenuActions navigationMenu = new AgencyNavigationMenuActions();
 
     private static final String ENTITY = "agency";
     private static final String YML_FILE = "agency-create";
-    private static final String YML_HEADER = "CreditService";
-    private static final Logger logger = LogManager.getLogger(CreateAgencyCreditServiceActions.class);
+    private static final String EDIT_YML_FILE = "agency-edit";
+    private static final String YML_HEADER = "Credit Service";
+    private static final String EDIT_YML_HEADER = "Credit Service";
+    private static final String EDIT_YML_SUB_HEADER = "Agency Owner Information";
+    private static final String CLASS_ATTRIBUTE = "class";
+    private static final String CHECKED_VALUE = "custom-checkbox checked";
+    private static final String USER_DIR = "user.dir";
+    private static final String RESOURCE = "resources";
+    private static final String UPLOAD = "Upload";
+    private static final String AGENCY = "Agency";
+    private static final Logger logger = LogManager.getLogger(AgencyCreditServiceActions.class);
 
-    public CreateAgencyCreditServiceActions() {
-        creditServicePage = new CreateAgencyCreditServicePage();
+    public AgencyCreditServiceActions() {
+        creditServicePage = new AgencyCreditServicePage();
         PageFactory.initElements(BasePage.getDriver(), creditServicePage);
     }
 
@@ -83,8 +93,8 @@ public class CreateAgencyCreditServiceActions {
 
         //upload verification document
         String agencyOwnerDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "AgencyOwnerDocument");
-        String absoluteFilePath = System.getProperty("user.dir") + File.separator  + "src" + File.separator + "test"
-                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator
+        String absoluteFilePath = System.getProperty(USER_DIR) + File.separator  + "src" + File.separator + "test"
+                + File.separator + RESOURCE + File.separator + UPLOAD + File.separator + AGENCY + File.separator
                 + agencyOwnerDoc;
         BasePage.uploadFile(creditServicePage.agencyOwnerIdentityVerificationDoc, absoluteFilePath);
         //wait until document is uploaded
@@ -134,8 +144,8 @@ public class CreateAgencyCreditServiceActions {
 
         //upload verification document
         String legalRepDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "LegalRepDocument");
-        String repFilePath = System.getProperty("user.dir") +  File.separator + "src" + File.separator + "test"
-                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator
+        String repFilePath = System.getProperty(USER_DIR) +  File.separator + "src" + File.separator + "test"
+                + File.separator + RESOURCE + File.separator + UPLOAD + File.separator + AGENCY + File.separator
                 + legalRepDoc;
         BasePage.uploadFile(creditServicePage.legalRepresentativeIdentityVerificationDoc, repFilePath);
         //wait until document is uploaded
@@ -154,7 +164,7 @@ public class CreateAgencyCreditServiceActions {
     }
 
     private void expandAddLegalRep() {
-        if(BasePage.getAttributeValue(creditServicePage.addLegalRepresentativeHeader, "class").equalsIgnoreCase("collapsed")) {
+        if(BasePage.getAttributeValue(creditServicePage.addLegalRepresentativeHeader, CLASS_ATTRIBUTE).equalsIgnoreCase("collapsed")) {
             BasePage.clickWithJavaScript(creditServicePage.addLegalRepresentativeExpand);
         }
     }
@@ -191,6 +201,112 @@ public class CreateAgencyCreditServiceActions {
         String expected = "Document uploaded successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Document uploaded success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(creditServicePage.successMessage, 20);
+    }
+
+    public void editCreditService() {
+        navigationMenu.gotoCreditServicePage();
+        BasePage.genericWait(3000);
+
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating Credit Service information >>>>>>>>>>>>>>>>>>>>");
+        if (BasePage.isElementDisplayed(creditServicePage.updateButton)) {
+            BasePage.clickWithJavaScript(creditServicePage.updateButton);
+
+        }
+        BasePage.waitUntilElementPresent(creditServicePage.saveButton, 30);
+        BasePage.genericWait(2000);
+
+        String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "FirstName");
+        BasePage.clearAndEnterTexts(creditServicePage.firstName, firstName);
+
+        String lastName = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "LastName");
+        BasePage.clearAndEnterTexts(creditServicePage.lastName, lastName);
+
+        String jobTitle = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "JobTitle");
+        BasePage.clearAndEnterTexts(creditServicePage.jobTitle, jobTitle);
+
+        String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "EmailAddress");
+        BasePage.clearAndEnterTexts(creditServicePage.email, email);
+
+        String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "Phone");
+        BasePage.clearAndEnterTexts(creditServicePage.phoneNumber, phone);
+
+        String dob = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "DateOfBirth");
+        BasePage.clickWithJavaScript(creditServicePage.dateOfBirth);
+        genericUtils.selectDateFromCalendarPopup(dob);
+
+        String niNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "NINumber");
+        BasePage.clearAndEnterTexts(creditServicePage.personalIdNumber, niNumber);
+
+        String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "PostCode");
+        genericUtils.fillAddress(creditServicePage.postcode, postcode);
+
+        String ownership = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "OwnershipPercentage");
+        BasePage.clearAndEnterTexts(creditServicePage.ownershipPercentage, ownership);
+
+        if (BasePage.isElementDisplayed(creditServicePage.deleteUploadedFile)) {
+            BasePage.clickWithJavaScript(creditServicePage.deleteUploadedFile);
+            waitUntilDocumentRemoved();
+        }
+        String identityVerificationDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "IdentityVerificationDocument");
+        String absoluteFilePath = System.getProperty(USER_DIR) + File.separator  + "src" + File.separator + "test"
+                + File.separator + RESOURCE + File.separator + UPLOAD + File.separator + AGENCY + File.separator
+                + identityVerificationDoc;
+        BasePage.uploadFile(creditServicePage.agencyOwnerIdentityVerificationDoc, absoluteFilePath);
+        waitUntilDocumentUploaded();
+        BasePage.scrollToWebElement(creditServicePage.addLegalRepresentativeHeader);
+
+        String isExecutive = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "This person is an executive");
+        if(isExecutive.equalsIgnoreCase("Yes")) {
+            String value = BasePage.getAttributeValue(creditServicePage.agencyOwnerExecutiveManagerCheckboxSpan, CLASS_ATTRIBUTE);
+            if(!value.equalsIgnoreCase(CHECKED_VALUE)) {
+                BasePage.clickWithJavaScript(creditServicePage.agencyOwnerExecutiveManagerCheckbox);
+            }
+        }
+
+        String own25 = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "This person owns 25%");
+        if(own25.equalsIgnoreCase("Yes")) {
+            String value = BasePage.getAttributeValue(creditServicePage.agencyOwnerOwns25CheckboxSpan, CLASS_ATTRIBUTE);
+            if(!value.equalsIgnoreCase(CHECKED_VALUE)) {
+                BasePage.clickWithJavaScript(creditServicePage.agencyOwnerOwns25Checkbox);
+            }
+        }
+
+        String isMember = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "This person is a member");
+        if(isMember.equalsIgnoreCase("Yes")) {
+            String value = BasePage.getAttributeValue(creditServicePage.agencyOwnerBoardMemberCheckboxSpan, CLASS_ATTRIBUTE);
+            if(!value.equalsIgnoreCase(CHECKED_VALUE)) {
+                BasePage.clickWithJavaScript(creditServicePage.agencyOwnerBoardMemberCheckbox);
+            }
+        }
+
+        String isAuthorised = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "This person is authorised");
+        if(isAuthorised.equalsIgnoreCase("Yes")) {
+            String value = BasePage.getAttributeValue(creditServicePage.agencyOwnerPrimaryRepresentativeCheckboxSpan, CLASS_ATTRIBUTE);
+            if(!value.equalsIgnoreCase(CHECKED_VALUE)) {
+                BasePage.clickWithJavaScript(creditServicePage.agencyOwnerPrimaryRepresentativeCheckbox);
+            }
+        }
+
+        String isLegal = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "This person is the legal representative");
+        if(isLegal.equalsIgnoreCase("Yes")) {
+            BasePage.waitUntilElementPresent(creditServicePage.agencyOwnerExecutiveManagerCheckbox, 20);
+            String value = BasePage.getAttributeValue(creditServicePage.isAlsoTheLegalRepresentativeSpan, CLASS_ATTRIBUTE);
+            if(!value.equalsIgnoreCase(CHECKED_VALUE)) {
+                BasePage.clickWithJavaScript(creditServicePage.isAlsoTheLegalRepresentative);
+            }
+        }
+
+        BasePage.clickWithJavaScript(creditServicePage.saveButton);
+        verifySuccessMessage();
+    }
+
+    private void waitUntilDocumentRemoved() {
+        BasePage.waitUntilElementPresent(creditServicePage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(creditServicePage.successMessage).toLowerCase().trim();
+        String expected = "File deleted successfully.";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Document deleted success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(creditServicePage.successMessage, 20);
     }
 }

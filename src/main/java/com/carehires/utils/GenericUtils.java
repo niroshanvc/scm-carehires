@@ -91,38 +91,6 @@ public class GenericUtils {
         return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 
-    public void selectDateFromCalendar(String targetDate) {
-        // Parse the target date to get day, month, and year
-        LocalDate target = LocalDate.parse(targetDate, DateTimeFormatter.ofPattern("dd MMM yyyy"));
-        int targetDay = target.getDayOfMonth();
-        String tartDayString = String.valueOf(targetDay);
-        String targetMonthYear = target.format(DateTimeFormatter.ofPattern("MMMM yyyy"));  // e.g., "October 2024"
-
-        // Get the displayed month and year
-        BasePage.waitUntilElementPresent(genericElementsPage.monthAndYearDropdown, 20);
-        WebElement monthYearButton = BasePage.getDriver().findElement(By.xpath(GenericElementsPage.MONTH_YEAR_XPATH));
-        String displayingMonthYear = monthYearButton.getText().trim();
-        while (!displayingMonthYear.equalsIgnoreCase(targetMonthYear)) {
-            if (target.isAfter(LocalDate.now())) {
-                // Click to move to the next month
-                BasePage.clickWithJavaScript(genericElementsPage.nextMonthButton);
-            } else {
-                // Click to move to the previous month
-                BasePage.clickWithJavaScript(genericElementsPage.previousMonthButton);
-            }
-            // Update the displayed month and year after navigation
-            displayingMonthYear = BasePage.getDriver().findElement(By.xpath(GenericElementsPage.MONTH_YEAR_XPATH)).getText();
-        }
-
-        // Select the target day
-        for (WebElement el : genericElementsPage.calendarDays) {
-            if (BasePage.getText(el).trim().equals(tartDayString)) {
-                BasePage.clickWithJavaScript(el);
-                break;
-            }
-        }
-    }
-
     public void selectDateFromCalendarPopup(String targetDate) {
         // Parse the target date to get day, month, and year
         LocalDate target = LocalDate.parse(targetDate, DateTimeFormatter.ofPattern("dd MMM yyyy"));

@@ -296,7 +296,7 @@ public class BasePage {
     }
 
     public static void mouseHoverAndClick(WebElement element, WebElement subElement) {
-        waitUntilElementClickable(element, 30);
+        waitUntilElementPresent(element, 30);
         Actions actions = new Actions(driver);
         actions.moveToElement(element).perform();
         waitUntilElementClickable(subElement, 20);
