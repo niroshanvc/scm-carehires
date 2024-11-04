@@ -85,7 +85,4 @@ workflows:
   test-workflow:
     when: << pipeline.parameters.run_tests >>
     jobs:
-      - test-job:
-          parameters:
-            cucumber_tag: << pipeline.parameters.cucumber_tag >>
-            environment: << pipeline.parameters.environment >>
+      - test-job # Don't specify parameters here; they are handled within the job definition
