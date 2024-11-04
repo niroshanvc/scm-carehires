@@ -45,7 +45,7 @@ jobs:
       - run:
           name: Run tests
           command: |
-            mvn test -Dcucumber.options="--tags ${CIRCLE_PIPELINE_PARAMETERS.cucumber_tag}" -Denv=${CIRCLE_PIPELINE_PARAMETERS.environment}
+            mvn test -Dcucumber.options="--tags << pipeline.parameters.cucumber_tag >>" -Denv=<< pipeline.parameters.environment >>
       # Store test results
       - store_test_results:
           path: target/surefire-reports
