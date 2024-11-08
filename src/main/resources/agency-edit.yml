@@ -1,0 +1,100 @@
+Profile:
+  BusinessRegistrationNumber: 12345666
+  EditPhoneNumber: "07412001219"
+  PhoneNumberType: Mobile
+  PhoneNumber: "07412003245"
+
+Credit Service:
+  Agency Owner Information:
+    FirstName: Thomas
+    LastName: Perk
+    JobTitle: Manager
+    EmailAddress: automation.qa+agency137@carehires.com
+    Phone: "07412001245"
+    DateOfBirth: 01 Apr 1997
+    NINumber: "AD787876Y"
+    PostCode: LL18 4FE
+    OwnershipPercentage: 21
+    IdentityVerificationDocument: AgencyOwnerVerificationDocument.pdf
+    This person is an executive: "Yes"
+    This person owns 25%: "Yes"
+    This person is a member: "Yes"
+    This person is authorised: "Yes"
+    This person is the legal representative: "Yes"
+    LegalRepLegalFirstName: Mark
+    LegalRepLegalLastName: Writer
+    LegalRepMaidenName: Smith
+    LegalRepJobTitle: Legal Manager
+    LegalRepEmailAddress: automation.qa+agencyleg137@carehires.com
+    LegalRepPhone: "07412001245"
+    LegalRepDateOfBirth: 01 Sep 1990
+    LegalRepPersonalIdNumber: "AD787876Y"
+    LegalRepPostCode: BL0 9YX
+    LegalRepOwnershipPercentage: 24
+    LegalRepDocument: LegalRepresentativeDocument.pdf
+
+Agency Business Location:
+  Add:
+    BusinessLocation: North Leicester
+    BusinessEmailAddress: automation.qa+119@carehires.com
+    City: Leicester
+    JobNotificationAddress: automation.qa+agencyjobnot137@carehires.com
+    ApprovalNotificationAddress: automation.qa+agencyappnot137@carehires.com
+  Edit:
+    BusinessLocation: South Lancashire
+    BusinessEmailAddress: automation.qa+agencybuss137@carehires.com
+    City: Lancashire
+    JobNotificationAddress: automation.qa+agencyjobnot137@carehires.com
+    ApprovalNotificationAddress: automation.qa+agencyappnot137@carehires.com
+
+Staff:
+  Add:
+    WorkerType: Occupational Therapist
+    NoOfWorkers: 20
+    WorkerSkills: NVQ L3,Physical Disabilities,Home Care,Mental Health Disabilities
+    MonthlyHoursAvailable: 200
+    MinChargeHourlyRate: 10
+    EmployeeType: PSC
+  Edit:
+    WorkerType: Occupational Therapist
+    NoOfWorkers: 30
+    WorkerSkills: NVQ L3,Challenging Behaviours,Driving
+    MonthlyHoursAvailable: 180
+    MinChargeHourlyRate: 10
+    EmployeeType: PAYE
+
+Billing Profile Management:
+  AttentionTo: IWS Solutions
+  BillingAddress: "10 Downing Street, London, SW1A 2AA"
+  CostCenter: "<uniqueNumber>"
+  DigitalBillingAddress: automation.qa+agencydigi88@carehires.com
+  CCDigitalBillingAddress: automation.qa+agencyccdig137@carehires.com
+  PhoneNumber: "07412901245"
+  BillingCycle: Bi Weekly
+  CreditTerm: 14 Days
+  BankName: Union Bank
+  AccountNumber: "00012345"
+  AccountName: IWS Solutions
+  SortCode: 10-88-00
+
+User:
+  Add:
+    email: automation.qa+agencyuserQ137@carehires.com
+    Name: William Brook137
+    JobTitle: Assistant Executive
+    Location: Select All Locations
+    Phone: "07412001245"
+    City: Nottingham
+    UserAccessLevel: Onboarding Admin,Shift Admin
+  Edit:
+    email: automation.qa+agencyuserW137@carehires.com
+    Name: William Fredrik137
+    JobTitle: Assistant Executive
+    Location: Select All Locations
+    Phone: "07492001245"
+    City: City of London
+    UserAccessLevel: Org Admin
+
+Sub Contract:
+  Note: Sub contract agreement note is entered.
+  SubContractDocument: subContractDocument.pdf

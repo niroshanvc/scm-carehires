@@ -1,4 +1,4 @@
-package com.carehires.actions.agency;
+package com.carehires.actions.zoho;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;

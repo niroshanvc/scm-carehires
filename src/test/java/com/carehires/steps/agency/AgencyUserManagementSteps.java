@@ -11,4 +11,9 @@ public class AgencyUserManagementSteps {
     public void addUserManagement() {
         userManagement.addUser();
     }
+
+    @And("User moves to User Management and edit data")
+    public void editUserManagementData() {
+        userManagement.editUserManagement();
+    }
 }

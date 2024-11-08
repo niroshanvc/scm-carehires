@@ -5,7 +5,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class CreateAgencyStaffPage {
+public class AgencyStaffPage {
 
     @FindBy(xpath = "//button[contains(@class, 'inserted') and (contains(@class, 'button'))]")
     public WebElement addNewButton;
@@ -45,4 +45,10 @@ public class CreateAgencyStaffPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    @FindBy(xpath = "//nb-icon[@icon='edit-2-outline']")
+    public WebElement editDetailsIcon;
+
+    @FindBy(xpath = "//nb-option[contains(@class,'multiple') and (contains(@class, 'selected'))]")
+    public List<WebElement> alreadySelectedWorkerSkills;
 }

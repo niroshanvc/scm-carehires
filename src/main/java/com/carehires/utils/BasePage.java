@@ -27,82 +27,23 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 
 public class BasePage {
-    private static BasePage basePage;
     private static org.openqa.selenium.WebDriver driver;
     private static WebDriverWait wait;
     private static final Logger logger = LogManager.getFormatterLogger(BasePage.class);
     static Properties prop;
 
-    /*private BasePage() {
-        String browser = getProperty("BROWSER");
-
-        // Log system environment variables for debugging in CI
-        String jenkinsUrl = System.getenv("JENKINS_URL");
-        String ciEnvironment = System.getenv("CI");
-        logger.info("****************** JENKINS_URL: %s", jenkinsUrl != null ? jenkinsUrl : "Not Set");
-        logger.info("****************** CI: %s", ciEnvironment != null ? ciEnvironment : "Not Set");
-
-        // Detect if running in CI (Jenkins or CircleCI)
-        boolean isCIRunning = ciEnvironment != null || jenkinsUrl != null;
-        logger.info("****************** Running in CI environment: %s", isCIRunning);
-
-        logger.info("****************** Initializing WebDriver for browser: %s", browser);
-        try {
-            if (browser.equalsIgnoreCase("Chrome")) {
-                logger.info("****************** Setting up ChromeDriver.");
-                Map<String, Object> prefs = new HashMap<>();
-                prefs.put("safebrowsing.enabled", true);
-                WebDriverManager.chromedriver().setup();
-                ChromeOptions options = new ChromeOptions();
-
-                // CI-specific options
-                if (isCIRunning) {
-                    logger.info("****************** Running in CI environment, configuring Chrome headless options.");
-                    options.addArguments("enable-automation");
-                    options.addArguments("--headless");
-                    options.addArguments("--disable-gpu");
-                    options.addArguments("--no-sandbox");
-                    options.addArguments("--disable-dev-shm-usage");
-                    options.setPageLoadStrategy(org.openqa.selenium.PageLoadStrategy.NORMAL);
-                    options.setExperimentalOption("prefs", prefs);
-                }
-
-                String opString = options.toString();
-                logger.info("****************** Starting ChromeDriver with options: %s", opString);
-                driver = new ChromeDriver(options);
-                logger.info("****************** ChromeDriver started successfully.");
-
-            } else if (browser.equalsIgnoreCase("Firefox")) {
-                logger.info("****************** Setting up FirefoxDriver.");
-                WebDriverManager.firefoxdriver().setup();
-                FirefoxOptions options = new FirefoxOptions();
-
-                if (isCIRunning) {
-                    logger.info("****************** Running in CI environment, configuring Firefox headless options.");
-                    options.addArguments("--headless");
-                }
-
-                driver = new FirefoxDriver(options);
-                logger.info("****************** FirefoxDriver started successfully.");
-            } else {
-                logger.error("****************** Invalid browser specified: %s", browser);
-            }
-
-            if (driver != null) {
-                driver.manage().window().maximize();
-                logger.info("****************** Browser window maximized.");
-            }
-        } catch (Exception e) {
-            logger.error("****************** Error occurred during WebDriver initialization: ", e);
-        }
-    }*/
+    private static final String DOWNLOAD_DIR = System.getProperty("user.dir") + File.separator + "src" + File.separator
+            + "test" + File.separator + "resources" + File.separator + "downloads";
 
     private static void initializeDriver() {
         if (driver == null) {
@@ -114,9 +55,22 @@ public class BasePage {
                 if ("Chrome".equalsIgnoreCase(browser)) {
                     logger.info("****************** Setting up ChromeDriver.");
                     ChromeOptions options = new ChromeOptions();
+                    Map<String, Object> prefs = new HashMap<>();
+                    prefs.put("download.default_directory", DOWNLOAD_DIR);
+                    prefs.put("download.prompt_for_download", false); // Disable download prompt
+                    prefs.put("download.directory_upgrade", true);
+                    prefs.put("plugins.always_open_pdf_externally", true); // Force PDFs to download
+                    prefs.put("safebrowsing.enabled", true);
+                    options.setExperimentalOption("prefs", prefs);
+                    options.addArguments("start-maximized");
+                    options.addArguments("--safebrowsing-disable-download-protection");
                     if (isCIRunning) {
                         logger.info("****************** Running in CI environment, configuring Chrome headless options.");
-                        options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+                        options.addArguments("--headless");
+                        options.addArguments("--disable-gpu");
+                        options.addArguments("--no-sandbox");
+                        options.addArguments("--disable-dev-shm-usage");
+                        options.setExperimentalOption("prefs", prefs);
                     }
                     WebDriverManager.chromedriver().setup();
                     driver = new ChromeDriver(options);
@@ -132,7 +86,6 @@ public class BasePage {
                 } else {
                     throw new IllegalArgumentException("Unsupported browser: " + browser);
                 }
-                driver.manage().window().maximize();
                 logger.info("WebDriver initialized successfully.");
             } catch (Exception e) {
                 logger.error("Error initializing WebDriver: ", e);
@@ -159,9 +112,6 @@ public class BasePage {
     }
 
     public static void setUpDriver() {
-        /*if (basePage == null) {
-            basePage = new BasePage();
-        }*/
         initializeDriver();
     }
 
@@ -170,7 +120,6 @@ public class BasePage {
             driver.quit();
             driver = null;
         }
-//        basePage = null;
     }
 
     public static void navigate(String urlKey) {
@@ -335,9 +284,11 @@ public class BasePage {
     }
 
     public static void mouseHoverAndClick(WebElement element, WebElement subElement) {
-        waitUntilElementClickable(element, 30);
+        waitUntilElementPresent(element, 30);
         Actions actions = new Actions(driver);
-        actions.moveToElement(element).moveToElement(subElement).click().build().perform();
+        actions.moveToElement(element).perform();
+        waitUntilElementClickable(subElement, 20);
+        actions.moveToElement(subElement).click().build().perform();
     }
 
     //upload file
@@ -438,7 +389,7 @@ public class BasePage {
             // Wait for element to be visible
             wait.until(ExpectedConditions.visibilityOf(element));
         } catch (TimeoutException e) {
-            logger.error("Element was not visible after waiting for %s seconds. Locator: %s", seconds, element);
+            logger.error("Element was not displayed after waiting for %s seconds. Locator: %s", seconds, element);
             throw e;  // Re-throw the exception after logging
         }
     }
@@ -547,5 +498,14 @@ public class BasePage {
         // After waiting, assert that the element is present
         List<WebElement> elements = driver.findElements(locator);
         MatcherAssert.assertThat("Element should be present", elements.size(), Matchers.greaterThan(0));
+    }
+
+    // mouse hover and release webelement
+    public static void mouseHoverAndRelease(WebElement element, WebElement subElement) {
+        waitUntilElementClickable(element, 30);
+        Actions actions = new Actions(driver);
+        actions.moveToElement(element);
+        actions.moveToElement(subElement);
+        actions.release().build().perform();
     }
 }

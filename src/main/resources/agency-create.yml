@@ -7,7 +7,7 @@ BasicInfo:
   PhoneType: Home
   PhoneNumber: "07412001245"
 
-CreditService:
+Credit Service:
   LegalFirstName: John
   LegalLastName: Smith
   MaidenName: Smith
@@ -31,7 +31,7 @@ CreditService:
   LegalRepOwnershipPercentage: 24
   LegalRepDocument: LegalRepresentativeDocument.pdf
 
-Location:
+Agency Business Location:
   BusinessLocation: North London
   BusinessEmailAddress: automation.qa+agencybuss{{increment}}@carehires.com
   City: City of London
@@ -46,7 +46,7 @@ Staff:
   MinChargeHourlyRate: 10
   EmployeeType: PSC
 
-BillingProfileManagement:
+Billing Profile Management:
   AttentionTo: IWS Solutions
   BillingAddress: "10 Downing Street, London, SW1A 2AA"
   CostCenter: "<uniqueNumber>"
@@ -69,8 +69,9 @@ User:
   City: City of London
   UserAccessLevel: Onboarding Admin,Shift Admin,Org Admin
 
-SubContract:
+Sub Contract:
   Note: Sub contract agreement note is entered.
+  SubContractDocument: subContractDocument.pdf
 
 Settings:
   TimeFormat: 12 Hours

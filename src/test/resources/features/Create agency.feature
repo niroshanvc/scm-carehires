@@ -1,7 +1,7 @@
 @Regression
 @Agency
 @SuperAdminUser
-Feature: Test CareHires create agency with one location
+Feature: Test CareHires create agency with no VAT Registered, one location
 
   Background: login to carehires
     Given User logins to carehires
@@ -17,7 +17,7 @@ Feature: Test CareHires create agency with one location
     And User adds Billing Profile Management data
     And User adds User Management data
     And User clicks on the Complete Profile button on the Sub Contracting Agreement page
-    And User navigates to Agency View page
+    And User navigates to Agency View pag
     When User finds recently created agency
     Then User verifies the agency profile status as Profile Complete
     And User completes the profile approve status

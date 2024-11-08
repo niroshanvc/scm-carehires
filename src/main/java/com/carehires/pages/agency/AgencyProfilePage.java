@@ -8,9 +8,6 @@ public class AgencyProfilePage {
     @FindBy(xpath = "//button[contains(text(), 'Approve')]")
     public WebElement approveButton;
 
-    @FindBy(xpath = "//button[contains(text(), 'Go to Settings')]")
-    public WebElement goToSettingsButton;
-
     @FindBy(xpath = "//div[contains(text(), 'Profile')]/../div/img")
     public WebElement profileIcon;
 
@@ -23,6 +20,36 @@ public class AgencyProfilePage {
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
 
-    @FindBy(xpath = "//img[contains(@src, 'settings')]/ancestor::div[@class='step-item']")
-    public WebElement settingsIcon;
+    @FindBy(xpath = "//p[contains(@class, 'text-icon') and contains(text(), '…')]")
+    public WebElement topThreeDots;
+
+    @FindBy(xpath = "//div[contains(@class, 'side')]/ul[@class='expanded-nav']/li[1]")
+    public WebElement updateProfileLink;
+
+    @FindBy(xpath = "//button[contains(text(), 'Save')]")
+    public WebElement saveButton;
+
+    @FindBy(xpath = "//div[contains(@class,'search-result-container')]/div[2]/div[1]")
+    public WebElement firstResultInTheList;
+
+    @FindBy(xpath = "//div[contains(text(), 'Add Another')]")
+    public WebElement addAnotherPhoneNumberLink;
+
+    @FindBy(id = "business-registration-number")
+    public WebElement businessRegistrationNumber;
+
+    @FindBy(xpath = "//input[@formcontrolname='phoneNumber']")
+    public WebElement phoneNumberInput;
+
+    @FindBy(xpath = "(//input[@formcontrolname='phoneNumber'])[2]/ancestor::div[2]//nb-icon")
+    public WebElement removePhoneNumberInput;
+
+    @FindBy(xpath = "(//input[@formcontrolname='phoneNumber'])[2]")
+    public WebElement phoneNumberInput2;
+
+    @FindBy(xpath = "(//nb-select[@formcontrolname='typeName'])[2]")
+    public WebElement phoneNumberType2;
+
+    @FindBy(xpath = "//div[not(contains(@class, 'agency'))]//p/strong")
+    public WebElement agencyId;
 }

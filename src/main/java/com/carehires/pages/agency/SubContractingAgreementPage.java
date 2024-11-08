@@ -34,4 +34,9 @@ public class SubContractingAgreementPage {
 
     @FindBy(xpath = "//button[contains(@class, 'remove-button')]")
     public WebElement removeAttachment;
+
+    @FindBy(xpath = "//img[contains(@src, 'assets') and not(@class) and not(@alt)]/parent::div/a")
+    public WebElement downloadAgreement;
+
+    public static final String AGREEMENT_DOWNLOAD_LINK_TEXT = "Download Manually Signed Agreement";
 }
