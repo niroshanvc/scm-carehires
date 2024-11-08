@@ -3,6 +3,8 @@ package com.carehires.pages.agency;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.List;
+
 public class AgencyUserManagementPage {
 
     @FindBy(xpath = "//button[contains(text(),'Add new')]")
@@ -46,4 +48,10 @@ public class AgencyUserManagementPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    @FindBy(xpath = "//nb-icon[@icon='edit-2-outline']")
+    public WebElement editDetailsIcon;
+
+    @FindBy(xpath = "//nb-option[contains(@class,'multiple') and (contains(@class, 'selected'))]")
+    public List<WebElement> alreadySelectedAccessLevels;
 }

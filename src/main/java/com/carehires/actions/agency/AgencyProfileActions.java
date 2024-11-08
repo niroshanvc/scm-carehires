@@ -1,5 +1,6 @@
 package com.carehires.actions.agency;
 
+import com.carehires.common.GlobalVariables;
 import com.carehires.pages.agency.AgencyProfilePage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -18,6 +19,8 @@ public class AgencyProfileActions {
     private static final String YML_FILE = "agency-edit";
     private static final String YML_HEADER = "Profile";
     private static final Logger logger = LogManager.getFormatterLogger(AgencyProfileActions.class);
+
+    private static final AgencyNavigationMenuActions navigationMenu = new AgencyNavigationMenuActions();
 
     public AgencyProfileActions() {
         agencyProfile = new AgencyProfilePage();
@@ -138,5 +141,25 @@ public class AgencyProfileActions {
 
     private String getPhoneNumberTypeXpath(String option) {
         return String.format("//nb-option[contains(text(),'%s')]", option);
+    }
+
+    public void getsAgencyId() {
+        navigateToProfilePage();
+        getAgencyId();
+    }
+
+    private void navigateToProfilePage() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Navigating to Agency Profile >>>>>>>>>>>>>>>>>>>>");
+        navigationMenu.gotoProfilePage();
+        BasePage.genericWait(3000);
+    }
+
+    // get auto generated agency id and save it on the memory
+    private void getAgencyId() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(agencyProfile.agencyId, 30);
+        String headerText = BasePage.getText(agencyProfile.agencyId).trim();
+        String agencyId = headerText.split("\n")[0];
+        GlobalVariables.setVariable("agencyId", agencyId);
     }
 }

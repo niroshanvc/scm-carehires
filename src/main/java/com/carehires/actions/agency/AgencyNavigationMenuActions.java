@@ -25,37 +25,49 @@ public class AgencyNavigationMenuActions {
 
     public void gotoLocationsPage() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Moving to Locations page >>>>>>>>>>>>>>>>>>>>");
-        BasePage.clickWithJavaScript(navigationMenuPage.locations);
+        BasePage.mouseHoverOverElement(navigationMenuPage.locations);
+        BasePage.clickWithJavaScript(navigationMenuPage.locationsImage);
     }
 
     public void gotoStaffPage() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Moving to Staff page >>>>>>>>>>>>>>>>>>>>");
-        BasePage.clickWithJavaScript(navigationMenuPage.staff);
+        BasePage.mouseHoverOverElement(navigationMenuPage.staff);
+        BasePage.clickWithJavaScript(navigationMenuPage.staffImage);
     }
 
     public void gotoBillingPage() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Moving to Billing page >>>>>>>>>>>>>>>>>>>>");
-        BasePage.clickWithJavaScript(navigationMenuPage.billing);
+        BasePage.mouseHoverOverElement(navigationMenuPage.billing);
+        BasePage.clickWithJavaScript(navigationMenuPage.billingImage);
     }
 
     public void gotoUsersPage() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Moving to Users page >>>>>>>>>>>>>>>>>>>>");
-        BasePage.clickWithJavaScript(navigationMenuPage.users);
+        BasePage.mouseHoverOverElement(navigationMenuPage.users);
+        BasePage.clickWithJavaScript(navigationMenuPage.usersImage);
     }
 
     public void gotoAgreementPage() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Moving to Agreement page >>>>>>>>>>>>>>>>>>>>");
-        BasePage.clickWithJavaScript(navigationMenuPage.agreement);
+        BasePage.mouseHoverOverElement(navigationMenuPage.agreement);
+        BasePage.clickWithJavaScript(navigationMenuPage.agreementImage);
     }
 
     public void gotoWorkersPage() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Moving to Workers page >>>>>>>>>>>>>>>>>>>>");
-        BasePage.clickWithJavaScript(navigationMenuPage.workers);
+        BasePage.mouseHoverOverElement(navigationMenuPage.workers);
+        BasePage.clickWithJavaScript(navigationMenuPage.workersImage);
     }
 
     public void gotoSettingsPage() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Moving to Settings page >>>>>>>>>>>>>>>>>>>>");
-        BasePage.clickWithJavaScript(navigationMenuPage.settings);
+        BasePage.mouseHoverOverElement(navigationMenuPage.settings);
+        BasePage.clickWithJavaScript(navigationMenuPage.settingsImage);
     }
 
+    public void gotoProfilePage() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Moving to Profile page >>>>>>>>>>>>>>>>>>>>");
+        BasePage.mouseHoverOverElement(navigationMenuPage.profile);
+        BasePage.clickWithJavaScript(navigationMenuPage.profileImage);
+    }
 }

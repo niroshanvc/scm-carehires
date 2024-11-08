@@ -17,4 +17,9 @@ public class SearchAgencySteps {
     public void searchingDraftAgency() {
         searchAgencyActions.findDraftAgency();
     }
+
+    @When("User finds recently updated agency")
+    public void findRecentlyUpdatedAgency() {
+        searchAgencyActions.searchRecentlyUpdatedAgency();
+    }
 }

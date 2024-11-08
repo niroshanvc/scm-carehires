@@ -236,6 +236,7 @@ public class AgencyCreditServiceActions {
 
         enterText(creditServicePage.personalIdNumber, "NINumber");
         genericUtils.fillAddress(creditServicePage.postcode, DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, EDIT_YML_HEADER, EDIT_YML_SUB_HEADER, "PostCode"));
+        BasePage.clickWithJavaScript(creditServicePage.ownershipPercentage);
         enterText(creditServicePage.ownershipPercentage, "OwnershipPercentage");
     }
 

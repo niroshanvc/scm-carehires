@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CreateBillingProfileManagementPage {
+public class BillingProfileManagementPage {
 
     @FindBy(xpath = "//input[@formcontrolname='invoicePersonName']")
     public WebElement addressBillsInAttentionTo;
@@ -61,4 +61,10 @@ public class CreateBillingProfileManagementPage {
     private final By firstSuccessMessage = By.xpath("(//nb-toast//span)[1]");
 
     private final By secondSuccessMessage = By.xpath("(//nb-toast//span)[2]");
+
+    @FindBy(xpath = "//button[contains(text(),'Update')]")
+    public WebElement updateButton;
+
+    @FindBy(xpath = "//button[contains(text(), 'Next')]")
+    public WebElement nextButton;
 }

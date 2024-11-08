@@ -3,7 +3,7 @@ package com.carehires.pages.agency;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CreateAgencyBusinessLocationsPage {
+public class AgencyBusinessLocationsPage {
 
     @FindBy(xpath = "//button[contains(@class, 'inserted') and (contains(@class, 'button'))]")
     public WebElement addNewButton;
@@ -14,7 +14,7 @@ public class CreateAgencyBusinessLocationsPage {
     @FindBy(xpath = "(//input[@id='email'])[1]")
     public WebElement businessEmailAddress;
 
-    @FindBy(xpath = "//button[text()='Select City']")
+    @FindBy(xpath = "//nb-select[@formcontrolname='city']/button")
     public WebElement selectCity;
 
     @FindBy(xpath = "(//input[@id='email'])[2]")
@@ -37,4 +37,7 @@ public class CreateAgencyBusinessLocationsPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    @FindBy(xpath = "//nb-icon[@icon='edit-2-outline']")
+    public WebElement editDetailsIcon;
 }
