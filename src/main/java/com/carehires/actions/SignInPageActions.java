@@ -35,4 +35,12 @@ public class SignInPageActions {
         logger.info("successfully logged in to scm");
         BasePage.waitUntilPageCompletelyLoaded();
     }
+
+    public void doLoginOff() {
+        logger.info("-------------------- Login off from Carehires --------------------");
+        BasePage.waitUntilElementClickable(signin.expandUserDropdown, 60);
+        BasePage.clickWithJavaScript(signin.expandUserDropdown);
+        BasePage.waitUntilElementDisplayed(signin.logoutLink, 20);
+        BasePage.clickWithJavaScript(signin.logoutLink);
+    }
 }

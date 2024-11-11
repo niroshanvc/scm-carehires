@@ -87,4 +87,10 @@ public class CreateProviderCompanyInformationPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    @FindBy(xpath = "//p[contains(@class, 'text-icon') and contains(text(), '…')]")
+    public WebElement topThreeDots;
+
+    @FindBy(xpath = "//div[contains(@class, 'side')]/ul[@class='expanded-nav']/li[1]")
+    public WebElement updateProfileLink;
 }

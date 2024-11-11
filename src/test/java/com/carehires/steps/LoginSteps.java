@@ -37,4 +37,9 @@ public class LoginSteps {
         BasePage.navigate("scm");
         overviewActions.waitAndAcceptCookies();
     }
+
+    @And("User logins off from Carehires")
+    public void loginsOffFromTheSystem() {
+        signInPageActions.doLoginOff();
+    }
 }

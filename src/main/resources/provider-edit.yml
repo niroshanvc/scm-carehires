@@ -10,6 +10,21 @@ Company Information:
     AreYouVatRegistered: "Yes"
     VatNo: "1025200012"
     VatRegisteredDocumentName: VAT-Reg-doc.pdf
+    AreYouVatExempt: "No"
+    VatExemptDocumentName: vat-exemption-certificate.pdf
+    AnnualCompanyTurnOverIs: Equal or Over 10.2M
+    CompanyBalanceSheetTotalIs: Equal or Over 5.2M
+    AverageNumberOfEmployees: Equal or Over 50
+  Update:
+    ProviderLogo: Provider101.png
+    BusinessRegistrationNumber: 12346678
+    CompanyType: Limited Company
+    Website: https://www.automationprovider-edited.com
+    ProviderPostCode: BS1 1DE
+    PhoneNumber: "07412031246"
+    AreYouVatRegistered: "Yes"
+    VatNo: "1035200012"
+    VatRegisteredDocumentName: VAT-Reg-doc.pdf
     AreYouVatExempt: "Yes"
     VatExemptDocumentName: vat-exemption-certificate.pdf
     AnnualCompanyTurnOverIs: Equal or Over 10.2M

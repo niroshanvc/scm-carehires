@@ -11,4 +11,14 @@ public class CreateProvidersCompanyInformationSteps {
     public void enterCompanyInformation() {
         companyInformationActions.enterCompanyInformation();
     }
+
+    @And("User creates a provider in draft stage")
+    public void createProviderInDraftStage() {
+        companyInformationActions.createProviderInDraftStage();
+    }
+
+    @And("User moves to the payment profile page and edit data")
+    public void moveToThePaymentProfileAndEditData() {
+        companyInformationActions.updatePaymentProfile();
+    }
 }
