@@ -16,34 +16,37 @@ Company Information:
     CompanyBalanceSheetTotalIs: Equal or Over 5.2M
     AverageNumberOfEmployees: Equal or Over 50
 
-SiteManagement:
-  SiteName: BioRevolution Care {{increment}}
-  SiteType: Hospital
-  SiteSpecialism: Adult,Autism,Childrens,Elderly,Nursing
-  AlsoKnownAs: BioRevolution{{increment}}
-  SiteEmail: carehires+site1pr{{increment}}@zohomail.com
-  PostalCode: BL0 9YX
-  NoOfBeds: 25
-  SiteCode: AC-01
-  PhoneType: "Office2"
-  PhoneNumber: "07412001246"
-  JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
-  ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
+Site Management:
+  Add:
+    SiteName: BioRevolution Care {{increment}}
+    SiteType: Hospital
+    SiteSpecialism: Adult,Autism,Childrens,Elderly,Nursing
+    AlsoKnownAs: BioRevolution{{increment}}
+    SiteEmail: carehires+site1pr{{increment}}@zohomail.com
+    PostalCode: BL0 9YX
+    NoOfBeds: 25
+    SiteCode: AC-01
+    PhoneType: "Office2"
+    PhoneNumber: "07412001246"
+    JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
+    ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
 
-WorkerStaffManagement:
-  WorkerType: Rehabilitation Worker
-  Skills: Elderly,Dementia,Home Care,NVQ L3,Driving
-  HourlyRate: 10.5
-  MonthlyAgencyHours: 300
-  ProofOfDemandDocument: Proof of demand document.pdf
+Worker Staff Management:
+  Add:
+    WorkerType: Rehabilitation Worker
+    Skills: Elderly,Dementia,Home Care,NVQ L3,Driving
+    HourlyRate: 10.5
+    MonthlyAgencyHours: 300
+    ProofOfDemandDocument: Proof of demand document.pdf
 
 User:
-  email: carehires+prouser{{increment}}@zohomail.com
-  Name: Patrick Sams{{increment}}
-  JobTitle: Assistant Executive
-  Phone: "07412001246"
-  MarkAsAnAuthoriser: "Yes"
-  UserAccessLevel: Shift Admin (With rate),Site Admin
+  Add:
+    email: carehires+prouser{{increment}}@zohomail.com
+    Name: Patrick Sams{{increment}}
+    JobTitle: Assistant Executive
+    Phone: "07412001246"
+    MarkAsAnAuthoriser: "Yes"
+    UserAccessLevel: Shift Admin (With rate),Site Admin
 
 BillingInformation:
   GeneralBillingInformation:

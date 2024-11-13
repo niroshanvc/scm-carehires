@@ -1,7 +1,7 @@
 package com.carehires.actions.providers;
 
 import com.carehires.common.GlobalVariables;
-import com.carehires.pages.providers.CreateProviderSubContractingAgreementPage;
+import com.carehires.pages.providers.ProviderSubContractingAgreementPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
@@ -13,14 +13,14 @@ import java.io.File;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class CreateProviderSubContractingAgreementActions {
+public class ProviderSubContractingAgreementActions {
 
-    CreateProviderSubContractingAgreementPage subContractingAgreementPage;
+    ProviderSubContractingAgreementPage subContractingAgreementPage;
 
-    private static final Logger logger = LogManager.getFormatterLogger(CreateProviderSubContractingAgreementActions.class);
+    private static final Logger logger = LogManager.getFormatterLogger(ProviderSubContractingAgreementActions.class);
 
-    public CreateProviderSubContractingAgreementActions() {
-        subContractingAgreementPage = new CreateProviderSubContractingAgreementPage();
+    public ProviderSubContractingAgreementActions() {
+        subContractingAgreementPage = new ProviderSubContractingAgreementPage();
         PageFactory.initElements(BasePage.getDriver(), subContractingAgreementPage);
     }
 

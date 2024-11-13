@@ -1,11 +1,11 @@
 package com.carehires.steps.providers;
 
-import com.carehires.actions.providers.CreateProviderCompanyInformationActions;
+import com.carehires.actions.providers.ProviderCompanyInformationActions;
 import io.cucumber.java.en.And;
 
-public class CreateProvidersCompanyInformationSteps {
+public class ProvidersCompanyInformationSteps {
 
-    CreateProviderCompanyInformationActions companyInformationActions = new CreateProviderCompanyInformationActions();
+    ProviderCompanyInformationActions companyInformationActions = new ProviderCompanyInformationActions();
 
     @And("User enters valid provider - company information")
     public void enterCompanyInformation() {

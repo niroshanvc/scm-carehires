@@ -23,7 +23,7 @@ public class SearchProviderActions {
 
 
 
-    private static final Logger logger = LogManager.getFormatterLogger(CreateProvidersSiteManagementActions.class);
+    private static final Logger logger = LogManager.getFormatterLogger(ProvidersSiteManagementActions.class);
 
     public SearchProviderActions() {
         searchPage = new SearchProviderPage();

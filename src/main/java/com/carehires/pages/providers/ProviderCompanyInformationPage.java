@@ -3,7 +3,7 @@ package com.carehires.pages.providers;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CreateProviderCompanyInformationPage {
+public class ProviderCompanyInformationPage {
 
     @FindBy(xpath = "//span[contains(@class, 'image-edit')]")
     public WebElement uploadLogo;
@@ -41,8 +41,7 @@ public class CreateProviderCompanyInformationPage {
     @FindBy(id = "vat-no")
     public WebElement vatNumber;
 
-    @FindBy(xpath = "//input[@name='undefined' and @value='true']//ancestor::nb-radio-group//ancestor::" +
-            "div[@class='row'][1]//div[3]//div[contains(@class, 'table')]//input[@type='file']")
+    @FindBy(xpath = "//input[@name='undefined' and @value='true']//ancestor::nb-radio-group//ancestor::div[@class='row'][1]//div[3]//div[contains(@class, 'table')]//input[@type='file']")
     public WebElement vatRegisteredDocument;
 
     @FindBy(xpath = "//nb-radio-group[@formcontrolname='isVatExcempt']//input[@value='true']")

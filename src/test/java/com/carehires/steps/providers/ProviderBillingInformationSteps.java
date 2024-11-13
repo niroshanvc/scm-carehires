@@ -1,11 +1,11 @@
 package com.carehires.steps.providers;
 
-import com.carehires.actions.providers.CreateProviderBillingInformationActions;
+import com.carehires.actions.providers.ProviderBillingInformationActions;
 import io.cucumber.java.en.And;
 
-public class CreateProviderBillingInformationSteps {
+public class ProviderBillingInformationSteps {
 
-    CreateProviderBillingInformationActions billingInformationActions = new CreateProviderBillingInformationActions();
+    ProviderBillingInformationActions billingInformationActions = new ProviderBillingInformationActions();
 
     @And("User enters General Billing Information")
     public void enterGeneralBillingInformation() {

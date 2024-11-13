@@ -14,6 +14,11 @@ Feature: Test CareHires edit provider and make profile approved
     And User logins to carehires
     And User navigates to Provider View page
     And User searches previously created provider which is in Draft stage
+    And User moves to Site and edit data
+    And User moves to Worker Staff and edit data
+    And User moves to Provider - User Management and edit data
+
+
     And User moves to the payment profile page and edit data
     And User moves to Credit Service and edit data
     And User moves to Locations and edit data
