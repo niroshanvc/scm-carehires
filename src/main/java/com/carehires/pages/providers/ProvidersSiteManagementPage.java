@@ -3,7 +3,7 @@ package com.carehires.pages.providers;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CreateProvidersSiteManagementPage {
+public class ProvidersSiteManagementPage {
 
     @FindBy(xpath = "//button[contains(@class, 'inserted') and (contains(@class, 'button'))]")
     public WebElement addNewButton;
@@ -73,4 +73,7 @@ public class CreateProvidersSiteManagementPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    @FindBy(xpath = "//nb-icon[@icon='edit-2-outline']")
+    public WebElement editDetailsIcon;
 }

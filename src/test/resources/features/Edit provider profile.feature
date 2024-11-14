@@ -1,16 +1,25 @@
 @Regression
-@Agency
+@Provider
 @SuperAdminUser
-Feature: Test CareHires edit agency and make profile approved
+Feature: Test CareHires edit provider and make profile approved
 
   Background: login to carehires
     Given User logins to carehires
 
-  @EditNonApprovedAgency
-  Scenario: Edit agency details where profile is in draft stage
-    When User navigates to Agency View page
-    And User searching an agency which is in Draft stage
-    And User moves to the profile page and edit data
+  @EditDraftProvider
+  Scenario: Edit provider details where profile is in draft stage
+    When User navigates to Provider Create page
+    And User creates a provider in draft stage
+    And User logins off from Carehires
+    And User logins to carehires
+    And User navigates to Provider View page
+    And User searches previously created provider which is in Draft stage
+    And User moves to Site and edit data
+    And User moves to Worker Staff and edit data
+    And User moves to Provider - User Management and edit data
+
+
+    And User moves to the payment profile page and edit data
     And User moves to Credit Service and edit data
     And User moves to Locations and edit data
     And User moves to Staff and edit data

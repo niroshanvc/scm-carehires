@@ -1,7 +1,7 @@
 package com.carehires.actions.providers;
 
 import com.carehires.common.GlobalVariables;
-import com.carehires.pages.providers.CreateProviderBillingInformationPage;
+import com.carehires.pages.providers.ProviderBillingInformationPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
@@ -11,18 +11,18 @@ import org.openqa.selenium.support.PageFactory;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class CreateProviderBillingInformationActions {
+public class ProviderBillingInformationActions {
 
-    CreateProviderBillingInformationPage billingInformationPage;
+    ProviderBillingInformationPage billingInformationPage;
 
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
     private static final String YML_HEADER = "BillingInformation";
     private static final String YML_HEADER_SUB = "GeneralBillingInformation";
-    private static final Logger logger = LogManager.getFormatterLogger(CreateProviderBillingInformationActions.class);
+    private static final Logger logger = LogManager.getFormatterLogger(ProviderBillingInformationActions.class);
 
-    public CreateProviderBillingInformationActions() {
-        billingInformationPage = new CreateProviderBillingInformationPage();
+    public ProviderBillingInformationActions() {
+        billingInformationPage = new ProviderBillingInformationPage();
         PageFactory.initElements(BasePage.getDriver(), billingInformationPage);
     }
 

@@ -3,7 +3,7 @@ package com.carehires.pages.providers;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CreateProviderSubContractingAgreementPage {
+public class ProviderSubContractingAgreementPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Invite')]")
     public WebElement inviteButton;

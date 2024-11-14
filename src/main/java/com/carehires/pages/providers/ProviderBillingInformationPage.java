@@ -3,7 +3,7 @@ package com.carehires.pages.providers;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CreateProviderBillingInformationPage {
+public class ProviderBillingInformationPage {
 
     @FindBy(xpath = "//input[@formcontrolname='invoicePersonName']")
     public WebElement addressBillsInAttentionTo;

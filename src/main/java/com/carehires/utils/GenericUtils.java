@@ -59,7 +59,7 @@ public class GenericUtils {
             }
             if (Objects.equals(key, "PhoneNumber")) {
                 String phoneNumber = DataConfigurationReader.readDataFromYmlFile(entity, ymlFile, keys);
-                BasePage.typeWithStringBuilder(phoneNumberInput, phoneNumber);
+                BasePage.clearAndEnterTexts(phoneNumberInput, phoneNumber);
             }
         }
     }

@@ -13,4 +13,10 @@ public class SignInPage {
 
     @FindBy(xpath = "//button[@type='submit']")
     public WebElement signinButton;
+
+    @FindBy(xpath = "//nb-icon[contains(@icon, 'down')]")
+    public WebElement expandUserDropdown;
+
+    @FindBy(xpath = "//li//div[contains(text(), 'Logout')]")
+    public WebElement logoutLink;
 }
