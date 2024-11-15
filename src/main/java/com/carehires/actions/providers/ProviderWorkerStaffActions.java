@@ -133,7 +133,7 @@ public class ProviderWorkerStaffActions {
 
     private void enterWorkerStaffManagementData(String ymlFile, String subHeader) {
         //select site
-        String site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT_HEADER, subHeader, "SiteName");
+        String site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT_HEADER, UPDATE, "SiteName");
         BasePage.waitUntilElementClickable(workerStaffPage.siteDropdown, 20);
         BasePage.clickWithJavaScript(workerStaffPage.siteDropdown);
         BasePage.genericWait(1000);
@@ -157,11 +157,11 @@ public class ProviderWorkerStaffActions {
         //enter hourly rate
         String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "HourlyRate");
         BasePage.clickWithJavaScript(workerStaffPage.hourlyRate);
-        BasePage.typeWithStringBuilder(workerStaffPage.hourlyRate, hourlyRate);
+        BasePage.clearAndEnterTexts(workerStaffPage.hourlyRate, hourlyRate);
 
         //enter monthly agency hours
         String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "MonthlyAgencyHours");
-        BasePage.typeWithStringBuilder(workerStaffPage.monthlyAgencyHours, monthlyAgencyHours);
+        BasePage.clearAndEnterTexts(workerStaffPage.monthlyAgencyHours, monthlyAgencyHours);
     }
 
     private void verifyUpdateSuccessMessage() {

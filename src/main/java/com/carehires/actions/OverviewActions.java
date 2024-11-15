@@ -22,7 +22,7 @@ public class OverviewActions {
     }
 
     public void waitAndAcceptCookies() {
-        BasePage.waitUntilElementPresent(overview.overviewMenu, 90);
+        BasePage.waitUntilElementPresent(overview.overviewMenu, 10);
         try {
             BasePage.clickWithJavaScript(overview.acceptCookie);
         } catch (NoSuchElementException e) {

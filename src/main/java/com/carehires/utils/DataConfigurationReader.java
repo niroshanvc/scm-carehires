@@ -21,9 +21,9 @@ public class DataConfigurationReader {
 
     private static final Logger logger = LogManager.getLogger(DataConfigurationReader.class);
     private static int incrementValue = -1;
-    private static final String INCREMENT_FILE_PATH_AGENCY = "src/main/resources/create_agency_increment_value.txt";
-    private static final String INCREMENT_FILE_PATH_PROVIDER = "src/main/resources/create_provider_increment_value.txt";
-    private static final String INCREMENT_FILE_PATH_WORKER = "src/main/resources/create_worker_increment_value.txt";
+    private static final String INCREMENT_FILE_PATH_AGENCY = "src/main/resources/agency_increment_value.txt";
+    private static final String INCREMENT_FILE_PATH_PROVIDER = "src/main/resources/provider_increment_value.txt";
+    private static final String INCREMENT_FILE_PATH_WORKER = "src/main/resources/worker_increment_value.txt";
     private static final String INCREMENT_VALUE = "_incrementValue";
 
     // Method to read data from the YAML file

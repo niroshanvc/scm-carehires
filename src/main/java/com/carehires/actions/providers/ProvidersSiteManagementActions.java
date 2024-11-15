@@ -63,7 +63,7 @@ public class ProvidersSiteManagementActions {
     private void enterSiteManagementData(String ymlFile, String subHeader) {
         logger.info("Entering Site Name");
         String siteName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "SiteName");
-        BasePage.typeWithStringBuilder(siteManagementPage.siteName, siteName);
+        BasePage.clearAndEnterTexts(siteManagementPage.siteName, siteName);
 
         logger.info("Entering Site Type");
         String siteType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "SiteType");
@@ -82,11 +82,11 @@ public class ProvidersSiteManagementActions {
         logger.info("Entering Site also known as data");
         String alsoKnownAs = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "AlsoKnownAs");
         BasePage.clickWithJavaScript(siteManagementPage.alsoKnownAs);
-        BasePage.typeWithStringBuilder(siteManagementPage.alsoKnownAs, alsoKnownAs);
+        BasePage.clearAndEnterTexts(siteManagementPage.alsoKnownAs, alsoKnownAs);
 
         logger.info("Entering Site Email");
         String siteEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "SiteEmail");
-        BasePage.typeWithStringBuilder(siteManagementPage.siteEmail, siteEmail);
+        BasePage.clearAndEnterTexts(siteManagementPage.siteEmail, siteEmail);
 
         logger.info("Entering Site Address");
         String postalCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "PostalCode");
@@ -94,24 +94,24 @@ public class ProvidersSiteManagementActions {
 
         logger.info("Entering Site No of beds");
         String numberOfBeds = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "NoOfBeds");
-        BasePage.typeWithStringBuilder(siteManagementPage.noOfBeds, numberOfBeds);
+        BasePage.clearAndEnterTexts(siteManagementPage.noOfBeds, numberOfBeds);
 
         logger.info("Entering Site Code");
         String siteCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "SiteCode");
-        BasePage.typeWithStringBuilder(siteManagementPage.siteCode, siteCode);
+        BasePage.clearAndEnterTexts(siteManagementPage.siteCode, siteCode);
 
         logger.info("Entering Site Phone Number");
         BasePage.clickWithJavaScript(siteManagementPage.selectPhoneDropdown);
         fillPhoneNumber(siteManagementPage.phoneNumber, ymlFile, subHeader);
 
         logger.info("Entering Site job notification email address");
-        BasePage.scrollToWebElement(siteManagementPage.addButton);
+        BasePage.scrollToWebElement(siteManagementPage.approvalNotificationAddress);
         String jobNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "JobNotificationAddress");
-        BasePage.typeWithStringBuilder(siteManagementPage.jobNotificationAddress, jobNotification);
+        BasePage.clearAndEnterTexts(siteManagementPage.jobNotificationAddress, jobNotification);
 
         logger.info("Entering site approval notification email address");
         String approvalNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "ApprovalNotificationAddress");
-        BasePage.typeWithStringBuilder(siteManagementPage.approvalNotificationAddress, approvalNotification);
+        BasePage.clearAndEnterTexts(siteManagementPage.approvalNotificationAddress, approvalNotification);
     }
 
     private void isSiteSaved(String ymlFile, String subHeader) {
@@ -160,7 +160,7 @@ public class ProvidersSiteManagementActions {
     private void verifySuccessMessage() {
         BasePage.waitUntilElementPresent(siteManagementPage.successMessage, 30);
         String actualInLowerCase = BasePage.getText(siteManagementPage.successMessage).toLowerCase().trim();
-        String expected = "Record created successfully";
+        String expected = "Record created successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Site management information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(siteManagementPage.successMessage, 20);
@@ -175,11 +175,13 @@ public class ProvidersSiteManagementActions {
         BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(siteManagementPage.addNewButton);
         enterSiteManagementData(EDIT_YML_FILE, ADD);
-        BasePage.clickWithJavaScript(siteManagementPage.updateButton);
-        BasePage.waitUntilElementClickable(siteManagementPage.nextButton, 90);
+        BasePage.clickWithJavaScript(siteManagementPage.addButton);
+        verifySuccessMessage();
+        BasePage.waitUntilElementClickable(siteManagementPage.updateButton, 90);
 
         // edit already added site data
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Editing Site Management Information - In Edit >>>>>>>>>>>>>>>>>>>>");
+        BasePage.clickWithJavaScript(siteManagementPage.updateButton);
         BasePage.waitUntilElementDisplayed(siteManagementPage.editDetailsIcon, 30);
         BasePage.clickWithJavaScript(siteManagementPage.editDetailsIcon);
         enterSiteManagementData(EDIT_YML_FILE, UPDATE);
@@ -193,7 +195,7 @@ public class ProvidersSiteManagementActions {
     private void verifyUpdateSuccessMessage() {
         BasePage.waitUntilElementPresent(siteManagementPage.successMessage, 30);
         String actualInLowerCase = BasePage.getText(siteManagementPage.successMessage).toLowerCase().trim();
-        String expected = "Record created successfully";
+        String expected = "Record updated successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Site management information update success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(siteManagementPage.successMessage, 20);

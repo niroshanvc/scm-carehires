@@ -112,10 +112,10 @@ public class ProviderUserManagementActions {
         genericUtils.waitUntilEmailAddressValidatedForUniqueness(email, userManagement.emailAddress, userManagement.name);
 
         String name = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Name");
-        BasePage.typeWithStringBuilder(userManagement.name, name);
+        BasePage.clearAndEnterTexts(userManagement.name, name);
 
         String jobTitle = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "JobTitle");
-        BasePage.typeWithStringBuilder(userManagement.jobTitle,  jobTitle);
+        BasePage.clearAndEnterTexts(userManagement.jobTitle,  jobTitle);
 
         String site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT, subHeader, "SiteName");
         BasePage.clickWithJavaScript(userManagement.assignToSiteDropdown);
@@ -124,7 +124,7 @@ public class ProviderUserManagementActions {
 
         String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Phone");
         BasePage.clickWithJavaScript(userManagement.phone);
-        BasePage.typeWithStringBuilder(userManagement.phone,  phone);
+        BasePage.clearAndEnterTexts(userManagement.phone,  phone);
 
         String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "MarkAsAnAuthoriser");
         if(authoriser.equalsIgnoreCase("yes")) {
