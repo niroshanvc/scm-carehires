@@ -10,6 +10,12 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -25,6 +31,7 @@ public class ProvidersSiteManagementActions {
     private static final String YML_HEADER = "Site Management";
     private static final String ADD = "Add";
     private static final String UPDATE = "Update";
+    private static final String SITE_SPECIALISM = "SiteSpecialism";
     private static final Logger logger = LogManager.getFormatterLogger(ProvidersSiteManagementActions.class);
     Integer incrementValue;
 
@@ -50,6 +57,16 @@ public class ProvidersSiteManagementActions {
 
         enterSiteManagementData(YML_FILE, ADD);
 
+        logger.info("Entering Site Specialism");
+        BasePage.scrollToWebElement(siteManagementPage.siteTypeDropdown);
+        String[] siteSpecialism = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, SITE_SPECIALISM).split(",");
+        BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
+        BasePage.genericWait(500);
+        for (String specialism : siteSpecialism) {
+            BasePage.clickWithJavaScript(getMultiSelectDropdownXpath(specialism));
+        }
+        BasePage.clickWithJavaScript(siteManagementPage.alsoKnownAs);
+
         BasePage.genericWait(10000);
         BasePage.clickWithJavaScript(siteManagementPage.addButton);
         verifySuccessMessage();
@@ -71,14 +88,6 @@ public class ProvidersSiteManagementActions {
         BasePage.waitUntilElementClickable(getDropdownXpath(siteType), 30);
         BasePage.clickWithJavaScript(getDropdownXpath(siteType));
 
-        logger.info("Entering Site Specialism");
-        String[] siteSpecialism = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "SiteSpecialism").split(",");
-        BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
-        BasePage.genericWait(500);
-        for (String specialism : siteSpecialism) {
-            BasePage.clickWithJavaScript(getMultiSelectDropdownXpath(specialism));
-        }
-
         logger.info("Entering Site also known as data");
         String alsoKnownAs = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "AlsoKnownAs");
         BasePage.clickWithJavaScript(siteManagementPage.alsoKnownAs);
@@ -90,6 +99,7 @@ public class ProvidersSiteManagementActions {
 
         logger.info("Entering Site Address");
         String postalCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "PostalCode");
+        BasePage.clearTexts(siteManagementPage.postalCode);
         genericUtils.fillAddress(siteManagementPage.postalCode, postalCode);
 
         logger.info("Entering Site No of beds");
@@ -154,7 +164,7 @@ public class ProvidersSiteManagementActions {
             default:
                 throw new IllegalArgumentException("Invalid phone number type");
         }
-        BasePage.typeWithStringBuilder(phoneNumberInput, phoneNumber);
+        BasePage.clearAndEnterTexts(phoneNumberInput, phoneNumber);
     }
 
     private void verifySuccessMessage() {
@@ -175,6 +185,16 @@ public class ProvidersSiteManagementActions {
         BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(siteManagementPage.addNewButton);
         enterSiteManagementData(EDIT_YML_FILE, ADD);
+
+        logger.info("Entering Site Specialism - In Add");
+        String[] siteSpecialism = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, SITE_SPECIALISM).split(",");
+        BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
+        BasePage.genericWait(500);
+        for (String specialism : siteSpecialism) {
+            BasePage.clickWithJavaScript(getMultiSelectDropdownXpath(specialism));
+        }
+        BasePage.clickWithJavaScript(siteManagementPage.alsoKnownAs);
+
         BasePage.clickWithJavaScript(siteManagementPage.addButton);
         verifySuccessMessage();
         BasePage.waitUntilElementClickable(siteManagementPage.updateButton, 90);
@@ -185,11 +205,51 @@ public class ProvidersSiteManagementActions {
         BasePage.waitUntilElementDisplayed(siteManagementPage.editDetailsIcon, 30);
         BasePage.clickWithJavaScript(siteManagementPage.editDetailsIcon);
         enterSiteManagementData(EDIT_YML_FILE, UPDATE);
+
+        BasePage.scrollToWebElement(siteManagementPage.siteTypeDropdown);
+        updateSiteSpecialism();
+        BasePage.clickWithJavaScript(siteManagementPage.alsoKnownAs);
+
         BasePage.clickWithJavaScript(siteManagementPage.updateButton);
         verifyUpdateSuccessMessage();
 
         // click on next button
         BasePage.clickWithJavaScript(siteManagementPage.nextButton);
+    }
+
+    private void updateSiteSpecialism() {
+        Set<String> siteSpecialism = new HashSet<>(Arrays.asList(DataConfigurationReader.readDataFromYmlFile(ENTITY,
+                EDIT_YML_FILE, YML_HEADER, UPDATE, SITE_SPECIALISM).split(",")));
+        BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
+        // Get all currently selected skills, default to an empty list if null
+        List<String> selectedSiteSpecialism = getCurrentlySelectedSiteSpecialism();
+        if (selectedSiteSpecialism == null) {
+            selectedSiteSpecialism = new ArrayList<>();
+        }
+        // Deselect site specialisms that are not in the desired list
+        for (String option : selectedSiteSpecialism) {
+            if (!siteSpecialism.contains(option)) {
+                BasePage.clickWithJavaScript(getMultiSelectDropdownXpath(option));
+            }
+        }
+
+        // Select site specialism that are in the desired list but not currently selected
+        for (String option : siteSpecialism) {
+            if (!selectedSiteSpecialism.contains(option)) {
+                BasePage.clickWithJavaScript(getMultiSelectDropdownXpath(option));
+            }
+        }
+    }
+
+    private List<String> getCurrentlySelectedSiteSpecialism() {
+        // Retrieve elements representing selected site specialism
+        List<WebElement> selectedSiteSpecialismElements = siteManagementPage.alreadySelectedSiteSpecialism;
+
+        List<String> selectedSiteSpecialism = new ArrayList<>();
+        for (WebElement element : selectedSiteSpecialismElements) {
+            selectedSiteSpecialism.add(element.getText());
+        }
+        return selectedSiteSpecialism;
     }
 
     private void verifyUpdateSuccessMessage() {

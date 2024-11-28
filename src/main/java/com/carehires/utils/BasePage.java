@@ -173,6 +173,7 @@ public class BasePage {
         logger.info("****************** Type using StringBuilder in %s", element);
         StringBuilder sb = new StringBuilder(data);
         waitUntilElementPresent(element, 30);
+        element.clear();
         element.sendKeys(sb);
     }
 
@@ -284,11 +285,12 @@ public class BasePage {
     }
 
     public static void mouseHoverAndClick(WebElement element, WebElement subElement) {
-        waitUntilElementPresent(element, 30);
+        waitUntilElementPresent(element, 60);
         Actions actions = new Actions(driver);
-        actions.moveToElement(element).perform();
-        waitUntilElementClickable(subElement, 20);
-        actions.moveToElement(subElement).click().build().perform();
+        actions.moveToElement(element);
+        waitUntilElementClickable(subElement, 60);
+        actions.moveToElement(subElement);
+        actions.click(subElement).build().perform();
     }
 
     //upload file

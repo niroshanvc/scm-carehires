@@ -18,33 +18,44 @@ public class LeftSideMenuActions {
     }
 
     public void gotoAgencyCreatePage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(leftSideMenu.agencies, leftSideMenu.agencyCreate);
         logger.info(" --------------------------- Moves to Agency Create Page ---------------------------");
     }
 
     public void gotoAgencyViewPage() {
         BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(leftSideMenu.agencies, leftSideMenu.agencyView);
         BasePage.mouseHoverAndRelease(leftSideMenu.agencies, leftSideMenu.agencyView);
         logger.info(" --------------------------- Moves to Agency View Page ---------------------------");
     }
 
     public void gotoWorkerCreatePage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(leftSideMenu.workers, leftSideMenu.workerCreateIndividual);
         logger.info(" --------------------------- Moves to Worker Individual Create Page ---------------------------");
     }
 
     public void gotoWorkerViewPage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(leftSideMenu.workers, leftSideMenu.workerView);
         logger.info(" --------------------------- Moves to Worker View Page ---------------------------");
     }
 
     public void gotoProviderCreatePage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(leftSideMenu.providers, leftSideMenu.providerCreate);
         logger.info(" --------------------------- Moves to Provider Create Page ---------------------------");
     }
 
     public void gotoProviderViewPage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(leftSideMenu.providers, leftSideMenu.providerView);
         logger.info(" --------------------------- Moves to Provider View Page ---------------------------");
     }

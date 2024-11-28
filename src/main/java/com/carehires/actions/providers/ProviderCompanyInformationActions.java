@@ -105,6 +105,8 @@ public class ProviderCompanyInformationActions {
         String companyType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "CompanyType");
         if (companyType != null) {
             BasePage.clickWithJavaScript(companyInformationPage.companyTypeDropdown);
+            BasePage.genericWait(500);
+            BasePage.waitUntilElementPresent(getDropdownOptionXpath(companyType), 20);
             BasePage.clickWithJavaScript(getDropdownOptionXpath(companyType));
         }
 

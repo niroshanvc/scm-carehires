@@ -65,8 +65,10 @@ public class ProviderBillingInformationActions {
         String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "PhoneNumber");
         BasePage.clearAndEnterTexts(billingInformationPage.phoneNumber, phone);
 
-        String creditLimit = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "CreditLimitAmount");
-        BasePage.clearAndEnterTexts(billingInformationPage.creditLimitAmount, creditLimit);
+        String costCenter = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "CostCenter");
+        if (costCenter != null && !costCenter.trim().isEmpty()) {
+            BasePage.clearAndEnterTexts(billingInformationPage.costCenter, costCenter);
+        }
 
         BasePage.scrollToWebElement(billingInformationPage.saveButton);
         String billingCycle = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "BillingCycle");
@@ -76,18 +78,6 @@ public class ProviderBillingInformationActions {
         String creditTerm = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "CreditTerm");
         BasePage.clickWithJavaScript(billingInformationPage.creditTermDropdown);
         BasePage.clickWithJavaScript(getDropdownOptionXpath(creditTerm));
-
-        String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "FirstName");
-        BasePage.clearAndEnterTexts(billingInformationPage.firstName, firstName);
-
-        String lastName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "LastName");
-        BasePage.clearAndEnterTexts(billingInformationPage.lastName, lastName);
-
-        String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "EmailAddress");
-        BasePage.clearAndEnterTexts(billingInformationPage.emailAddress, email);
-
-        String contactPhone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "PhoneNumberContact");
-        BasePage.clearAndEnterTexts(billingInformationPage.phoneNumberBillingContact, contactPhone);
     }
 
     private String getDropdownOptionXpath(String city) {
@@ -119,7 +109,27 @@ public class ProviderBillingInformationActions {
 
         // updating general billing information
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating General Billing Information - In Edit >>>>>>>>>>>>>>>>>>>>");
+        BasePage.refreshPage();
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.genericWait(5000);
+        navigationMenu.gotoBillingPage();
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementDisplayed(billingInformationPage.addressBillsInAttentionTo, 60);
         enterGeneralBillingData(EDIT_YML_FILE, UPDATE);
+
+        // enter Billing Contact Details
+        String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, YML_HEADER_SUB, UPDATE, "FirstName");
+        BasePage.clearAndEnterTexts(billingInformationPage.firstName, firstName);
+
+        String lastName = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, YML_HEADER_SUB, UPDATE, "LastName");
+        BasePage.clearAndEnterTexts(billingInformationPage.lastName, lastName);
+
+        String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, YML_HEADER_SUB, UPDATE, "EmailAddress");
+        BasePage.clearAndEnterTexts(billingInformationPage.emailAddress, email);
+
+        String contactPhone = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, YML_HEADER_SUB, UPDATE, "PhoneNumberContact");
+        BasePage.clearAndEnterTexts(billingInformationPage.phoneNumberBillingContact, contactPhone);
+
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(billingInformationPage.saveButton);
         verifySuccessMessageInEditMode();

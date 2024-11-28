@@ -3,6 +3,8 @@ package com.carehires.pages.providers;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.List;
+
 public class ProvidersSiteManagementPage {
 
     @FindBy(xpath = "//button[contains(@class, 'inserted') and (contains(@class, 'button'))]")
@@ -76,4 +78,7 @@ public class ProvidersSiteManagementPage {
 
     @FindBy(xpath = "//nb-icon[@icon='edit-2-outline']")
     public WebElement editDetailsIcon;
+
+    @FindBy(xpath = "//nb-option[contains(@class,'multiple') and (contains(@class, 'selected'))]")
+    public List<WebElement> alreadySelectedSiteSpecialism;
 }

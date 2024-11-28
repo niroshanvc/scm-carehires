@@ -7,27 +7,30 @@ public class LeftSideMenuPage {
     @FindBy(xpath = "//img[@title='Agencies']")
     public WebElement agencies;
 
-    @FindBy(xpath = "//img[@title='Agencies']/../..//p[text()='Create']")
+    @FindBy(xpath = "//img[@title='Agencies']/../..//div[text()='Create']")
     public WebElement agencyCreate;
 
-    @FindBy(xpath = "//img[@title='Agencies']/../..//p[text()='View']")
+    @FindBy(xpath = "//img[@title='Agencies']/../..//div[text()='View']")
     public WebElement agencyView;
 
     @FindBy(xpath = "//img[@title='Workers']")
     public WebElement workers;
 
-    @FindBy(xpath = "//img[@title='Workers']/../..//p[text()='Create - Individual']")
+    @FindBy(xpath = "//img[@title='Workers']/../..//div[text()='Create - Individual']")
     public WebElement workerCreateIndividual;
 
-    @FindBy(xpath = "//img[@title='Workers']/../..//p[text()='View']")
+    @FindBy(xpath = "//img[@title='Workers']/../..//div[text()='View']")
     public WebElement workerView;
 
     @FindBy(xpath = "//img[@title='Providers']")
     public WebElement providers;
 
-    @FindBy(xpath = "//img[@title='Providers']/../..//p[text()='Create']")
+    @FindBy(xpath = "//img[@title='Providers']/../..//div[text()='Create']")
     public WebElement providerCreate;
 
-    @FindBy(xpath = "//img[@title='Providers']/../..//p[text()='View']")
+    @FindBy(xpath = "//img[@title='Providers']/../..//div[text()='View']")
     public WebElement providerView;
+
+    @FindBy(xpath = "//img[@alt='Jobs']")
+    public WebElement jobsIcon;
 }
