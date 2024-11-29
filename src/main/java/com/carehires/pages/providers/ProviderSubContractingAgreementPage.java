@@ -32,7 +32,7 @@ public class ProviderSubContractingAgreementPage {
     @FindBy(xpath = "//div[not(contains(@class, 'provider'))]//p/strong")
     public WebElement providerId;
 
-    @FindBy(xpath = "//div[contains(@class, 'profile-steps')]/div[1]")
+    @FindBy(xpath = "//img[contains(@src, 'profile_step_info')]")
     public WebElement companyInformationRightSideMenu;
 
     @FindBy(xpath = "//div[contains(@class, 'proof-preview')]")

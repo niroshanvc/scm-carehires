@@ -1,35 +1,21 @@
 package com.carehires.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class LeftSideMenuPage {
-    @FindBy(xpath = "//img[@title='Agencies']")
-    public WebElement agencies;
+    public static final By agenciesMainLink = By.xpath("//img[@title='Agencies']");
 
-    @FindBy(xpath = "//img[@title='Agencies']/../..//div[text()='Create']")
-    public WebElement agencyCreate;
+    public static final By createSubLink = By.xpath("//div[text()='Create']");
 
-    @FindBy(xpath = "//img[@title='Agencies']/../..//div[text()='View']")
-    public WebElement agencyView;
+    public static final By viewSubLink = By.xpath("//div[text()='View']");
 
-    @FindBy(xpath = "//img[@title='Workers']")
-    public WebElement workers;
+    public static final By workersMainLink = By.xpath("//img[@title='Workers']");
 
-    @FindBy(xpath = "//img[@title='Workers']/../..//div[text()='Create - Individual']")
-    public WebElement workerCreateIndividual;
+    public static final By workerCreateIndividual = By.xpath("//div[text()='Create - Individual']");
 
-    @FindBy(xpath = "//img[@title='Workers']/../..//div[text()='View']")
-    public WebElement workerView;
-
-    @FindBy(xpath = "//img[@title='Providers']")
-    public WebElement providers;
-
-    @FindBy(xpath = "//img[@title='Providers']/../..//div[text()='Create']")
-    public WebElement providerCreate;
-
-    @FindBy(xpath = "//img[@title='Providers']/../..//div[text()='View']")
-    public WebElement providerView;
+    public static final By providersMainLink = By.xpath("//img[@title='Providers']");
 
     @FindBy(xpath = "//img[@alt='Jobs']")
     public WebElement jobsIcon;

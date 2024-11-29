@@ -229,7 +229,7 @@ public class ProviderCompanyInformationActions {
     }
 
     private void verifySuccessMessage() {
-        BasePage.waitUntilElementPresent(companyInformationPage.successMessage, 90);
+        BasePage.waitUntilElementPresent(companyInformationPage.successMessage, 120);
         String actualInLowerCase = BasePage.getText(companyInformationPage.successMessage).toLowerCase().trim();
         String expected = "Data saved Successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
