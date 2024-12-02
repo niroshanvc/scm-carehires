@@ -27,42 +27,42 @@ public class LeftSideMenuActions {
     public void gotoAgencyCreatePage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
-        clickOnSubMenuLink(LeftSideMenuPage.agenciesMainLink, LeftSideMenuPage.createSubLink);
+        clickOnSubMenuLink(LeftSideMenuPage.agenciesMainLink, LeftSideMenuPage.agencyCreateSubLink);
         logger.info(" --------------------------- Moves to Agency Create Page ---------------------------");
     }
 
     public void gotoAgencyViewPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
-        clickOnSubMenuLink(LeftSideMenuPage.agenciesMainLink, LeftSideMenuPage.viewSubLink);
+        clickOnSubMenuLink(LeftSideMenuPage.agenciesMainLink, LeftSideMenuPage.agencyViewSubLink);
         logger.info(" --------------------------- Moves to Agency View Page ---------------------------");
     }
 
     public void gotoWorkerCreatePage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
-        clickOnSubMenuLink(LeftSideMenuPage.workersMainLink, LeftSideMenuPage.workerCreateIndividual);
+        clickOnSubMenuLink(LeftSideMenuPage.workersMainLink, LeftSideMenuPage.workersCreateIndividual);
         logger.info(" --------------------------- Moves to Worker Individual Create Page ---------------------------");
     }
 
     public void gotoWorkerViewPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
-        clickOnSubMenuLink(LeftSideMenuPage.workersMainLink, LeftSideMenuPage.viewSubLink);
+        clickOnSubMenuLink(LeftSideMenuPage.workersMainLink, LeftSideMenuPage.workersViewSubLink);
         logger.info(" --------------------------- Moves to Worker View Page ---------------------------");
     }
 
     public void gotoProviderCreatePage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
-        clickOnSubMenuLink(LeftSideMenuPage.providersMainLink, LeftSideMenuPage.createSubLink);
+        clickOnSubMenuLink(LeftSideMenuPage.providersMainLink, LeftSideMenuPage.providersCreateSubLink);
         logger.info(" --------------------------- Moves to Provider Create Page ---------------------------");
     }
 
     public void gotoProviderViewPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
-        clickOnSubMenuLink(LeftSideMenuPage.providersMainLink, LeftSideMenuPage.viewSubLink);
+        clickOnSubMenuLink(LeftSideMenuPage.providersMainLink, LeftSideMenuPage.providersViewSubLink);
         logger.info(" --------------------------- Moves to Provider View Page ---------------------------");
     }
 
@@ -74,21 +74,19 @@ public class LeftSideMenuActions {
         // Wait object for explicit wait
         WebDriverWait wait = new WebDriverWait(BasePage.getDriver(), Duration.ofSeconds(90));
 
-        try {
-            // Hover over the main element
-            WebElement mainLink = wait.until(ExpectedConditions.visibilityOfElementLocated(mainLocator));
-            actions.moveToElement(mainLink).perform();
+        // Hover over the main element
+        WebElement mainLink = wait.until(ExpectedConditions.visibilityOfElementLocated(mainLocator));
+        actions.moveToElement(mainLink).perform();
 
-            // Pause briefly to ensure submenu is displayed
-            BasePage.genericWait(500);
+        // Pause briefly to ensure submenu is displayed
+        BasePage.genericWait(500);
 
-            // Wait for the Create or View submenu to be clickable and click it
-            WebElement subMenu = wait.until(ExpectedConditions.presenceOfElementLocated(subLocator));
+        // Wait for the Create or View submenu to be clickable and click it
+        WebElement subMenu = wait.until(ExpectedConditions.presenceOfElementLocated(subLocator));
 
-            // Move to a submenu and click
-            actions.moveToElement(subMenu).click().build().perform();
-        } catch (Exception e) {
-            logger.info("Unable to click on %s - %s link", mainLocator, subLocator);
-        }
+        // Move to a submenu and click
+        actions.moveToElement(subMenu).click().build().perform();
+        logger.info("Unable to click on %s - %s link", mainLocator, subLocator);
+        BasePage.waitUntilPageCompletelyLoaded();
     }
 }
