@@ -1,7 +1,7 @@
 package com.carehires.actions.workers;
 
 import com.carehires.common.GlobalVariables;
-import com.carehires.pages.worker.CreateWorkerVaccinationAndAllergyInformationPage;
+import com.carehires.pages.worker.WorkerVaccinationAndAllergyInformationPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.GenericUtils;
@@ -14,18 +14,18 @@ import java.io.File;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class CreateWorkerVaccinationAndAllergyInformationActions {
+public class WorkerVaccinationAndAllergyInformationActions {
 
-    private final CreateWorkerVaccinationAndAllergyInformationPage vaccinationPage;
+    private final WorkerVaccinationAndAllergyInformationPage vaccinationPage;
     private static final GenericUtils genericUtils = new GenericUtils();
 
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
     private static final String YML_HEADER = "Vaccination and Allergy Information";
-    private static final Logger logger = LogManager.getFormatterLogger(CreateWorkerVaccinationAndAllergyInformationActions.class);
+    private static final Logger logger = LogManager.getFormatterLogger(WorkerVaccinationAndAllergyInformationActions.class);
 
-    public CreateWorkerVaccinationAndAllergyInformationActions() {
-        vaccinationPage = new CreateWorkerVaccinationAndAllergyInformationPage();
+    public WorkerVaccinationAndAllergyInformationActions() {
+        vaccinationPage = new WorkerVaccinationAndAllergyInformationPage();
         PageFactory.initElements(BasePage.getDriver(), vaccinationPage);
     }
 

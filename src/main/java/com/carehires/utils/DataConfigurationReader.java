@@ -6,11 +6,11 @@ import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -28,43 +28,56 @@ public class DataConfigurationReader {
 
     // Method to read data from the YAML file
     public static String readDataFromYmlFile(String entityType, String fileName, String... keys) {
-        String data = null;
         try (FileInputStream fis = new FileInputStream("src/main/resources/" + fileName + ".yml")) {
             Yaml yaml = new Yaml();
             Map<String, Object> map = yaml.load(fis);
 
-            Object value = map;
-            for (String key : keys) {
-                if (value instanceof Map) {
-                    value = ((Map<String, Object>) value).get(key);
-                } else {
-                    value = null;
-                    break;
-                }
-            }
-
-            if (value != null) {
-                data = value.toString();
-
-                if (data.equals("<uniqueNumber>")) {
-                    data = generateUniqueNumber();  // Replace with unique number
-                }
-
-                if (data.equals("<insuranceNumber>")) {
-                    data = generateNationalInsuranceNumber(); // Replace with national insurance number
-                }
-
-                // Replace the {{increment}} placeholder with the current increment value
-                if (data.contains("{{increment}}")) {
-                    int incrementValue = GlobalVariables.getVariable(entityType + INCREMENT_VALUE, Integer.class);
-                    data = data.replace("{{increment}}", String.valueOf(incrementValue));  // Change entityType based on the test
-                }
-
-            } else {
+            Object value = getValueFromKeys(map, keys);
+            if (value == null) {
                 logger.error("Key not found in YAML: {}", String.join(" -> ", keys));
+                return null;
             }
+
+            String data = value.toString();
+            data = replaceDynamicPlaceholders(data, entityType);
+            return data;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error("Error reading YAML file: {}", ex.getMessage(), ex);
+            return null;
+        }
+    }
+
+    private static Object getValueFromKeys(Map<String, Object> map, String... keys) {
+        Object value = map;
+        for (String key : keys) {
+            if (value instanceof Map) {
+                value = ((Map<String, Object>) value).get(key);
+            } else {
+                return null;
+            }
+        }
+        return value;
+    }
+
+    private static String replaceDynamicPlaceholders(String data, String entityType) {
+        switch (data) {
+            case "<uniqueNumber>":
+                return generateUniqueNumber();
+            case "<insuranceNumber>":
+                return generateNationalInsuranceNumber();
+            case "<shareCode>":
+                return generateShareCodeNumber();
+            case "<passportNumber>":
+                return generatePassportNumber();
+            default:
+                return replaceIncrementPlaceholder(data, entityType);
+        }
+    }
+
+    private static String replaceIncrementPlaceholder(String data, String entityType) {
+        if (data.contains("{{increment}}")) {
+            int incrementValue = GlobalVariables.getVariable(entityType + INCREMENT_VALUE, Integer.class);
+            return data.replace("{{increment}}", String.valueOf(incrementValue));
         }
         return data;
     }
@@ -196,5 +209,44 @@ public class DataConfigurationReader {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    /**
+     * Generates a unique Share Code Number in the format X0000000X.
+     *
+     * @return A unique Share Code Number (e.g., A1234567C).
+     */
+    public static String generateShareCodeNumber() {
+        // Generate the first two characters
+        StringBuilder shareCode = new StringBuilder();
+        shareCode.append(generateRandomLetter());  // First letter
+        shareCode.append(generateRandomLetter());  // Second letter
+
+        // Generate the 6-digit number part
+        String numericPart = String.format("%06d", random.nextInt(1000000));
+        shareCode.append(numericPart);
+
+        // Generate the last character
+        shareCode.append(generateRandomLetter());
+
+        return shareCode.toString();
+    }
+
+    /**
+     * Generates a unique Passport Number in the format XX0000000.
+     *
+     * @return A unique Share Code Number (e.g., AB1234567).
+     */
+    public static String generatePassportNumber() {
+        // Generate the first two characters
+        StringBuilder passport = new StringBuilder();
+        passport.append(generateRandomLetter()); // First letter
+        passport.append(generateRandomLetter()); // Second letter
+
+        // Generate the 7-digit number part
+        String numericPart = String.format("%07d", random.nextInt(10000000));
+        passport.append(numericPart);
+
+        return passport.toString();
     }
 }

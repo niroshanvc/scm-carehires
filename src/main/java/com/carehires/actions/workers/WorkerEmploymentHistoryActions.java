@@ -1,7 +1,7 @@
 package com.carehires.actions.workers;
 
 import com.carehires.common.GlobalVariables;
-import com.carehires.pages.worker.CreateWorkerEmploymentHistoryPage;
+import com.carehires.pages.worker.WorkerEmploymentHistoryPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.GenericUtils;
@@ -17,9 +17,9 @@ import java.time.format.DateTimeFormatter;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class CreateWorkerEmploymentHistoryActions {
+public class WorkerEmploymentHistoryActions {
 
-    private final CreateWorkerEmploymentHistoryPage employmentHistoryPage;
+    private final WorkerEmploymentHistoryPage employmentHistoryPage;
     private static final GenericUtils genericUtils = new GenericUtils();
 
     private static final String ENTITY = "worker";
@@ -29,10 +29,10 @@ public class CreateWorkerEmploymentHistoryActions {
     private static final String YML_SUB_HEADER_DATASET1 = "Dataset1";
     private static final String YML_SUB_HEADER_DATASET2 = "Dataset2";
     private static final String YML_SUB_HEADER2 = "Reference";
-    private static final Logger logger = LogManager.getFormatterLogger(CreateWorkerEmploymentHistoryActions.class);
+    private static final Logger logger = LogManager.getFormatterLogger(WorkerEmploymentHistoryActions.class);
 
-    public CreateWorkerEmploymentHistoryActions() {
-        employmentHistoryPage = new CreateWorkerEmploymentHistoryPage();
+    public WorkerEmploymentHistoryActions() {
+        employmentHistoryPage = new WorkerEmploymentHistoryPage();
         PageFactory.initElements(BasePage.getDriver(), employmentHistoryPage);
     }
 

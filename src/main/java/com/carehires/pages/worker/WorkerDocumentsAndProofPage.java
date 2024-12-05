@@ -3,7 +3,7 @@ package com.carehires.pages.worker;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CreateWorkerDocumentsAndProofPage {
+public class WorkerDocumentsAndProofPage {
 
     @FindBy(xpath = "//p[contains(text(), 'CV')]/../../div[7]//input[@type='file']")
     public WebElement cvSelectFile;
@@ -57,4 +57,7 @@ public class CreateWorkerDocumentsAndProofPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    @FindBy(xpath = "//button[text()= 'Update ']")
+    public WebElement updateButton;
 }

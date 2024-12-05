@@ -288,7 +288,7 @@ public class BasePage {
         waitUntilElementPresent(element, 60);
         Actions actions = new Actions(driver);
         actions.moveToElement(element);
-        waitUntilElementClickable(subElement, 60);
+        waitUntilElementRefreshedAndClickable(subElement, 60);
         actions.moveToElement(subElement);
         actions.click(subElement).build().perform();
     }
@@ -510,4 +510,15 @@ public class BasePage {
         actions.moveToElement(subElement);
         actions.release().build().perform();
     }
+
+    public static void waitUntilElementRefreshedAndClickable(WebElement element, int timeOutSeconds) {
+        wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
+        try {
+            wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(element)));
+        } catch (TimeoutException e) {
+            logger.error("Element not clickable even after refreshing: %s", element);
+            throw e;
+        }
+    }
+
 }

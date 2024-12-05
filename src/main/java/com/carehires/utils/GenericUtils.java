@@ -1,7 +1,7 @@
 package com.carehires.utils;
 
-import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
 import com.carehires.pages.GenericElementsPage;
+import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -12,6 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -149,5 +150,15 @@ public class GenericUtils {
                 break;
             }
         }
+    }
+
+    public List<String> getSelectedValues(List<WebElement> elements) {
+        // Retrieve elements representing selected skills
+        List<String> selectedValues = new ArrayList<>();
+        for (WebElement el : elements) {
+            selectedValues.add(el.getText());
+        }
+
+        return selectedValues;
     }
 }

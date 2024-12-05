@@ -5,7 +5,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class CreateWorkerBasicInformationPage {
+public class WorkerBasicInformationPage {
 
     @FindBy(xpath = "//nb-select[@formcontrolname='agency']/button")
     public WebElement agencyDropdown;
@@ -58,8 +58,14 @@ public class CreateWorkerBasicInformationPage {
     @FindBy(xpath = "//input[@formcontrolname='postcode']")
     public WebElement postcode;
 
+    @FindBy(xpath = "//input[@formcontrolname='address']")
+    public WebElement residentialAddressInput;
+
     @FindBy(xpath = "//nb-checkbox[@formcontrolname='isCurrentlyResiding']//input")
     public WebElement isCurrentlyLivingCheckbox;
+
+    @FindBy(xpath = "//nb-checkbox[@formcontrolname='isCurrentlyResiding']//input/../span[1]")
+    public WebElement isCurrentlyLivingCheckboxChecked;
 
     @FindBy(xpath = "//input[@formcontrolname='livingfrom']")
     public WebElement livingFrom;
@@ -88,11 +94,20 @@ public class CreateWorkerBasicInformationPage {
     @FindBy(xpath = "//nb-select[@formcontrolname='regulatorySettingTypes']/button")
     public WebElement regulatorySettingsDropdown;
 
-    @FindBy(xpath = "//input[@formcontrolname='payrollReferenceNumber']")
-    public WebElement payrollReferenceNumber;
+    @FindBy(xpath = "//input[@name='employeeType' and @value='paye']")
+    public WebElement payeEmploymentTypeRadio;
 
-    @FindBy(xpath = "//input[@name='employeeType']")
-    public List<WebElement> employeementTypeRadioButton;
+    @FindBy(xpath = "//input[@formcontrolname='payrollReferenceNumber']")
+    public WebElement payrollReferenceNumberInput;
+
+    @FindBy(xpath = "//input[@name='employeeType' and @value='umbrellaCompany']")
+    public WebElement umbrellaEmploymentTypeRadio;
+
+    @FindBy(xpath = "//input[@formcontrolname='umbrellaCompanyName']")
+    public WebElement umbrellaCompanyNameInput;
+
+    @FindBy(xpath = "//input[@name='employeeType' and @value='other']")
+    public WebElement otherEmploymentTypeRadio;
 
     @FindBy(xpath = "//p[contains(text(),'Passport, Visa')]/ancestor::nb-accordion-item")
     public WebElement passportInformationHeader;
@@ -100,8 +115,26 @@ public class CreateWorkerBasicInformationPage {
     @FindBy(xpath = "//p[contains(text(),'Passport, Visa')]/following-sibling::nb-icon")
     public WebElement passportInformationHeaderExpandIcon;
 
+    @FindBy(xpath = "//input[@formcontrolname='passportNumber']")
+    public WebElement passportNumber;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='issuedCountry']/button")
+    public WebElement issuedCountryDropdown;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='visaType']/button")
+    public WebElement visaTypeDropdown;
+
     @FindBy(xpath = "//input[@formcontrolname='nationalInsuranceNumber']")
     public WebElement nationalInsuranceNumber;
+
+    @FindBy(xpath = "//input[@formcontrolname='visaQuota']")
+    public WebElement maximumWeeklyHours;
+
+    @FindBy(xpath = "//input[@formcontrolname='cosIssueCompany']")
+    public WebElement companyNameCosDocument;
+
+    @FindBy(xpath = "//input[@formcontrolname='shareCode']")
+    public WebElement shareCode;
 
     @FindBy(xpath = "//input[@formcontrolname='dbsNumber']")
     public WebElement dbsCertificateNumber;
@@ -127,5 +160,26 @@ public class CreateWorkerBasicInformationPage {
     @FindBy(xpath = "//p[contains(text(), 'Document is added')]")
     public WebElement documentUploadedSuccessMessage;
 
-    public static final String AGENCY_LOCATION_CHECKBOXES = "//div[@id='cdk-overlay-1']//nb-option/nb-checkbox";
+    public static final String AGENCY_LOCATION_CHECKBOXES = "//div[contains(@id,'cdk-overlay')]//nb-option/nb-checkbox";
+
+    @FindBy(xpath = "//div/p[contains(@class, 'text-icon') and contains(text(), '…')]")
+    public WebElement topThreeDots;
+
+    @FindBy(xpath = "//div[contains(@class, 'side')]/ul[contains(@class, 'expanded-nav')]/li[contains(text(), 'Update Profile')]")
+    public WebElement updateProfileLink;
+
+    @FindBy(xpath = "//div[not(contains(@class, 'provider'))]//p/strong")
+    public WebElement workerId;
+
+    @FindBy(xpath = "//div[contains(@class, 'profile-steps')]/div[1]//span/nb-icon")
+    public WebElement basicInformationStep;
+
+    @FindBy(xpath = "(//div[contains(@id,'cdk-overlay')]//nb-option)[1]")
+    public WebElement agencyLocation;
+
+    @FindBy(xpath = "//nb-option[contains(@class,'multiple') and (contains(@class, 'selected'))]")
+    public List<WebElement> alreadySelectedOptions;
+
+    @FindBy(xpath = "//nb-toast//span")
+    public WebElement successMessage;
 }

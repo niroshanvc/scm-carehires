@@ -3,7 +3,7 @@ package com.carehires.pages.worker;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CreateWorkerEmploymentHistoryPage {
+public class WorkerEmploymentHistoryPage {
 
     @FindBy(xpath = "(//button[contains(@class, 'inserted') and (contains(@class, 'button'))])[1]")
     public WebElement workerHistoryAddNewButton;

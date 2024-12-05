@@ -1,7 +1,7 @@
 package com.carehires.actions.workers;
 
 import com.carehires.common.GlobalVariables;
-import com.carehires.pages.worker.CreateWorkerDocumentsAndProofPage;
+import com.carehires.pages.worker.WorkerDocumentsAndProofPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.GenericUtils;
@@ -16,9 +16,9 @@ import java.io.File;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class CreateWorkerDocumentsAndProofActions {
+public class WorkerDocumentsAndProofActions {
 
-    private final CreateWorkerDocumentsAndProofPage documentsAndProofPage;
+    private final WorkerDocumentsAndProofPage documentsAndProofPage;
 
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
@@ -28,19 +28,21 @@ public class CreateWorkerDocumentsAndProofActions {
     private static final String WORKER_DOCUMENTS_PATH = System.getProperty("user.dir") + File.separator + "src"
             + File.separator + "test" + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator;
 
-    private static final Logger logger = LogManager.getLogger(CreateWorkerDocumentsAndProofActions.class);
+    private static final Logger logger = LogManager.getLogger(WorkerDocumentsAndProofActions.class);
 
     private static final GenericUtils genericUtils = new GenericUtils();
+    private static final WorkerNavigationMenuActions navigationMenu = new WorkerNavigationMenuActions();
+    Integer incrementValue;
 
-    public CreateWorkerDocumentsAndProofActions() {
-        documentsAndProofPage = new CreateWorkerDocumentsAndProofPage();
+    public WorkerDocumentsAndProofActions() {
+        documentsAndProofPage = new WorkerDocumentsAndProofPage();
         PageFactory.initElements(BasePage.getDriver(), documentsAndProofPage);
     }
 
     public void enterDocumentsAndProofData() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Document and Proof Information >>>>>>>>>>>>>>>>>>>>");
         // Retrieve the incremented value
-        Integer incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
+        incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
 
         // Check for null or default value
         if (incrementValue == null) {
@@ -50,7 +52,7 @@ public class CreateWorkerDocumentsAndProofActions {
         BasePage.waitUntilPageCompletelyLoaded();
 
         // verify document upload field is available
-        By drivingLicenceTextField = By.xpath(CreateWorkerDocumentsAndProofPage.DRIVING_LICENCE_FIELD_XPATH);
+        By drivingLicenceTextField = By.xpath(WorkerDocumentsAndProofPage.DRIVING_LICENCE_FIELD_XPATH);
         BasePage.verifyElementIsPresentAfterWait(drivingLicenceTextField, 60);
 
         // enter cv info
@@ -117,5 +119,15 @@ public class CreateWorkerDocumentsAndProofActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Document and proof success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(documentsAndProofPage.successMessage, 20);
+    }
+
+    public void updateDocumentsAndProof() {
+        navigationMenu.gotoDocumentsPage();
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Document and Proof Information - in Edit >>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
+        BasePage.genericWait(3000);
+        BasePage.clickWithJavaScript(documentsAndProofPage.updateButton);
     }
 }

@@ -1,7 +1,7 @@
 package com.carehires.actions.workers;
 
 import com.carehires.common.GlobalVariables;
-import com.carehires.pages.worker.CreateWorkerEmergencyInformationPage;
+import com.carehires.pages.worker.WorkerEmergencyInformationPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
@@ -11,17 +11,17 @@ import org.openqa.selenium.support.PageFactory;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class CreateWorkerEmergencyInformationActions {
+public class WorkerEmergencyInformationActions {
 
-    private final CreateWorkerEmergencyInformationPage emergencyInformationPage;
+    private final WorkerEmergencyInformationPage emergencyInformationPage;
 
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
     private static final String YML_HEADER = "Emergency Information";
-    private static final Logger logger = LogManager.getFormatterLogger(CreateWorkerEmergencyInformationActions.class);
+    private static final Logger logger = LogManager.getFormatterLogger(WorkerEmergencyInformationActions.class);
 
-    public CreateWorkerEmergencyInformationActions() {
-        emergencyInformationPage = new CreateWorkerEmergencyInformationPage();
+    public WorkerEmergencyInformationActions() {
+        emergencyInformationPage = new WorkerEmergencyInformationPage();
         PageFactory.initElements(BasePage.getDriver(), emergencyInformationPage);
     }
 

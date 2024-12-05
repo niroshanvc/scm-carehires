@@ -40,7 +40,7 @@ Agency Business Location:
     City: Leicester
     JobNotificationAddress: automation.qa+agencyjobnot137@carehires.com
     ApprovalNotificationAddress: automation.qa+agencyappnot137@carehires.com
-  Edit:
+  Update:
     BusinessLocation: South Lancashire
     BusinessEmailAddress: automation.qa+agencybuss137@carehires.com
     City: Lancashire
@@ -55,7 +55,7 @@ Staff:
     MonthlyHoursAvailable: 200
     MinChargeHourlyRate: 10
     EmployeeType: PSC
-  Edit:
+  Update:
     WorkerType: Occupational Therapist
     NoOfWorkers: 30
     WorkerSkills: NVQ L3,Challenging Behaviours,Driving
@@ -86,7 +86,7 @@ User:
     Phone: "07412001245"
     City: Nottingham
     UserAccessLevel: Onboarding Admin,Shift Admin
-  Edit:
+  Update:
     email: automation.qa+agencyuserW137@carehires.com
     Name: William Fredrik137
     JobTitle: Assistant Executive

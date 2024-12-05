@@ -8,9 +8,11 @@ Feature: Test CareHires edit worker and make profile approved
 
   @EditWorkerProfile
   Scenario: Edit worker details where profile is in draft stage
-    When User navigates to Provider Create page
-    And User navigates to Agency View page
-    And User navigates to Provider View page
+    When User navigates to Worker Create page
+    And User creates a worker in draft stage
+    And User logins off from Carehires
+    And User again logins to carehires
     And User navigates to Worker View page
-    And User navigates to Agency Create page
-    And User navigates to Worker Create page
+    And User finds recently created worker
+    And User edit worker profile data
+    And User moves to Documents and Proof and edit data

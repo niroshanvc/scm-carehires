@@ -1,7 +1,7 @@
 package com.carehires.actions.workers;
 
 import com.carehires.common.GlobalVariables;
-import com.carehires.pages.worker.CreateWorkerEducationAndTrainingPage;
+import com.carehires.pages.worker.WorkerEducationAndTrainingPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.GenericUtils;
@@ -14,9 +14,9 @@ import java.io.File;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class CreateWorkerEducationAndTrainingActions {
+public class WorkerEducationAndTrainingActions {
 
-    CreateWorkerEducationAndTrainingPage educationAndTrainingPage;
+    WorkerEducationAndTrainingPage educationAndTrainingPage;
     private final GenericUtils genericUtils = new GenericUtils();
 
     private static final String ENTITY = "worker";
@@ -24,10 +24,10 @@ public class CreateWorkerEducationAndTrainingActions {
     private static final String YML_HEADER = "Education and Training";
     private static final String YML_HEADER_DATESET1 = "Dataset1";
     private static final String YML_HEADER_DATESET2 = "Dataset2";
-    private static final Logger logger = LogManager.getFormatterLogger(CreateWorkerEducationAndTrainingActions.class);
+    private static final Logger logger = LogManager.getFormatterLogger(WorkerEducationAndTrainingActions.class);
 
-    public CreateWorkerEducationAndTrainingActions() {
-        educationAndTrainingPage = new CreateWorkerEducationAndTrainingPage();
+    public WorkerEducationAndTrainingActions() {
+        educationAndTrainingPage = new WorkerEducationAndTrainingPage();
         PageFactory.initElements(BasePage.getDriver(), educationAndTrainingPage);
     }
 

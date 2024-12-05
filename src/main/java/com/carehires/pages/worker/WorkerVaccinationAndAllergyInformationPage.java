@@ -3,7 +3,7 @@ package com.carehires.pages.worker;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CreateWorkerVaccinationAndAllergyInformationPage {
+public class WorkerVaccinationAndAllergyInformationPage {
 
     @FindBy(xpath = "(//button[contains(text(), 'Add New')])[1]")
     public WebElement addNewButton;
