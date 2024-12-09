@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -59,7 +60,7 @@ public class ProvidersSiteManagementActions {
 
         logger.info("Entering Site Specialism");
         BasePage.scrollToWebElement(siteManagementPage.siteTypeDropdown);
-        String[] siteSpecialism = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, SITE_SPECIALISM).split(",");
+        String[] siteSpecialism = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, SITE_SPECIALISM)).split(",");
         BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
         BasePage.genericWait(500);
         for (String specialism : siteSpecialism) {
@@ -145,7 +146,7 @@ public class ProvidersSiteManagementActions {
         String phoneNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "PhoneNumber");
         String phoneType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "PhoneType");
 
-        switch (phoneType) {
+        switch (Objects.requireNonNull(phoneType)) {
             case "Out of office":
                 BasePage.clickWithJavaScript(siteManagementPage.outOfOfficeOption);
                 break;
@@ -187,7 +188,7 @@ public class ProvidersSiteManagementActions {
         enterSiteManagementData(EDIT_YML_FILE, ADD);
 
         logger.info("Entering Site Specialism - In Add");
-        String[] siteSpecialism = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, SITE_SPECIALISM).split(",");
+        String[] siteSpecialism = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, SITE_SPECIALISM)).split(",");
         BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
         BasePage.genericWait(500);
         for (String specialism : siteSpecialism) {
@@ -218,8 +219,8 @@ public class ProvidersSiteManagementActions {
     }
 
     private void updateSiteSpecialism() {
-        Set<String> siteSpecialism = new HashSet<>(Arrays.asList(DataConfigurationReader.readDataFromYmlFile(ENTITY,
-                EDIT_YML_FILE, YML_HEADER, UPDATE, SITE_SPECIALISM).split(",")));
+        Set<String> siteSpecialism = new HashSet<>(Arrays.asList(Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY,
+                EDIT_YML_FILE, YML_HEADER, UPDATE, SITE_SPECIALISM)).split(",")));
         BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
         // Get all currently selected skills, default to an empty list if null
         List<String> selectedSiteSpecialism = getCurrentlySelectedSiteSpecialism();
