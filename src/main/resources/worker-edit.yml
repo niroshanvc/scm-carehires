@@ -149,14 +149,24 @@ Documents and Proof:
       Document: Regulatory Settings - 2.pdf
 
 Education and Training:
-  Dataset1:
-    Certificate: Autism Awareness
-    ValidUntil: 28 Feb 2027
-    UploadCertificate: certificate-autism.pdf
-  Dataset2:
-    Certificate: Anti-Bullying
-    ValidUntil: 28 Feb 2027
-    UploadCertificate: certificate-anti-bullying.pdf
+  Add:
+    Dataset1:
+      Certificate: Health and Safety
+      ValidUntil: 28 Feb 2027
+      UploadCertificate: education and training-1.pdf
+    Dataset2:
+      Certificate: Anti-Bullying
+      ValidUntil: 11 Sep 2027
+      UploadCertificate: education and training-2.pdf
+  Update:
+    Dataset1:
+      Certificate: Autism Awareness
+      ValidUntil: 15 May 2026
+      UploadCertificate: education and training-3.pdf
+    Dataset2:
+      Certificate: Infection Prevention and Control
+      ValidUntil: 30 Nov 2026
+      UploadCertificate: education and training-4.pdf
 
 Emergency Information:
   ContactName: Wilson Alexander {{increment}}

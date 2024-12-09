@@ -34,4 +34,16 @@ public class WorkerEducationAndTrainingPage {
 
     @FindBy(xpath = "//button[contains(text(),'Save')]")
     public WebElement saveButton;
+
+    @FindBy(xpath = "(//nb-icon[@nbtooltip='Delete'])[1]")
+    public WebElement deleteIcon1;
+
+    @FindBy(xpath = "(//nb-icon[@nbtooltip='Delete'])[2]")
+    public WebElement deleteIcon2;
+
+    @FindBy(xpath = "//button[text()='Delete']")
+    public WebElement deleteButton;
+
+    @FindBy(xpath = "(//nb-checkbox[contains(@nbtooltip, 'Care Academy issued')])[1]//input")
+    public WebElement caIssuedCheckbox1;
 }

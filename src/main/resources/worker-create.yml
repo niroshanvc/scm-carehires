@@ -67,11 +67,11 @@ Education and Training:
     Dataset1:
       Certificate: Autism Awareness
       ValidUntil: 28 Feb 2027
-      UploadCertificate: certificate-autism.pdf
+      UploadCertificate: education and training-1.pdf
     Dataset2:
       Certificate: Anti-Bullying
       ValidUntil: 28 Feb 2027
-      UploadCertificate: certificate-anti-bullying.pdf
+      UploadCertificate: education and training-2.pdf
 
 Emergency Information:
   Add:

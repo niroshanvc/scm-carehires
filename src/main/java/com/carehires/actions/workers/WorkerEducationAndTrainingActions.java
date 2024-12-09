@@ -7,6 +7,7 @@ import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.GenericUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.io.File;
@@ -18,13 +19,20 @@ public class WorkerEducationAndTrainingActions {
 
     WorkerEducationAndTrainingPage educationAndTrainingPage;
     private final GenericUtils genericUtils = new GenericUtils();
+    private static final WorkerNavigationMenuActions navigationMenu = new WorkerNavigationMenuActions();
 
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
+    private static final String EDIT_YML_FILE = "worker-edit";
     private static final String YML_HEADER = "Education and Training";
     private static final String YML_HEADER_DATESET1 = "Dataset1";
     private static final String YML_HEADER_DATESET2 = "Dataset2";
+    private static final String ADD = "Add";
+    private static final String UPDATE = "Update";
+
     private static final Logger logger = LogManager.getFormatterLogger(WorkerEducationAndTrainingActions.class);
+
+    Integer incrementValue;
 
     public WorkerEducationAndTrainingActions() {
         educationAndTrainingPage = new WorkerEducationAndTrainingPage();
@@ -35,7 +43,7 @@ public class WorkerEducationAndTrainingActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Education and Training Data >>>>>>>>>>>>>>>>>>>>");
 
         // Retrieve the incremented value
-        Integer incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
+        incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
 
         // Check for null or default value
         if (incrementValue == null) {
@@ -45,16 +53,38 @@ public class WorkerEducationAndTrainingActions {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(educationAndTrainingPage.addButton);
 
-        String certificate1 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET1, "Certificate");
+        //enter first set of data
+        addEducationAndTrainingEntry(YML_FILE, ADD, YML_HEADER_DATESET1);
+        verifySuccessMessage();
+        verifyCertificateValidityStatus();
+
+        //enter second set of data
+        BasePage.clickWithJavaScript(educationAndTrainingPage.addNewButton);
+        addEducationAndTrainingEntry(YML_FILE, ADD, YML_HEADER_DATESET2);
+        verifySuccessMessage();
+        verifyCertificateValidityStatus();
+
+        //moving to the next section
+        BasePage.clickWithJavaScript(educationAndTrainingPage.updateButton);
+        markAsCareAcademyIssuedCheckbox1();
+        BasePage.waitUntilElementPresent(educationAndTrainingPage.saveButton, 60);
+        BasePage.clickWithJavaScript(educationAndTrainingPage.saveButton);
+
+        //move to next section
+        verifySaveButtonSuccessMessage();
+    }
+
+    private void addEducationAndTrainingEntry(String ymlFile, String subHeader, String dataset) {
+        String certificate1 = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "Certificate");
         BasePage.clickWithJavaScript(educationAndTrainingPage.certificateDropdown);
         BasePage.waitUntilElementPresent(getDropdownOptionXpath(certificate1), 20);
         BasePage.clickWithJavaScript(getDropdownOptionXpath(certificate1));
 
-        String validUntil1 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET1, "ValidUntil");
+        String validUntil1 = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "ValidUntil");
         BasePage.clickWithJavaScript(educationAndTrainingPage.validUntilInput);
         genericUtils.selectDateFromCalendarPopup(validUntil1);
 
-        String uploadCertificate1 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET1, "UploadCertificate");
+        String uploadCertificate1 = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "UploadCertificate");
         String absoluteFilePath1 = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
                 + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
                 + uploadCertificate1;
@@ -62,37 +92,6 @@ public class WorkerEducationAndTrainingActions {
 
         // click on the Add button
         BasePage.clickWithJavaScript(educationAndTrainingPage.addButton);
-        verifySuccessMessage();
-        verifyCertificateValidityStatus();
-
-        //enter second set of data
-        BasePage.clickWithJavaScript(educationAndTrainingPage.addNewButton);
-        String certificate2 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET2, "Certificate");
-        BasePage.clickWithJavaScript(educationAndTrainingPage.certificateDropdown);
-        BasePage.waitUntilElementPresent(getDropdownOptionXpath(certificate2), 20);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(certificate2));
-
-        String validUntil2 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET2, "ValidUntil");
-        BasePage.clickWithJavaScript(educationAndTrainingPage.validUntilInput);
-        genericUtils.selectDateFromCalendarPopup(validUntil2);
-
-        String uploadCertificate2 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_DATESET2, "UploadCertificate");
-        String absoluteFilePath2 = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
-                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
-                + uploadCertificate2;
-        BasePage.uploadFile(educationAndTrainingPage.uploadCertificate, absoluteFilePath2);
-
-        BasePage.clickWithJavaScript(educationAndTrainingPage.addButton);
-        verifySuccessMessage();
-        verifyCertificateValidityStatus();
-
-        //moving to the next section
-        BasePage.clickWithJavaScript(educationAndTrainingPage.updateButton);
-        BasePage.waitUntilElementPresent(educationAndTrainingPage.saveButton, 60);
-        BasePage.clickWithJavaScript(educationAndTrainingPage.saveButton);
-
-        //move to next section
-        verifySaveButtonSuccessMessage();
     }
 
     private String getDropdownOptionXpath(String city) {
@@ -121,5 +120,68 @@ public class WorkerEducationAndTrainingActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Unable to add certificate!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(educationAndTrainingPage.successMessage, 20);
+    }
+
+    public void updateEducationAndTraining() {
+        navigationMenu.gotoCertificatesPage();
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Education and Training Data - Enter Data>>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
+        BasePage.clickWithJavaScript(educationAndTrainingPage.addButton);
+
+        //enter first set of data
+        addEducationAndTrainingEntry(EDIT_YML_FILE, ADD, YML_HEADER_DATESET1);
+        verifySuccessMessage();
+        verifyCertificateValidityStatus();
+
+        //enter second set of data
+        BasePage.clickWithJavaScript(educationAndTrainingPage.addNewButton);
+        addEducationAndTrainingEntry(EDIT_YML_FILE, ADD, YML_HEADER_DATESET2);
+        verifySuccessMessage();
+        verifyCertificateValidityStatus();
+
+        // remove first certificate and upload new one
+        BasePage.clickWithJavaScript(educationAndTrainingPage.updateButton);
+        removeCertificate(educationAndTrainingPage.deleteIcon1);
+        BasePage.clickWithJavaScript(educationAndTrainingPage.addNewButton);
+        addEducationAndTrainingEntry(EDIT_YML_FILE, UPDATE, YML_HEADER_DATESET1);
+        verifySuccessMessage();
+        verifyCertificateValidityStatus();
+
+        // remove second certificate and upload new one
+        removeCertificate(educationAndTrainingPage.deleteIcon2);
+        BasePage.clickWithJavaScript(educationAndTrainingPage.addNewButton);
+        addEducationAndTrainingEntry(EDIT_YML_FILE, UPDATE, YML_HEADER_DATESET2);
+        verifySuccessMessage();
+        verifyCertificateValidityStatus();
+
+        // click on save button
+        markAsCareAcademyIssuedCheckbox1();
+        BasePage.clickWithJavaScript(educationAndTrainingPage.saveButton);
+        verifySaveButtonSuccessMessage();
+    }
+
+    // remove uploaded certificate
+    private void removeCertificate(WebElement element) {
+        BasePage.waitUntilElementClickable(element, 60);
+        BasePage.clickWithJavaScript(element);
+        BasePage.waitUntilElementClickable(educationAndTrainingPage.deleteButton, 30);
+        BasePage.clickWithJavaScript(educationAndTrainingPage.deleteButton);
+        verifyCertificateRemoveMessage();
+    }
+
+    // success message: Record created successfully
+    private void verifyCertificateRemoveMessage() {
+        BasePage.waitUntilElementPresent(educationAndTrainingPage.successMessage, 90);
+        String actualInLowerCase = BasePage.getText(educationAndTrainingPage.successMessage).toLowerCase().trim();
+        String expected = "Removal request submitted";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Certificate not removed!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(educationAndTrainingPage.successMessage, 20);
+    }
+
+    private void markAsCareAcademyIssuedCheckbox1() {
+        BasePage.clickWithJavaScript(educationAndTrainingPage.caIssuedCheckbox1);
     }
 }

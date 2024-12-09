@@ -16,3 +16,4 @@ Feature: Test CareHires edit worker and make profile approved
     And User finds recently created worker
     And User edit worker profile data
     And User moves to Documents and Proof and edit data
+    And User moves to Education and Training and edit data

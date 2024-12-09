@@ -11,4 +11,9 @@ public class WorkerEducationAndTrainingSteps {
     public void enterEducationAndTraining() {
         educationAndTrainingActions.enterDataForEducationAndTraining();
     }
+
+    @And("User moves to Education and Training and edit data")
+    public void editEducationAndTraining() {
+        educationAndTrainingActions.updateEducationAndTraining();
+    }
 }
