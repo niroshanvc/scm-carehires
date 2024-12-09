@@ -3,7 +3,7 @@ package com.carehires.steps.worker;
 import com.carehires.actions.workers.WorkerDocumentsAndProofActions;
 import io.cucumber.java.en.And;
 
-public class CreateWorkerDocumentsAndProofSteps {
+public class WorkerDocumentsAndProofSteps {
 
     WorkerDocumentsAndProofActions documentsAndProofActions = new WorkerDocumentsAndProofActions();
 

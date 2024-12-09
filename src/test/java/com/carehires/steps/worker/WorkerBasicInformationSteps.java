@@ -3,7 +3,7 @@ package com.carehires.steps.worker;
 import com.carehires.actions.workers.WorkerBasicInformationActions;
 import io.cucumber.java.en.And;
 
-public class CreateWorkerBasicInformationSteps {
+public class WorkerBasicInformationSteps {
 
     WorkerBasicInformationActions basicInformationActions = new WorkerBasicInformationActions();
 

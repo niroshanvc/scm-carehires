@@ -3,7 +3,7 @@ package com.carehires.steps.worker;
 import com.carehires.actions.workers.WorkerEmploymentHistoryActions;
 import io.cucumber.java.en.And;
 
-public class CreateWorkerEmploymentHistorySteps {
+public class WorkerEmploymentHistorySteps {
 
     WorkerEmploymentHistoryActions employmentHistoryActions = new WorkerEmploymentHistoryActions();
 

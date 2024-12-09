@@ -107,6 +107,18 @@ Documents and Proof:
     DrivingLicence:
       ExpiryDate: 18 Dec 2025
       Document: driving_licence.pdf
+    VisaWorkPermit:
+      ExpiryDate: 18 Dec 2025
+      Document: Visa_WorkPermit.pdf
+    Covid19:
+      Document: vaccination-covid19.pdf
+    CosDocument:
+      ExpiryDate: 18 Dec 2025
+      Document: Cos Document.pdf
+    PvgCertificate:
+      Document: PVG Certificate.pdf
+    RegulatorySettings:
+      Document: Regulatory Settings.pdf
   Update:
     CV:
       Document: carer_CV_template - 2.pdf
@@ -123,6 +135,18 @@ Documents and Proof:
     DrivingLicence:
       ExpiryDate: 18 Dec 2025
       Document: driving_licence - 2.pdf
+    VisaWorkPermit:
+      ExpiryDate: 18 Dec 2025
+      Document: Visa_WorkPermit - 2.pdf
+    Covid19:
+      Document: vaccination-covid19 - 2.pdf
+    CosDocument:
+      ExpiryDate: 18 Dec 2025
+      Document: Cos Document - 2.pdf
+    PvgCertificate:
+      Document: PVG Certificate - 2.pdf
+    RegulatorySettings:
+      Document: Regulatory Settings - 2.pdf
 
 Education and Training:
   Dataset1:

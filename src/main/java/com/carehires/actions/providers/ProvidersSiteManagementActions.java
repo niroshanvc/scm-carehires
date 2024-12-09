@@ -257,7 +257,7 @@ public class ProvidersSiteManagementActions {
         String actualInLowerCase = BasePage.getText(siteManagementPage.successMessage).toLowerCase().trim();
         String expected = "Record updated successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
-        assertThat("Site management information update success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        assertThat("Site management information is not updated!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(siteManagementPage.successMessage, 20);
     }
 }
