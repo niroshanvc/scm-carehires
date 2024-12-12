@@ -11,4 +11,9 @@ public class WorkerEmergencyInformationSteps {
     public void enterEmergencyInformation() {
         emergencyInformationActions.enterDataForEmergencyInformation();
     }
+
+    @And("User moves to Emergency and edit data")
+    public void editEmergencyInfo() {
+        emergencyInformationActions.updateEmergency();
+    }
 }

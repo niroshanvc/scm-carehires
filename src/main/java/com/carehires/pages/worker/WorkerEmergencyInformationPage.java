@@ -34,4 +34,10 @@ public class WorkerEmergencyInformationPage {
 
     @FindBy(xpath = "//button[contains(text(),'Save')]")
     public WebElement saveButton;
+
+    @FindBy(xpath = "(//nb-icon[@nbtooltip='Edit Details'])[1]")
+    public WebElement editIcon1;
+
+    @FindBy(xpath = "(//nb-icon[@nbtooltip='Edit Details'])[2]")
+    public WebElement editIcon2;
 }

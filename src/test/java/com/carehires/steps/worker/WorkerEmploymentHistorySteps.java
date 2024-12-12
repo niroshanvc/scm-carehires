@@ -11,4 +11,9 @@ public class WorkerEmploymentHistorySteps {
     public void enterEmploymentHistory() {
         employmentHistoryActions.enterDataForEmploymentHistory();
     }
+
+    @And("User moves to Employment and edit data")
+    public void editEmploymentHistory() {
+        employmentHistoryActions.updateEmploymentInfo();
+    }
 }

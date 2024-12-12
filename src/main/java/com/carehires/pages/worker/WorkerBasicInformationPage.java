@@ -1,5 +1,6 @@
 package com.carehires.pages.worker;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -157,6 +158,8 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     public WebElement saveButton;
 
+    public static final By saveButtonBy = By.xpath("//button[contains(text(), 'Save')]");
+
     @FindBy(xpath = "//p[contains(text(), 'Document is added')]")
     public WebElement documentUploadedSuccessMessage;
 
@@ -171,9 +174,6 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//div[not(contains(@class, 'provider'))]//p/strong")
     public WebElement workerId;
 
-    @FindBy(xpath = "//div[contains(@class, 'profile-steps')]/div[1]//span/nb-icon")
-    public WebElement basicInformationStep;
-
     @FindBy(xpath = "(//div[contains(@id,'cdk-overlay')]//nb-option)[1]")
     public WebElement agencyLocation;
 
@@ -182,4 +182,7 @@ public class WorkerBasicInformationPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    @FindBy(xpath = "//div[contains(@class, 'profile-steps')]/div[1]//span/nb-icon")
+    public WebElement basicInformationStep;
 }

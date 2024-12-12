@@ -321,4 +321,10 @@ public class WorkerDocumentsAndProofActions {
         BasePage.waitUntilElementClickable(documentsAndProofPage.deleteButton, 30);
         BasePage.clickWithJavaScript(documentsAndProofPage.deleteButton);
     }
+
+    public void moveToBasicInformationStep() {
+        BasePage.waitUntilElementClickable(documentsAndProofPage.basicInformationStep, 60);
+        BasePage.clickWithJavaScript(documentsAndProofPage.basicInformationStep);
+        BasePage.genericWait(3000);
+    }
 }

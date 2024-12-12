@@ -91,4 +91,19 @@ public class WorkerEmploymentHistoryPage {
 
     @FindBy(xpath = "//div[not(contains(@class, 'provider'))]//p/strong")
     public WebElement workerId;
+
+    @FindBy(xpath = "(//nb-icon[@nbtooltip='Delete Details'])[1]")
+    public WebElement deleteIcon1;
+
+    @FindBy(xpath = "(//nb-icon[@nbtooltip='Delete Details'])[2]")
+    public WebElement deleteIcon2;
+
+    @FindBy(xpath = "(//nb-icon[@nbtooltip='Edit Details'])[1]")
+    public WebElement workerHistoryEditIcon1;
+
+    @FindBy(xpath = "(//nb-icon[@nbtooltip='Edit Details'])[2]")
+    public WebElement workerHistoryEditIcon2;
+
+    @FindBy(xpath = "//button[contains(text(),'Update Work History')]")
+    public WebElement updateWorkHistoryButton;
 }

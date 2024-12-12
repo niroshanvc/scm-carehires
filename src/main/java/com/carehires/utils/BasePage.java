@@ -521,4 +521,9 @@ public class BasePage {
         }
     }
 
+    public static void waitUntilElementClickable(By locator, int timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(BasePage.getDriver(), Duration.ofSeconds(timeoutInSeconds));
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
 }

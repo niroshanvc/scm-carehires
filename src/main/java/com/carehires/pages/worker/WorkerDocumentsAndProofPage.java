@@ -132,4 +132,7 @@ public class WorkerDocumentsAndProofPage {
 
     @FindBy(xpath = "//button[text()='Delete']")
     public WebElement deleteButton;
+
+    @FindBy(xpath = "//div[contains(@class, 'profile-steps')]/div[1]//span/nb-icon")
+    public WebElement basicInformationStep;
 }

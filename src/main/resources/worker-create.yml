@@ -75,18 +75,30 @@ Education and Training:
 
 Emergency Information:
   Add:
-    ContactName: Wilson Alexander {{increment}}
-    Relationship: Father
-    PrimaryContactNumber: "07413301246"
-    SecondaryContactNumber: "07412001226"
+    Dataset1:
+      ContactName: Wilson Alexander {{increment}}
+      Relationship: Father
+      PrimaryContactNumber: "07413301246"
+      SecondaryContactNumber: "07412001226"
+    Dataset2:
+      ContactName: Tania Quintus {{increment}}
+      Relationship: Sister
+      PrimaryContactNumber: "07413601246"
+      SecondaryContactNumber: "07415001226"
 
 Vaccination and Allergy Information:
-  Add:
   #  Hepatitis-B,Influenza,MMR,Varicella
-    NameOrType: Covid-19
-    VaccinationDate: 18 Dec 2023
-    VaccinationDocument: vaccination-covid19.pdf
-    IsCovid-19Vaccine: "Yes"
+  Add:
+    Dataset1:
+      NameOrType: Covid-19
+      VaccinationDate: 18 Dec 2023
+      VaccinationDocument: vaccination.pdf
+      IsCovid-19Vaccine: "Yes"
+    Dataset2:
+      NameOrType: Varicella
+      VaccinationDate: 11 May 2023
+      VaccinationDocument: vaccination-2.pdf
+      IsCovid-19Vaccine: "No"
 
 Employment:
   Add:

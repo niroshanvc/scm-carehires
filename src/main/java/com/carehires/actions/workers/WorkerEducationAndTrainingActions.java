@@ -25,8 +25,8 @@ public class WorkerEducationAndTrainingActions {
     private static final String YML_FILE = "worker-create";
     private static final String EDIT_YML_FILE = "worker-edit";
     private static final String YML_HEADER = "Education and Training";
-    private static final String YML_HEADER_DATESET1 = "Dataset1";
-    private static final String YML_HEADER_DATESET2 = "Dataset2";
+    private static final String YML_HEADER_DATASET1 = "Dataset1";
+    private static final String YML_HEADER_DATASET2 = "Dataset2";
     private static final String ADD = "Add";
     private static final String UPDATE = "Update";
 
@@ -54,13 +54,13 @@ public class WorkerEducationAndTrainingActions {
         BasePage.clickWithJavaScript(educationAndTrainingPage.addButton);
 
         //enter first set of data
-        addEducationAndTrainingEntry(YML_FILE, ADD, YML_HEADER_DATESET1);
+        addEducationAndTrainingEntry(YML_FILE, ADD, YML_HEADER_DATASET1);
         verifySuccessMessage();
         verifyCertificateValidityStatus();
 
         //enter second set of data
         BasePage.clickWithJavaScript(educationAndTrainingPage.addNewButton);
-        addEducationAndTrainingEntry(YML_FILE, ADD, YML_HEADER_DATESET2);
+        addEducationAndTrainingEntry(YML_FILE, ADD, YML_HEADER_DATASET2);
         verifySuccessMessage();
         verifyCertificateValidityStatus();
 
@@ -131,28 +131,29 @@ public class WorkerEducationAndTrainingActions {
         BasePage.clickWithJavaScript(educationAndTrainingPage.addButton);
 
         //enter first set of data
-        addEducationAndTrainingEntry(EDIT_YML_FILE, ADD, YML_HEADER_DATESET1);
+        addEducationAndTrainingEntry(EDIT_YML_FILE, ADD, YML_HEADER_DATASET1);
         verifySuccessMessage();
         verifyCertificateValidityStatus();
 
         //enter second set of data
         BasePage.clickWithJavaScript(educationAndTrainingPage.addNewButton);
-        addEducationAndTrainingEntry(EDIT_YML_FILE, ADD, YML_HEADER_DATESET2);
+        addEducationAndTrainingEntry(EDIT_YML_FILE, ADD, YML_HEADER_DATASET2);
         verifySuccessMessage();
         verifyCertificateValidityStatus();
 
         // remove first certificate and upload new one
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Education and Training Data - Update Data>>>>>>>>>>>>>>>>>>>>");
         BasePage.clickWithJavaScript(educationAndTrainingPage.updateButton);
         removeCertificate(educationAndTrainingPage.deleteIcon1);
         BasePage.clickWithJavaScript(educationAndTrainingPage.addNewButton);
-        addEducationAndTrainingEntry(EDIT_YML_FILE, UPDATE, YML_HEADER_DATESET1);
+        addEducationAndTrainingEntry(EDIT_YML_FILE, UPDATE, YML_HEADER_DATASET1);
         verifySuccessMessage();
         verifyCertificateValidityStatus();
 
         // remove second certificate and upload new one
         removeCertificate(educationAndTrainingPage.deleteIcon2);
         BasePage.clickWithJavaScript(educationAndTrainingPage.addNewButton);
-        addEducationAndTrainingEntry(EDIT_YML_FILE, UPDATE, YML_HEADER_DATESET2);
+        addEducationAndTrainingEntry(EDIT_YML_FILE, UPDATE, YML_HEADER_DATASET2);
         verifySuccessMessage();
         verifyCertificateValidityStatus();
 

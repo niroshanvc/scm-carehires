@@ -169,54 +169,138 @@ Education and Training:
       UploadCertificate: education and training-4.pdf
 
 Emergency Information:
-  ContactName: Wilson Alexander {{increment}}
-  Relationship: Father
-  PrimaryContactNumber: "07413301246"
-  SecondaryContactNumber: "07412001226"
+  Add:
+    Dataset1:
+      ContactName: William Alexander {{increment}}
+      Relationship: Father
+      PrimaryContactNumber: "07413301246"
+      SecondaryContactNumber: "07412001226"
+    Dataset2:
+      ContactName: Alexander Wilson {{increment}}
+      Relationship: Brother
+      PrimaryContactNumber: "07413321246"
+      SecondaryContactNumber: "07413001226"
+  Update:
+    Dataset1:
+      ContactName: Michelle Paringer {{increment}}
+      Relationship: Mother
+      PrimaryContactNumber: "07419301246"
+      SecondaryContactNumber: "07412801226"
+    Dataset2:
+      ContactName: Bethel Howard {{increment}}
+      Relationship: Brother in law
+      PrimaryContactNumber: "07413341246"
+      SecondaryContactNumber: "07413201226"
 
 Vaccination and Allergy Information:
 #  Hepatitis-B,Influenza,MMR,Varicella
-  NameOrType: Covid-19
-  VaccinationDate: 18 Dec 2023
-  VaccinationDocument: vaccination-covid19.pdf
-  IsCovid-19Vaccine: "Yes"
+  Add:
+    Dataset1:
+      NameOrType: Covid-19
+      VaccinationDate: 18 Dec 2023
+      VaccinationDocument: vaccination.pdf
+      IsCovid-19Vaccine: "Yes"
+    Dataset2:
+      NameOrType: Influenza
+      VaccinationDate: 23 Mar 2024
+      VaccinationDocument: vaccination - 2.pdf
+      IsCovid-19Vaccine: "No"
+  Update:
+    Dataset1:
+      NameOrType: Covid-19
+      VaccinationDate: 18 Jun 2022
+      VaccinationDocument: vaccination.pdf
+      IsCovid-19Vaccine: "Yes"
+    Dataset2:
+      NameOrType: MMR
+      VaccinationDate: 23 Nov 2024
+      VaccinationDocument: vaccination - 2.pdf
+      IsCovid-19Vaccine: "No"
 
 Employment:
   Worker History:
-    Dataset1:
-      EmploymentType: Full-time employment
-      IsCurrentlyWorkHere: "Yes"
-      CompanyName: Best Care
-      Designation: Development Manager
-      From: 29 Feb 2019
-      To: 15 Aug 2021
-      IsCareSectorRelatedExperience: "Yes"
-      ReasonForLeaving: Career Progression
-      AdditionalNote: >
-        Care workers play a crucial role in providing support and assistance to individuals in need, 
-        ensuring their well-being and comfort.
-    Dataset2:
-      EmploymentType: Full-time employment
-      IsCurrentlyWorkHere: "No"
-      CompanyName: Orange Pvt
-      Designation: Care Assistant
-      From: 29 Feb 2016
-      To: 14 Jan 2019
-      IsCareSectorRelatedExperience: "Yes"
-      ReasonForLeaving: Personal/Family
-      AdditionalNote: >
-        Care workers play a crucial role in providing support and assistance to individuals in need, 
-        ensuring their well-being and comfort.
+    Add:
+      Dataset1:
+        EmploymentType: Part-time employment
+        IsCurrentlyWorkHere: "Yes"
+        CompanyName: Best Care
+        Designation: Development Manager
+        From: 29 Feb 2019
+        To: 15 Aug 2021
+        IsCareSectorRelatedExperience: "Yes"
+        ReasonForLeaving: Career Progression
+        AdditionalNote: >
+          Care workers play a crucial role in providing support.
+      Dataset2:
+        EmploymentType: Part-time employment
+        IsCurrentlyWorkHere: "No"
+        CompanyName: Orange Pvt
+        Designation: Care Assistant
+        From: 29 Feb 2016
+        To: 14 Jan 2019
+        IsCareSectorRelatedExperience: "No"
+        ReasonForLeaving: Work-life balance
+        AdditionalNote: >
+          Care workers play a crucial role in providing support and assistance to individuals in need.
+      Dataset3:
+        EmploymentType: Full-time employment
+        IsCurrentlyWorkHere: "Yes"
+        CompanyName: Green Pvt
+        Designation: HR Manager
+        From: 29 Feb 2016
+        To: 14 Jan 2019
+        IsCareSectorRelatedExperience: "Yes"
+        ReasonForLeaving: Personal/Family
+        AdditionalNote: >
+          Care workers play a crucial role in providing support and assistance to individuals in need, 
+          ensuring their well-being and comfort.
+    Update:
+      Dataset1:
+        EmploymentType: Full-time employment
+        IsCurrentlyWorkHere: "Yes"
+        CompanyName: Best Care
+        Designation: Development Manager
+        From: 29 Feb 2019
+        To: 15 Aug 2021
+        IsCareSectorRelatedExperience: "Yes"
+        ReasonForLeaving: Career Progression
+        AdditionalNote: >
+          Care workers play a crucial role in providing support and assistance to individuals in need, 
+          ensuring their well-being and comfort.
+      Dataset2:
+        EmploymentType: Full-time employment
+        IsCurrentlyWorkHere: "No"
+        CompanyName: Orange Pvt
+        Designation: Care Assistant
+        From: 29 Feb 2016
+        To: 14 Jan 2019
+        IsCareSectorRelatedExperience: "Yes"
+        ReasonForLeaving: Personal/Family
+        AdditionalNote: >
+          Care workers play a crucial role in providing support and assistance to individuals in need, 
+          ensuring their well-being and comfort.
   Reference:
-    Dataset1:
-      ReferenceType: Professional Referee
-      UploadFile: Employment History Reference.pdf
-      ReferenceNote: >
-        When crafting your resume, highlight your experience in patient care, 
-        your ability to communicate effectively, and any relevant certifications you hold.
-    Dataset2:
-      ReferenceType: Academic Referee
-      UploadFile: Employment History Reference.pdf
-      ReferenceNote: >
-        When crafting your resume, highlight your experience in patient care, 
-        your ability to communicate effectively, and any relevant certifications you hold.
+    Add:
+      Dataset1:
+        ReferenceType: Professional Referee
+        UploadFile: Employment History Reference.pdf
+        ReferenceNote: >
+          When crafting your resume, highlight your experience in patient care.
+      Dataset2:
+        ReferenceType: Academic Referee
+        UploadFile: Employment History Reference - 2.pdf
+        ReferenceNote: >
+          When crafting your resume, highlight your experience in patient care, 
+          your ability to communicate effectively, and any relevant certifications you hold.
+    Update:
+      Dataset1:
+        ReferenceType: Professional Referee
+        UploadFile: Employment History Reference.pdf
+        ReferenceNote: >
+          When crafting your resume, highlight your experience in patient care.
+      Dataset2:
+        ReferenceType: Academic Referee
+        UploadFile: Employment History Reference - 2.pdf
+        ReferenceNote: >
+          When crafting your resume, highlight your experience in patient care, 
+          your ability to communicate effectively, and any relevant certifications you hold.

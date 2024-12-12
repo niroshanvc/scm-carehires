@@ -1,7 +1,6 @@
 package com.carehires.actions.workers;
 
 import com.carehires.common.GlobalVariables;
-import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
 import com.carehires.pages.worker.WorkerBasicInformationPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -30,6 +29,7 @@ public class WorkerBasicInformationActions {
 
     private final WorkerBasicInformationPage basicInfo;
     private static final GenericUtils genericUtils = new GenericUtils();
+    private static final WorkerNavigationMenuActions navigationMenu = new WorkerNavigationMenuActions();
 
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
@@ -456,19 +456,12 @@ public class WorkerBasicInformationActions {
 
     //verify if basic information is saved
     private void isBasicInfoSaved() {
-        BasePage.waitUntilElementClickable(basicInfo.saveButton, 90);
-        List<WebElement> allElements = BasePage.findListOfWebElements(CreateAgencyBasicInfoPage.BASIC_INFORMATION_SUB_XPATHS);
+        BasePage.waitAndIgnoreStaleException(basicInfo.saveButton, 90);
+        BasePage.waitUntilElementPresent(basicInfo.basicInformationStep, 90);
 
-        //filter the elements that have an 'id' attribute
-        List<WebElement> elementsWithIdAttribute = allElements.stream()
-                .filter(element -> element.getAttribute("id") != null && !Objects.requireNonNull(element.getAttribute("id")).isEmpty())
-                .toList();
-
-        //check if any of the elements have an 'id' attribute equal to 'Icon_material-done'
-        boolean hasIdDone = elementsWithIdAttribute.stream()
-                .anyMatch(element -> Objects.equals(element.getAttribute("id"), "Icon_material-done"));
-
-        assertThat("Basic information is not saved",hasIdDone, is(true));
+        String actual = BasePage.getAttributeValue(basicInfo.basicInformationStep, "icon");
+        String expected = "completed";
+        assertThat("Basic information is not saved", actual, is(expected));
     }
 
     public void createWorkerInDraftStage() {
@@ -492,7 +485,6 @@ public class WorkerBasicInformationActions {
         DataConfigurationReader.storeNewIncrementValue(ENTITY);
         // Store the increment value in GlobalVariables for reuse in other steps
         GlobalVariables.setVariable("worker_incrementValue", incrementValue);
-        getWorkerId();
     }
 
     public void updateWorkerBasicInfo() {
@@ -518,16 +510,6 @@ public class WorkerBasicInformationActions {
         BasePage.waitUntilElementClickable(basicInfo.saveButton, 30);
     }
 
-    // get auto generated worker id and save it on the memory
-    private void getWorkerId() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Reading auto generated worker id >>>>>>>>>>>>>>>>>>>>");
-        BasePage.clickWithJavaScript(basicInfo.basicInformationStep);
-        BasePage.waitUntilElementPresent(basicInfo.workerId, 90);
-        String headerText = BasePage.getText(basicInfo.workerId).trim();
-        String workerId = headerText.split("\n")[0];
-        GlobalVariables.setVariable("workerId", workerId);
-    }
-
     private void verifyUpdateSuccessMessage() {
         BasePage.waitUntilElementPresent(basicInfo.successMessage, 30);
         String actualInLowerCase = BasePage.getText(basicInfo.successMessage).toLowerCase().trim();
@@ -535,5 +517,18 @@ public class WorkerBasicInformationActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Worker profile is not updated!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(basicInfo.successMessage, 20);
+    }
+
+    // get auto generated worker id and save it on the memory
+    private void getWorkerId() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Reading auto generated worker id >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementPresent(basicInfo.workerId, 90);
+        String headerText = BasePage.getText(basicInfo.workerId).trim();
+        String workerId = headerText.split("\n")[0];
+        GlobalVariables.setVariable("workerId", workerId);
+    }
+
+    public void getGeneratedWorkerId() {
+        getWorkerId();
     }
 }

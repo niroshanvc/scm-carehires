@@ -23,6 +23,9 @@ public class WorkerVaccinationAndAllergyInformationPage {
     @FindBy(xpath = "//nb-checkbox[@formcontrolname='isCovidApprovedVaccine']//input")
     public WebElement covid19Checkbox;
 
+    @FindBy(xpath = "//nb-checkbox[@formcontrolname='isCovidApprovedVaccine']//input/../span[1]")
+    public WebElement covid19CheckboxSpan;
+
     @FindBy(xpath = "//button[contains(text(),'Add')]")
     public WebElement addButton;
 
@@ -37,4 +40,10 @@ public class WorkerVaccinationAndAllergyInformationPage {
 
     @FindBy(xpath = "//button[contains(text(),'Save')]")
     public WebElement saveButton;
+
+    @FindBy(xpath = "(//nb-icon[@nbtooltip='Edit Details'])[1]")
+    public WebElement editIcon1;
+
+    @FindBy(xpath = "(//nb-icon[@nbtooltip='Edit Details'])[2]")
+    public WebElement editIcon2;
 }

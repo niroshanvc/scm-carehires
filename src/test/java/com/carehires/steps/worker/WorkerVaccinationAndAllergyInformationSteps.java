@@ -11,4 +11,9 @@ public class WorkerVaccinationAndAllergyInformationSteps {
     public void enterVaccinationAndAllergyInformationData() {
         vaccinationAndAllergyInformationActions.enterDataForVaccinationInformation();
     }
+
+    @And("User moves to Medical and edit data")
+    public void editMedicalInfo() {
+        vaccinationAndAllergyInformationActions.updateMedicalInfo();
+    }
 }
