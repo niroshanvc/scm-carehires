@@ -106,4 +106,7 @@ public class WorkerEmploymentHistoryPage {
 
     @FindBy(xpath = "//button[contains(text(),'Update Work History')]")
     public WebElement updateWorkHistoryButton;
+
+    @FindBy(xpath = "//button[contains(text(), 'Add new')]")
+    public WebElement referenceAddNewButtonInEdit;
 }

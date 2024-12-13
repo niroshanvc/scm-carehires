@@ -80,14 +80,14 @@ public class WorkerEmploymentHistoryActions {
         BasePage.scrollToWebElement(employmentHistoryPage.referenceAddNewButton);
         BasePage.clickWithJavaScript(employmentHistoryPage.referenceAddNewButton);
 
-        enterReferenceInfo(YML_FILE, ADD, YML_SUB_HEADER_DATASET1);
+        enterReferenceInfo(YML_FILE, YML_SUB_HEADER_DATASET1);
 
         // click on the Add button
         BasePage.clickWithJavaScript(employmentHistoryPage.addReferenceButton);
         verifySuccessMessage();
 
         // add dataset2 - Reference section
-        enterReferenceInfo(YML_FILE, ADD, YML_SUB_HEADER_DATASET2);
+        enterReferenceInfo(YML_FILE, YML_SUB_HEADER_DATASET2);
 
         // click on the Add button
         BasePage.clickWithJavaScript(employmentHistoryPage.addReferenceButton);
@@ -194,6 +194,7 @@ public class WorkerEmploymentHistoryActions {
 
         // edit Dataset2 - Worker History
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Employment Information Data - Updating >>>>>>>>>>>>>>>>>>>>");
+        BasePage.clickWithJavaScript(employmentHistoryPage.workerHistoryEditIcon1);
         enterWorkerHistoryInfo(EDIT_YML_FILE, UPDATE, YML_SUB_HEADER_DATASET1);
         BasePage.clickWithJavaScript(employmentHistoryPage.updateWorkHistoryButton);
         verifyUpdateSuccessMessage();
@@ -208,18 +209,13 @@ public class WorkerEmploymentHistoryActions {
         BasePage.clickWithJavaScript(employmentHistoryPage.workerHistoryAddNewButton);
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Reference Information Data - Adding >>>>>>>>>>>>>>>>>>>>");
         // add dataset1 - Reference section
-        BasePage.scrollToWebElement(employmentHistoryPage.referenceAddNewButton);
-        enterReferenceInfo(EDIT_YML_FILE, ADD, YML_SUB_HEADER_DATASET1);
-        BasePage.clickWithJavaScript(employmentHistoryPage.addWorkHistoryButton);
-        verifySuccessMessage();
-
-        // add dataset1 - Reference section
-        enterReferenceInfo(EDIT_YML_FILE, ADD, YML_SUB_HEADER_DATASET1);
-        BasePage.clickWithJavaScript(employmentHistoryPage.addWorkHistoryButton);
+        BasePage.scrollToWebElement(employmentHistoryPage.referenceAddNewButtonInEdit);
+        enterReferenceInfo(EDIT_YML_FILE, YML_SUB_HEADER_DATASET1);
+        BasePage.clickWithJavaScript(employmentHistoryPage.addReferenceButton);
         verifySuccessMessage();
 
         // add dataset2 - Reference section
-        enterReferenceInfo(EDIT_YML_FILE, ADD, YML_SUB_HEADER_DATASET2);
+        enterReferenceInfo(EDIT_YML_FILE, YML_SUB_HEADER_DATASET2);
         BasePage.clickWithJavaScript(employmentHistoryPage.addWorkHistoryButton);
         verifySuccessMessage();
 
@@ -274,26 +270,26 @@ public class WorkerEmploymentHistoryActions {
         BasePage.typeWithStringBuilder(employmentHistoryPage.additionalNote, additionalNote);
     }
 
-    private void enterReferenceInfo(String ymlFile, String subHeader, String dataset) {
+    private void enterReferenceInfo(String ymlFile, String dataset) {
         BasePage.waitUntilElementDisplayed(employmentHistoryPage.referenceTypeDropdown, 30);
-        String referenceType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER2, subHeader, dataset, "ReferenceType");
+        String referenceType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER2, ADD, dataset, "ReferenceType");
         BasePage.clickWithJavaScript(employmentHistoryPage.referenceTypeDropdown);
         BasePage.genericWait(1000);
         BasePage.waitUntilElementClickable(getDropdownOptionXpath(referenceType), 20);
         BasePage.clickWithJavaScript(getDropdownOptionXpath(referenceType));
 
         BasePage.clickWithJavaScript(employmentHistoryPage.selectWorkplaceDropdown);
-        String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "CompanyName");
+        String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, ADD, dataset, "CompanyName");
         BasePage.waitUntilElementClickable(getDropdownOptionXpath(companyName), 20);
         BasePage.clickWithJavaScript(getDropdownOptionXpath(companyName));
 
-        String uploadFile = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER2, subHeader, dataset, "UploadFile");
+        String uploadFile = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER2, ADD, dataset, "UploadFile");
         String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
                 + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
                 + uploadFile;
         BasePage.uploadFile(employmentHistoryPage.uploadFile, absoluteFilePath);
 
-        String referenceNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER2, subHeader, dataset, "ReferenceNote");
+        String referenceNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER2, ADD, dataset, "ReferenceNote");
         BasePage.typeWithStringBuilder(employmentHistoryPage.referenceNote, referenceNote);
     }
 

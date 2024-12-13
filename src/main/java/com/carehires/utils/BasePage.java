@@ -9,6 +9,7 @@ import org.hamcrest.Matchers;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
@@ -16,6 +17,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
@@ -41,6 +44,7 @@ public class BasePage {
     private static WebDriverWait wait;
     private static final Logger logger = LogManager.getFormatterLogger(BasePage.class);
     static Properties prop;
+    private static final String HEADLESS = "--headless";
 
     private static final String DOWNLOAD_DIR = System.getProperty("user.dir") + File.separator + "src" + File.separator
             + "test" + File.separator + "resources" + File.separator + "downloads";
@@ -52,44 +56,85 @@ public class BasePage {
             logger.info("Initializing WebDriver for browser: %s", browser);
 
             try {
-                if ("Chrome".equalsIgnoreCase(browser)) {
-                    logger.info("****************** Setting up ChromeDriver.");
-                    ChromeOptions options = new ChromeOptions();
-                    Map<String, Object> prefs = new HashMap<>();
-                    prefs.put("download.default_directory", DOWNLOAD_DIR);
-                    prefs.put("download.prompt_for_download", false); // Disable download prompt
-                    prefs.put("download.directory_upgrade", true);
-                    prefs.put("plugins.always_open_pdf_externally", true); // Force PDFs to download
-                    prefs.put("safebrowsing.enabled", true);
-                    options.setExperimentalOption("prefs", prefs);
-                    options.addArguments("start-maximized");
-                    options.addArguments("--safebrowsing-disable-download-protection");
-                    if (isCIRunning) {
-                        logger.info("****************** Running in CI environment, configuring Chrome headless options.");
-                        options.addArguments("--headless");
-                        options.addArguments("--disable-gpu");
-                        options.addArguments("--no-sandbox");
-                        options.addArguments("--disable-dev-shm-usage");
-                        options.setExperimentalOption("prefs", prefs);
-                    }
-                    WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver(options);
-
-                } else if ("Firefox".equalsIgnoreCase(browser)) {
-                    FirefoxOptions options = new FirefoxOptions();
-                    if (isCIRunning) {
-                        options.addArguments("--headless");
-                    }
-                    WebDriverManager.firefoxdriver().setup();
-                    driver = new FirefoxDriver(options);
-
-                } else {
-                    throw new IllegalArgumentException("Unsupported browser: " + browser);
+                switch (browser.toLowerCase()) {
+                    case "chrome":
+                        driver = setupChromeDriver(isCIRunning);
+                        break;
+                    case "firefox":
+                        driver = setupFirefoxDriver(isCIRunning);
+                        break;
+                    case "edge":
+                        driver = setupEdgeDriver(isCIRunning);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unsupported browser: " + browser);
                 }
                 logger.info("WebDriver initialized successfully.");
             } catch (Exception e) {
                 logger.error("Error initializing WebDriver: ", e);
             }
+        }
+    }
+
+    private static WebDriver setupChromeDriver(boolean isCIRunning) {
+        logger.info("****************** Setting up ChromeDriver.");
+        ChromeOptions options = new ChromeOptions();
+        options.setExperimentalOption("prefs", getChromePreferences());
+        options.addArguments("start-maximized", "--safebrowsing-disable-download-protection");
+
+        if (isCIRunning) {
+            configureCIOptions(options);
+        }
+
+        WebDriverManager.chromedriver().setup();
+        return new ChromeDriver(options);
+    }
+
+    private static WebDriver setupFirefoxDriver(boolean isCIRunning) {
+        logger.info("****************** Setting up FirefoxDriver.");
+        FirefoxOptions options = new FirefoxOptions();
+
+        if (isCIRunning) {
+            options.addArguments(HEADLESS);
+        }
+
+        WebDriverManager.firefoxdriver().setup();
+        return new FirefoxDriver(options);
+    }
+
+    private static WebDriver setupEdgeDriver(boolean isCIRunning) {
+        logger.info("****************** Setting up EdgeDriver.");
+        EdgeOptions options = new EdgeOptions();
+
+        if (isCIRunning) {
+            configureCIOptions(options);
+        }
+
+        WebDriverManager.edgedriver().setup();
+        return new EdgeDriver(options);
+    }
+
+    private static Map<String, Object> getChromePreferences() {
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("download.default_directory", DOWNLOAD_DIR);
+        prefs.put("download.prompt_for_download", false); // Disable download prompt
+        prefs.put("download.directory_upgrade", true);
+        prefs.put("plugins.always_open_pdf_externally", true); // Force PDFs to download
+        prefs.put("safebrowsing.enabled", true);
+        return prefs;
+    }
+
+    private static void configureCIOptions(MutableCapabilities options) {
+        logger.info("****************** Running in CI environment, configuring headless options.");
+
+        if (options instanceof ChromeOptions) {
+            ((ChromeOptions) options).addArguments(HEADLESS, "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+        } else if (options instanceof FirefoxOptions) {
+            ((FirefoxOptions) options).addArguments(HEADLESS);
+        } else if (options instanceof EdgeOptions) {
+            ((EdgeOptions) options).addArguments(HEADLESS, "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+        } else {
+            logger.warn("Unsupported browser options class: " + options.getClass().getSimpleName());
         }
     }
 
