@@ -5,7 +5,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class WorkerEmploymentHistoryPage {
 
-    @FindBy(xpath = "(//button[contains(@class, 'inserted') and (contains(@class, 'button'))])[1]")
+    @FindBy(xpath = "//h3[text()='Worker History']/../..//button[contains(text(), 'Add new')]")
     public WebElement workerHistoryAddNewButton;
 
     @FindBy(xpath = "//nb-select[@formcontrolname='employmentType']/button")
@@ -44,7 +44,7 @@ public class WorkerEmploymentHistoryPage {
     @FindBy(xpath = "//div[contains(@class, 'compliance-issue-detected')]//p[2]/span")
     public WebElement totalExperience;
 
-    @FindBy(xpath = "(//button[contains(@class, 'inserted') and (contains(@class, 'button'))])[2]")
+    @FindBy(xpath = "//h3[text()='Reference']/../..//button[contains(text(), 'Add new')]")
     public WebElement referenceAddNewButton;
 
     @FindBy(xpath = "//nb-select[@formcontrolname='referenceType']/button")
@@ -109,4 +109,10 @@ public class WorkerEmploymentHistoryPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Add new')]")
     public WebElement referenceAddNewButtonInEdit;
+
+    @FindBy(xpath = "(//div[contains(@class, 'worker-reference-header')]/div/div[2])[1]")
+    public WebElement workerHistoryExpandOrClose;
+
+    @FindBy(xpath = "(//b[text()= 'Reference Type']/ancestor::div[@class='ch-table-new']//div[contains(@class, 'common-document')])[2]//nb-icon[@nbtooltip='Delete Details']")
+    public WebElement referenceDeleteIcon1;
 }

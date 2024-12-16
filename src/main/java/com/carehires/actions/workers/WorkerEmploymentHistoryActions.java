@@ -178,6 +178,7 @@ public class WorkerEmploymentHistoryActions {
         BasePage.clickWithJavaScript(employmentHistoryPage.addWorkHistoryButton);
         verifySuccessMessage();
         // add Dataset2 - Worker History
+        BasePage.clickWithJavaScript(employmentHistoryPage.workerHistoryAddNewButton);
         BasePage.waitUntilElementPresent(employmentHistoryPage.employmentTypeDropdown, 20);
         enterWorkerHistoryInfo(EDIT_YML_FILE, ADD, YML_SUB_HEADER_DATASET2);
         //click on Add work history button
@@ -200,27 +201,28 @@ public class WorkerEmploymentHistoryActions {
         verifyUpdateSuccessMessage();
 
         // add Dataset3 - worker history
-        BasePage.clickWithJavaScript(employmentHistoryPage.workerHistoryAddNewButton);
         enterWorkerHistoryInfo(EDIT_YML_FILE, ADD, YML_SUB_HEADER_DATASET3);
         BasePage.clickWithJavaScript(employmentHistoryPage.addWorkHistoryButton);
         verifySuccessMessage();
 
         // closing worker history add new area
-        BasePage.clickWithJavaScript(employmentHistoryPage.workerHistoryAddNewButton);
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Reference Information Data - Adding >>>>>>>>>>>>>>>>>>>>");
         // add dataset1 - Reference section
-        BasePage.scrollToWebElement(employmentHistoryPage.referenceAddNewButtonInEdit);
+        BasePage.clickWithJavaScript(employmentHistoryPage.workerHistoryExpandOrClose);
+        BasePage.scrollToWebElement(employmentHistoryPage.referenceAddNewButton);
+        BasePage.clickWithJavaScript(employmentHistoryPage.referenceAddNewButton);
+        BasePage.scrollToWebElement(employmentHistoryPage.addReferenceButton);
         enterReferenceInfo(EDIT_YML_FILE, YML_SUB_HEADER_DATASET1);
         BasePage.clickWithJavaScript(employmentHistoryPage.addReferenceButton);
         verifySuccessMessage();
 
         // add dataset2 - Reference section
-        enterReferenceInfo(EDIT_YML_FILE, YML_SUB_HEADER_DATASET2);
-        BasePage.clickWithJavaScript(employmentHistoryPage.addWorkHistoryButton);
+        enterReferenceInfo(EDIT_YML_FILE, YML_SUB_HEADER_DATASET3);
+        BasePage.clickWithJavaScript(employmentHistoryPage.addReferenceButton);
         verifySuccessMessage();
 
         // delete a reference
-        deleteEntry(employmentHistoryPage.deleteIcon2);
+        deleteEntry(employmentHistoryPage.referenceDeleteIcon1);
         verifyDeleteSuccessMessage();
     }
 
