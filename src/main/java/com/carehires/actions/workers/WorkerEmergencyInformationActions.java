@@ -56,6 +56,8 @@ public class WorkerEmergencyInformationActions {
         verifySuccessMessage();
 
         //enter second set of data
+        BasePage.waitUntilElementClickable(emergencyInformationPage.addNewButton, 30);
+        BasePage.clickWithJavaScript(emergencyInformationPage.addNewButton);
         enterEmergencyContactInfo(YML_FILE, ADD, YML_HEADER_DATASET2);
         // click on the Add button
         BasePage.clickWithJavaScript(emergencyInformationPage.addButton);
@@ -63,6 +65,7 @@ public class WorkerEmergencyInformationActions {
 
         // click on the Update button
         BasePage.waitUntilElementClickable(emergencyInformationPage.updateButton, 90);
+        BasePage.clickWithJavaScript(emergencyInformationPage.updateButton);
         BasePage.waitUntilElementClickable(emergencyInformationPage.saveButton, 90);
         BasePage.clickWithJavaScript(emergencyInformationPage.saveButton);
     }

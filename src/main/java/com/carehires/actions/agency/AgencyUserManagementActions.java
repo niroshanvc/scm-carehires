@@ -110,7 +110,7 @@ public class AgencyUserManagementActions {
     private void verifySuccessMessage() {
         BasePage.waitUntilElementPresent(userManagement.successMessage, 90);
         String actualInLowerCase = BasePage.getText(userManagement.successMessage).toLowerCase().trim();
-        String expected = "Record created successfully";
+        String expected = "Record created successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("User information saved success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(userManagement.successMessage, 20);

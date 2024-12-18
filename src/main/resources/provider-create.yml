@@ -34,11 +34,10 @@ Site Management:
 Worker Staff Management:
   Add:
     WorkerType: Rehabilitation Worker
-    Skills: Elderly,Dementia,Home Care,NVQ L3,Driving
-    HourlyRate: 10.5
-    MonthlyAgencyHours: 300
+    Skills: Elderly,Home Care,Moderate Learning Disabilities,Challenging Behaviours
+    HourlyRate: 10
+    MonthlyAgencyHours: 350
     ProofOfDemandDocument: Proof of demand document.pdf
-
 User:
   Add:
     email: carehires+prouser{{increment}}@zohomail.com
@@ -48,20 +47,21 @@ User:
     MarkAsAnAuthoriser: "Yes"
     UserAccessLevel: Shift Admin (With rate),Site Admin
 
-BillingInformation:
-  GeneralBillingInformation:
-    AddressBillsInAttentionTo: IBS Solutions QQQQ
-    BillingAddress: "Uber9s Ltd, Gb697 6910 69, Unit 21 Silverstone Tech Park, Silverstone, Towcester, Northamptonshire"
-    DigitalBillingAddress: carehires+progeneralbilling{{increment}}@zohomail.com
-    PhoneNumber: "07412001246"
-    PaymentMethod: Pay on Invoice
-    CreditLimitAmount: 600
-    BillingCycle: Bi Weekly
-    CreditTerm: 28 Days
-    FirstName: Geoffrey
-    LastName: Joseph
-    EmailAddress: carehires+billingpro{{increment}}@zohomail.com
-    PhoneNumberContact: "07412001246"
+Billing Information:
+  General Billing Information:
+    Add:
+      AddressBillsInAttentionTo: IBS Solutions QQQQ
+      BillingAddress: "Uber9s Ltd, Gb697 6910 69, Unit 21 Silverstone Tech Park, Silverstone, Towcester, Northamptonshire"
+      DigitalBillingAddress: carehires+progeneralbilling{{increment}}@zohomail.com
+      PhoneNumber: "07412001246"
+      PaymentMethod: Pay on Invoice
+      CreditLimitAmount: 600
+      BillingCycle: Bi Weekly
+      CreditTerm: 28 Days
+      FirstName: Geoffrey
+      LastName: Joseph
+      EmailAddress: carehires+billingpro{{increment}}@zohomail.com
+      PhoneNumberContact: "07412001246"
 
 SubContract:
   Note: Sub contract agreement note is entered.

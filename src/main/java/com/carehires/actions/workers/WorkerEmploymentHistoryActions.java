@@ -35,6 +35,7 @@ public class WorkerEmploymentHistoryActions {
     private static final String YML_SUB_HEADER_DATASET2 = "Dataset2";
     private static final String YML_SUB_HEADER_DATASET3 = "Dataset3";
     private static final String YML_SUB_HEADER2 = "Reference";
+    private static final String COMPANY_NAME = "CompanyName";
 
     private static final Logger logger = LogManager.getFormatterLogger(WorkerEmploymentHistoryActions.class);
     Integer incrementValue;
@@ -66,6 +67,7 @@ public class WorkerEmploymentHistoryActions {
         verifySuccessMessage();
 
         // add Dataset2
+        BasePage.clickWithJavaScript(employmentHistoryPage.workerHistoryAddNewButton);
         BasePage.waitUntilElementPresent(employmentHistoryPage.employmentTypeDropdown, 20);
         enterWorkerHistoryInfo(YML_FILE, ADD, YML_SUB_HEADER_DATASET2);
 
@@ -79,6 +81,7 @@ public class WorkerEmploymentHistoryActions {
         // add dataset1 - Reference section
         BasePage.scrollToWebElement(employmentHistoryPage.referenceAddNewButton);
         BasePage.clickWithJavaScript(employmentHistoryPage.referenceAddNewButton);
+        BasePage.scrollToWebElement(employmentHistoryPage.addReferenceButton);
 
         enterReferenceInfo(YML_FILE, YML_SUB_HEADER_DATASET1);
 
@@ -103,7 +106,6 @@ public class WorkerEmploymentHistoryActions {
         verifyEmploymentHistorySavedSuccessfully();
         BasePage.waitUntilElementPresent(employmentHistoryPage.successPopupNoLink, 30);
         BasePage.clickWithJavaScript(employmentHistoryPage.successPopupNoLink);
-        getWorkerId();
     }
 
     private String getDropdownOptionXpath(String city) {
@@ -217,6 +219,11 @@ public class WorkerEmploymentHistoryActions {
         verifySuccessMessage();
 
         // add dataset2 - Reference section
+        enterReferenceInfo(EDIT_YML_FILE, YML_SUB_HEADER_DATASET2);
+        BasePage.clickWithJavaScript(employmentHistoryPage.addReferenceButton);
+        verifySuccessMessage();
+
+        // add dataset3 - Reference section
         enterReferenceInfo(EDIT_YML_FILE, YML_SUB_HEADER_DATASET3);
         BasePage.clickWithJavaScript(employmentHistoryPage.addReferenceButton);
         verifySuccessMessage();
@@ -224,6 +231,12 @@ public class WorkerEmploymentHistoryActions {
         // delete a reference
         deleteEntry(employmentHistoryPage.referenceDeleteIcon1);
         verifyDeleteSuccessMessage();
+        BasePage.clickWithJavaScript(employmentHistoryPage.saveButton);
+
+        //verify employment history data saved successfully
+        verifyEmploymentHistorySavedSuccessfully();
+        BasePage.waitUntilElementPresent(employmentHistoryPage.successPopupNoLink, 60);
+        BasePage.clickWithJavaScript(employmentHistoryPage.successPopupNoLink);
     }
 
     private void enterWorkerHistoryInfo(String ymlFile, String subHeader, String dataset) {
@@ -255,7 +268,7 @@ public class WorkerEmploymentHistoryActions {
         BasePage.clickWithJavaScript(employmentHistoryPage.from);
         genericUtils.selectDateFromCalendarPopup(fromDate);
 
-        String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "CompanyName");
+        String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, COMPANY_NAME);
         BasePage.clearAndEnterTexts(employmentHistoryPage.companyName, companyName);
 
         String designation = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "Designation");
@@ -281,7 +294,20 @@ public class WorkerEmploymentHistoryActions {
         BasePage.clickWithJavaScript(getDropdownOptionXpath(referenceType));
 
         BasePage.clickWithJavaScript(employmentHistoryPage.selectWorkplaceDropdown);
-        String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, ADD, dataset, "CompanyName");
+        String companyName;
+        if (dataset.equalsIgnoreCase(YML_SUB_HEADER_DATASET2)) {
+            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, UPDATE, YML_SUB_HEADER_DATASET1, COMPANY_NAME);
+        } else if (dataset.equalsIgnoreCase(YML_SUB_HEADER_DATASET3)) {
+            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, UPDATE, YML_SUB_HEADER_DATASET2, COMPANY_NAME);
+        } else {
+            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, UPDATE, YML_SUB_HEADER_DATASET1, COMPANY_NAME);
+        }
+
+        if (ymlFile.equalsIgnoreCase(YML_FILE) && dataset.equalsIgnoreCase(YML_SUB_HEADER_DATASET1)) {
+            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, ADD, YML_SUB_HEADER_DATASET1, COMPANY_NAME);
+        } else if (ymlFile.equalsIgnoreCase(YML_FILE) && dataset.equalsIgnoreCase(YML_SUB_HEADER_DATASET2)) {
+            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, ADD, YML_SUB_HEADER_DATASET2, COMPANY_NAME);
+        }
         BasePage.waitUntilElementClickable(getDropdownOptionXpath(companyName), 20);
         BasePage.clickWithJavaScript(getDropdownOptionXpath(companyName));
 
@@ -319,5 +345,9 @@ public class WorkerEmploymentHistoryActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Unable to update worker history!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(employmentHistoryPage.successMessage, 20);
+    }
+
+    public void collectWorkerId() {
+        getWorkerId();
     }
 }

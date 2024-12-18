@@ -15,6 +15,7 @@ Feature: Test CareHires create worker
     And User enters Emergency Information data
     And User enters Vaccination and Allergy Information data
     And User enters Employment Information data
+    And User collects workerId from Worker - Employment History page
     And User navigates to Worker View page
     When User finds recently created worker
     Then User verifies the worker profile status as Profile Complete

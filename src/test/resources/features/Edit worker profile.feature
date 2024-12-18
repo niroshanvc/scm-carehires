@@ -22,3 +22,11 @@ Feature: Test CareHires edit worker and make profile approved
     And User moves to Emergency and edit data
     And User moves to Medical and edit data
     And User moves to Employment and edit data
+    And User navigates to Worker View page
+    When User finds recently created worker
+    Then User verifies the worker profile status as Profile Complete
+    And User accepts all the compliance
+    And User updates the worker profile as Submitted for Review
+    And User verifies the worker profile status as Submitted For Review
+    And User updates the worker profile as Approve
+    And User verifies the worker profile status as Approved

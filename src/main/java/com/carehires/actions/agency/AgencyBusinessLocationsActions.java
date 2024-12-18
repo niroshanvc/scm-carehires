@@ -86,7 +86,7 @@ public class AgencyBusinessLocationsActions {
     private void verifySuccessMessage() {
         BasePage.waitUntilElementPresent(locationsPage.successMessage, 90);
         String actualInLowerCase = BasePage.getText(locationsPage.successMessage).toLowerCase().trim();
-        String expected = "Record created successfully";
+        String expected = "Record created successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Location information saved success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(locationsPage.successMessage, 20);

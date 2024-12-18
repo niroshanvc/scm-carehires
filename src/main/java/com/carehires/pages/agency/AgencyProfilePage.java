@@ -52,4 +52,7 @@ public class AgencyProfilePage {
 
     @FindBy(xpath = "//div[not(contains(@class, 'agency'))]//p/strong")
     public WebElement agencyId;
+
+    @FindBy(xpath = "//button[contains(text(), 'Go to Settings')]")
+    public WebElement goToSettingsButton;
 }

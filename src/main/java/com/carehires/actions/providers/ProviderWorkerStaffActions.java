@@ -69,7 +69,7 @@ public class ProviderWorkerStaffActions {
 
     public void verifyMonthlyAgencySpendValue() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Monthly Agency Spend Value >>>>>>>>>>>>>>>>>>>>");
-        String expectMonthlyAgencySpendValue = getExpectedMonthlySpendValue();
+        String expectMonthlyAgencySpendValue = getExpectedMonthlySpendValue(YML_FILE, ADD);
         String actual = BasePage.getAttributeValue(workerStaffPage.monthlyAgencySpend, "value").trim();
         assertThat("Monthly agency spend is not correctly calculate", actual, is(expectMonthlyAgencySpendValue));
     }
@@ -89,15 +89,17 @@ public class ProviderWorkerStaffActions {
 
     public void verifyMonthlySpendDisplayInTableGrid() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Monthly Agency Spend Value displaying in the table grid >>>>>>>>>>>>>>>>>>>>");
-        String expectedValue = getExpectedMonthlySpendValue();
+        String expectedValue = getExpectedMonthlySpendValue(YML_FILE, ADD);
         String actual = BasePage.getText(workerStaffPage.monthlySpendInTableGrid).trim();
         assertThat("Monthly agency spend is not correctly displaying.", actual, is(expectedValue));
     }
 
-    private String getExpectedMonthlySpendValue() {
-        String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "HourlyRate");
-        String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "MonthlyAgencyHours");
+    private String getExpectedMonthlySpendValue(String ymFile, String subHeader) {
+        String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymFile, YML_HEADER, subHeader, "HourlyRate");
+        String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymFile, YML_HEADER, subHeader, "MonthlyAgencyHours");
+        assert hourlyRate != null;
         double hourlyRateInt = Double.parseDouble(hourlyRate);
+        assert monthlyAgencyHours != null;
         double monthlyAgencyHoursInt = Double.parseDouble(monthlyAgencyHours);
         double monthlyAgencySpendValue = hourlyRateInt * monthlyAgencyHoursInt;
         BasePage.clickTabKey(workerStaffPage.updateButton);
@@ -200,7 +202,12 @@ public class ProviderWorkerStaffActions {
 
     private void enterWorkerStaffManagementData(String ymlFile, String subHeader) {
         //select site
-        String site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT_HEADER, UPDATE, "SiteName");
+        String site;
+        if (ymlFile.equalsIgnoreCase(YML_FILE)) {
+            site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT_HEADER, ADD, "SiteName");
+        } else {
+            site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT_HEADER, UPDATE, "SiteName");
+        }
         BasePage.waitUntilElementClickable(workerStaffPage.siteDropdown, 20);
         BasePage.clickWithJavaScript(workerStaffPage.siteDropdown);
         BasePage.genericWait(1000);

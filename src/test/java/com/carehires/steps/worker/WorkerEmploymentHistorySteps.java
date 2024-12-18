@@ -16,4 +16,9 @@ public class WorkerEmploymentHistorySteps {
     public void editEmploymentHistory() {
         employmentHistoryActions.updateEmploymentInfo();
     }
+
+    @And("User collects workerId from Worker - Employment History page")
+    public void getWorkerId() {
+        employmentHistoryActions.collectWorkerId();
+    }
 }

@@ -87,14 +87,14 @@ public class ProviderUserManagementActions {
         BasePage.waitUntilElementPresent(userManagement.fullNameCell, 60);
         String nameWithJob = BasePage.getText(userManagement.fullNameCell);
         String actual = nameWithJob.split("\n")[0].trim();
-        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Name");
+        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "Name");
         assertThat("User is not added", actual, is(expected));
     }
 
     private void verifySuccessMessage() {
         BasePage.waitUntilElementPresent(userManagement.successMessage, 30);
         String actualInLowerCase = BasePage.getText(userManagement.successMessage).toLowerCase().trim();
-        String expected = "Record created successfully";
+        String expected = "Record created successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("User management information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(userManagement.successMessage, 20);
