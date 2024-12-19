@@ -34,7 +34,7 @@ public class WorkerBasicInformationActions {
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
     private static final String EDIT_YML_FILE = "worker-edit";
-    private static final String YML_AGENCY_FILE = "agency-create";
+    private static final String YML_AGENCY_FILE = "agency-edit";
     private static final String YML_HEADER = "Basic Information";
     private static final String ADD = "Add";
     private static final String UPDATE = "Update";
@@ -383,7 +383,7 @@ public class WorkerBasicInformationActions {
         BasePage.clickWithJavaScript(getDropdownOptionXpath(agency));
 
         BasePage.genericWait(2000);
-        String agencyLocation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_AGENCY_FILE, "Agency Business Location", "BusinessLocation");
+        String agencyLocation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_AGENCY_FILE, "Agency Business Location", UPDATE, "BusinessLocation");
         BasePage.clickWithJavaScript(basicInfo.agencyLocationDropdown);
         BasePage.waitUntilElementClickable(getDropdownOptionXpath(agencyLocation), 30);
         selectAllAgencyLocations();
@@ -506,7 +506,7 @@ public class WorkerBasicInformationActions {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.genericWait(3000);
         BasePage.waitUntilElementPresent(basicInfo.topThreeDots, 30);
-        BasePage.mouseHoverAndClick(basicInfo.topThreeDots, basicInfo.updateProfileLink);
+        BasePage.mouseHoverAndClick(basicInfo.topThreeDots, basicInfo.updateProfileLink, basicInfo.updateProfileLinkChildElement);
         BasePage.waitUntilElementClickable(basicInfo.saveButton, 30);
     }
 

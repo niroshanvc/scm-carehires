@@ -20,8 +20,8 @@ public class AgencyBusinessLocationsActions {
     private static final String YML_FILE = "agency-create";
     private static final String EDIT_YML_FILE = "agency-edit";
     private static final String YML_HEADER = "Agency Business Location";
-    private static final String EDIT_YML_SUB_HEADER = "Add";
-    private static final String EDIT_YML_SUB_HEADER2 = "Edit";
+    private static final String ADD = "Add";
+    private static final String UPDATE = "Update";
     private static final String BUSINESS_LOCATION = "BusinessLocation";
     private static final Logger logger = LogManager.getFormatterLogger(AgencyBusinessLocationsActions.class);
 
@@ -44,21 +44,21 @@ public class AgencyBusinessLocationsActions {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(locationsPage.addNewButton);
 
-        String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, BUSINESS_LOCATION);
+        String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, BUSINESS_LOCATION);
         BasePage.clearAndEnterTexts(locationsPage.businessLocation, location);
 
-        String emailAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "BusinessEmailAddress");
+        String emailAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "BusinessEmailAddress");
         BasePage.clearAndEnterTexts(locationsPage.businessEmailAddress, emailAddress);
 
-        String city = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "City");
+        String city = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "City");
         BasePage.clickWithJavaScript(locationsPage.selectCity);
         BasePage.clickWithJavaScript(getCityXpath(city));
         BasePage.genericWait(1000);
 
-        String jobNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "JobNotificationAddress");
+        String jobNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "JobNotificationAddress");
         BasePage.clearAndEnterTexts(locationsPage.jobNotificationAddress, jobNotification );
 
-        String approvalNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "ApprovalNotificationAddress");
+        String approvalNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "ApprovalNotificationAddress");
         BasePage.clearAndEnterTexts(locationsPage.approvalNotificationAddress, approvalNotification);
         BasePage.genericWait(15000);
 
@@ -79,7 +79,7 @@ public class AgencyBusinessLocationsActions {
     private void isBusinessLocationSaved() {
         BasePage.waitUntilElementPresent(locationsPage.locationName, 60);
         String actualLocationName = BasePage.getText(locationsPage.locationName);
-        String expectedLocationName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, BUSINESS_LOCATION);
+        String expectedLocationName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, BUSINESS_LOCATION);
         assertThat("Business Location is not saved", actualLocationName, is(expectedLocationName));
     }
 
@@ -120,14 +120,14 @@ public class AgencyBusinessLocationsActions {
         BasePage.waitUntilElementClickable(locationsPage.addNewButton, 30);
         BasePage.clickWithJavaScript(locationsPage.addNewButton);
 
-        enterLocationsData(EDIT_YML_SUB_HEADER);
+        enterLocationsData(ADD);
         BasePage.clickWithJavaScript(locationsPage.addButton);
         verifySuccessMessage();
 
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Edit a Location >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementDisplayed(locationsPage.editDetailsIcon, 30);
         BasePage.clickWithJavaScript(locationsPage.editDetailsIcon);
-        enterLocationsData(EDIT_YML_SUB_HEADER2);
+        enterLocationsData(UPDATE);
         BasePage.clickWithJavaScript(locationsPage.updateButton);
         verifyLocationUpdateSuccessMessage();
         BasePage.waitUntilElementClickable(locationsPage.nextButton, 90);
@@ -148,7 +148,7 @@ public class AgencyBusinessLocationsActions {
     private void verifyLocationUpdateSuccessMessage() {
         BasePage.waitUntilElementPresent(locationsPage.successMessage, 90);
         String actualInLowerCase = BasePage.getText(locationsPage.successMessage).toLowerCase().trim();
-        String expected = "Record updated successfully";
+        String expected = "Record updated successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Location information update success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(locationsPage.successMessage, 20);

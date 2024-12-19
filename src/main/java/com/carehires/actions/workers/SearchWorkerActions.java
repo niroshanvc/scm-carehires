@@ -21,7 +21,7 @@ public class SearchWorkerActions {
     }
 
     public void searchByText() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Searching the relevant worker by using the auto generated worker id >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Searching the relevant worker by providing the auto generated worker id >>>>>>>>>>>>>>>>>>>>");
 
         BasePage.waitUntilPageCompletelyLoaded();
 

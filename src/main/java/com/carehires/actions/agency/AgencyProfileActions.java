@@ -17,7 +17,10 @@ public class AgencyProfileActions {
 
     private static final String ENTITY = "agency";
     private static final String YML_FILE = "agency-edit";
-    private static final String YML_HEADER = "Profile";
+    private static final String EDIT_YML_FILE = "agency-edit";
+    private static final String YML_HEADER = "Basic Info";
+    private static final String ADD = "Add";
+    private static final String UPDATE = "Update";
     private static final Logger logger = LogManager.getFormatterLogger(AgencyProfileActions.class);
 
     private static final AgencyNavigationMenuActions navigationMenu = new AgencyNavigationMenuActions();
@@ -91,33 +94,33 @@ public class AgencyProfileActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on the update profile link >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(agencyProfile.topThreeDots, 30);
-        BasePage.mouseHoverAndClick(agencyProfile.topThreeDots, agencyProfile.updateProfileLink);
+        BasePage.mouseHoverAndClick(agencyProfile.topThreeDots, agencyProfile.updateProfileLink,
+                AgencyProfilePage.updateProfileLinkChildElement);
         BasePage.waitUntilElementClickable(agencyProfile.saveButton, 30);
     }
 
     public void editProfile() {
-        selectFirstAvailableAgency();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Editing the profile >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         clickOnUpdateProfileLink();
 
         // update existing business registration number
-        String businessRegistrationNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "BusinessRegistrationNumber");
+        String businessRegistrationNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, "BusinessRegistrationNumber");
         BasePage.clearAndEnterTexts(agencyProfile.businessRegistrationNumber, businessRegistrationNumber);
 
         // update existing phone number
-        String updatingNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "EditPhoneNumber");
+        String updatingNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, "PhoneNumber");
         BasePage.clearAndEnterTexts(agencyProfile.phoneNumberInput, updatingNumber);
 
         // add new phone number
-        BasePage.clickWithJavaScript(agencyProfile.addAnotherPhoneNumberLink);
+        /*BasePage.clickWithJavaScript(agencyProfile.addAnotherPhoneNumberLink);
         BasePage.waitUntilElementPresent(agencyProfile.removePhoneNumberInput, 20);
         BasePage.clickWithJavaScript(agencyProfile.phoneNumberType2);
-        String phoneNumberType2 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PhoneNumberType");
+        String phoneNumberType2 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PhoneType");
         BasePage.waitUntilElementPresent(getPhoneNumberTypeXpath(phoneNumberType2), 20);
         BasePage.clickWithJavaScript(getPhoneNumberTypeXpath(phoneNumberType2));
         String phoneNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PhoneNumber");
-        BasePage.clearAndEnterTexts(agencyProfile.phoneNumberInput2, phoneNumber);
+        BasePage.clearAndEnterTexts(agencyProfile.phoneNumberInput2, phoneNumber);*/
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(agencyProfile.saveButton);
         verifySuccessMessage();

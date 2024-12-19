@@ -18,7 +18,7 @@ Feature: Test CareHires create agency with no VAT Registered, one location
     And User adds User Management data
     And User clicks on the Complete Profile button on the Sub Contracting Agreement page
     And User navigates to Agency View page
-    When User finds recently created agency
+    When User finds recently created agency by agency name
     Then User verifies the agency profile status as Profile Complete
     And User completes the profile approve status
 #    And User saves the organizational settings

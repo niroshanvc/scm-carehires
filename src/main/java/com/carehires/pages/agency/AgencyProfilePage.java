@@ -1,5 +1,6 @@
 package com.carehires.pages.agency;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -25,6 +26,8 @@ public class AgencyProfilePage {
 
     @FindBy(xpath = "//div[contains(@class, 'side')]/ul[@class='expanded-nav']/li[1]")
     public WebElement updateProfileLink;
+
+    public static final By updateProfileLinkChildElement = By.xpath("//div[contains(@class, 'side')]/ul[@class='expanded-nav']/li[1]");
 
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     public WebElement saveButton;

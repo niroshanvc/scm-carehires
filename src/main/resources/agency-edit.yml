@@ -1,15 +1,27 @@
-Profile:
-  BusinessRegistrationNumber: 12345666
-  EditPhoneNumber: "07412001219"
-  PhoneNumberType: Mobile
-  PhoneNumber: "07412003245"
+Basic Info:
+  Add:
+    BusinessName: Automation Agency {{increment}}
+    BusinessRegistrationNumber: 12345666
+    CompanyLogo: Agency101.jpg
+    AlsoKnownAs: Auto{{increment}}
+    PostCode: BL0 9YX
+    PhoneType: Mobile
+    PhoneNumber: "07412003245"
+  Update:
+    BusinessName: Automation Agency {{increment}}
+    BusinessRegistrationNumber: 14445666
+    CompanyLogo: Agency101.jpg
+    AlsoKnownAs: Auto{{increment}}
+    PostCode: BL0 9YX
+    PhoneType: Mobile
+    PhoneNumber: "07412803245"
 
 Credit Service:
   Agency Owner Information:
     FirstName: Thomas
     LastName: Perk
     JobTitle: Manager
-    EmailAddress: automation.qa+agency137@carehires.com
+    EmailAddress: automation.qa+agency{{increment}}@carehires.com
     Phone: "07412001245"
     DateOfBirth: 01 Apr 1997
     NINumber: "AD787876Y"
@@ -25,7 +37,7 @@ Credit Service:
     LegalRepLegalLastName: Writer
     LegalRepMaidenName: Smith
     LegalRepJobTitle: Legal Manager
-    LegalRepEmailAddress: automation.qa+agencyleg137@carehires.com
+    LegalRepEmailAddress: automation.qa+agencyleg{{increment}}@carehires.com
     LegalRepPhone: "07412001245"
     LegalRepDateOfBirth: 01 Sep 1990
     LegalRepPersonalIdNumber: "AD787876Y"
@@ -36,16 +48,16 @@ Credit Service:
 Agency Business Location:
   Add:
     BusinessLocation: North Leicester
-    BusinessEmailAddress: automation.qa+119@carehires.com
+    BusinessEmailAddress: automation.qa+{{increment}}@carehires.com
     City: Leicester
-    JobNotificationAddress: automation.qa+agencyjobnot137@carehires.com
-    ApprovalNotificationAddress: automation.qa+agencyappnot137@carehires.com
+    JobNotificationAddress: automation.qa+agencyjobnot{{increment}}@carehires.com
+    ApprovalNotificationAddress: automation.qa+agencyappnot{{increment}}@carehires.com
   Update:
     BusinessLocation: South Lancashire
-    BusinessEmailAddress: automation.qa+agencybuss137@carehires.com
+    BusinessEmailAddress: automation.qa+agencybuss{{increment}}@carehires.com
     City: Lancashire
-    JobNotificationAddress: automation.qa+agencyjobnot137@carehires.com
-    ApprovalNotificationAddress: automation.qa+agencyappnot137@carehires.com
+    JobNotificationAddress: automation.qa+agencyjobnot{{increment}}@carehires.com
+    ApprovalNotificationAddress: automation.qa+agencyappnot{{increment}}@carehires.com
 
 Staff:
   Add:
@@ -64,37 +76,52 @@ Staff:
     EmployeeType: PAYE
 
 Billing Profile Management:
-  AttentionTo: IWS Solutions
-  BillingAddress: "10 Downing Street, London, SW1A 2AA"
-  CostCenter: "<uniqueNumber>"
-  DigitalBillingAddress: automation.qa+agencydigi88@carehires.com
-  CCDigitalBillingAddress: automation.qa+agencyccdig137@carehires.com
-  PhoneNumber: "07412901245"
-  BillingCycle: Bi Weekly
-  CreditTerm: 14 Days
-  BankName: Union Bank
-  AccountNumber: "00012345"
-  AccountName: IWS Solutions
-  SortCode: 10-88-00
+  Add:
+    AttentionTo: IWS Solutions
+    BillingAddress: "10 Downing Street, London, SW1A 2AA"
+    CostCenter: "<uniqueNumber>"
+    DigitalBillingAddress: automation.qa+agencydigi{{increment}}@carehires.com
+    CCDigitalBillingAddress: automation.qa+agencyccdig{{increment}}@carehires.com
+    PhoneNumber: "07412901245"
+    BillingCycle: Bi Weekly
+    CreditTerm: 14 Days
+    BankName: Union Bank
+    AccountNumber: "00012345"
+    AccountName: IWS Solutions
+    SortCode: 10-88-00
+  Update:
+    AttentionTo: IWS Solution Pvt Ltd
+    BillingAddress: "10B Downing Street, London, SW1A 2AA"
+    CostCenter: "<uniqueNumber>"
+    DigitalBillingAddress: automation.qa+agencydigi{{increment}}@carehires.com
+    CCDigitalBillingAddress: automation.qa+agencyccdig{{increment}}@carehires.com
+    PhoneNumber: "07415901345"
+    BillingCycle: Bi Weekly
+    CreditTerm: 30 Days
+    BankName: Union Bank
+    AccountNumber: "00012345"
+    AccountName: IWS Solutions
+    SortCode: 10-88-00
 
 User:
   Add:
-    email: automation.qa+agencyuserQ137@carehires.com
-    Name: William Brook137
+    email: automation.qa+agencyuserQ{{increment}}@carehires.com
+    Name: William Brook {{increment}}
     JobTitle: Assistant Executive
     Location: Select All Locations
     Phone: "07412001245"
     City: Nottingham
     UserAccessLevel: Onboarding Admin,Shift Admin
   Update:
-    email: automation.qa+agencyuserW137@carehires.com
-    Name: William Fredrik137
-    JobTitle: Assistant Executive
+    email: automation.qa+agencyuserW{{increment}}@carehires.com
+    Name: William Fredrik {{increment}}
+    JobTitle: Sales Executive
     Location: Select All Locations
     Phone: "07492001245"
     City: City of London
     UserAccessLevel: Org Admin
 
 Sub Contract:
-  Note: Sub contract agreement note is entered.
-  SubContractDocument: subContractDocument.pdf
+  Add:
+    Note: Sub contract agreement note is entered.
+    SubContractDocument: subContractDocument.pdf

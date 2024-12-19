@@ -24,7 +24,10 @@ public class CreateAgencyBasicInformationActions {
 
     private static final String ENTITY = "agency";
     private static final String YML_FILE = "agency-create";
-    private static final String YML_HEADER = "BasicInfo";
+    private static final String EDIT_YML_FILE = "agency-edit";
+    private static final String YML_HEADER = "Basic Info";
+    private static final String ADD = "Add";
+    private static final String UPDATE = "Update";
     private static final Logger logger = LogManager.getLogger(CreateAgencyBasicInformationActions.class);
 
     public CreateAgencyBasicInformationActions() {
@@ -39,31 +42,7 @@ public class CreateAgencyBasicInformationActions {
         // Retrieve the current increment value for the provider (from the file)
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
 
-        String businessName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "BusinessName");
-        BasePage.clearAndEnterTexts(createAgencyBasicInfoPage.businessName, businessName);
-
-        String businessRegistrationNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "BusinessRegistrationNumber");
-        BasePage.clearAndEnterTexts(createAgencyBasicInfoPage.businessRegistrationNumber, businessRegistrationNumber);
-
-        //upload a logo
-        String companyLogo = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "CompanyLogo");
-        String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
-                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator + companyLogo;
-        BasePage.clickWithJavaScript(createAgencyBasicInfoPage.uploadLogo);
-        BasePage.uploadFile(createAgencyBasicInfoPage.fileInputButton, absoluteFilePath);
-        BasePage.waitUntilElementDisplayed(createAgencyBasicInfoPage.imageSaveButton, 60);
-        BasePage.clickWithJavaScript(createAgencyBasicInfoPage.imageSaveButton);
-
-        String alsoKnownAs = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "AlsoKnownAs");
-        BasePage.clearAndEnterTexts(createAgencyBasicInfoPage.alsoKnownAs, alsoKnownAs);
-
-        //enter postcode and select a valid address
-        String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PostCode");
-        genericUtils.fillAddress(createAgencyBasicInfoPage.postcode, postcode);
-
-        //enter phone number
-        genericUtils.fillPhoneNumber(ENTITY, YML_FILE, createAgencyBasicInfoPage.phoneNumberInput, YML_HEADER, "PhoneNumber");
-        BasePage.clickTabKey(createAgencyBasicInfoPage.phoneNumberInput);
+        enterData(YML_FILE, ADD);
         BasePage.genericWait(5000);
 
         BasePage.clickWithJavaScript(createAgencyBasicInfoPage.saveButton);
@@ -75,7 +54,35 @@ public class CreateAgencyBasicInformationActions {
         DataConfigurationReader.storeNewIncrementValue(ENTITY);
 
         // Store the increment value in GlobalVariables for reuse in other steps
-        GlobalVariables.setVariable("provider_incrementValue", incrementValue+1);
+        GlobalVariables.setVariable("provider_incrementValue", incrementValue);
+    }
+
+    private void enterData(String ymlFile, String subHeader) {
+        String businessName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "BusinessName");
+        BasePage.clearAndEnterTexts(createAgencyBasicInfoPage.businessName, businessName);
+
+        String businessRegistrationNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "BusinessRegistrationNumber");
+        BasePage.clearAndEnterTexts(createAgencyBasicInfoPage.businessRegistrationNumber, businessRegistrationNumber);
+
+        //upload a logo
+        String companyLogo = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "CompanyLogo");
+        String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator + companyLogo;
+        BasePage.clickWithJavaScript(createAgencyBasicInfoPage.uploadLogo);
+        BasePage.uploadFile(createAgencyBasicInfoPage.fileInputButton, absoluteFilePath);
+        BasePage.waitUntilElementDisplayed(createAgencyBasicInfoPage.imageSaveButton, 60);
+        BasePage.clickWithJavaScript(createAgencyBasicInfoPage.imageSaveButton);
+
+        String alsoKnownAs = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "AlsoKnownAs");
+        BasePage.clearAndEnterTexts(createAgencyBasicInfoPage.alsoKnownAs, alsoKnownAs);
+
+        //enter postcode and select a valid address
+        String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "PostCode");
+        genericUtils.fillAddress(createAgencyBasicInfoPage.postcode, postcode);
+
+        //enter phone number
+        genericUtils.fillPhoneNumber(ENTITY, ymlFile, createAgencyBasicInfoPage.phoneNumberInput, YML_HEADER, subHeader, "PhoneNumber");
+        BasePage.clickTabKey(createAgencyBasicInfoPage.phoneNumberInput);
     }
 
     //verify if basic information is saved
@@ -91,6 +98,43 @@ public class CreateAgencyBasicInformationActions {
         boolean hasIdDone = elementsWithIdAttribute.stream()
                 .anyMatch(element -> Objects.equals(element.getAttribute("id"), "Icon_material-done"));
 
-        assertThat("Basic information is not saved",hasIdDone, is(true));
+        assertThat("Basic information is not saved", hasIdDone, is(true));
+    }
+
+    public void createAgencyInDraftStage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Creating an agency in Draft stage >>>>>>>>>>>>>>>>>>>>");
+
+        // Retrieve the current increment value for the provider (from the file)
+        int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
+        enterData(EDIT_YML_FILE, ADD);
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(createAgencyBasicInfoPage.saveButton);
+        BasePage.waitUntilElementClickable(createAgencyBasicInfoPage.skipButton, 90);
+        isBasicInfoSaved();
+
+        // After successfully entering the basic information, update the increment value in the file
+        DataConfigurationReader.storeNewIncrementValue(ENTITY);
+        // Store the increment value in GlobalVariables for reuse in other steps
+        GlobalVariables.setVariable("provider_incrementValue", incrementValue);
+
+    }
+
+    public void moveToBasicInfoStage() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Moving to Basic Information Stage >>>>>>>>>>>>>>>>>>>>");
+        BasePage.clickWithJavaScript(createAgencyBasicInfoPage.basicInformationCompletedIcon);
+    }
+
+    public void getGeneratedAgencyId() {
+        getAgencyId();
+    }
+
+    // get auto generated agency id and save it on the memory
+    private void getAgencyId() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Reading auto generated agency id >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementPresent(createAgencyBasicInfoPage.agencyId, 90);
+        String headerText = BasePage.getText(createAgencyBasicInfoPage.agencyId).trim();
+        String agencyId = headerText.split("\n")[0];
+        GlobalVariables.setVariable("agencyId", agencyId);
     }
 }

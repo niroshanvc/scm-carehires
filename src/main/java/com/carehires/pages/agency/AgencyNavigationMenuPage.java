@@ -5,10 +5,10 @@ import org.openqa.selenium.support.FindBy;
 
 public class AgencyNavigationMenuPage {
 
-    @FindBy(xpath = "//div[contains(text(), 'Profile')]/../..")
+    @FindBy(xpath = "//div/div/div[contains(text(), 'Profile')]/../..")
     public WebElement profile;
 
-    @FindBy(xpath = "//div[contains(text(), 'Profile')]/..//img")
+    @FindBy(xpath = "//div/div/div[contains(text(), 'Profile')]/..//img")
     public WebElement profileImage;
 
     @FindBy(xpath = "//div[contains(text(), 'Credit Service')]/../..")

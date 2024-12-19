@@ -165,11 +165,13 @@ public class WorkerBasicInformationPage {
 
     public static final String AGENCY_LOCATION_CHECKBOXES = "//div[contains(@id,'cdk-overlay')]//nb-option/nb-checkbox";
 
-    @FindBy(xpath = "//div/p[contains(@class, 'text-icon') and contains(text(), '…')]")
+    @FindBy(xpath = "//p[contains(@class, 'text-icon') and contains(text(), '…')]")
     public WebElement topThreeDots;
 
-    @FindBy(xpath = "//div[contains(@class, 'side')]/ul[contains(@class, 'expanded-nav')]/li[contains(text(), 'Update Profile')]")
+    @FindBy(xpath = "//li[contains(text(), 'Update Profile')]")
     public WebElement updateProfileLink;
+
+    public By updateProfileLinkChildElement = By.xpath("//li[contains(text(), 'Update Profile')]");
 
     @FindBy(xpath = "//div[not(contains(@class, 'provider'))]//p/strong")
     public WebElement workerId;

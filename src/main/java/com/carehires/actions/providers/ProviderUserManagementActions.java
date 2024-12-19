@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -117,7 +118,7 @@ public class ProviderUserManagementActions {
         // close the assign to site dropdown
         BasePage.clickWithJavaScript(userManagement.phone);
 
-        String[] userAccessLevel  = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, USER_ACCESS_LEVEL).split(",");
+        String[] userAccessLevel  = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, USER_ACCESS_LEVEL)).split(",");
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
         BasePage.genericWait(1000);
         for (String accessLevel : userAccessLevel) {
@@ -197,6 +198,7 @@ public class ProviderUserManagementActions {
         BasePage.clearAndEnterTexts(userManagement.phone,  phone);
 
         String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "MarkAsAnAuthoriser");
+        assert authoriser != null;
         if(authoriser.equalsIgnoreCase("yes")) {
             BasePage.clickWithJavaScript(userManagement.markAsAnAuthoriserToggle);
         }

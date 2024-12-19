@@ -59,7 +59,7 @@ public class ProviderCompanyInformationActions {
         DataConfigurationReader.storeNewIncrementValue(ENTITY);
 
         // Store the increment value in GlobalVariables for reuse in other steps
-        GlobalVariables.setVariable("provider_incrementValue", incrementValue+1);
+        GlobalVariables.setVariable("provider_incrementValue", incrementValue);
     }
 
     private void enterDataForInputFields(String ymlFile, String subHeader) {
@@ -269,7 +269,8 @@ public class ProviderCompanyInformationActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on the update profile link >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(companyInformationPage.topThreeDots, 30);
-        BasePage.mouseHoverAndClick(companyInformationPage.topThreeDots, companyInformationPage.updateProfileLink);
+        BasePage.mouseHoverAndClick(companyInformationPage.topThreeDots, companyInformationPage.updateProfileLink,
+                companyInformationPage.updateProfileLinkChildElement);
         BasePage.waitUntilElementClickable(companyInformationPage.saveButton, 30);
     }
 

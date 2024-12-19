@@ -206,7 +206,7 @@ public class BasePage {
         List<WebElement> els = null;
         try {
             By locator = By.xpath(xpath);
-            els = getDriver().findElements(locator);
+            els = driver.findElements(locator);
             waitUntilElementPresent(els.get(0), 90);
         } catch (Exception ex) {
             logger.error("****************** Object not found: %s", xpath);
@@ -329,11 +329,11 @@ public class BasePage {
         }
     }
 
-    public static void mouseHoverAndClick(WebElement element, WebElement subElement) {
+    public static void mouseHoverAndClick(WebElement element, WebElement subElement, By childElement) {
         waitUntilElementPresent(element, 60);
         Actions actions = new Actions(driver);
-        actions.moveToElement(element);
-        waitUntilElementRefreshedAndClickable(subElement, 60);
+        actions.moveToElement(element).perform();
+        waitUntilVisibilityOfElementLocated(childElement, 60);
         actions.moveToElement(subElement);
         actions.click(subElement).build().perform();
     }
@@ -444,7 +444,7 @@ public class BasePage {
     public static List<WebElement> findListOfWebElements(By locator) {
         List<WebElement> els = null;
         try {
-            els = getDriver().findElements(locator);
+            els = driver.findElements(locator);
         } catch (Exception ex) {
             logger.error("****************** Object not found at the locator: %s", locator);
         }
@@ -514,7 +514,9 @@ public class BasePage {
         wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
         try {
             wait.until((ExpectedCondition<Boolean>) driver -> {
-                String attributeValue = element.getAttribute(attribute);
+                assert driver != null;
+                String attributeValue = Objects.requireNonNull(((JavascriptExecutor) driver).executeScript
+                        ("return arguments[0].getAttribute(arguments[1]);", element, attribute)).toString();
                 assert attributeValue != null;
                 return attributeValue.equals(attributeUpdatedValue);
             });
@@ -567,8 +569,19 @@ public class BasePage {
     }
 
     public static void waitUntilElementClickable(By locator, int timeoutInSeconds) {
-        WebDriverWait wait = new WebDriverWait(BasePage.getDriver(), Duration.ofSeconds(timeoutInSeconds));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
         wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
+    public static void mouseHoverAndClick(By mainLocator, By subLocator) {
+        WebElement mainLink = wait.until(ExpectedConditions.visibilityOfElementLocated(mainLocator));
+        waitUntilElementPresent(mainLink, 60);
+        Actions actions = new Actions(driver);
+        actions.moveToElement(mainLink).perform();
+        WebElement subMenu = wait.until(ExpectedConditions.presenceOfElementLocated(subLocator));
+        genericWait(300);
+        actions.moveToElement(subMenu);
+        actions.click(subMenu).build().perform();
+        BasePage.waitUntilPageCompletelyLoaded();
+    }
 }

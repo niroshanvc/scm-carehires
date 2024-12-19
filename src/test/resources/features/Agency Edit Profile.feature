@@ -6,10 +6,17 @@ Feature: Test CareHires edit agency and make profile approved
   Background: login to carehires
     Given User logins to carehires
 
-  @EditNonApprovedAgency
+  @EditAgencyInDraft
   Scenario: Edit agency details where profile is in draft stage
-    When User navigates to Agency View page
-    And User searching an agency which is in Draft stage
+    When User navigates to Agency Create page
+    And User creates a agency in draft stage
+    And User moves to Agency - Basic Information page again
+    And User collects agencyId from Basic Information page
+    And User logins off from Carehires
+    And User again logins to carehires
+    And User navigates to Agency View page
+    And User finds recently created agency
+
     And User moves to the profile page and edit data
     And User moves to Credit Service and edit data
     And User moves to Locations and edit data
