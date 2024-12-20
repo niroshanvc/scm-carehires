@@ -101,7 +101,7 @@ public class ProvidersSiteManagementActions {
         logger.info("Entering Site Address");
         String postalCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "PostalCode");
         BasePage.clearTexts(siteManagementPage.postalCode);
-        genericUtils.fillAddress(siteManagementPage.postalCode, postalCode);
+        genericUtils.fillAddress(siteManagementPage.postalCode, postalCode, 1000);
 
         logger.info("Entering Site No of beds");
         String numberOfBeds = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "NoOfBeds");
@@ -112,8 +112,8 @@ public class ProvidersSiteManagementActions {
         BasePage.clearAndEnterTexts(siteManagementPage.siteCode, siteCode);
 
         logger.info("Entering Site Phone Number");
-        BasePage.clickWithJavaScript(siteManagementPage.selectPhoneDropdown);
-        fillPhoneNumber(siteManagementPage.phoneNumber, ymlFile, subHeader);
+        genericUtils.fillPhoneNumber(ENTITY, ymlFile, siteManagementPage.phoneNumber, YML_HEADER, subHeader, "PhoneNumberType");
+        genericUtils.fillPhoneNumber(ENTITY, ymlFile, siteManagementPage.phoneNumber, YML_HEADER, subHeader, "PhoneNumber");
 
         logger.info("Entering Site job notification email address");
         BasePage.scrollToWebElement(siteManagementPage.approvalNotificationAddress);
@@ -138,34 +138,6 @@ public class ProvidersSiteManagementActions {
 
     private String getMultiSelectDropdownXpath(String text) {
         return String.format("//nb-option[contains(text(),'%s')]", text);
-    }
-
-    //select value from 'Select Phone' dropdown and enter phone number
-    private void fillPhoneNumber(WebElement phoneNumberInput, String ymlFile, String subHeader) {
-        logger.info("fillPhoneNumber");
-        String phoneNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "PhoneNumber");
-        String phoneType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "PhoneType");
-
-        switch (Objects.requireNonNull(phoneType)) {
-            case "Out of office":
-                BasePage.clickWithJavaScript(siteManagementPage.outOfOfficeOption);
-                break;
-            case "Other":
-                BasePage.clickWithJavaScript(siteManagementPage.otherOption);
-                break;
-            case "Office2":
-                BasePage.clickWithJavaScript(siteManagementPage.office2Option);
-                break;
-            case "Office1":
-                BasePage.clickWithJavaScript(siteManagementPage.office1Option);
-                break;
-            case "Mobile":
-                BasePage.clickWithJavaScript(siteManagementPage.mobileOption);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid phone number type");
-        }
-        BasePage.clearAndEnterTexts(phoneNumberInput, phoneNumber);
     }
 
     private void verifySuccessMessage() {

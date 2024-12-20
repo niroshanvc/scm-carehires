@@ -87,7 +87,7 @@ public class AgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.personalIdNumber, personalId);
 
         String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "PostCode");
-        genericUtils.fillAddress(creditServicePage.postcode, postcode);
+        genericUtils.fillAddress(creditServicePage.postcode, postcode, 190);
 
         String ownership = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "OwnershipPercentage");
         BasePage.clearAndEnterTexts(creditServicePage.ownershipPercentage, ownership);
@@ -138,7 +138,7 @@ public class AgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.legalPersonalIdNumber, legalRepPersonalId);
 
         String legalRepPostcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "LegalRepPostCode");
-        genericUtils.fillAddress(creditServicePage.legalPostcode, legalRepPostcode);
+        genericUtils.fillAddress(creditServicePage.legalPostcode, legalRepPostcode, 190);
 
         String legalRepOwnership = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "LegalRepOwnershipPercentage");
         BasePage.clearAndEnterTexts(creditServicePage.legalOwnershipPercentage, legalRepOwnership);
@@ -236,7 +236,7 @@ public class AgencyCreditServiceActions {
         genericUtils.selectDateFromCalendarPopup(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, EDIT_YML_SUB_HEADER, "DateOfBirth"));
 
         enterText(creditServicePage.personalIdNumber, "NINumber");
-        genericUtils.fillAddress(creditServicePage.postcode, DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, EDIT_YML_SUB_HEADER, "PostCode"));
+        genericUtils.fillAddress(creditServicePage.postcode, DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, EDIT_YML_SUB_HEADER, "PostCode"), 190);
         BasePage.clickWithJavaScript(creditServicePage.ownershipPercentage);
         enterText(creditServicePage.ownershipPercentage, "OwnershipPercentage");
     }

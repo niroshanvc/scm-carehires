@@ -278,7 +278,7 @@ public class WorkerBasicInformationActions {
         String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_3, subHeader, "PostCode");
         BasePage.clickWithJavaScript(basicInfo.postcode);
         if (Objects.requireNonNull(country).equalsIgnoreCase("United Kingdom")) {
-            genericUtils.fillAddress(basicInfo.postcode, postcode);
+            genericUtils.fillAddress(basicInfo.postcode, postcode, 190);
         } else {
             BasePage.clearAndEnterTexts(basicInfo.postcode, postcode);
             String residentialAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_3, subHeader, "ResidentialAddress");

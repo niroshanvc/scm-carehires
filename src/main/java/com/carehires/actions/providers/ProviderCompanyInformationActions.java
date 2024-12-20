@@ -121,17 +121,14 @@ public class ProviderCompanyInformationActions {
         logger.info("Entering postcode");
         String providerPostcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "ProviderPostCode");
         if (providerPostcode != null) {
-            genericUtils.fillAddress(companyInformationPage.postcode, providerPostcode);
+            genericUtils.fillAddress(companyInformationPage.postcode, providerPostcode, 190);
         }
     }
 
     private void enterPhoneNumber(String ymlFile, String subHeader) {
         logger.info("Entering phone number");
-        String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "PhoneNumber");
-        if (phone != null) {
-            genericUtils.fillPhoneNumber(ENTITY, ymlFile, companyInformationPage.phoneNumberInput, YML_HEADER, subHeader, "PhoneNumber");
-            BasePage.clickTabKey(companyInformationPage.phoneNumberInput);
-        }
+        genericUtils.fillPhoneNumber(ENTITY, ymlFile, companyInformationPage.phoneNumberInput, YML_HEADER, subHeader, "PhoneNumberType");
+        genericUtils.fillPhoneNumber(ENTITY, ymlFile, companyInformationPage.phoneNumberInput, YML_HEADER, subHeader, "PhoneNumber");
     }
 
     private void enterVatInformation(String ymlFile, String subHeader) {
@@ -162,6 +159,7 @@ public class ProviderCompanyInformationActions {
     private void enterVatExemption(String ymlFile, String subHeader) {
         logger.info("Entering VAT exemption information");
         String vatExempt = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "AreYouVatExempt");
+        assert vatExempt != null;
         if (vatExempt.equalsIgnoreCase("yes")) {
             BasePage.waitUntilElementClickable(companyInformationPage.vatExemptYes, 30);
             BasePage.clickWithJavaScript(companyInformationPage.vatExemptYes);

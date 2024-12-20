@@ -6,6 +6,7 @@ Company Information:
     CompanyType: Limited Company
     Website: https://www.automationproviders.com
     ProviderPostCode: BL0 9YX
+    PhoneNumberType: Mobile
     PhoneNumber: "07412001246"
     AreYouVatRegistered: "Yes"
     VatNo: "1025200012"
@@ -26,7 +27,7 @@ Site Management:
     PostalCode: BL0 9YX
     NoOfBeds: 25
     SiteCode: AC-01
-    PhoneType: "Office2"
+    PhoneNumberType: "Other"
     PhoneNumber: "07412001246"
     JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
     ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com

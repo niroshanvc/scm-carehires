@@ -78,7 +78,7 @@ public class CreateAgencyBasicInformationActions {
 
         //enter postcode and select a valid address
         String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "PostCode");
-        genericUtils.fillAddress(createAgencyBasicInfoPage.postcode, postcode);
+        genericUtils.fillAddress(createAgencyBasicInfoPage.postcode, postcode, 190);
 
         //enter phone number
         genericUtils.fillPhoneNumber(ENTITY, ymlFile, createAgencyBasicInfoPage.phoneNumberInput, YML_HEADER, subHeader, "PhoneNumber");

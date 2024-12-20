@@ -1,7 +1,6 @@
 package com.carehires.utils;
 
 import com.carehires.pages.GenericElementsPage;
-import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -18,13 +17,9 @@ import java.util.Objects;
 
 public class GenericUtils {
 
-    CreateAgencyBasicInfoPage createAgencyBasicInfoPage;
     GenericElementsPage genericElementsPage;
 
     public GenericUtils() {
-        createAgencyBasicInfoPage = new CreateAgencyBasicInfoPage();
-        PageFactory.initElements(BasePage.getDriver(), createAgencyBasicInfoPage);
-
         genericElementsPage = new GenericElementsPage();
         PageFactory.initElements(BasePage.getDriver(), genericElementsPage);
     }
@@ -35,11 +30,11 @@ public class GenericUtils {
         return BasePage.getDriver();
     }
 
-    public void fillAddress(WebElement postcodeInput, String postcode) {
+    public void fillAddress(WebElement postcodeInput, String postcode, int delayInMilliseconds) {
         logger.info("fillAddress");
         BasePage.clearTexts(postcodeInput);
-        BasePage.typeWithStringBuilderAndDelay(postcodeInput, postcode, 190);
-        BasePage.waitUntilElementPresent(createAgencyBasicInfoPage.autoSuggestAddresses, 60);
+        BasePage.typeWithStringBuilderAndDelay(postcodeInput, postcode, delayInMilliseconds);
+        BasePage.waitUntilElementPresent(genericElementsPage.autoSuggestAddresses, 60);
         List<WebElement> addresses = getDriverInstance().findElements(By.xpath("//nb-option[contains(@id, 'nb-option')]"));
         if (!addresses.isEmpty()) {
             addresses.get(1).click();
