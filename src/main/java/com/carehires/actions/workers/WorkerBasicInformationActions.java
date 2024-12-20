@@ -28,7 +28,16 @@ import static org.hamcrest.core.Is.is;
 public class WorkerBasicInformationActions {
 
     private final WorkerBasicInformationPage basicInfo;
-    private static final GenericUtils genericUtils = new GenericUtils();
+    private static final GenericUtils genericUtils;
+
+    static {
+        try {
+            genericUtils = new GenericUtils();
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final WorkerNavigationMenuActions navigationMenu = new WorkerNavigationMenuActions();
 
     private static final String ENTITY = "worker";
@@ -51,7 +60,11 @@ public class WorkerBasicInformationActions {
 
     public WorkerBasicInformationActions() {
         basicInfo = new WorkerBasicInformationPage();
-        PageFactory.initElements(BasePage.getDriver(), basicInfo);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), basicInfo);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void enterWorkerBasicInformationData() {

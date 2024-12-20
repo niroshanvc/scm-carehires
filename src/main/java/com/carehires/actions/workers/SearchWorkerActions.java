@@ -17,7 +17,11 @@ public class SearchWorkerActions {
 
     public SearchWorkerActions() {
         searchPage = new SearchWorkerPage();
-        PageFactory.initElements(BasePage.getDriver(), searchPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), searchPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void searchByText() {

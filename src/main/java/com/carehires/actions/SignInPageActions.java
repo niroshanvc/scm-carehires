@@ -15,7 +15,11 @@ public class SignInPageActions {
 
     public SignInPageActions() {
         signin = new SignInPage();
-        PageFactory.initElements(BasePage.getDriver(), signin);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), signin);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void navigateToSignInPage() {

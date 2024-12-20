@@ -18,7 +18,16 @@ import static org.hamcrest.core.Is.is;
 public class WorkerVaccinationAndAllergyInformationActions {
 
     private final WorkerVaccinationAndAllergyInformationPage vaccinationPage;
-    private static final GenericUtils genericUtils = new GenericUtils();
+    private static final GenericUtils genericUtils;
+
+    static {
+        try {
+            genericUtils = new GenericUtils();
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final WorkerNavigationMenuActions navigationMenu = new WorkerNavigationMenuActions();
 
     private static final String ENTITY = "worker";
@@ -35,7 +44,11 @@ public class WorkerVaccinationAndAllergyInformationActions {
 
     public WorkerVaccinationAndAllergyInformationActions() {
         vaccinationPage = new WorkerVaccinationAndAllergyInformationPage();
-        PageFactory.initElements(BasePage.getDriver(), vaccinationPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), vaccinationPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void enterDataForVaccinationInformation() {

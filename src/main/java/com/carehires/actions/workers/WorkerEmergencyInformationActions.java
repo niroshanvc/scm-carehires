@@ -32,7 +32,11 @@ public class WorkerEmergencyInformationActions {
 
     public WorkerEmergencyInformationActions() {
         emergencyInformationPage = new WorkerEmergencyInformationPage();
-        PageFactory.initElements(BasePage.getDriver(), emergencyInformationPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), emergencyInformationPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void enterDataForEmergencyInformation() {

@@ -22,7 +22,15 @@ import static org.hamcrest.core.Is.is;
 public class ProviderCompanyInformationActions {
     
     ProviderCompanyInformationPage companyInformationPage;
-    GenericUtils genericUtils = new GenericUtils();
+    GenericUtils genericUtils;
+
+    {
+        try {
+            genericUtils = new GenericUtils();
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
@@ -38,7 +46,11 @@ public class ProviderCompanyInformationActions {
     
     public ProviderCompanyInformationActions() {
         companyInformationPage =  new ProviderCompanyInformationPage();
-        PageFactory.initElements(BasePage.getDriver(), companyInformationPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), companyInformationPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void enterCompanyInformation() {

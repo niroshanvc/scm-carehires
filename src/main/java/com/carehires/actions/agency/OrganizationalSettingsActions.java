@@ -21,7 +21,11 @@ public class OrganizationalSettingsActions {
 
     public OrganizationalSettingsActions() {
         settingsPage = new OrganizationalSettingsPage();
-        PageFactory.initElements(BasePage.getDriver(), settingsPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), settingsPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void saveSettings() {

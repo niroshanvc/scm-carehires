@@ -17,7 +17,11 @@ public class ProviderProfileActions {
 
     public ProviderProfileActions() {
         profilePage = new ProviderProfilePage();
-        PageFactory.initElements(BasePage.getDriver(), profilePage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), profilePage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void updateProfileAsApprove() {

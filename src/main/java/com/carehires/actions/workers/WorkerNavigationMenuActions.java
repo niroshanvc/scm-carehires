@@ -14,7 +14,11 @@ public class WorkerNavigationMenuActions {
 
     public WorkerNavigationMenuActions() {
         navigationMenuPage = new WorkerNavigationMenuPage();
-        PageFactory.initElements(BasePage.getDriver(), navigationMenuPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), navigationMenuPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void gotoProfilePage() {

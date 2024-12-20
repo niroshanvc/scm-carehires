@@ -28,7 +28,11 @@ public class ProviderBillingInformationActions {
 
     public ProviderBillingInformationActions() {
         billingInformationPage = new ProviderBillingInformationPage();
-        PageFactory.initElements(BasePage.getDriver(), billingInformationPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), billingInformationPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void savingGeneralBillingInformation() {

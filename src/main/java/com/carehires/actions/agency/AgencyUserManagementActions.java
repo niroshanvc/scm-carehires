@@ -36,7 +36,11 @@ public class AgencyUserManagementActions {
 
     public AgencyUserManagementActions() {
         userManagement = new AgencyUserManagementPage();
-        PageFactory.initElements(BasePage.getDriver(), userManagement);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), userManagement);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addUser() {

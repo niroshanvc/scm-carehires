@@ -38,7 +38,11 @@ public class ProviderWorkerStaffActions {
 
     public ProviderWorkerStaffActions() {
         workerStaffPage = new WorkerStaffPage();
-        PageFactory.initElements(BasePage.getDriver(), workerStaffPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), workerStaffPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addingWorkerStaffData() {

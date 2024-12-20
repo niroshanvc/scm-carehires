@@ -20,7 +20,15 @@ import static org.hamcrest.core.Is.is;
 public class CreateAgencyBasicInformationActions {
 
     CreateAgencyBasicInfoPage createAgencyBasicInfoPage;
-    private static final GenericUtils genericUtils = new GenericUtils();
+    private static final GenericUtils genericUtils;
+
+    static {
+        try {
+            genericUtils = new GenericUtils();
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private static final String ENTITY = "agency";
     private static final String YML_FILE = "agency-create";
@@ -30,12 +38,16 @@ public class CreateAgencyBasicInformationActions {
     private static final String UPDATE = "Update";
     private static final Logger logger = LogManager.getLogger(CreateAgencyBasicInformationActions.class);
 
-    public CreateAgencyBasicInformationActions() {
+    public CreateAgencyBasicInformationActions()  {
         createAgencyBasicInfoPage = new CreateAgencyBasicInfoPage();
-        PageFactory.initElements(BasePage.getDriver(), createAgencyBasicInfoPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), createAgencyBasicInfoPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void enterBasicInfo() {
+    public void enterBasicInfo()  {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering basic information >>>>>>>>>>>>>>>>>>>>");
 
@@ -81,6 +93,7 @@ public class CreateAgencyBasicInformationActions {
         genericUtils.fillAddress(createAgencyBasicInfoPage.postcode, postcode, 190);
 
         //enter phone number
+        genericUtils.fillPhoneNumber(ENTITY, ymlFile, createAgencyBasicInfoPage.phoneNumberInput, YML_HEADER, subHeader, "PhoneNumberType");
         genericUtils.fillPhoneNumber(ENTITY, ymlFile, createAgencyBasicInfoPage.phoneNumberInput, YML_HEADER, subHeader, "PhoneNumber");
         BasePage.clickTabKey(createAgencyBasicInfoPage.phoneNumberInput);
     }

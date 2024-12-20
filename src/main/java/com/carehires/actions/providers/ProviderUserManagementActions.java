@@ -23,7 +23,16 @@ import static org.hamcrest.core.Is.is;
 public class ProviderUserManagementActions {
 
     ProvidersUserManagementPage userManagement;
-    GenericUtils genericUtils = new GenericUtils();
+    GenericUtils genericUtils;
+
+    {
+        try {
+            genericUtils = new GenericUtils();
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final ProviderNavigationMenuActions navigationMenu = new ProviderNavigationMenuActions();
 
     private static final String ENTITY = "provider";
@@ -38,7 +47,11 @@ public class ProviderUserManagementActions {
 
     public ProviderUserManagementActions() {
         userManagement = new ProvidersUserManagementPage();
-        PageFactory.initElements(BasePage.getDriver(), userManagement);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), userManagement);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addUser() {

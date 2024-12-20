@@ -27,7 +27,11 @@ public class AgencyProfileActions {
 
     public AgencyProfileActions() {
         agencyProfile = new AgencyProfilePage();
-        PageFactory.initElements(BasePage.getDriver(), agencyProfile);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), agencyProfile);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void updateProfileAsProfileComplete() {

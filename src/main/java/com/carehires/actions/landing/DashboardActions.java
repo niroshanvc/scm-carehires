@@ -10,7 +10,11 @@ public class DashboardActions {
 
     public DashboardActions() {
         dashboardPage = new DashboardPage();
-        PageFactory.initElements(BasePage.getDriver(), dashboardPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), dashboardPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void waitUntilSecurityLinkIsAvailable() {

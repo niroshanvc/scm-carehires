@@ -20,7 +20,11 @@ public class ViewWorkerProfileActions {
 
     public ViewWorkerProfileActions() {
         profilePage = new ViewWorkerProfilePage();
-        PageFactory.initElements(BasePage.getDriver(), profilePage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), profilePage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void verifyProfileStatus(String status) {

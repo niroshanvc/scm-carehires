@@ -32,6 +32,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
@@ -40,31 +41,37 @@ import java.util.Objects;
 import java.util.Properties;
 
 public class BasePage {
-    private static org.openqa.selenium.WebDriver driver;
+    private static WebDriver driver;
     private static WebDriverWait wait;
     private static final Logger logger = LogManager.getFormatterLogger(BasePage.class);
-    static Properties prop;
+    private static Properties prop = new Properties();
+    private static FileInputStream fis;
     private static final String HEADLESS = "--headless";
 
-    private static final String DOWNLOAD_DIR = System.getProperty("user.dir") + File.separator + "src" + File.separator
-            + "test" + File.separator + "resources" + File.separator + "downloads";
+    //for parallel execution
+    private static final ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
 
-    private static void initializeDriver() {
-        if (driver == null) {
+    private static final String RESOURCES_DIR = System.getProperty("user.dir") + File.separator + "src" + File.separator
+            + "test" + File.separator + "resources";
+
+    private static final String DOWNLOAD_DIR = RESOURCES_DIR + File.separator + "downloads";
+
+    private static void initializeDriver() throws WebDriverInitializationException {
+        if (threadLocalDriver.get() == null) {
             String browser = getProperty("BROWSER");
-            boolean isCIRunning = System.getenv("CI") != null || System.getenv("JENKINS_URL") != null;
+            boolean isCIRunning = isCIEnvironment();
             logger.info("Initializing WebDriver for browser: %s", browser);
 
             try {
                 switch (browser.toLowerCase()) {
                     case "chrome":
-                        driver = setupChromeDriver(isCIRunning);
+                        threadLocalDriver.set(setupChromeDriver(isCIRunning));
                         break;
                     case "firefox":
-                        driver = setupFirefoxDriver(isCIRunning);
+                        threadLocalDriver.set(setupFirefoxDriver(isCIRunning));
                         break;
                     case "edge":
-                        driver = setupEdgeDriver(isCIRunning);
+                        threadLocalDriver.set(setupEdgeDriver(isCIRunning));
                         break;
                     default:
                         throw new IllegalArgumentException("Unsupported browser: " + browser);
@@ -72,8 +79,23 @@ public class BasePage {
                 logger.info("WebDriver initialized successfully.");
             } catch (Exception e) {
                 logger.error("Error initializing WebDriver: ", e);
+                throw new WebDriverInitializationException("Error initializing WebDriver for browser: " + browser, e);
             }
         }
+    }
+
+    public static class WebDriverInitializationException extends Exception {
+        public WebDriverInitializationException(String message) {
+            super(message);
+        }
+
+        public WebDriverInitializationException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
+    private static boolean isCIEnvironment() {
+        return System.getenv("CI") != null || System.getenv("JENKINS_URL") != null;
     }
 
     private static WebDriver setupChromeDriver(boolean isCIRunning) {
@@ -138,44 +160,63 @@ public class BasePage {
         }
     }
 
-    public static String getProperty(String key) {
-        String path = System.getProperty("user.dir") + "/src/test/resources/properties/project.properties";
-        try (FileInputStream fs = new FileInputStream(path)) {
-            prop = new Properties();
-            prop.load(fs);
-        } catch (Exception e) {
+    // Static initializer block to load properties
+    static {
+        try (FileInputStream fis = new FileInputStream(RESOURCES_DIR + File.separator + "properties" + File.separator + "project.properties")) {
+            prop.load(fis);
+        } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("Failed to load properties file", e);
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+    }
+
+    public static String getProperty(String key) {
         return prop.getProperty(key);
     }
 
-    public static WebDriver getDriver() {
-        if (driver == null) {
+    public static WebDriver getDriver() throws WebDriverInitializationException {
+        if (threadLocalDriver.get() == null) {
             initializeDriver();
         }
-        return driver;
+        return threadLocalDriver.get();
     }
 
-    public static void setUpDriver() {
+    public static void setUpDriver() throws WebDriverInitializationException {
         initializeDriver();
     }
 
     public static void tearDown() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
+        if (threadLocalDriver.get() != null) {
+            threadLocalDriver.get().quit();
+            threadLocalDriver.remove();
         }
     }
 
     public static void navigate(String urlKey) {
         String url = getProperty(urlKey);
         logger.info("****************** Navigating to %s", url);
-        driver.get(url);
+        try {
+            getDriver().get(url);
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void waitUntilElementPresent(WebElement element, int timeOutSeconds) {
         logger.info("****************** Wait until element present: %s, in seconds: %s", element, timeOutSeconds);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         try {
             wait.until(ExpectedConditions.visibilityOf(element));
         } catch (TimeoutException e) {
@@ -191,14 +232,24 @@ public class BasePage {
 
     public static void scrollToWebElement(WebElement ele) {
         logger.info("****************** Scroll to web element %s", ele);
-        JavascriptExecutor js = ((JavascriptExecutor) driver);
+        JavascriptExecutor js = null;
+        try {
+            js = ((JavascriptExecutor) getDriver());
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         js.executeScript("arguments[0].scrollIntoView(true);", ele);
     }
 
     public static void clickWithJavaScript(WebElement ele) {
         logger.info("****************** Clicking on the web element captured using webelement: %s", ele);
         waitUntilElementPresent(ele, 30);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+        JavascriptExecutor js = null;
+        try {
+            js = (JavascriptExecutor) getDriver();
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         js.executeScript("arguments[0].click();", ele);
     }
 
@@ -206,7 +257,7 @@ public class BasePage {
         List<WebElement> els = null;
         try {
             By locator = By.xpath(xpath);
-            els = driver.findElements(locator);
+            els = getDriver().findElements(locator);
             waitUntilElementPresent(els.get(0), 90);
         } catch (Exception ex) {
             logger.error("****************** Object not found: %s", xpath);
@@ -241,7 +292,11 @@ public class BasePage {
 
     public static void waitUntilElementClickable(WebElement element, int timeOutSeconds) {
         logger.info("****************** Wait until element clickable: %s", element);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
 
         try {
             // Wait for element to be visible
@@ -253,13 +308,23 @@ public class BasePage {
     }
 
     public static void selectFirstOption(String xpath) {
-        Select sel = new Select(driver.findElement(By.xpath(xpath)));
+        Select sel = null;
+        try {
+            sel = new Select(getDriver().findElement(By.xpath(xpath)));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         sel.selectByValue("0");
     }
 
     public static void clickShiftAndTabKeyTogether(WebElement element) {
         logger.info("****************** Click shift + tab key in %s", element);
-        Actions actions = new Actions(driver);
+        Actions actions = null;
+        try {
+            actions = new Actions(getDriver());
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         actions.keyDown(Keys.SHIFT)
                 .sendKeys(Keys.TAB)
                 .keyUp(Keys.SHIFT)
@@ -269,7 +334,11 @@ public class BasePage {
 
     public static void refreshPage() {
         logger.info("****************** Refreshing page");
-        driver.navigate().refresh();
+        try {
+            getDriver().navigate().refresh();
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void clearTexts(WebElement element) {
@@ -279,7 +348,12 @@ public class BasePage {
 
     public static void moveToBottomOfThePage() {
         logger.info("****************** Move to bottom of the page.");
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+        JavascriptExecutor js = null;
+        try {
+            js = (JavascriptExecutor) getDriver();
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
     }
 
@@ -294,7 +368,12 @@ public class BasePage {
 
     public static void scrollToBottomOfPage() {
         logger.info("****************** Scroll down to bottom of the page.");
-        Actions actions = new Actions(driver);
+        Actions actions = null;
+        try {
+            actions = new Actions(getDriver());
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         actions.sendKeys(Keys.END).perform();
     }
 
@@ -307,7 +386,11 @@ public class BasePage {
 
     public static String getPageTitle() {
         logger.info("****************** Getting actual page title");
-        return driver.getTitle();
+        try {
+            return getDriver().getTitle();
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -316,22 +399,33 @@ public class BasePage {
     public static void waitUntilPageCompletelyLoaded() {
         logger.info("****************** Wait until page completely loaded");
         try {
-            wait = new WebDriverWait(driver, Duration.ofSeconds(90));
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(90));
             // Wait until the document's readyState is "complete"
             ExpectedCondition<Boolean> pageLoadCondition = driver -> {
                 assert driver != null;
-                return Objects.equals(((JavascriptExecutor) driver).executeScript("return document.readyState"), "complete");
+                try {
+                    return Objects.equals(((JavascriptExecutor) getDriver()).executeScript("return document.readyState"), "complete");
+                } catch (WebDriverInitializationException e) {
+                    throw new RuntimeException(e);
+                }
             };
             wait.until(pageLoadCondition);
         } catch (TimeoutException timeoutException) {
             logger.error("Page is not completely loaded after 90 seconds");
             throw timeoutException;
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public static void mouseHoverAndClick(WebElement element, WebElement subElement, By childElement) {
         waitUntilElementPresent(element, 60);
-        Actions actions = new Actions(driver);
+        Actions actions = null;
+        try {
+            actions = new Actions(getDriver());
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         actions.moveToElement(element).perform();
         waitUntilVisibilityOfElementLocated(childElement, 60);
         actions.moveToElement(subElement);
@@ -384,14 +478,28 @@ public class BasePage {
 
     public static void clickWithJavaScript(String xpath) {
         logger.info("****************** Clicking on the web element captured using xpath: %s", xpath);
-        WebElement ele = driver.findElement(By.xpath(xpath));
+        WebElement ele = null;
+        try {
+            ele = getDriver().findElement(By.xpath(xpath));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         waitUntilElementPresent(ele, 30);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+        JavascriptExecutor js = null;
+        try {
+            js = (JavascriptExecutor) getDriver();
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         js.executeScript("arguments[0].click();", ele);
     }
 
     public static String getCurrentUrl() {
-        return driver.getCurrentUrl();
+        try {
+            return getDriver().getCurrentUrl();
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void clickOnEnterKey(WebElement element) {
@@ -412,8 +520,17 @@ public class BasePage {
 
     public static void waitUntilElementClickable(String xpath, int timeOutSeconds) {
         logger.info("****************** Wait until element clickable at xpath: %s", xpath);
-        WebElement element = driver.findElement(By.xpath(xpath));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
+        WebElement element = null;
+        try {
+            element = getDriver().findElement(By.xpath(xpath));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
@@ -430,7 +547,11 @@ public class BasePage {
         logger.info("****************** Wait until element displayed: %s, and seconds: %s", element, seconds);
 
         // Create a wait instance with the provided timeout
-        wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
 
         try {
             // Wait for element to be visible
@@ -444,7 +565,7 @@ public class BasePage {
     public static List<WebElement> findListOfWebElements(By locator) {
         List<WebElement> els = null;
         try {
-            els = driver.findElements(locator);
+            els = getDriver().findElements(locator);
         } catch (Exception ex) {
             logger.error("****************** Object not found at the locator: %s", locator);
         }
@@ -453,20 +574,33 @@ public class BasePage {
 
     public static void mouseHoverOverElement(WebElement element) {
         waitUntilElementClickable(element, 30);
-        Actions actions = new Actions(driver);
+        Actions actions = null;
+        try {
+            actions = new Actions(getDriver());
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         actions.moveToElement(element).build().perform();
     }
 
     public static void waitUntilElementDisappeared(WebElement element, int seconds) {
         logger.info("****************** Wait until element disappeared: %s, and seconds: %s", element, seconds);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
     public static void waitAndIgnoreStaleException(WebElement element, int seconds) {
         logger.info("****************** Wait until element displayed by ignoring stale element exception: %s, " +
                 "and seconds: %s", element, seconds);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         wait.ignoring(StaleElementReferenceException.class)
                 .until(ExpectedConditions.visibilityOf(element));
     }
@@ -482,26 +616,53 @@ public class BasePage {
 
     public static WebDriverWait webdriverWait(int seconds) {
         logger.info("****************** Waiting for %s seconds", seconds);
-        return new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        try {
+            return new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void waitUntilElementPresent(String xpath, int timeOutSeconds) {
         logger.info("****************** Wait until element present at xpath: %s, in seconds: %s", xpath, timeOutSeconds);
-        WebElement element = driver.findElement(By.xpath(xpath));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
+        WebElement element = null;
+        try {
+            element = getDriver().findElement(By.xpath(xpath));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
     public static void scrollToWebElement(String xpath) {
         logger.info("****************** Scroll to web element at xpath %s", xpath);
-        JavascriptExecutor js = ((JavascriptExecutor) driver);
-        WebElement element = driver.findElement(By.xpath(xpath));
+        JavascriptExecutor js = null;
+        try {
+            js = ((JavascriptExecutor) getDriver());
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+        WebElement element = null;
+        try {
+            element = getDriver().findElement(By.xpath(xpath));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         js.executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
     public static void waitUntilVisibilityOfElementLocated(By locator, int seconds) {
         logger.info("****************** Wait until visibility of element located by %s, and seconds: %s", locator, seconds);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         } catch (TimeoutException e) {
@@ -511,12 +672,21 @@ public class BasePage {
 
     public static void waitUntilElementAttributeGetChanged(WebElement element, String attribute, String attributeUpdatedValue, int seconds) {
         logger.info("****************** Wait until element attribute get changed: %s, and seconds: %s", element, seconds);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         try {
             wait.until((ExpectedCondition<Boolean>) driver -> {
                 assert driver != null;
-                String attributeValue = Objects.requireNonNull(((JavascriptExecutor) driver).executeScript
-                        ("return arguments[0].getAttribute(arguments[1]);", element, attribute)).toString();
+                String attributeValue = null;
+                try {
+                    attributeValue = Objects.requireNonNull(((JavascriptExecutor) getDriver()).executeScript
+                            ("return arguments[0].getAttribute(arguments[1]);", element, attribute)).toString();
+                } catch (WebDriverInitializationException e) {
+                    throw new RuntimeException(e);
+                }
                 assert attributeValue != null;
                 return attributeValue.equals(attributeUpdatedValue);
             });
@@ -535,31 +705,55 @@ public class BasePage {
         logger.info("****************** Verify element present: %s, in seconds: %s", locator, timeOutSeconds);
 
         // Create a WebDriverWait instance
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
+        WebDriverWait wait = null;
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
 
         // Wait until at least one element is present
         wait.until((ExpectedCondition<Boolean>) driver -> {
             assert driver != null;
-            List<WebElement> elements = driver.findElements(locator);
+            List<WebElement> elements = null;
+            try {
+                elements = getDriver().findElements(locator);
+            } catch (WebDriverInitializationException e) {
+                throw new RuntimeException(e);
+            }
             return !elements.isEmpty(); // Return true if at least one element is found
         });
 
         // After waiting, assert that the element is present
-        List<WebElement> elements = driver.findElements(locator);
+        List<WebElement> elements = null;
+        try {
+            elements = getDriver().findElements(locator);
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         MatcherAssert.assertThat("Element should be present", elements.size(), Matchers.greaterThan(0));
     }
 
     // mouse hover and release webelement
     public static void mouseHoverAndRelease(WebElement element, WebElement subElement) {
         waitUntilElementClickable(element, 30);
-        Actions actions = new Actions(driver);
+        Actions actions = null;
+        try {
+            actions = new Actions(getDriver());
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         actions.moveToElement(element);
         actions.moveToElement(subElement);
         actions.release().build().perform();
     }
 
     public static void waitUntilElementRefreshedAndClickable(WebElement element, int timeOutSeconds) {
-        wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutSeconds));
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         try {
             wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(element)));
         } catch (TimeoutException e) {
@@ -569,14 +763,24 @@ public class BasePage {
     }
 
     public static void waitUntilElementClickable(By locator, int timeoutInSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
+        WebDriverWait wait = null;
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
     public static void mouseHoverAndClick(By mainLocator, By subLocator) {
         WebElement mainLink = wait.until(ExpectedConditions.visibilityOfElementLocated(mainLocator));
         waitUntilElementPresent(mainLink, 60);
-        Actions actions = new Actions(driver);
+        Actions actions = null;
+        try {
+            actions = new Actions(getDriver());
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         actions.moveToElement(mainLink).perform();
         WebElement subMenu = wait.until(ExpectedConditions.presenceOfElementLocated(subLocator));
         genericWait(300);

@@ -27,7 +27,11 @@ public class SearchProviderActions {
 
     public SearchProviderActions() {
         searchPage = new SearchProviderPage();
-        PageFactory.initElements(BasePage.getDriver(), searchPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), searchPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void searchByText() {

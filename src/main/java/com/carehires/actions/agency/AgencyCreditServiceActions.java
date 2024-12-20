@@ -22,7 +22,16 @@ import static org.hamcrest.core.Is.is;
 public class AgencyCreditServiceActions {
 
     private final AgencyCreditServicePage creditServicePage;
-    private static final GenericUtils genericUtils = new GenericUtils();
+    private static final GenericUtils genericUtils;
+
+    static {
+        try {
+            genericUtils = new GenericUtils();
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final AgencyNavigationMenuActions navigationMenu = new AgencyNavigationMenuActions();
 
     private static final String ENTITY = "agency";
@@ -40,9 +49,13 @@ public class AgencyCreditServiceActions {
     private static final String AGENCY = "Agency";
     private static final Logger logger = LogManager.getLogger(AgencyCreditServiceActions.class);
 
-    public AgencyCreditServiceActions() {
+    public AgencyCreditServiceActions()  {
         creditServicePage = new AgencyCreditServicePage();
-        PageFactory.initElements(BasePage.getDriver(), creditServicePage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), creditServicePage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void enterCreditServiceInformation() {
@@ -86,11 +99,11 @@ public class AgencyCreditServiceActions {
         String personalId = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "PersonalIdNumber");
         BasePage.clearAndEnterTexts(creditServicePage.personalIdNumber, personalId);
 
-        String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "PostCode");
-        genericUtils.fillAddress(creditServicePage.postcode, postcode, 190);
-
         String ownership = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "OwnershipPercentage");
         BasePage.clearAndEnterTexts(creditServicePage.ownershipPercentage, ownership);
+
+        String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "PostCode");
+        genericUtils.fillAddress(creditServicePage.postcode, postcode, 190);
 
         //upload verification document
         String agencyOwnerDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "AgencyOwnerDocument");
@@ -137,11 +150,11 @@ public class AgencyCreditServiceActions {
         String legalRepPersonalId = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "LegalRepPersonalIdNumber");
         BasePage.clearAndEnterTexts(creditServicePage.legalPersonalIdNumber, legalRepPersonalId);
 
-        String legalRepPostcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "LegalRepPostCode");
-        genericUtils.fillAddress(creditServicePage.legalPostcode, legalRepPostcode, 190);
-
         String legalRepOwnership = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "LegalRepOwnershipPercentage");
         BasePage.clearAndEnterTexts(creditServicePage.legalOwnershipPercentage, legalRepOwnership);
+
+        String legalRepPostcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "LegalRepPostCode");
+        genericUtils.fillAddress(creditServicePage.legalPostcode, legalRepPostcode, 190);
 
         //upload verification document
         String legalRepDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "LegalRepDocument");
@@ -225,7 +238,7 @@ public class AgencyCreditServiceActions {
         BasePage.genericWait(2000);
     }
 
-    private void updateBasicDetails() {
+    private void updateBasicDetails()  {
         enterText(creditServicePage.firstName, "FirstName");
         enterText(creditServicePage.lastName, "LastName");
         enterText(creditServicePage.jobTitle, "JobTitle");
@@ -236,9 +249,9 @@ public class AgencyCreditServiceActions {
         genericUtils.selectDateFromCalendarPopup(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, EDIT_YML_SUB_HEADER, "DateOfBirth"));
 
         enterText(creditServicePage.personalIdNumber, "NINumber");
-        genericUtils.fillAddress(creditServicePage.postcode, DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, EDIT_YML_SUB_HEADER, "PostCode"), 190);
         BasePage.clickWithJavaScript(creditServicePage.ownershipPercentage);
         enterText(creditServicePage.ownershipPercentage, "OwnershipPercentage");
+        genericUtils.fillAddress(creditServicePage.postcode, DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, EDIT_YML_SUB_HEADER, "PostCode"), 190);
     }
 
     private void enterText(WebElement field, String key) {

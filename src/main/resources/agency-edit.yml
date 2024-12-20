@@ -5,7 +5,7 @@ Basic Info:
     CompanyLogo: Agency101.jpg
     AlsoKnownAs: Auto{{increment}}
     PostCode: BL0 9YX
-    PhoneType: Mobile
+    PhoneNumberType: Mobile
     PhoneNumber: "07412003245"
   Update:
     BusinessName: Automation Agency {{increment}}
@@ -13,7 +13,7 @@ Basic Info:
     CompanyLogo: Agency101.jpg
     AlsoKnownAs: Auto{{increment}}
     PostCode: BL0 9YX
-    PhoneType: Mobile
+    PhoneNumberType: Office1
     PhoneNumber: "07412803245"
 
 Credit Service:

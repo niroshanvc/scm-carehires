@@ -27,7 +27,11 @@ public class AgencyBusinessLocationsActions {
 
     public AgencyBusinessLocationsActions() {
         locationsPage = new AgencyBusinessLocationsPage();
-        PageFactory.initElements(BasePage.getDriver(), locationsPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), locationsPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addLocationDetails() {

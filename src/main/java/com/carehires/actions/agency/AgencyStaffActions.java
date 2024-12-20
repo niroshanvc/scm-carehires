@@ -36,7 +36,11 @@ public class AgencyStaffActions {
 
     public AgencyStaffActions() {
         staffPage = new AgencyStaffPage();
-        PageFactory.initElements(BasePage.getDriver(), staffPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), staffPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addStaff() {

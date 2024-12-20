@@ -34,7 +34,11 @@ public class SubContractingAgreementActions {
 
     public SubContractingAgreementActions() {
         subContractingAgreementPage = new SubContractingAgreementPage();
-        PageFactory.initElements(BasePage.getDriver(), subContractingAgreementPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), subContractingAgreementPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void clickOnInviteButton() {

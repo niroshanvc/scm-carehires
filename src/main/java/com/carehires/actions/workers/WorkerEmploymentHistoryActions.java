@@ -21,7 +21,16 @@ import static org.hamcrest.core.Is.is;
 public class WorkerEmploymentHistoryActions {
 
     private final WorkerEmploymentHistoryPage employmentHistoryPage;
-    private static final GenericUtils genericUtils = new GenericUtils();
+    private static final GenericUtils genericUtils;
+
+    static {
+        try {
+            genericUtils = new GenericUtils();
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final WorkerNavigationMenuActions navigationMenu = new WorkerNavigationMenuActions();
 
     private static final String ENTITY = "worker";
@@ -42,7 +51,11 @@ public class WorkerEmploymentHistoryActions {
 
     public WorkerEmploymentHistoryActions() {
         employmentHistoryPage = new WorkerEmploymentHistoryPage();
-        PageFactory.initElements(BasePage.getDriver(), employmentHistoryPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), employmentHistoryPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void enterDataForEmploymentHistory() {

@@ -25,7 +25,11 @@ public class BillingProfileManagementActions {
 
     public BillingProfileManagementActions() {
         billingPage = new BillingProfileManagementPage();
-        PageFactory.initElements(BasePage.getDriver(), billingPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), billingPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addBilling() {

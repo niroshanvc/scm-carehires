@@ -18,7 +18,11 @@ public class OverviewActions {
 
     public OverviewActions() {
         overview = new OverviewPage();
-        PageFactory.initElements(BasePage.getDriver(), overview);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), overview);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void waitAndAcceptCookies() {

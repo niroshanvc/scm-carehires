@@ -37,13 +37,26 @@ public class WorkerDocumentsAndProofActions {
 
     private static final Logger logger = LogManager.getLogger(WorkerDocumentsAndProofActions.class);
 
-    private static final GenericUtils genericUtils = new GenericUtils();
+    private static final GenericUtils genericUtils;
+
+    static {
+        try {
+            genericUtils = new GenericUtils();
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final WorkerNavigationMenuActions navigationMenu = new WorkerNavigationMenuActions();
     Integer incrementValue;
 
     public WorkerDocumentsAndProofActions() {
         documentsAndProofPage = new WorkerDocumentsAndProofPage();
-        PageFactory.initElements(BasePage.getDriver(), documentsAndProofPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), documentsAndProofPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void enterDocumentsAndProofData() {

@@ -14,7 +14,11 @@ public class LeftSideMenuActions {
 
     public LeftSideMenuActions() {
         leftSideMenu = new LeftSideMenuPage();
-        PageFactory.initElements(BasePage.getDriver(), leftSideMenu);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), leftSideMenu);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void gotoAgencyCreatePage() {
