@@ -5,6 +5,7 @@ import com.carehires.pages.providers.ProviderCompanyInformationPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.GenericUtils;
+import com.carehires.utils.WebDriverInitializationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.ElementNotInteractableException;
@@ -27,8 +28,8 @@ public class ProviderCompanyInformationActions {
     {
         try {
             genericUtils = new GenericUtils();
-        } catch (BasePage.WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+        } catch (WebDriverInitializationException e) {
+            throw new WebDriverInitializationException("Failed to initialize WebDriver for GenericUtils", e);
         }
     }
 
@@ -43,13 +44,13 @@ public class ProviderCompanyInformationActions {
             + File.separator;
 
     private static final Logger logger = LogManager.getLogger(ProviderCompanyInformationActions.class);
-    
-    public ProviderCompanyInformationActions() {
+
+    public ProviderCompanyInformationActions() throws BasePage.WebDriverInitializationException {
         companyInformationPage =  new ProviderCompanyInformationPage();
         try {
             PageFactory.initElements(BasePage.getDriver(), companyInformationPage);
         } catch (BasePage.WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new BasePage.WebDriverInitializationException("Failed to initialize WebDriver for GenericUtils", e);
         }
     }
 
@@ -192,6 +193,7 @@ public class ProviderCompanyInformationActions {
     private void enterAnnualCompanyTurnover(String ymlFile, String subHeader) {
         logger.info("Entering annual company turnover");
         String annualCompanyTurnOver = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "AnnualCompanyTurnOverIs");
+        assert annualCompanyTurnOver != null;
         if (annualCompanyTurnOver.equalsIgnoreCase("Under 10.2M")) {
             BasePage.waitUntilElementClickable(companyInformationPage.annualCompanyTurnOverUnderTen, 30);
             BasePage.clickWithJavaScript(companyInformationPage.annualCompanyTurnOverUnderTen);
@@ -201,6 +203,7 @@ public class ProviderCompanyInformationActions {
 
         logger.info("Entering company balance sheet");
         String companyBalanceSheet = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "CompanyBalanceSheetTotalIs");
+        assert companyBalanceSheet != null;
         if (companyBalanceSheet.equalsIgnoreCase("Under 5.2M")) {
             BasePage.clickWithJavaScript(companyInformationPage.balanceSheetTotalUnderFive);
         } else {
@@ -228,12 +231,12 @@ public class ProviderCompanyInformationActions {
 
         //filter the elements that have an 'id' attribute
         List<WebElement> elementsWithIdAttribute = allElements.stream()
-                .filter(element -> element.getAttribute("id") != null && !Objects.requireNonNull(element.getAttribute("id")).isEmpty())
+                .filter(element -> element.getDomAttribute("id") != null && !Objects.requireNonNull(element.getDomAttribute("id")).isEmpty())
                 .toList();
 
         //check if any of the elements have an 'id' attribute equal to 'Icon_material-done'
         boolean hasIdDone = elementsWithIdAttribute.stream()
-                .anyMatch(element -> Objects.equals(element.getAttribute("id"), "Icon_material-done"));
+                .anyMatch(element -> Objects.equals(element.getDomAttribute("id"), "Icon_material-done"));
 
         assertThat("Company information is not saved",hasIdDone, is(true));
     }

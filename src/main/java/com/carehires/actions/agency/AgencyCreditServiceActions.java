@@ -189,12 +189,12 @@ public class AgencyCreditServiceActions {
 
         //filter the elements that have an 'id' attribute
         List<WebElement> elementsWithIdAttribute = allElements.stream()
-                .filter(element -> element.getAttribute("id") != null && !Objects.requireNonNull(element.getAttribute("id")).isEmpty())
+                .filter(element -> element.getDomAttribute("id") != null && !Objects.requireNonNull(element.getDomAttribute("id")).isEmpty())
                 .toList();
 
         //check if any of the elements have an 'id' attribute equal to 'Icon_material-done'
         boolean hasIdDone = elementsWithIdAttribute.stream()
-                .anyMatch(element -> Objects.equals(element.getAttribute("id"), "Icon_material-done"));
+                .anyMatch(element -> Objects.equals(element.getDomAttribute("id"), "Icon_material-done"));
 
         assertThat("Basic information is not saved",hasIdDone, is(true));
     }

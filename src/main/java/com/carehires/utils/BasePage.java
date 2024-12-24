@@ -41,7 +41,6 @@ import java.util.Objects;
 import java.util.Properties;
 
 public class BasePage {
-    private static WebDriver driver;
     private static WebDriverWait wait;
     private static final Logger logger = LogManager.getFormatterLogger(BasePage.class);
     private static Properties prop = new Properties();
@@ -149,14 +148,14 @@ public class BasePage {
     private static void configureCIOptions(MutableCapabilities options) {
         logger.info("****************** Running in CI environment, configuring headless options.");
 
-        if (options instanceof ChromeOptions) {
-            ((ChromeOptions) options).addArguments(HEADLESS, "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
-        } else if (options instanceof FirefoxOptions) {
-            ((FirefoxOptions) options).addArguments(HEADLESS);
-        } else if (options instanceof EdgeOptions) {
-            ((EdgeOptions) options).addArguments(HEADLESS, "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+        if (options instanceof ChromeOptions chromeOptions) {
+            chromeOptions.addArguments(HEADLESS, "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+        } else if (options instanceof FirefoxOptions firefoxOptions) {
+            firefoxOptions.addArguments(HEADLESS);
+        } else if (options instanceof EdgeOptions edgeOptions) {
+            edgeOptions.addArguments(HEADLESS, "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
         } else {
-            logger.warn("Unsupported browser options class: " + options.getClass().getSimpleName());
+            logger.warn("Unsupported browser options class: %s", options.getClass().getSimpleName());
         }
     }
 
@@ -187,6 +186,10 @@ public class BasePage {
             initializeDriver();
         }
         return threadLocalDriver.get();
+    }
+
+    public static void setDriver(WebDriver driver) {
+        threadLocalDriver.set(driver);
     }
 
     public static void setUpDriver() throws WebDriverInitializationException {
