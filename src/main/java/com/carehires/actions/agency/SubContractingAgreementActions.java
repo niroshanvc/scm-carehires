@@ -25,6 +25,8 @@ public class SubContractingAgreementActions {
     private static final String YML_FILE = "agency-create";
     private static final String EDIT_YML_FILE = "agency-edit";
     private static final String YML_HEADER = "Sub Contract";
+    private static final String ADD = "Add";
+    private static final String UPDATE = "Update";
     private static final String RESOURCE_FOLDER = System.getProperty("user.dir") + File.separator + "src" + File.separator
             + "test" + File.separator + "resources";
 
@@ -32,7 +34,11 @@ public class SubContractingAgreementActions {
 
     public SubContractingAgreementActions() {
         subContractingAgreementPage = new SubContractingAgreementPage();
-        PageFactory.initElements(BasePage.getDriver(), subContractingAgreementPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), subContractingAgreementPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void clickOnInviteButton() {
@@ -53,10 +59,10 @@ public class SubContractingAgreementActions {
         BasePage.clickWithJavaScript(subContractingAgreementPage.completeProfileButton);
         BasePage.waitUntilElementPresent(subContractingAgreementPage.attachSubContractDocumentButton, 60);
 
-        String note = DataConfigurationReader.readDataFromYmlFile(ENTITY,fileName, YML_HEADER, "Note");
+        String note = DataConfigurationReader.readDataFromYmlFile(ENTITY, fileName, YML_HEADER, ADD, "Note");
         BasePage.typeWithStringBuilder(subContractingAgreementPage.noteTextarea, note);
 
-        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "SubContractDocument");
+        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "SubContractDocument");
         String absoluteFilePath = RESOURCE_FOLDER + File.separator + "Upload" + File.separator + "Agency" + File.separator + doc;
         BasePage.uploadFile(subContractingAgreementPage.uploadFile, absoluteFilePath);
         waitUntilDocumentUploaded();

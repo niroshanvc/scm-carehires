@@ -66,20 +66,29 @@ public class FileDownloadUtils {
 
     public static void triggerDownloadAndCloseTab(WebElement element) {
         // Store the current window handle
-        String originalWindow = BasePage.getDriver().getWindowHandle();
+        String originalWindow = null;
+        try {
+            originalWindow = BasePage.getDriver().getWindowHandle();
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
 
         // Trigger the download that opens a new tab
         BasePage.clickWithJavaScript(element);
 
         // Wait for the new tab to open and switch to it
         String newTabHandle = null;
-        for (String windowHandle : BasePage.getDriver().getWindowHandles()) {
-            if (!windowHandle.equals(originalWindow)) {
-                BasePage.genericWait(2000);
-                BasePage.getDriver().switchTo().window(windowHandle);
-                newTabHandle = windowHandle;
-                break;
+        try {
+            for (String windowHandle : BasePage.getDriver().getWindowHandles()) {
+                if (!windowHandle.equals(originalWindow)) {
+                    BasePage.genericWait(2000);
+                    BasePage.getDriver().switchTo().window(windowHandle);
+                    newTabHandle = windowHandle;
+                    break;
+                }
             }
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
         }
 
         // Small wait to ensure the download process begins
@@ -100,7 +109,7 @@ public class FileDownloadUtils {
         if (downloadStarted && newTabHandle != null) {
             try {
                 BasePage.getDriver().switchTo().window(newTabHandle).close();
-            } catch (NoSuchWindowException e) {
+            } catch (NoSuchWindowException | BasePage.WebDriverInitializationException e) {
                 logger.warn("New tab already closed.");
             }
         } else {
@@ -108,6 +117,10 @@ public class FileDownloadUtils {
         }
 
         // Switch back to the original tab
-        BasePage.getDriver().switchTo().window(originalWindow);
+        try {
+            BasePage.getDriver().switchTo().window(originalWindow);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

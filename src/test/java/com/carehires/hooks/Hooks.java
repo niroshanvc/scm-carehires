@@ -16,7 +16,7 @@ public class Hooks {
     private static final Logger logger = LogManager.getLogger(Hooks.class);
 
     @Before
-    public void setup(Scenario scenario) {
+    public void setup(Scenario scenario) throws BasePage.WebDriverInitializationException {
         BasePage.setUpDriver();
 
         // Determine the entity type (agency, provider, etc.) based on scenario tags
@@ -31,7 +31,7 @@ public class Hooks {
     }
 
     @After
-    public void tearDown(Scenario scenario) {
+    public void tearDown(Scenario scenario) throws BasePage.WebDriverInitializationException {
         final byte[] screenshot = ((TakesScreenshot) BasePage.getDriver()).getScreenshotAs(OutputType.BYTES);
         scenario.attach(screenshot, "image/png", scenario.getName());
         BasePage.tearDown();

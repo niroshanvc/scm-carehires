@@ -9,6 +9,11 @@ public class ProviderBillingInformationSteps {
 
     @And("User enters General Billing Information")
     public void enterGeneralBillingInformation() {
-        billingInformationActions.fillGeneralBillingInformation();
+        billingInformationActions.savingGeneralBillingInformation();
+    }
+
+    @And("User moves to Billing Information and edit data")
+    public void moveToBillingInformationAndEditData() {
+        billingInformationActions.updatingGeneralBillingInformation();
     }
 }

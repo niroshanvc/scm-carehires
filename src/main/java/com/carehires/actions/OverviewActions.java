@@ -18,11 +18,15 @@ public class OverviewActions {
 
     public OverviewActions() {
         overview = new OverviewPage();
-        PageFactory.initElements(BasePage.getDriver(), overview);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), overview);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void waitAndAcceptCookies() {
-        BasePage.waitUntilElementPresent(overview.overviewMenu, 90);
+        BasePage.waitUntilElementPresent(overview.overviewMenu, 10);
         try {
             BasePage.clickWithJavaScript(overview.acceptCookie);
         } catch (NoSuchElementException e) {

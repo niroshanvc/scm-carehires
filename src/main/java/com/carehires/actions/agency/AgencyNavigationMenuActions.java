@@ -14,7 +14,11 @@ public class AgencyNavigationMenuActions {
 
     public AgencyNavigationMenuActions() {
         navigationMenuPage = new AgencyNavigationMenuPage();
-        PageFactory.initElements(BasePage.getDriver(), navigationMenuPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), navigationMenuPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void gotoCreditServicePage() {

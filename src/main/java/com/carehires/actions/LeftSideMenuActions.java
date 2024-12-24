@@ -14,38 +14,52 @@ public class LeftSideMenuActions {
 
     public LeftSideMenuActions() {
         leftSideMenu = new LeftSideMenuPage();
-        PageFactory.initElements(BasePage.getDriver(), leftSideMenu);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), leftSideMenu);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void gotoAgencyCreatePage() {
-        BasePage.mouseHoverAndClick(leftSideMenu.agencies, leftSideMenu.agencyCreate);
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.mouseHoverAndClick(LeftSideMenuPage.agenciesMainLink, LeftSideMenuPage.agencyCreateSubLink);
         logger.info(" --------------------------- Moves to Agency Create Page ---------------------------");
     }
 
     public void gotoAgencyViewPage() {
         BasePage.waitUntilPageCompletelyLoaded();
-        BasePage.mouseHoverAndClick(leftSideMenu.agencies, leftSideMenu.agencyView);
-        BasePage.mouseHoverAndRelease(leftSideMenu.agencies, leftSideMenu.agencyView);
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.mouseHoverAndClick(LeftSideMenuPage.agenciesMainLink, LeftSideMenuPage.agencyViewSubLink);
         logger.info(" --------------------------- Moves to Agency View Page ---------------------------");
     }
 
     public void gotoWorkerCreatePage() {
-        BasePage.mouseHoverAndClick(leftSideMenu.workers, leftSideMenu.workerCreateIndividual);
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.mouseHoverAndClick(LeftSideMenuPage.workersMainLink, LeftSideMenuPage.workersCreateIndividual);
         logger.info(" --------------------------- Moves to Worker Individual Create Page ---------------------------");
     }
 
     public void gotoWorkerViewPage() {
-        BasePage.mouseHoverAndClick(leftSideMenu.workers, leftSideMenu.workerView);
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.mouseHoverAndClick(LeftSideMenuPage.workersMainLink, LeftSideMenuPage.workersViewSubLink);
         logger.info(" --------------------------- Moves to Worker View Page ---------------------------");
     }
 
     public void gotoProviderCreatePage() {
-        BasePage.mouseHoverAndClick(leftSideMenu.providers, leftSideMenu.providerCreate);
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.mouseHoverAndClick(LeftSideMenuPage.providersMainLink, LeftSideMenuPage.providersCreateSubLink);
         logger.info(" --------------------------- Moves to Provider Create Page ---------------------------");
     }
 
     public void gotoProviderViewPage() {
-        BasePage.mouseHoverAndClick(leftSideMenu.providers, leftSideMenu.providerView);
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.mouseHoverAndClick(LeftSideMenuPage.providersMainLink, LeftSideMenuPage.providersViewSubLink);
         logger.info(" --------------------------- Moves to Provider View Page ---------------------------");
     }
 }

@@ -17,11 +17,15 @@ public class SearchWorkerActions {
 
     public SearchWorkerActions() {
         searchPage = new SearchWorkerPage();
-        PageFactory.initElements(BasePage.getDriver(), searchPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), searchPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void searchByText() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Searching the relevant worker by using the auto generated worker id >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Searching the relevant worker by providing the auto generated worker id >>>>>>>>>>>>>>>>>>>>");
 
         BasePage.waitUntilPageCompletelyLoaded();
 

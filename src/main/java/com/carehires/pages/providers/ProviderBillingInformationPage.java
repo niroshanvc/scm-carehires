@@ -20,8 +20,8 @@ public class ProviderBillingInformationPage {
     @FindBy(xpath = "//nb-select[@formcontrolname='paymentMethod']/button")
     public WebElement paymentMethodDropdown;
 
-    @FindBy(xpath = "//input[@formcontrolname='creditLimitAmount']")
-    public WebElement creditLimitAmount;
+    @FindBy(xpath = "//input[@formcontrolname='costCenterNumber']")
+    public WebElement costCenter;
 
     @FindBy(xpath = "//nb-select[@formcontrolname='paymentCycle']/button")
     public WebElement billingCycleDropdown;

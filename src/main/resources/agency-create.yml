@@ -1,81 +1,89 @@
-BasicInfo:
-  BusinessName: Automation Agency {{increment}}
-  BusinessRegistrationNumber: 12345678
-  CompanyLogo: Agency101.jpg
-  AlsoKnownAs: Auto{{increment}}
-  PostCode: BL0 9YX
-  PhoneType: Home
-  PhoneNumber: "07412001245"
+Basic Info:
+  Add:
+    BusinessName: Automation Agency {{increment}}
+    BusinessRegistrationNumber: 12345678
+    CompanyLogo: Agency101.jpg
+    AlsoKnownAs: Auto{{increment}}
+    PostCode: BL0 9YX
+    PhoneNumberType: Mobile
+    PhoneNumber: "07412001245"
 
 Credit Service:
-  LegalFirstName: John
-  LegalLastName: Smith
-  MaidenName: Smith
-  JobTitle: Manager
-  EmailAddress: automation.qa+agency{{increment}}@carehires.com
-  Phone: "07412001245"
-  DateOfBirth: 01 Jan 1993
-  PersonalIdNumber: "AD787876Y"
-  PostCode: BL0 9YX
-  OwnershipPercentage: 21
-  AgencyOwnerDocument: AgencyOwnerVerificationDocument.pdf
-  LegalRepLegalFirstName: Mark
-  LegalRepLegalLastName: Writer
-  LegalRepMaidenName: Smith
-  LegalRepJobTitle: Legal Manager
-  LegalRepEmailAddress: automation.qa+agencyleg{{increment}}@carehires.com
-  LegalRepPhone: "07412001245"
-  LegalRepDateOfBirth: 01 Sep 1990
-  LegalRepPersonalIdNumber: "AD787876Y"
-  LegalRepPostCode: BL0 9YX
-  LegalRepOwnershipPercentage: 24
-  LegalRepDocument: LegalRepresentativeDocument.pdf
+  Add:
+    LegalFirstName: John
+    LegalLastName: Smith
+    MaidenName: Smith
+    JobTitle: Manager
+    EmailAddress: automation.qa+agency{{increment}}@carehires.com
+    Phone: "07412001245"
+    DateOfBirth: 01 Jan 1993
+    PersonalIdNumber: "AD787876Y"
+    PostCode: BL0 9YX
+    OwnershipPercentage: 21
+    AgencyOwnerDocument: AgencyOwnerVerificationDocument.pdf
+    LegalRepLegalFirstName: Mark
+    LegalRepLegalLastName: Writer
+    LegalRepMaidenName: Smith
+    LegalRepJobTitle: Legal Manager
+    LegalRepEmailAddress: automation.qa+agencyleg{{increment}}@carehires.com
+    LegalRepPhone: "07412001245"
+    LegalRepDateOfBirth: 01 Sep 1990
+    LegalRepPersonalIdNumber: "AD787876Y"
+    LegalRepPostCode: BL0 9YX
+    LegalRepOwnershipPercentage: 24
+    LegalRepDocument: LegalRepresentativeDocument.pdf
 
 Agency Business Location:
-  BusinessLocation: North London
-  BusinessEmailAddress: automation.qa+agencybuss{{increment}}@carehires.com
-  City: City of London
-  JobNotificationAddress: automation.qa+agencyjobnot{{increment}}@carehires.com
-  ApprovalNotificationAddress: automation.qa+agencyappnot{{increment}}@carehires.com
+  Add:
+    BusinessLocation: North London
+    BusinessEmailAddress: automation.qa+agencybuss{{increment}}@carehires.com
+    City: City of London
+    JobNotificationAddress: automation.qa+agencyjobnot{{increment}}@carehires.com
+    ApprovalNotificationAddress: automation.qa+agencyappnot{{increment}}@carehires.com
 
 Staff:
-  WorkerType: Care Assistant
-  NoOfWorkers: 20
-  WorkerSkills: NVQ L3,Elderly,Home Care,Care Certificate,End of life Care
-  MonthlyHoursAvailable: 200
-  MinChargeHourlyRate: 10
-  EmployeeType: PSC
+  Add:
+    WorkerType: Care Assistant
+    NoOfWorkers: 20
+    WorkerSkills: NVQ L3,Elderly,Home Care,Care Certificate,End of life Care
+    MonthlyHoursAvailable: 200
+    MinChargeHourlyRate: 10
+    EmployeeType: PSC
 
 Billing Profile Management:
-  AttentionTo: IWS Solutions
-  BillingAddress: "10 Downing Street, London, SW1A 2AA"
-  CostCenter: "<uniqueNumber>"
-  DigitalBillingAddress: automation.qa+agencydigi{{increment}}@carehires.com
-  CCDigitalBillingAddress: automation.qa+agencyccdigi{{increment}}@carehires.com
-  PhoneNumber: "07412001245"
-  BillingCycle: Monthly
-  CreditTerm: 30 Days
-  BankName: United Bank
-  AccountNumber: "00012345"
-  AccountName: IWS Solutions
-  SortCode: 10-88-00
+  Add:
+    AttentionTo: IWS Solutions
+    BillingAddress: "10 Downing Street, London, SW1A 2AA"
+    CostCenter: "<uniqueNumber>"
+    DigitalBillingAddress: automation.qa+agencydigi{{increment}}@carehires.com
+    CCDigitalBillingAddress: automation.qa+agencyccdigi{{increment}}@carehires.com
+    PhoneNumber: "07412001245"
+    BillingCycle: Monthly
+    CreditTerm: 30 Days
+    BankName: United Bank
+    AccountNumber: "00012345"
+    AccountName: IWS Solutions
+    SortCode: 10-88-00
 
 User:
-  email: automation.qa+agencyuser{{increment}}@carehires.com
-  Name: William Brook{{increment}}
-  JobTitle: Assistant Executive
-  Location: Select All Locations
-  Phone: "07412001245"
-  City: City of London
-  UserAccessLevel: Onboarding Admin,Shift Admin,Org Admin
+  Add:
+    email: automation.qa+agencyuser{{increment}}@carehires.com
+    Name: William Brook{{increment}}
+    JobTitle: Assistant Executive
+    Location: Select All Locations
+    Phone: "07412001245"
+    City: City of London
+    UserAccessLevel: Onboarding Admin,Shift Admin,Org Admin
 
 Sub Contract:
-  Note: Sub contract agreement note is entered.
-  SubContractDocument: subContractDocument.pdf
+  Add:
+    Note: Sub contract agreement note is entered.
+    SubContractDocument: subContractDocument.pdf
 
 Settings:
-  TimeFormat: 12 Hours
-  HubSpotLink: https://knowledge.hubspot.com/
-  InvoiceBrandingTheme: Royal Agency
-  SalesProcessCompletedBy: Fahim Jamal
-  OnboardedBDM: chathura uddeepana
+  Add:
+    TimeFormat: 12 Hours
+    HubSpotLink: https://knowledge.hubspot.com/
+    InvoiceBrandingTheme: Royal Agency
+    SalesProcessCompletedBy: Fahim Jamal
+    OnboardedBDM: chathura uddeepana

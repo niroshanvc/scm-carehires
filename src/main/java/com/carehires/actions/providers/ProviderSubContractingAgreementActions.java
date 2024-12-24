@@ -21,7 +21,11 @@ public class ProviderSubContractingAgreementActions {
 
     public ProviderSubContractingAgreementActions() {
         subContractingAgreementPage = new ProviderSubContractingAgreementPage();
-        PageFactory.initElements(BasePage.getDriver(), subContractingAgreementPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), subContractingAgreementPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void clickOnCompleteProfileButton() {

@@ -44,6 +44,9 @@ public class GenericElementsPage {
     @FindBy(xpath = "//nb-calendar-pageable-navigation/button[contains(@class, 'next-month')]")
     public WebElement nextYearButton;
 
+    @FindBy(xpath = "//nb-option-list[contains(@id, 'nb-autocomplete')]")
+    public WebElement autoSuggestAddresses;
+
     // Method to return a dynamic By locator for the calendar month based on the parse month
     public By getMonthLocator(String selectedMonth) {
         return By.xpath("//nb-calendar-month-cell/div[contains(text(), '" + selectedMonth + "')]");

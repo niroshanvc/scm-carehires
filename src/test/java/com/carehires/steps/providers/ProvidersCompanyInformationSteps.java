@@ -1,11 +1,20 @@
 package com.carehires.steps.providers;
 
 import com.carehires.actions.providers.ProviderCompanyInformationActions;
+import com.carehires.utils.BasePage;
 import io.cucumber.java.en.And;
 
 public class ProvidersCompanyInformationSteps {
 
-    ProviderCompanyInformationActions companyInformationActions = new ProviderCompanyInformationActions();
+    ProviderCompanyInformationActions companyInformationActions;
+
+    {
+        try {
+            companyInformationActions = new ProviderCompanyInformationActions();
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @And("User enters valid provider - company information")
     public void enterCompanyInformation() {

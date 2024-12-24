@@ -41,4 +41,10 @@ public class CreateAgencyBasicInfoPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    @FindBy(xpath = "//h6[text()='Basic Information']/..//*/ancestor::nb-icon")
+    public WebElement basicInformationCompletedIcon;
+
+    @FindBy(xpath = "//div[not(contains(@class, 'provider'))]//p/strong")
+    public WebElement agencyId;
 }

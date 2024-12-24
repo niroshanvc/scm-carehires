@@ -1,6 +1,5 @@
 package com.carehires.utils;
 
-import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
 import com.carehires.pages.GenericElementsPage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,34 +11,36 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class GenericUtils {
 
-    CreateAgencyBasicInfoPage createAgencyBasicInfoPage;
     GenericElementsPage genericElementsPage;
 
-    public GenericUtils() {
-        createAgencyBasicInfoPage = new CreateAgencyBasicInfoPage();
-        PageFactory.initElements(BasePage.getDriver(), createAgencyBasicInfoPage);
-
+    public GenericUtils() throws BasePage.WebDriverInitializationException {
         genericElementsPage = new GenericElementsPage();
         PageFactory.initElements(BasePage.getDriver(), genericElementsPage);
     }
 
     private static final Logger logger = LogManager.getLogger(GenericUtils.class);
 
-    private static WebDriver getDriverInstance(){
+    private static WebDriver getDriverInstance() throws BasePage.WebDriverInitializationException {
         return BasePage.getDriver();
     }
 
-    public void fillAddress(WebElement postcodeInput, String postcode) {
+    public void fillAddress(WebElement postcodeInput, String postcode, int delayInMilliseconds) {
         logger.info("fillAddress");
         BasePage.clearTexts(postcodeInput);
-        BasePage.typeWithStringBuilderAndDelay(postcodeInput, postcode, 190);
-        BasePage.waitUntilElementPresent(createAgencyBasicInfoPage.autoSuggestAddresses, 60);
-        List<WebElement> addresses = getDriverInstance().findElements(By.xpath("//nb-option[contains(@id, 'nb-option')]"));
+        BasePage.typeWithStringBuilderAndDelay(postcodeInput, postcode, delayInMilliseconds);
+        BasePage.waitUntilElementPresent(genericElementsPage.autoSuggestAddresses, 60);
+        List<WebElement> addresses = null;
+        try {
+            addresses = getDriverInstance().findElements(By.xpath("//nb-option[contains(@id, 'nb-option')]"));
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         if (!addresses.isEmpty()) {
             addresses.get(1).click();
         } else {
@@ -136,7 +137,12 @@ public class GenericUtils {
 
     // Helper method to select the month
     private void selectMonth(String targetMonth) {
-        WebElement monthElement = BasePage.getDriver().findElement(genericElementsPage.getMonthLocator(targetMonth));
+        WebElement monthElement = null;
+        try {
+            monthElement = BasePage.getDriver().findElement(genericElementsPage.getMonthLocator(targetMonth));
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
         BasePage.clickWithJavaScript(monthElement);
     }
 
@@ -149,5 +155,15 @@ public class GenericUtils {
                 break;
             }
         }
+    }
+
+    public List<String> getSelectedValues(List<WebElement> elements) {
+        // Retrieve elements representing selected skills
+        List<String> selectedValues = new ArrayList<>();
+        for (WebElement el : elements) {
+            selectedValues.add(el.getText());
+        }
+
+        return selectedValues;
     }
 }

@@ -20,7 +20,11 @@ public class ViewWorkerProfileActions {
 
     public ViewWorkerProfileActions() {
         profilePage = new ViewWorkerProfilePage();
-        PageFactory.initElements(BasePage.getDriver(), profilePage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), profilePage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void verifyProfileStatus(String status) {
@@ -53,7 +57,7 @@ public class ViewWorkerProfileActions {
 
     private void acceptCompliance() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Selecting all compliance checkboxes >>>>>>>>>>>>>>>>>>>>");
-
+        BasePage.genericWait(3000);
         List<WebElement> checkboxes = profilePage.complianceCheckboxes;
         BasePage.waitUntilElementPresent((profilePage.complianceCheckboxes.get(0)), 40);
 
@@ -81,9 +85,10 @@ public class ViewWorkerProfileActions {
         BasePage.waitUntilElementDisplayed(profilePage.workerComplianceOverviewWidget, 20);
         BasePage.genericWait(3000);
         String actual = BasePage.getText(profilePage.generalComplianceStatusMessage).toLowerCase().trim();
-        String expected = "10 out of 10 mandatory items Checked";
-        String expectedInLowerCase = expected.toLowerCase().trim();
-        assertThat("General Compliance Message is wrong! - After accepting the compliance", actual, is(expectedInLowerCase));
+        String[] arr = actual.split(" ");
+        String firstNumber = arr[0].trim();
+        String secondNumber = arr[3].trim();
+        assertThat("All mandatory items are checked!", firstNumber, is(secondNumber));
     }
 
     public void updateWorkerProfileAsSubmittedForReview() {

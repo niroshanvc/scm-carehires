@@ -5,6 +5,7 @@ import com.carehires.pages.providers.ProviderCompanyInformationPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.GenericUtils;
+import com.carehires.utils.WebDriverInitializationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.ElementNotInteractableException;
@@ -22,7 +23,15 @@ import static org.hamcrest.core.Is.is;
 public class ProviderCompanyInformationActions {
     
     ProviderCompanyInformationPage companyInformationPage;
-    GenericUtils genericUtils = new GenericUtils();
+    GenericUtils genericUtils;
+
+    {
+        try {
+            genericUtils = new GenericUtils();
+        } catch (WebDriverInitializationException e) {
+            throw new WebDriverInitializationException("Failed to initialize WebDriver for GenericUtils", e);
+        }
+    }
 
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
@@ -35,10 +44,14 @@ public class ProviderCompanyInformationActions {
             + File.separator;
 
     private static final Logger logger = LogManager.getLogger(ProviderCompanyInformationActions.class);
-    
-    public ProviderCompanyInformationActions() {
+
+    public ProviderCompanyInformationActions() throws BasePage.WebDriverInitializationException {
         companyInformationPage =  new ProviderCompanyInformationPage();
-        PageFactory.initElements(BasePage.getDriver(), companyInformationPage);
+        try {
+            PageFactory.initElements(BasePage.getDriver(), companyInformationPage);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new BasePage.WebDriverInitializationException("Failed to initialize WebDriver for GenericUtils", e);
+        }
     }
 
     public void enterCompanyInformation() {
@@ -59,7 +72,7 @@ public class ProviderCompanyInformationActions {
         DataConfigurationReader.storeNewIncrementValue(ENTITY);
 
         // Store the increment value in GlobalVariables for reuse in other steps
-        GlobalVariables.setVariable("provider_incrementValue", incrementValue+1);
+        GlobalVariables.setVariable("provider_incrementValue", incrementValue);
     }
 
     private void enterDataForInputFields(String ymlFile, String subHeader) {
@@ -105,6 +118,8 @@ public class ProviderCompanyInformationActions {
         String companyType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "CompanyType");
         if (companyType != null) {
             BasePage.clickWithJavaScript(companyInformationPage.companyTypeDropdown);
+            BasePage.genericWait(500);
+            BasePage.waitUntilElementPresent(getDropdownOptionXpath(companyType), 20);
             BasePage.clickWithJavaScript(getDropdownOptionXpath(companyType));
         }
 
@@ -119,17 +134,14 @@ public class ProviderCompanyInformationActions {
         logger.info("Entering postcode");
         String providerPostcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "ProviderPostCode");
         if (providerPostcode != null) {
-            genericUtils.fillAddress(companyInformationPage.postcode, providerPostcode);
+            genericUtils.fillAddress(companyInformationPage.postcode, providerPostcode, 190);
         }
     }
 
     private void enterPhoneNumber(String ymlFile, String subHeader) {
         logger.info("Entering phone number");
-        String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "PhoneNumber");
-        if (phone != null) {
-            genericUtils.fillPhoneNumber(ENTITY, ymlFile, companyInformationPage.phoneNumberInput, YML_HEADER, subHeader, "PhoneNumber");
-            BasePage.clickTabKey(companyInformationPage.phoneNumberInput);
-        }
+        genericUtils.fillPhoneNumber(ENTITY, ymlFile, companyInformationPage.phoneNumberInput, YML_HEADER, subHeader, "PhoneNumberType");
+        genericUtils.fillPhoneNumber(ENTITY, ymlFile, companyInformationPage.phoneNumberInput, YML_HEADER, subHeader, "PhoneNumber");
     }
 
     private void enterVatInformation(String ymlFile, String subHeader) {
@@ -160,6 +172,7 @@ public class ProviderCompanyInformationActions {
     private void enterVatExemption(String ymlFile, String subHeader) {
         logger.info("Entering VAT exemption information");
         String vatExempt = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "AreYouVatExempt");
+        assert vatExempt != null;
         if (vatExempt.equalsIgnoreCase("yes")) {
             BasePage.waitUntilElementClickable(companyInformationPage.vatExemptYes, 30);
             BasePage.clickWithJavaScript(companyInformationPage.vatExemptYes);
@@ -180,6 +193,7 @@ public class ProviderCompanyInformationActions {
     private void enterAnnualCompanyTurnover(String ymlFile, String subHeader) {
         logger.info("Entering annual company turnover");
         String annualCompanyTurnOver = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "AnnualCompanyTurnOverIs");
+        assert annualCompanyTurnOver != null;
         if (annualCompanyTurnOver.equalsIgnoreCase("Under 10.2M")) {
             BasePage.waitUntilElementClickable(companyInformationPage.annualCompanyTurnOverUnderTen, 30);
             BasePage.clickWithJavaScript(companyInformationPage.annualCompanyTurnOverUnderTen);
@@ -189,6 +203,7 @@ public class ProviderCompanyInformationActions {
 
         logger.info("Entering company balance sheet");
         String companyBalanceSheet = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "CompanyBalanceSheetTotalIs");
+        assert companyBalanceSheet != null;
         if (companyBalanceSheet.equalsIgnoreCase("Under 5.2M")) {
             BasePage.clickWithJavaScript(companyInformationPage.balanceSheetTotalUnderFive);
         } else {
@@ -216,18 +231,18 @@ public class ProviderCompanyInformationActions {
 
         //filter the elements that have an 'id' attribute
         List<WebElement> elementsWithIdAttribute = allElements.stream()
-                .filter(element -> element.getAttribute("id") != null && !Objects.requireNonNull(element.getAttribute("id")).isEmpty())
+                .filter(element -> element.getDomAttribute("id") != null && !Objects.requireNonNull(element.getDomAttribute("id")).isEmpty())
                 .toList();
 
         //check if any of the elements have an 'id' attribute equal to 'Icon_material-done'
         boolean hasIdDone = elementsWithIdAttribute.stream()
-                .anyMatch(element -> Objects.equals(element.getAttribute("id"), "Icon_material-done"));
+                .anyMatch(element -> Objects.equals(element.getDomAttribute("id"), "Icon_material-done"));
 
         assertThat("Company information is not saved",hasIdDone, is(true));
     }
 
     private void verifySuccessMessage() {
-        BasePage.waitUntilElementPresent(companyInformationPage.successMessage, 90);
+        BasePage.waitUntilElementPresent(companyInformationPage.successMessage, 120);
         String actualInLowerCase = BasePage.getText(companyInformationPage.successMessage).toLowerCase().trim();
         String expected = "Data saved Successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
@@ -267,7 +282,8 @@ public class ProviderCompanyInformationActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on the update profile link >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(companyInformationPage.topThreeDots, 30);
-        BasePage.mouseHoverAndClick(companyInformationPage.topThreeDots, companyInformationPage.updateProfileLink);
+        BasePage.mouseHoverAndClick(companyInformationPage.topThreeDots, companyInformationPage.updateProfileLink,
+                companyInformationPage.updateProfileLinkChildElement);
         BasePage.waitUntilElementClickable(companyInformationPage.saveButton, 30);
     }
 
