@@ -1,4 +1,4 @@
-@Regression
+@Regression-Create
 @Worker
 @SuperAdminUser
 Feature: Test CareHires create worker

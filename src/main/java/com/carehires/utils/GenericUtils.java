@@ -71,6 +71,7 @@ public class GenericUtils {
 
         BasePage.waitUntilElementPresent(emailAddressInput, 60);
         BasePage.typeWithStringBuilder(emailAddressInput, emailAddress);
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(genericElementsPage.validateEmailTextLink);
 
         try {

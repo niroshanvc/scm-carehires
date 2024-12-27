@@ -171,7 +171,7 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//li[contains(text(), 'Update Profile')]")
     public WebElement updateProfileLink;
 
-    public By updateProfileLinkChildElement = By.xpath("//li[contains(text(), 'Update Profile')]");
+    public static final By updateProfileLinkChildElement = By.xpath("//li/span[contains(text(), 'Update Profile')]");
 
     @FindBy(xpath = "//div[not(contains(@class, 'provider'))]//p/strong")
     public WebElement workerId;

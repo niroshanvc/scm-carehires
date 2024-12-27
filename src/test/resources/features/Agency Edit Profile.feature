@@ -1,4 +1,4 @@
-@Regression
+@Regression-Edit
 @Agency
 @SuperAdminUser
 Feature: Test CareHires edit agency and make profile approved

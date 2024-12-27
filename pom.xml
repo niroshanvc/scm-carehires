@@ -165,6 +165,27 @@
           <outputDirectory>${project.build.directory}/surefire-reports</outputDirectory>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>com.github.temyers</groupId>
+        <artifactId>cucumber-jvm-parallel-plugin</artifactId>
+        <version>5.0.0</version>
+        <executions>
+          <execution>
+            <id>generateRunners</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>generateRunners</goal>
+            </goals>
+            <configuration>
+              <glue>stepDefinitions</glue>
+              <featuresDirectory>src/test/resources/features</featuresDirectory>
+              <cucumberOutputDir>target/cucumber-parallel</cucumberOutputDir>
+              <outputDirectory>target/generated-test-sources/cucumber</outputDirectory>
+              <tags>"@Regression"</tags>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
