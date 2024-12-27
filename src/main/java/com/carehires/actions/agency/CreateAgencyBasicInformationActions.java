@@ -51,7 +51,7 @@ public class CreateAgencyBasicInformationActions {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering basic information >>>>>>>>>>>>>>>>>>>>");
 
-        // Retrieve the current increment value for the provider (from the file)
+        // Retrieve the current increment value for the agency (from the file)
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
 
         enterData(YML_FILE, ADD);
@@ -66,7 +66,7 @@ public class CreateAgencyBasicInformationActions {
         DataConfigurationReader.storeNewIncrementValue(ENTITY);
 
         // Store the increment value in GlobalVariables for reuse in other steps
-        GlobalVariables.setVariable("provider_incrementValue", incrementValue);
+        GlobalVariables.setVariable("agency_incrementValue", incrementValue);
     }
 
     private void enterData(String ymlFile, String subHeader) {
@@ -118,7 +118,7 @@ public class CreateAgencyBasicInformationActions {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Creating an agency in Draft stage >>>>>>>>>>>>>>>>>>>>");
 
-        // Retrieve the current increment value for the provider (from the file)
+        // Retrieve the current increment value for the agency (from the file)
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
         enterData(EDIT_YML_FILE, ADD);
         BasePage.genericWait(5000);
@@ -129,7 +129,7 @@ public class CreateAgencyBasicInformationActions {
         // After successfully entering the basic information, update the increment value in the file
         DataConfigurationReader.storeNewIncrementValue(ENTITY);
         // Store the increment value in GlobalVariables for reuse in other steps
-        GlobalVariables.setVariable("provider_incrementValue", incrementValue);
+        GlobalVariables.setVariable("agency_incrementValue", incrementValue);
 
     }
 

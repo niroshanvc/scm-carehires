@@ -91,7 +91,7 @@ public class WorkerBasicInformationActions {
         DataConfigurationReader.storeNewIncrementValue(ENTITY);
 
         // Store the increment value in GlobalVariables for reuse in other steps
-        GlobalVariables.setVariable("worker_incrementValue", incrementValue+1);
+        GlobalVariables.setVariable("worker_incrementValue", incrementValue);
     }
 
     private void enterTravelInformation(String ymlFile, String subHeader) {
@@ -519,7 +519,7 @@ public class WorkerBasicInformationActions {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.genericWait(3000);
         BasePage.waitUntilElementPresent(basicInfo.topThreeDots, 30);
-        BasePage.mouseHoverAndClick(basicInfo.topThreeDots, basicInfo.updateProfileLink, basicInfo.updateProfileLinkChildElement);
+        BasePage.mouseHoverAndClick(basicInfo.topThreeDots, basicInfo.updateProfileLink, WorkerBasicInformationPage.updateProfileLinkChildElement);
         BasePage.waitUntilElementClickable(basicInfo.saveButton, 30);
     }
 

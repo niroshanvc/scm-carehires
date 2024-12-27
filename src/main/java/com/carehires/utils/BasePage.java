@@ -423,16 +423,21 @@ public class BasePage {
 
     public static void mouseHoverAndClick(WebElement element, WebElement subElement, By childElement) {
         waitUntilElementPresent(element, 60);
-        Actions actions = null;
         try {
-            actions = new Actions(getDriver());
-        } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            Actions actions = new Actions(getDriver());
+            actions.moveToElement(element).perform();
+            waitUntilVisibilityOfElementLocated(childElement, 60);
+
+            if (subElement.isDisplayed() && subElement.isEnabled()) {
+                actions.moveToElement(subElement).click().perform();
+            } else {
+                JavascriptExecutor js = (JavascriptExecutor) getDriver();
+                js.executeScript("arguments[0].click();", subElement);
+            }
+        } catch (Exception e) {
+            logger.error("Failed to perform mouse hover and click: " + e.getMessage(), e);
+            throw new RuntimeException("Mouse hover and click failed", e);
         }
-        actions.moveToElement(element).perform();
-        waitUntilVisibilityOfElementLocated(childElement, 60);
-        actions.moveToElement(subElement);
-        actions.click(subElement).build().perform();
     }
 
     //upload file
