@@ -47,9 +47,14 @@ jobs:
             rm chromedriver.zip
             for i in {1..5}; do curl -sS -o microsoft-edge-stable.deb https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/microsoft-edge-stable_109.0.1518.78-1_amd64.deb && break || sleep 5; done
             if [ -f microsoft-edge-stable.deb ]; then
-              sudo dpkg -i microsoft-edge-stable.deb
-              sudo apt-get install -f
-              rm microsoft-edge-stable.deb
+              if dpkg-deb --info microsoft-edge-stable.deb; then
+                sudo dpkg -i microsoft-edge-stable.deb
+                sudo apt-get install -f
+                rm microsoft-edge-stable.deb
+              else
+                echo "Downloaded microsoft-edge-stable.deb is not a valid Debian format archive"
+                exit 1
+              fi
             else
               echo "Failed to download microsoft-edge-stable.deb"
               exit 1
