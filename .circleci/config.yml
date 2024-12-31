@@ -1,90 +1,52 @@
 version: 2.1
 
 executors:
-  maven-executor:
+  java-executor:
     docker:
       - image: cimg/openjdk:17.0
-    working_directory: ~/project
+    working_directory: ~/repo
 
-environment:
-  BROWSER: "Chrome"
-
-jobs:
-  # Define a job for building the project only
-  build-only-job:
-    executor: maven-executor
-    steps:
-      - checkout
-
-      # Install Google Chrome
-      - run:
-          name: Install Google Chrome
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y wget gnupg2
-            wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-            sudo sh -c 'echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-            sudo apt-get update
-            sudo apt-get install -y google-chrome-stable
-
-      # Install dependencies
-      - run:
-          name: Install dependencies
-          command: mvn dependency:resolve
-
-      # Build the project without running the tests
-      - run:
-          name: Build the project
-          command: mvn clean install
-
-  # Define a job for running tests
-  test-job:
-    executor: maven-executor
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: mvn dependency:resolve
-      - run:
-          name: Run tests
-          command: |
-            mvn test -Dcucumber.options="--tags << pipeline.parameters.cucumber_tag >>" -Denv=<< pipeline.parameters.environment >>
-      # Store test results
-      - store_test_results:
-          path: target/surefire-reports
-      # Store build artifacts (like JARs)
-      - store_artifacts:
-          path: target/surefire-reports
-          destination: build-artifacts
-
-# Define pipeline parameters for manual or scheduled workflows
 parameters:
-  run_tests:
-    type: boolean
-    default: false
-  cucumber_tag:
+  browser:
+    type: string
+    default: "chrome"
+  feature_tag:
     type: string
     default: "@smoke"
   environment:
     type: string
     default: "dev"
 
+jobs:
+  test:
+    executor: java-executor
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y xvfb
+            sudo apt-get install -y google-chrome-stable
+            sudo apt-get install -y firefox
+            sudo apt-get install -y unzip
+            curl -sS -o chromedriver.zip https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
+            unzip chromedriver.zip -d /usr/local/bin/
+            rm chromedriver.zip
+            curl -sS -o geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/v0.21.0/geckodriver-v0.21.0-linux64.tar.gz
+            tar -xzf geckodriver.tar.gz -C /usr/local/bin/
+            rm geckodriver.tar.gz
+      - run:
+          name: Run Tests
+          command: |
+            mvn clean test -Dbrowser=${CIRCLE_JOB} -Dcucumber.options="--tags ${CIRCLE_TAG}" -Denvironment=${CIRCLE_ENV}
+
 workflows:
   version: 2
-
-  # Workflow for building only, runs on each push to main
-  build-workflow:
+  test:
     jobs:
-      - build-only-job:
-          filters:
-            branches:
-              only: main
-
-  # Workflow for running tests, to be triggered manually or on schedule
-  test-workflow:
-    when: << pipeline.parameters.run_tests >>
-    jobs:
-      - build-only-job
-      - test-job:
-          requires:
-            - build-only-job
+      - test:
+          name: Run Tests
+          browser: << pipeline.parameters.browser >>
+          feature_tag: << pipeline.parameters.feature_tag >>
+          environment: << pipeline.parameters.environment >>
