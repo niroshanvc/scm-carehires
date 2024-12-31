@@ -37,9 +37,12 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install -y xvfb
-            sudo apt-get install -y google-chrome-stable
             sudo apt-get install -y firefox
             sudo apt-get install -y unzip
+            wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+            sudo apt-get update
+            sudo apt-get install -y google-chrome-stable
             curl -sS -o chromedriver.zip https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
             unzip chromedriver.zip -d /usr/local/bin/
             rm chromedriver.zip
