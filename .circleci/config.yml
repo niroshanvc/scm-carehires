@@ -20,6 +20,16 @@ parameters:
 jobs:
   test:
     executor: java-executor
+    parameters:
+      browser:
+        type: string
+        default: "<< parameters.browser >>"
+      feature_tag:
+        type: string
+        default: "<< parameters.feature_tag >>"
+      environment:
+        type: string
+        default: "<< parameters.environment >>"
     steps:
       - checkout
       - run:
@@ -39,14 +49,13 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            mvn clean test -Dbrowser=${CIRCLE_JOB} -Dcucumber.options="--tags ${CIRCLE_TAG}" -Denvironment=${CIRCLE_ENV}
+            mvn clean test -Dbrowser=<< parameters.browser >> -Dcucumber.options="--tags << parameters.feature_tag >>" -Denvironment=<< parameters.environment >>
 
 workflows:
   version: 2
   test:
     jobs:
       - test:
-          name: Run Tests
           browser: << pipeline.parameters.browser >>
           feature_tag: << pipeline.parameters.feature_tag >>
           environment: << pipeline.parameters.environment >>
