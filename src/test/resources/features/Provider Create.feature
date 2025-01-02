@@ -6,7 +6,7 @@ Feature: Test CareHires create provider with one location
   Background: login to carehires
     Given User logins to carehires
 
-  @CreateProviderAndApprovingBySuperAdmin
+  @CreateProvider
   Scenario: Create agency with one location
     When User navigates to Provider Create page
     And User enters valid provider - company information

@@ -6,7 +6,7 @@ Feature: Test CareHires create agency with no VAT Registered, one location
   Background: login to carehires
     Given User logins to carehires
 
-  @CreateAgency_WithOneLocation
+  @CreateAgency
   Scenario: Create agency with one location
     When User navigates to Agency Create page
     And User enters valid agency - basic information
