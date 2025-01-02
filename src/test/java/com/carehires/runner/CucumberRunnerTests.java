@@ -9,7 +9,7 @@ import io.cucumber.testng.CucumberOptions;
         plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"},
         monochrome = true,
         tags = "@EditDraftProvider"
-//        tags = "@CreateAgency_WithOneLocation or @EditAgencyInDraft or @CreateProviderAndApprovingBySuperAdmin or @EditDraftProvider or @CreateWorker or @EditWorkerProfile"
+//        tags = "@CreateAgency or @EditAgency or @CreateProvider or @EditProvider or @CreateWorker or @EditWorker"
 )
 
 public class CucumberRunnerTests extends AbstractTestNGCucumberTests {

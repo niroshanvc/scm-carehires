@@ -6,7 +6,7 @@ Feature: Test CareHires edit provider and make profile approved
   Background: login to carehires
     Given User logins to carehires
 
-  @EditDraftProvider
+  @EditProvider
   Scenario: Edit provider details where profile is in draft stage
     When User navigates to Provider Create page
     And User creates a provider in draft stage
