@@ -54,8 +54,8 @@ Basic Information:
       WorkerEmploymentType: Umbrella
       WorkerEmploymentTypeValue: 0012390
     Update:
-      WorkerType: Administrator
-      Skills: NVQ L3,Junior,Leadership,Driving
+      WorkerType: Rehabilitation Worker
+      Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
       RegulatorySettings: Not Required (NR)
       WorkerEmploymentType: Other
       WorkerEmploymentTypeValue: 0012390

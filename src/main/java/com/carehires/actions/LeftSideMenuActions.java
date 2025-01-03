@@ -62,4 +62,11 @@ public class LeftSideMenuActions {
         BasePage.mouseHoverAndClick(LeftSideMenuPage.providersMainLink, LeftSideMenuPage.providersViewSubLink);
         logger.info(" --------------------------- Moves to Provider View Page ---------------------------");
     }
+
+    public void gotoAgreementCreatePage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.mouseHoverAndClick(LeftSideMenuPage.agreementsMainLink, LeftSideMenuPage.agreementsCreateSubLink);
+        logger.info(" --------------------------- Moves to Agreements Create Page ---------------------------");
+    }
 }

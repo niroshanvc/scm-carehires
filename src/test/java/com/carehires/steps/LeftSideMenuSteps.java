@@ -36,4 +36,9 @@ public class LeftSideMenuSteps {
     public void moveToProviderViewPage() {
         leftSideMenuActions.gotoProviderViewPage();
     }
+
+    @When("User navigates to Agreement Create page")
+    public void moveToAgreementCreatePage() {
+        leftSideMenuActions.gotoAgreementCreatePage();
+    }
 }

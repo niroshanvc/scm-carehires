@@ -50,6 +50,10 @@ public class Hooks {
             return "agency";
         } else if (scenario.getSourceTagNames().contains("@Worker")) {
             return "worker";
+        } else if (scenario.getSourceTagNames().contains("@Agreement")) {
+            return "agreement";
+        } else if (scenario.getSourceTagNames().contains("@Job")) {
+            return "job";
         }
         // If no matching entity type is found, log the issue and return "default"
         logger.error("Unknown entity type for scenario: {}", scenario.getName());

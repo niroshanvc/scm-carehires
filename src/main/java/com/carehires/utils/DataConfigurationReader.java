@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -76,8 +77,12 @@ public class DataConfigurationReader {
 
     private static String replaceIncrementPlaceholder(String data, String entityType) {
         if (data.contains("{{increment}}")) {
-            int incrementValue = GlobalVariables.getVariable(entityType + INCREMENT_VALUE, Integer.class);
-            return data.replace("{{increment}}", String.valueOf(incrementValue));
+            if (entityType.equals("Agency") || entityType.equals("Provider") || entityType.equals("Worker")) {
+                int incrementValue = GlobalVariables.getVariable(entityType + INCREMENT_VALUE, Integer.class);
+                data = data.replace("{{increment}}", String.valueOf(incrementValue));
+            } else {
+                logger.warn("Increment placeholder found for entity type {} which does not support increment values.", entityType);
+            }
         }
         return data;
     }
@@ -93,10 +98,17 @@ public class DataConfigurationReader {
     // Private method to load the increment value from file
     private static int loadIncrementValueFromFile(String entityType) {
         String filePath = getFilePathForEntity(entityType);
+
+        // Check if the file path is null or empty
+        if (filePath == null || filePath.isEmpty()) {
+            logger.error("File path for entity {} is invalid or not found, defaulting to 1", entityType);
+            return 1; // Default value if the file path is invalid
+        }
+
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line = reader.readLine();
             if (line != null) {
-                return Integer.parseInt(line);
+                return Integer.parseInt(line.trim());
             }
         } catch (IOException e) {
             logger.error("Failed to load increment value for {}", entityType + ", defaulting to 1", e);
@@ -127,10 +139,16 @@ public class DataConfigurationReader {
     }
 
     private static String getFilePathForEntity(String entityType) {
-        return switch (entityType.toLowerCase()) {
+        logger.info("********** Received entity type: {}", entityType);
+        String lowerCaseEntityType = entityType.toLowerCase();
+        if (!Arrays.asList("agency", "provider", "worker", "job", "agreement").contains(lowerCaseEntityType)) {
+            throw new IllegalArgumentException("Unknown entity type: " + entityType);
+        }
+        return switch (lowerCaseEntityType) {
             case "agency" -> INCREMENT_FILE_PATH_AGENCY;
             case "provider" -> INCREMENT_FILE_PATH_PROVIDER;
             case "worker" -> INCREMENT_FILE_PATH_WORKER;
+            case "job", "agreement" -> null; // No increment file for jobs and agreements
             default -> throw new IllegalArgumentException("Unknown entity type: " + entityType);
         };
     }
