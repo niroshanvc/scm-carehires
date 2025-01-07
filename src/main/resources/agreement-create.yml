@@ -8,6 +8,28 @@ Agreement Overview:
 Worker Rates:
   Worker Type: Rehabilitation Worker
   Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
-  Hourly Rate: 10
-  Agency Margin: 1.85
-  CH Hourly Margin: 1.15
+  Hourly Rate: "10.00"
+  Agency Margin: "1.85"
+  CH Hourly Margin: "1.15"
+Cancellation Policy:
+  Before Job Start: 1 hour
+  Cancellation fee percentage: "75"
+  CareHires split: "25"
+  Agency split: "75"
+Sleep In Rates:
+  Worker Type: Rehabilitation Worker
+  Hourly Rate: "10.00"
+  Agency Margin: "1.85"
+  CH Hourly Margin: "1.15"
+Policies for the Provisions of Service:
+  Billing Cycle: Weekly
+  Credit Period: 28
+Signatories:
+  Agency:
+    Name: Glenn Walter
+    Designation: Managing Executive
+    Email: carehires+agreement01@zohomail.com
+  Provider:
+    Name: Ridley James
+    Designation: Finance Executive
+    Email: carehires+agreement02@zohomail.com

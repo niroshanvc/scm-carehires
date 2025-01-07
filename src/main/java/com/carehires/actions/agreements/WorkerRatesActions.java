@@ -11,9 +11,13 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 
 public class WorkerRatesActions {
@@ -25,9 +29,10 @@ public class WorkerRatesActions {
     private static final String YML_HEADER = "Worker Rates";
     private static final String ADD = "Add";
     private static final String EDIT_YML_FILE = "agreement-edit";
-    String hourlyRate;
-    String agencyMargin;
-    String chHourlyMargin;
+    private String hourlyRate;
+    private String agencyMargin;
+    private String chHourlyMargin;
+    private String workerType;
 
     private static final Logger logger = LogManager.getLogger(WorkerRatesActions.class);
 
@@ -44,7 +49,7 @@ public class WorkerRatesActions {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Worker Rates Info >>>>>>>>>>>>>>>>>>>>");
 
-        String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Worker Type");
+        workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Worker Type");
         BasePage.clickWithJavaScript(workerRatesPage.workerTypeDropdown);
         By by = By.xpath(getDropdownOptionXpath(workerType));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
@@ -77,7 +82,13 @@ public class WorkerRatesActions {
         verifyNormalRateChHourlyVat();
         verifyNormalRateFinalRateWithVatAmount();
         verifyNormalRateFinalRateWithNoVatAmount();
+
+        BasePage.scrollToWebElement(workerRatesPage.addButton);
         BasePage.clickWithJavaScript(workerRatesPage.addButton);
+        verifyWorkerRateIsAddedSuccessfully();
+        BasePage.scrollToWebElement(workerRatesPage.continueButton);
+        verifyDataLoadedInCurrentWorkerRatesList();
+        BasePage.clickWithJavaScript(workerRatesPage.continueButton);
     }
 
     private String getDropdownOptionXpath(String option) {
@@ -161,5 +172,98 @@ public class WorkerRatesActions {
         BigDecimal bd = BigDecimal.valueOf(d).setScale(2, RoundingMode.HALF_UP);
         double value = bd.doubleValue();
         return String.format("%.2f", value);
+    }
+
+    private void verifyWorkerRateIsAddedSuccessfully() {
+        BasePage.waitUntilElementPresent(workerRatesPage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(workerRatesPage.successMessage).toLowerCase().trim();
+        String expected = "Worker rate created successfully";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Worker rate is not created!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(workerRatesPage.successMessage, 20);
+    }
+
+    private void verifyDataLoadedInCurrentWorkerRatesList() {
+        BasePage.genericWait(1500);
+        verifySavedWorkerType();
+        verifySavedSkills();
+        verifySavedWorkerRate();
+        verifyAgencyChargeWithVat();
+        verifyAgencyChargeWithoutVat();
+        verifyCareHiresCharge();
+        verifyFinalHourlyRateWithVat();
+        verifyFinalHourlyRateWithoutVat();
+    }
+
+    private void verifyFinalHourlyRateWithoutVat() {
+        String actualWithCurrency = BasePage.getText(workerRatesPage.finalHourlyRateWithNonVat).trim();
+        String[] str = actualWithCurrency.split(" ");
+        String actual = str[1];
+        double expectedWithMoreDecimalPlaces = calculateSumOfHourlyRateAndAgencyMargin() +
+                ((Double.parseDouble(chHourlyMargin)) * ( 1 + 0.2));
+        String expected = roundToTwoDecimalPlaces(expectedWithMoreDecimalPlaces);
+        assertThat("Final Hourly Rate with Non VAT is not correctly displayed!", actual, is(expected));
+    }
+
+    private void verifyFinalHourlyRateWithVat() {
+        String actualWithCurrency = BasePage.getText(workerRatesPage.finalHourlyRateWithVat).trim();
+        String[] str = actualWithCurrency.split(" ");
+        String actual = str[1];
+        double expectedWithMoreDecimalPlaces = calculateSumOfHourlyRateAndAgencyMargin() + calculateExpectedAgencyVat()
+                + ((Double.parseDouble(chHourlyMargin)) * ( 1 + 0.2));
+        String expected = roundToTwoDecimalPlaces(expectedWithMoreDecimalPlaces);
+        assertThat("Final Hourly Rate with VAT is not correctly displayed!", actual, is(expected));
+    }
+
+    private void verifyCareHiresCharge() {
+        String actualWithCurrency = BasePage.getText(workerRatesPage.careHiresCharge).trim();
+        String[] str = actualWithCurrency.split(" ");
+        String actual = str[1];
+        double expected = ((Double.parseDouble(chHourlyMargin)) * ( 1 + 0.2));
+        String expectedString = roundToTwoDecimalPlaces(expected);
+        assertThat("CareHires Charge is not correctly displayed!", actual, is(expectedString));
+    }
+
+    private void verifyAgencyChargeWithoutVat() {
+        String actualWithCurrency = BasePage.getText(workerRatesPage.agencyChargeWithNonVat).trim();
+        String[] str = actualWithCurrency.split(" ");
+        String actual = str[1];
+        double expectedWithMoreDecimalPlaces = calculateSumOfHourlyRateAndAgencyMargin();
+        String expected = roundToTwoDecimalPlaces(expectedWithMoreDecimalPlaces);
+        assertThat("Agency charge with Non VAT is not correctly displayed!", actual, is(expected));
+    }
+
+    private void verifyAgencyChargeWithVat() {
+        String actualWithCurrency = BasePage.getText(workerRatesPage.agencyChargeWithVat).trim();
+        String[] str = actualWithCurrency.split(" ");
+        String actual = str[1];
+        double expectedWithMoreDecimalPlaces = calculateSumOfHourlyRateAndAgencyMargin() + calculateExpectedAgencyVat();
+        String expected = roundToTwoDecimalPlaces(expectedWithMoreDecimalPlaces);
+        assertThat("Agency charge with VAT is not correctly displayed!", actual, is(expected));
+    }
+
+    private void verifySavedWorkerRate() {
+        String actualWithCurrency = BasePage.getText(workerRatesPage.hourlyRate).trim();
+        String[] str = actualWithCurrency.split(" ");
+        String actual = str[1];
+        String expected = hourlyRate;
+        assertThat("Worker rate is not correctly displayed!", actual, is(expected));
+    }
+
+    private void verifySavedSkills() {
+        List<String> expected = Arrays.asList(Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(
+                ENTITY, YML_FILE, YML_HEADER, "Skills")).split(","));
+        List<String> actual = workerRatesPage.skills.stream().map(WebElement::getText).map(String::trim).
+                collect(Collectors.toList());
+
+        // Using Hamcrest to verify both lists contain the same elements
+        assertThat("Saved Skills are not correctly displayed!", actual, containsInAnyOrder(expected.toArray()));
+    }
+
+    private void verifySavedWorkerType() {
+        BasePage.waitUntilElementPresent(workerRatesPage.workerType, 30);
+        String actual = BasePage.getText(workerRatesPage.workerType).trim().toLowerCase();
+        String expected = workerType.toLowerCase();
+        assertThat("Worker type is not correctly displayed!", actual, is(expected));
     }
 }

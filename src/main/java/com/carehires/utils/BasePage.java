@@ -46,6 +46,7 @@ public class BasePage {
     private static final Properties prop = new Properties();
     private static FileInputStream fis;
     private static final String HEADLESS = "--headless";
+    private static final String JAVASCRIPT_CLICK = "arguments[0].click();";
 
     //for parallel execution
     private static final ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
@@ -253,7 +254,7 @@ public class BasePage {
         } catch (WebDriverInitializationException e) {
             throw new RuntimeException(e);
         }
-        js.executeScript("arguments[0].click();", ele);
+        js.executeScript(JAVASCRIPT_CLICK, ele);
     }
 
     public static List<WebElement> findListOfWebElements(String xpath) {
@@ -425,7 +426,7 @@ public class BasePage {
                 actions.moveToElement(subElement).click().perform();
             } else {
                 JavascriptExecutor js = (JavascriptExecutor) getDriver();
-                js.executeScript("arguments[0].click();", subElement);
+                js.executeScript(JAVASCRIPT_CLICK, subElement);
             }
         } catch (Exception e) {
             logger.error("Failed to perform mouse hover and click: message: %s and error: %s", e.getMessage(), e);
@@ -484,7 +485,7 @@ public class BasePage {
             waitUntilElementPresent(ele, 30);
             JavascriptExecutor js;
             js = (JavascriptExecutor) getDriver();
-            js.executeScript("arguments[0].click();", ele);
+            js.executeScript(JAVASCRIPT_CLICK, ele);
 
         } catch (WebDriverInitializationException e) {
             throw new RuntimeException(e);
@@ -745,7 +746,7 @@ public class BasePage {
     }
 
     public static void waitUntilElementClickable(By locator, int timeoutInSeconds) {
-        WebDriverWait wait = null;
+        WebDriverWait wait;
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
         } catch (WebDriverInitializationException e) {
@@ -779,5 +780,27 @@ public class BasePage {
         } catch (WebDriverInitializationException e) {
             logger.error("Element was not present after waiting for %s seconds. Locator: %s", timeoutSeconds, locator);
         }
+    }
+
+    public static void waitUntilDisabledAttributeDisappears(WebElement element, int timeOutSeconds) {
+        logger.info("****************** Wait until element attribute disappeared: %s", element);
+
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+        wait.until(driver -> {
+            try {
+                try {
+                    return Objects.requireNonNull(((JavascriptExecutor) getDriver())
+                            .executeScript("return arguments[0].getAttribute('disabled') == null;", element));
+                } catch (WebDriverInitializationException e) {
+                    throw new RuntimeException(e);
+                }
+            } catch (RuntimeException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

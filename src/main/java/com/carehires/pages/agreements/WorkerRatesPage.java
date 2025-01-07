@@ -3,6 +3,8 @@ package com.carehires.pages.agreements;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.List;
+
 public class WorkerRatesPage {
 
     @FindBy(xpath = "//nb-select[@formcontrolname='workerType']/button")
@@ -49,6 +51,30 @@ public class WorkerRatesPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    @FindBy(xpath = "//p[@class='ch-sub-heading']/../table/tbody/tr[1]/td[1]/span[1]")
+    public WebElement workerType;
+
+    @FindBy(xpath = "//p[@class='ch-sub-heading']/../table/tbody/tr[1]/td[1]/span[@class]")
+    public List<WebElement> skills;
+
+    @FindBy(xpath = "//p[@class='ch-sub-heading']/../table/tbody/tr[1]/td[2]")
+    public WebElement hourlyRate;
+
+    @FindBy(xpath = "//p[@class='ch-sub-heading']/../table/tbody/tr[1]/td[3]/div[1]/div[2]")
+    public WebElement agencyChargeWithVat;
+
+    @FindBy(xpath = "//p[@class='ch-sub-heading']/../table/tbody/tr[1]/td[3]/div[2]/div[2]")
+    public WebElement agencyChargeWithNonVat;
+
+    @FindBy(xpath = "//p[@class='ch-sub-heading']/../table/tbody/tr[1]/td[4]")
+    public WebElement careHiresCharge;
+
+    @FindBy(xpath = "//p[@class='ch-sub-heading']/../table/tbody/tr[1]/td[5]/div[1]/div[2]/b")
+    public WebElement finalHourlyRateWithVat;
+
+    @FindBy(xpath = "//p[@class='ch-sub-heading']/../table/tbody/tr[1]/td[5]/div[2]/div[2]/b")
+    public WebElement finalHourlyRateWithNonVat;
 
     @FindBy(xpath = "//button[contains(text(), 'Continue')]")
     public WebElement continueButton;

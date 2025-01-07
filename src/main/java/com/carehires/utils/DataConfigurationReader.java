@@ -61,18 +61,13 @@ public class DataConfigurationReader {
     }
 
     private static String replaceDynamicPlaceholders(String data, String entityType) {
-        switch (data) {
-            case "<uniqueNumber>":
-                return generateUniqueNumber();
-            case "<insuranceNumber>":
-                return generateNationalInsuranceNumber();
-            case "<shareCode>":
-                return generateShareCodeNumber();
-            case "<passportNumber>":
-                return generatePassportNumber();
-            default:
-                return replaceIncrementPlaceholder(data, entityType);
-        }
+        return switch (data) {
+            case "<uniqueNumber>" -> generateUniqueNumber();
+            case "<insuranceNumber>" -> generateNationalInsuranceNumber();
+            case "<shareCode>" -> generateShareCodeNumber();
+            case "<passportNumber>" -> generatePassportNumber();
+            default -> replaceIncrementPlaceholder(data, entityType);
+        };
     }
 
     private static String replaceIncrementPlaceholder(String data, String entityType) {
@@ -125,8 +120,11 @@ public class DataConfigurationReader {
     // Save the increment value to the file
     private static void saveIncrementValueToFile(String entityType, int value) {
         String filePath = getFilePathForEntity(entityType);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            writer.write(String.valueOf(value));
+        try {
+            assert filePath != null;
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                writer.write(String.valueOf(value));
+            }
         } catch (IOException e) {
             logger.error("Failed to save increment value for {}", entityType, e);
         }
