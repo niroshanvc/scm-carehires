@@ -45,11 +45,15 @@ public class Hooks {
     // Determine the entity type based on the scenario tags
     private String determineEntityTypeFromScenario(Scenario scenario) {
         if (scenario.getSourceTagNames().contains("@Provider")) {
-            return "provider";
+            return "Provider";
         } else if (scenario.getSourceTagNames().contains("@Agency")) {
-            return "agency";
+            return "Agency";
         } else if (scenario.getSourceTagNames().contains("@Worker")) {
-            return "worker";
+            return "Worker";
+        } else if (scenario.getSourceTagNames().contains("@Agreement")) {
+            return "Agreement";
+        } else if (scenario.getSourceTagNames().contains("@Job")) {
+            return "Job";
         }
         // If no matching entity type is found, log the issue and return "default"
         logger.error("Unknown entity type for scenario: {}", scenario.getName());

@@ -62,11 +62,11 @@ public class AgencyCreditServiceActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Credit Service information >>>>>>>>>>>>>>>>>>>>");
 
         // Retrieve the incremented value
-        Integer incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
+        Integer incrementValue = GlobalVariables.getVariable("agency_incrementValue", Integer.class);
 
         // Check for null or default value
         if (incrementValue == null) {
-            throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");
+            throw new NullPointerException("Increment value for agency is not set in GlobalVariables.");
         }
 
         if (BasePage.isElementEnabled(creditServicePage.firstName) && BasePage.isElementDisplayed(creditServicePage.firstName)) {

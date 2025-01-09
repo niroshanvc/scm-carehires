@@ -23,6 +23,18 @@ public class LeftSideMenuPage {
 
     public static final By providersViewSubLink = By.xpath("(//div[text()='View'])[3]");
 
+    public static final By agreementsMainLink = By.xpath("//img[@title='Agreements']/..");
+
+    public static final By agreementsCreateSubLink = By.xpath("(//div[text()='Create'])[3]");
+
+    public static final By agreementsViewSubLink = By.xpath("(//div[text()='View'])[4]");
+
+    public static final By agreementsOverviewSubLink = By.xpath("(//div[text()='Overview'])[1]");
+
+    public static final By tasksMainLink = By.xpath("//img[@title='Tasks']/..");
+
+    public static final By paymentAuthorisationsSubLink = By.xpath("//div[text()='Payment Authorisations']");
+
     @FindBy(xpath = "//img[@alt='Jobs']")
     public WebElement jobsIcon;
 }
