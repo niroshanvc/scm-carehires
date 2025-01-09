@@ -31,6 +31,10 @@ public class LeftSideMenuPage {
 
     public static final By agreementsOverviewSubLink = By.xpath("(//div[text()='Overview'])[1]");
 
+    public static final By tasksMainLink = By.xpath("//img[@title='Tasks']/..");
+
+    public static final By paymentAuthorisationsSubLink = By.xpath("//div[text()='Payment Authorisations']");
+
     @FindBy(xpath = "//img[@alt='Jobs']")
     public WebElement jobsIcon;
 }

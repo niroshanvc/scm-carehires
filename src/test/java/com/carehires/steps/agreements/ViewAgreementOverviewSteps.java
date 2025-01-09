@@ -8,13 +8,18 @@ public class ViewAgreementOverviewSteps {
 
     ViewAgreementOverviewActions viewAgreementOverviewActions = new ViewAgreementOverviewActions();
 
-    @Then("User verifies agreement payment status and signature status")
-    public void verifyAgreementPaymentStatusAndSignatureStatus() {
-        viewAgreementOverviewActions.verifyAgreementPaymentStatusAndSignatureStatus();
+    @Then("^User verifies agreement payment status as (.*) and signature status as (.*)$")
+    public void verifyAgreementPaymentStatusAndSignatureStatus(String paymentStatus, String signatureStatus) {
+        viewAgreementOverviewActions.verifyAgreementPaymentStatusAndSignatureStatus(paymentStatus, signatureStatus);
     }
 
     @And("User clicks on Mark as signed button")
     public void clickOnMarkAsSignedButton() {
         viewAgreementOverviewActions.clickOnMarkAsSigned();
+    }
+
+    @And("User clicks on Active Agreement button")
+    public void clickOnActiveAgreementButton() {
+        viewAgreementOverviewActions.clickOnActiveAgreement();
     }
 }
