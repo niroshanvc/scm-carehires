@@ -38,18 +38,35 @@ public class ViewAgreementOverviewActions {
         }
     }
     public void verifyAgreementPaymentStatusAndSignatureStatus(String paymentStatus, String signatureStatus) {
-        verifyAgreementPaymentStatus(paymentStatus);
-        verifyAgreementSignatureStatus(signatureStatus);
+        verifyPaymentStatus(paymentStatus);
+        verifySignatureStatus(signatureStatus);
     }
 
-    private void verifyAgreementSignatureStatus(String expected) {
+    public void verifyAgreementSignatureStatus(String signatureStatus) {
+        verifySignatureStatus(signatureStatus);
+    }
+
+    private void verifySignatureStatus(String expected) {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.refreshPage();
+        BasePage.genericWait(3000);
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying signature status >>>>>>>>>>>>>>>>>>>>");
-        String actual = BasePage.getText(viewAgreementOverviewPage.signatureStatus).trim().toUpperCase();
+        String actual = "";
+        if (expected.equalsIgnoreCase("PENDING TO SIGN")) {
+            BasePage.waitUntilElementPresent(viewAgreementOverviewPage.signatureStatus, 60);
+            actual = BasePage.getText(viewAgreementOverviewPage.signatureStatus).trim().toUpperCase();
+        } else if (expected.equalsIgnoreCase("SIGNED")) {
+            BasePage.waitUntilElementPresent(viewAgreementOverviewPage.signatureStatusSigned, 60);
+            actual = BasePage.getText(viewAgreementOverviewPage.signatureStatusSigned).trim().toUpperCase();
+        } else if (expected.equalsIgnoreCase("ACTIVE")) {
+            BasePage.waitUntilElementPresent(viewAgreementOverviewPage.signatureStatusActive, 60);
+            actual = BasePage.getText(viewAgreementOverviewPage.signatureStatusActive).trim().toUpperCase();
+        }
         assertThat("Agreement signature status is not correct!", actual, is(expected));
     }
 
-    private void verifyAgreementPaymentStatus(String expected) {
+    private void verifyPaymentStatus(String expected) {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying payment status >>>>>>>>>>>>>>>>>>>>");
         String actual = BasePage.getText(viewAgreementOverviewPage.paymentAuthorizationStatus).trim().toUpperCase();
@@ -100,7 +117,7 @@ public class ViewAgreementOverviewActions {
         BasePage.waitUntilElementPresent(viewAgreementOverviewPage.attachAgreementNote, 30);
         String providerFullText = BasePage.getText(viewAgreementOverviewPage.providerTermsAndConditionsText).trim();
         String[] strArr = providerFullText.split("on behalf of");
-        String actual = strArr[1];
+        String actual = strArr[1].trim();
         String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SIGNATORIES, YML_HEADER_PROVIDER, "Name");
         assertThat("Provider name displays incorrectly!", actual, is(expected));
     }
@@ -109,7 +126,7 @@ public class ViewAgreementOverviewActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Agency Name displaying in the Attach Agreement popup >>>>>>>>>>>>>>>>>>>>");
         String agencyFullText = BasePage.getText(viewAgreementOverviewPage.agencyTermsAndConditionsText).trim();
         String[] strArr = agencyFullText.split("on behalf of");
-        String actual = strArr[1];
+        String actual = strArr[1].trim();
         String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SIGNATORIES, YML_HEADER_AGENCY, "Name");
         assertThat("Agency name displays incorrectly!", actual, is(expected));
     }
@@ -124,7 +141,7 @@ public class ViewAgreementOverviewActions {
     private void verifyMarkAsActiveSuccessMessage() {
         BasePage.waitUntilElementPresent(viewAgreementOverviewPage.successMessage, 1200);
         String actualInLowerCase = BasePage.getText(viewAgreementOverviewPage.successMessage).toLowerCase().trim();
-        String expected = "Agreement marked as active successfully";
+        String expected = "Agreement marked as active";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Contract signed success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(viewAgreementOverviewPage.successMessage, 60);

@@ -16,7 +16,6 @@ Feature: Test CareHires edit agency and make profile approved
     And User again logins to carehires
     And User navigates to Agency View page
     And User finds recently created agency
-
     And User moves to the profile page and edit data
     And User moves to Credit Service and edit data
     And User moves to Locations and edit data

@@ -11,6 +11,12 @@ public class ViewAgreementOverviewPage {
     @FindBy(xpath = "//div[contains(@class, 'resubmitted')]//div[contains(@class, 'col')]")
     public WebElement signatureStatus;
 
+    @FindBy(xpath = "//div[contains(@class, 'status-div')]//div[contains(@class, 'col')]")
+    public WebElement signatureStatusSigned;
+
+    @FindBy(xpath = "//div[contains(@class, 'status-div')]//div[contains(@class, 'col')]")
+    public WebElement signatureStatusActive;
+
     @FindBy(xpath = "//button[contains(text(), 'Mark As Signed')]")
     public WebElement markAsSignedButton;
 
@@ -23,10 +29,10 @@ public class ViewAgreementOverviewPage {
     @FindBy(xpath = "//div[@class='job-details-section']//textarea")
     public WebElement attachAgreementNote;
 
-    @FindBy(xpath = "(//nb-checkbox[@status='basic'])[1]")
+    @FindBy(xpath = "(//nb-checkbox[@status='basic'])[1]//input")
     public WebElement providerTermsAndConditionsCheckbox;
 
-    @FindBy(xpath = "(//nb-checkbox[@status='basic'])[2]")
+    @FindBy(xpath = "(//nb-checkbox[@status='basic'])[2]//input")
     public WebElement agencyTermsAndConditionsCheckbox;
 
     @FindBy(xpath = "//input[@type='file']")

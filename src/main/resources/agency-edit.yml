@@ -53,7 +53,7 @@ Agency Business Location:
     JobNotificationAddress: automation.qa+agencyjobnot{{increment}}@carehires.com
     ApprovalNotificationAddress: automation.qa+agencyappnot{{increment}}@carehires.com
   Update:
-    BusinessLocation: South Lancashire
+    BusinessLocation: North London
     BusinessEmailAddress: automation.qa+agencybuss{{increment}}@carehires.com
     City: Lancashire
     JobNotificationAddress: automation.qa+agencyjobnot{{increment}}@carehires.com

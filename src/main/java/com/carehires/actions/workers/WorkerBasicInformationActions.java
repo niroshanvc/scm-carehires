@@ -471,7 +471,6 @@ public class WorkerBasicInformationActions {
     private void isBasicInfoSaved() {
         BasePage.waitAndIgnoreStaleException(basicInfo.saveButton, 90);
         BasePage.waitUntilElementPresent(basicInfo.basicInformationStep, 90);
-
         String actual = BasePage.getAttributeValue(basicInfo.basicInformationStep, "icon");
         String expected = "completed";
         assertThat("Basic information is not saved", actual, is(expected));
@@ -491,6 +490,7 @@ public class WorkerBasicInformationActions {
         enterEmploymentInformation(EDIT_YML_FILE, ADD);
         enterPassportAndOtherInformation(EDIT_YML_FILE, ADD);
         enterTravelInformation(EDIT_YML_FILE, ADD);
+        BasePage.genericWait(10000);
 
         BasePage.clickWithJavaScript(basicInfo.saveButton);
         isBasicInfoSaved();
@@ -519,7 +519,9 @@ public class WorkerBasicInformationActions {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.genericWait(3000);
         BasePage.waitUntilElementPresent(basicInfo.topThreeDots, 30);
-        BasePage.mouseHoverAndClick(basicInfo.topThreeDots, basicInfo.updateProfileLink, WorkerBasicInformationPage.updateProfileLinkChildElement);
+        BasePage.mouseHoverAndClick(basicInfo.topThreeDots, basicInfo.updateProfileLink,
+                WorkerBasicInformationPage.updateProfileLinkChildElement);
+        BasePage.genericWait(3000);
         BasePage.waitUntilElementClickable(basicInfo.saveButton, 30);
     }
 

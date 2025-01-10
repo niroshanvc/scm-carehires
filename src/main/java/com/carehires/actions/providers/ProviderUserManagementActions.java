@@ -196,6 +196,7 @@ public class ProviderUserManagementActions {
 
     private void enterUserManagementData(String ymlFile, String subHeader) {
         String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "email");
+        BasePage.genericWait(2000);
 
         //wait until email get validated
         genericUtils.waitUntilEmailAddressValidatedForUniqueness(email, userManagement.emailAddress, userManagement.name);

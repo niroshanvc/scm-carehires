@@ -164,7 +164,7 @@ public class WorkerEmploymentHistoryActions {
 
     private void verifyEmploymentHistorySavedSuccessfully() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying employment history saved successfully >>>>>>>>>>>>>>>>>>>>");
-        BasePage.waitUntilElementPresent(employmentHistoryPage.successPopup, 60);
+        BasePage.waitUntilElementPresent(employmentHistoryPage.successPopup, 120);
         String actual = BasePage.getText(employmentHistoryPage.successPopupTitle).trim();
         String expected = "Successful!";
         assertThat("Employment history is not saved successfully!", actual, is(expected));

@@ -35,7 +35,7 @@ Company Information:
 
 Site Management:
   Add:
-    SiteName: BioRevolution Care {{increment}}
+    SiteName: BioRevolution - Care {{increment}}
     SiteType: Learning Disabilities
     SiteSpecialism: Adult,Autism,Childrens,Learning Disabilities
     AlsoKnownAs: BioRevolution{{increment}}
@@ -48,7 +48,7 @@ Site Management:
     JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
     ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
   Update:
-    SiteName: BioRevolution Care - Edited {{increment}}
+    SiteName: BioRevolution Care {{increment}}
     SiteType: Hospital
     SiteSpecialism: Adult,Mental Health,Nursing
     AlsoKnownAs: BioRevolution{{increment}}

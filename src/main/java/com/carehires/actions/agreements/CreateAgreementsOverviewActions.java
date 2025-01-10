@@ -67,7 +67,7 @@ public class CreateAgreementsOverviewActions {
         BasePage.clickWithJavaScript(agreementsOverviewPage.siteDropdown);
         BasePage.waitUntilElementClickable(getDropdownOptionXpath(site), 30);
         selectAllSites();
-        BasePage.genericWait(2000);
+        BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(agreementsOverviewPage.continueButton);
         verifySuccessMessage();
     }

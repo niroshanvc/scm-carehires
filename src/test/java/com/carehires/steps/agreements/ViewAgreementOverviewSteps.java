@@ -22,4 +22,9 @@ public class ViewAgreementOverviewSteps {
     public void clickOnActiveAgreementButton() {
         viewAgreementOverviewActions.clickOnActiveAgreement();
     }
+
+    @Then("^User verifies agreement signature status as (.*)$")
+    public void verifyAgreementSignatureStatus(String signatureStatus) {
+        viewAgreementOverviewActions.verifyAgreementSignatureStatus(signatureStatus);
+    }
 }

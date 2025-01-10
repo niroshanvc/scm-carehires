@@ -168,7 +168,7 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//p[contains(@class, 'text-icon') and contains(text(), '…')]")
     public WebElement topThreeDots;
 
-    @FindBy(xpath = "//li[contains(text(), 'Update Profile')]")
+    @FindBy(xpath = "//div[contains(@class, 'side')]/ul[@class='expanded-nav']/li[1]")
     public WebElement updateProfileLink;
 
     public static final By updateProfileLinkChildElement = By.xpath("//li/span[contains(text(), 'Update Profile')]");

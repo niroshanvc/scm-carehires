@@ -8,7 +8,7 @@ import io.cucumber.testng.CucumberOptions;
         glue = {"com.carehires.steps", "com.carehires.hooks"},
         plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"},
         monochrome = true,
-        tags = "@CreateAgency"
+        tags = "@CreateProvider"
 //        tags = "@CreateAgency or @EditAgency or @CreateProvider or @EditProvider or @CreateWorker or @EditWorker"
 //        or @CreateAgreement
 )
