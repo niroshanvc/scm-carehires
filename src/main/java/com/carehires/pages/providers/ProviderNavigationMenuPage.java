@@ -23,16 +23,16 @@ public class ProviderNavigationMenuPage {
     @FindBy(xpath = "//div[contains(text(), 'Staff')]/..//img")
     public WebElement staffImage;
 
-    @FindBy(xpath = "//div[contains(text(), 'Users')]/../..")
+    @FindBy(xpath = "//h6[contains(text(), 'User')]/../..")
     public WebElement users;
 
-    @FindBy(xpath = "//div[contains(text(), 'Users')]/..//img")
+    @FindBy(xpath = "//h6[contains(text(), 'User')]/..//nb-icon")
     public WebElement usersImage;
 
-    @FindBy(xpath = "//div[contains(text(), 'Billing')]/..")
+    @FindBy(xpath = "//h6[contains(text(), 'Billing')]/..")
     public WebElement billing;
 
-    @FindBy(xpath = "//div[contains(text(), 'Billing')]/..//img")
+    @FindBy(xpath = "//h6[contains(text(), 'Billing')]/..//nb-icon")
     public WebElement billingImage;
 
     @FindBy(xpath = "//div[contains(text(), 'Agreement')]/../..")

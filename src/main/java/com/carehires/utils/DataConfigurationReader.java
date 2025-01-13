@@ -23,8 +23,14 @@ public class DataConfigurationReader {
     private static final String INCREMENT_FILE_PATH_AGENCY = "src/main/resources/agency_increment_value.txt";
     private static final String INCREMENT_FILE_PATH_PROVIDER = "src/main/resources/provider_increment_value.txt";
     private static final String INCREMENT_FILE_PATH_WORKER = "src/main/resources/worker_increment_value.txt";
+    private static final String INCREMENT_FILE_PATH_AGREEMENT = "src/main/resources/agreement_increment_value.txt";
     private static final String INCREMENT_VALUE = "_incrementValue";
     private static final String INCREMENT_VARIABLE = "{{increment}}";
+
+    // Private constructor to prevent instantiation
+    private DataConfigurationReader() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated.");
+    }
 
     // Method to read data from the YAML file
     public static String readDataFromYmlFile(String entityType, String fileName, String... keys) {
@@ -78,6 +84,14 @@ public class DataConfigurationReader {
 
         if (data.contains(INCREMENT_VARIABLE)) {
             data = replaceIncrementPlaceholder(data, entityType);
+        }
+
+        if (data.contains("<accountNumber>")) {
+            data = data.replace("<accountNumber>", generateAccountNumber(entityType));
+        }
+
+        if (data.contains("<costCenterNumber>")) {
+            data = data.replace("<costCenterNumber>", generateCostCenterNumber(entityType));
         }
 
         return data;
@@ -207,7 +221,8 @@ public class DataConfigurationReader {
             case "agency" -> INCREMENT_FILE_PATH_AGENCY;
             case "provider" -> INCREMENT_FILE_PATH_PROVIDER;
             case "worker" -> INCREMENT_FILE_PATH_WORKER;
-            case "job", "agreement" -> null; // No increment file for Jobs and Agreements
+            case "agreement" -> INCREMENT_FILE_PATH_AGREEMENT;
+            case "job" -> null; // No increment file for Jobs and Agreements
             default -> throw new IllegalArgumentException("Unknown entity type: " + entityType);
         };
     }
@@ -241,7 +256,7 @@ public class DataConfigurationReader {
      *
      * @return A unique National Insurance Number (e.g., AB123456C).
      */
-    public static String generateNationalInsuranceNumber() {
+    private static String generateNationalInsuranceNumber() {
         // Generate the first two characters
         StringBuilder niNumber = new StringBuilder();
         niNumber.append(generateRandomLetter());  // First letter
@@ -271,7 +286,7 @@ public class DataConfigurationReader {
      *
      * @return A unique Share Code Number (e.g., A1234567C).
      */
-    public static String generateShareCodeNumber() {
+    private static String generateShareCodeNumber() {
         // Generate the first two characters
         StringBuilder shareCode = new StringBuilder();
         shareCode.append(generateRandomLetter());  // First letter
@@ -292,7 +307,7 @@ public class DataConfigurationReader {
      *
      * @return A unique Share Code Number (e.g., AB1234567).
      */
-    public static String generatePassportNumber() {
+    private static String generatePassportNumber() {
         // Generate the first two characters
         StringBuilder passport = new StringBuilder();
         passport.append(generateRandomLetter()); // First letter
@@ -303,5 +318,15 @@ public class DataConfigurationReader {
         passport.append(numericPart);
 
         return passport.toString();
+    }
+
+    private static String generateAccountNumber(String entityType) {
+        int currentValue = getCurrentIncrementValue(entityType);
+        return String.format("%08d", currentValue);
+    }
+
+    private static String generateCostCenterNumber(String entityType) {
+        int incrementValue = getCurrentIncrementValue(entityType); // Auto-increment value
+        return String.format("CC%06d", incrementValue); // Format as CCXXXXXX
     }
 }

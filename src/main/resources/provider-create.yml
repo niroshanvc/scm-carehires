@@ -46,7 +46,7 @@ User:
     JobTitle: Assistant Executive
     Phone: "07412001246"
     MarkAsAnAuthoriser: "Yes"
-    UserAccessLevel: Shift Admin (With rate),Site Admin
+    UserAccessLevel: Org Admin
 
 Billing Information:
   General Billing Information:
@@ -63,6 +63,20 @@ Billing Information:
       LastName: Joseph
       EmailAddress: carehires+billingpro{{increment}}@zohomail.com
       PhoneNumberContact: "07412001246"
+  Custom Billing Information:
+    Add:
+      Site: BioRevolution Care {{increment}}
+      Address bills in attention to: "Uber9s Ltd"
+      Billing Address: "Uber9s Ltd, Gb697 6910 69, Unit 21 Silverstone Tech Park, Silverstone, Towcester, Northamptonshire"
+      Digital Billing Address: carehires+procustombilling{{increment}}@zohomail.com
+      Cost Center: "<costCenterNumber>"
+      Phone Number: "07412001246"
+      Billing Cycle: Bi Weekly
+      Credit Term: 28 Days
+      Is same as general billing bank info: "Yes"
+      Account Name: William Sandrock
+      Account Number: "<accountNumber>"
+      Sort Code: 108866
 
 SubContract:
   Note: Sub contract agreement note is entered.

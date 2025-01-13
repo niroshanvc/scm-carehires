@@ -87,9 +87,10 @@ public class ProviderUserManagementActions {
         verifySuccessMessage();
         isUserAdded();
 
+        BasePage.genericWait(10000);
         BasePage.clickWithJavaScript(userManagement.updateButton);
+        BasePage.genericWait(5000);
         BasePage.waitUntilElementDisplayed(userManagement.nextButton, 60);
-        BasePage.waitUntilElementClickable(userManagement.nextButton, 20);
         BasePage.clickWithJavaScript(userManagement.nextButton);
     }
 

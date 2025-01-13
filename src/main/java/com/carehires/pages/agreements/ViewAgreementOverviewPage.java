@@ -3,6 +3,8 @@ package com.carehires.pages.agreements;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.List;
+
 public class ViewAgreementOverviewPage {
 
     @FindBy(xpath = "//div[contains(@class, 'pending-authorization')]//div[contains(@class, 'col')]")
@@ -12,7 +14,7 @@ public class ViewAgreementOverviewPage {
     public WebElement signatureStatus;
 
     @FindBy(xpath = "//div[contains(@class, 'status-div')]//div[contains(@class, 'col')]")
-    public WebElement signatureStatusSigned;
+    public List<WebElement> signatureStatusSigned;
 
     @FindBy(xpath = "//div[contains(@class, 'status-div')]//div[contains(@class, 'col')]")
     public WebElement signatureStatusActive;

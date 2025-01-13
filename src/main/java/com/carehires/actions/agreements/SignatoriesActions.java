@@ -1,5 +1,6 @@
 package com.carehires.actions.agreements;
 
+import com.carehires.common.GlobalVariables;
 import com.carehires.pages.agreements.SignatoriesPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -20,6 +21,7 @@ public class SignatoriesActions {
     private static final String YML_HEADER_PROVIDER = "Provider";
     private static final String ADD = "Add";
     private static final String EDIT_YML_FILE = "agreement-edit";
+    Integer incrementValue;
 
     private static final Logger logger = LogManager.getLogger(SignatoriesActions.class);
 
@@ -35,6 +37,13 @@ public class SignatoriesActions {
     public void addSignatoryInfo() {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Signatories Info >>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("agreement_incrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for agreement is not set in GlobalVariables.");
+        }
 
         String agencyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_AGENCY, "Name");
         BasePage.clearAndEnterTexts(signatoriesPage.agencyName, agencyName);

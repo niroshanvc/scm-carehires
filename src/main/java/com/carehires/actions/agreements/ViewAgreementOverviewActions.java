@@ -56,12 +56,10 @@ public class ViewAgreementOverviewActions {
         if (expected.equalsIgnoreCase("PENDING TO SIGN")) {
             BasePage.waitUntilElementPresent(viewAgreementOverviewPage.signatureStatus, 60);
             actual = BasePage.getText(viewAgreementOverviewPage.signatureStatus).trim().toUpperCase();
-        } else if (expected.equalsIgnoreCase("SIGNED")) {
-            BasePage.waitUntilElementPresent(viewAgreementOverviewPage.signatureStatusSigned, 60);
-            actual = BasePage.getText(viewAgreementOverviewPage.signatureStatusSigned).trim().toUpperCase();
-        } else if (expected.equalsIgnoreCase("ACTIVE")) {
-            BasePage.waitUntilElementPresent(viewAgreementOverviewPage.signatureStatusActive, 60);
-            actual = BasePage.getText(viewAgreementOverviewPage.signatureStatusActive).trim().toUpperCase();
+        } else if (expected.equalsIgnoreCase("SIGNED") || expected.equalsIgnoreCase("ACTIVE")) {
+            BasePage.waitUntilElementPresent(viewAgreementOverviewPage.signatureStatusSigned.get(0), 60);
+            int size = viewAgreementOverviewPage.signatureStatusSigned.size();
+            actual = BasePage.getText(viewAgreementOverviewPage.signatureStatusSigned.get(size-1)).trim().toUpperCase();
         }
         assertThat("Agreement signature status is not correct!", actual, is(expected));
     }
