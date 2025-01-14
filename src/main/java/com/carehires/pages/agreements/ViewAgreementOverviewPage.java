@@ -54,4 +54,64 @@ public class ViewAgreementOverviewPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Activate Agreement')]")
     public WebElement activateAgreementButton;
+
+    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//nb-icon[@nbtooltip]")
+    public WebElement workerRatesViewIcon;
+
+    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[2]")
+    public WebElement workerRatesTableWorkerType;
+
+    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[3]/span")
+    public List<WebElement> workerRatesTableWorkerSkill;
+
+    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[4]")
+    public WebElement workerRatesTableWorkerHourlyRate;
+
+    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[5]/div[1]/div[2]")
+    public WebElement workerRatesTableAgencyHourlyCostWithVat;
+
+    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[5]/div[2]/div[2]")
+    public WebElement workerRatesTableAgencyHourlyCostWithNoVat;
+
+    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[6]")
+    public WebElement workerRatesTableCareHiresHourlyCost;
+
+    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[7]/div[1]/div[2]/b")
+    public WebElement workerRatesTableFinalHourlyRateWithVat;
+
+    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[7]/div[2]/div[2]/b")
+    public WebElement workerRatesTableFinalHourlyRateWithNoVat;
+
+    @FindBy(xpath = "//label[text()='Worker Type']/..//button")
+    public WebElement workerRatePopupWorkerType;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='workerSkills']/..//button")
+    public WebElement workerRatePopupSkills;
+
+    @FindBy(xpath = "//input[@formcontrolname='workerHourlyRate']")
+    public WebElement workerRatePopupHourlyRate;
+
+    @FindBy(xpath = "//input[@formcontrolname='agencyHourlyMargin']")
+    public WebElement workerRatePopupAgencyMargin;
+
+    @FindBy(xpath = "//td[contains(@class, 'total-vat-column')]/p")
+    public WebElement workerRatePopupAgencyVat;
+
+    @FindBy(xpath = "//td[@class='vat-column']//div[1]/div[2]")
+    public WebElement workerRatePopupAgencyCostWithVat;
+
+    @FindBy(xpath = "//td[@class='vat-column']//div[2]/div[2]")
+    public WebElement workerRatePopupAgencyCostWithNoVat;
+
+    @FindBy(xpath = "//input[@formcontrolname='carehiresMarginRate']")
+    public WebElement workerRatePopupChHourlyMargin;
+
+    @FindBy(xpath = "//td[contains(@class, 'carehires-vat-column')]/p")
+    public WebElement workerRatePopupChHourlyVat;
+
+    @FindBy(xpath = "//td[contains(@class,'final-charge')]//div[1]/div[2]")
+    public WebElement workerRatePopupFinalRateWithVat;
+
+    @FindBy(xpath = "//td[contains(@class,'final-charge')]//div[2]/div[2]")
+    public WebElement workerRatePopupFinalRateWithNoVat;
 }

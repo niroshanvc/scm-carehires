@@ -27,4 +27,9 @@ public class ViewAgreementOverviewSteps {
     public void verifyAgreementSignatureStatus(String signatureStatus) {
         viewAgreementOverviewActions.verifyAgreementSignatureStatus(signatureStatus);
     }
+
+    @Then("User verifies available data in the worker rates table")
+    public void verifyAvailableDataInTheWorkerRatesTable() {
+        viewAgreementOverviewActions.verifyContentsInWorkerRates();
+    }
 }

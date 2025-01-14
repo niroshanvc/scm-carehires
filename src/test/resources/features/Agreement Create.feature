@@ -36,3 +36,7 @@ Feature: Test CareHires create agreement with disable Bid4Care
     And User clicks on Active Agreement button
     And User verifies agreement payment status as PENDING PAYMENT AUTHORISATION and signature status as ACTIVE
 
+  @ViewAgreement
+  Scenario: View agreement and verify worker and sleep in rates
+    When User navigates to Agreement View page
+    Then User verifies available data in the worker rates table

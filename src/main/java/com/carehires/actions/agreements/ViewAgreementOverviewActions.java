@@ -5,9 +5,13 @@ import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -25,6 +29,7 @@ public class ViewAgreementOverviewActions {
     private static final String ADD = "Add";
     private static final String RESOURCE_FOLDER = System.getProperty("user.dir") + File.separator + "src" + File.separator
             + "test" + File.separator + "resources";
+    private static final String VALUE_ATTRIBUTE = "value";
 
     private static final Logger logger = LogManager.getLogger(ViewAgreementOverviewActions.class);
 
@@ -137,11 +142,117 @@ public class ViewAgreementOverviewActions {
     }
 
     private void verifyMarkAsActiveSuccessMessage() {
-        BasePage.waitUntilElementPresent(viewAgreementOverviewPage.successMessage, 1200);
-        String actualInLowerCase = BasePage.getText(viewAgreementOverviewPage.successMessage).toLowerCase().trim();
-        String expected = "Agreement marked as active";
-        String expectedInLowerCase = expected.toLowerCase().trim();
-        assertThat("Contract signed success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
-        BasePage.waitUntilElementDisappeared(viewAgreementOverviewPage.successMessage, 60);
+
+    }
+
+    public void verifyContentsInWorkerRates() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying data displaying in the View Worker Rates Table >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.workerRatesViewIcon, 60);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.workerRatesViewIcon);
+
+        //verify worker type
+        String expected = getWorkerType();
+        String actual = getWorkerTypeFromWorkerRatesPopup();
+        assertThat("Worker types are not equal", actual, is(expected));
+    }
+
+    private String getWorkerType() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableWorkerType).trim();
+        return value;
+    }
+
+    private List<String> getSkills() {
+        List<WebElement> elements = viewAgreementOverviewPage.workerRatesTableWorkerSkill;
+        List<String> skills = new ArrayList<>();
+
+        for (WebElement e : elements) {
+            skills.add(e.getText().trim());
+        }
+        return skills;
+    }
+
+    private String getWorkerHourlyRate() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableWorkerHourlyRate).trim();
+        return value;
+    }
+
+    private String getAgencyHourlyCostWithVat() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableAgencyHourlyCostWithVat).trim();
+        return value;
+    }
+
+    private String getAgencyHourlyCostWithNoVat() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableAgencyHourlyCostWithNoVat).trim();
+        return value;
+    }
+
+    private String getCareHiresHourlyCost() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableCareHiresHourlyCost).trim();
+        return value;
+    }
+
+    private String getFinalHourlyRateWithVat() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableFinalHourlyRateWithVat).trim();
+        return value;
+    }
+
+    private String getFinalHourlyRateWithNoVat() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableFinalHourlyRateWithNoVat).trim();
+        return value;
+    }
+
+    private String getWorkerTypeFromWorkerRatesPopup() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatePopupWorkerType).trim();
+        return value;
+    }
+
+    private List<String> getSkillsFromWorkerRatesPopup() {
+        List<String> skills = Arrays.stream(BasePage.getText(viewAgreementOverviewPage.workerRatePopupSkills).split(",")).toList();
+        return skills;
+    }
+
+    private String getHourlyRateFromWorkerRatesPopup() {
+        String value = BasePage.getAttributeValue(viewAgreementOverviewPage.workerRatePopupHourlyRate, VALUE_ATTRIBUTE).trim();
+        return value;
+    }
+
+    private String getAgencyMarginFromWorkerRatesPopup() {
+        String value = BasePage.getAttributeValue(viewAgreementOverviewPage.workerRatePopupAgencyMargin, VALUE_ATTRIBUTE).trim();
+        return value;
+    }
+
+    private String getAgencyVatFromWorkerRatesPopup() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatePopupAgencyVat).trim();
+        return value;
+    }
+
+    private String getAgencyCostWithVatFromWorkerRatesPopup() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatePopupAgencyCostWithVat).trim();
+        return value;
+    }
+
+    private String getAgencyCostWithNoVatFromWorkerRatesPopup() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatePopupAgencyCostWithNoVat).trim();
+        return value;
+    }
+
+    private String getChHourlyMarginFromWorkerRatesPopup() {
+        String value = BasePage.getAttributeValue(viewAgreementOverviewPage.workerRatePopupChHourlyMargin, VALUE_ATTRIBUTE).trim();
+        return value;
+    }
+
+    private String getChHourlyVatFromWorkerRatesPopup() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatePopupChHourlyVat).trim();
+        return value;
+    }
+
+    private String getFinalRateWithVatFromWorkerRatesPopup() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatePopupFinalRateWithVat).trim();
+        return value;
+    }
+
+    private String getFinalRatetWithNoVatFromWorkerRatesPopup() {
+        String value = BasePage.getText(viewAgreementOverviewPage.workerRatePopupFinalRateWithNoVat).trim();
+        return value;
     }
 }

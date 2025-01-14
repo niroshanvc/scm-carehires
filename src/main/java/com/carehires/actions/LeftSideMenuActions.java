@@ -70,6 +70,13 @@ public class LeftSideMenuActions {
         logger.info(" --------------------------- Moves to Agreements Create Page ---------------------------");
     }
 
+    public void gotoAgreementViewPage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.mouseHoverAndClick(LeftSideMenuPage.agreementsMainLink, LeftSideMenuPage.agreementsViewSubLink);
+        logger.info(" --------------------------- Moves to Agreements View Page ---------------------------");
+    }
+
     public void gotoTasksPaymentAuthorisationsPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
