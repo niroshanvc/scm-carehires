@@ -83,4 +83,11 @@ public class LeftSideMenuActions {
         BasePage.mouseHoverAndClick(LeftSideMenuPage.tasksMainLink, LeftSideMenuPage.paymentAuthorisationsSubLink);
         logger.info(" --------------------------- Moves to Payment Authorisations Page ---------------------------");
     }
+
+    public void gotoJobsPage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.clickWithJavaScript(leftSideMenu.jobsIcon);
+        logger.info(" --------------------------- Moves to Jobs Page ---------------------------");
+    }
 }

@@ -13,7 +13,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.everyItem;
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.isIn;
 import static org.hamcrest.core.Is.is;
 
 public class ViewAgreementOverviewActions {
@@ -27,7 +30,8 @@ public class ViewAgreementOverviewActions {
     private static final String YML_HEADER_AGENCY = "Agency";
     private static final String YML_HEADER_PROVIDER = "Provider";
     private static final String ADD = "Add";
-    private static final String RESOURCE_FOLDER = System.getProperty("user.dir") + File.separator + "src" + File.separator
+    private static final String RESOURCE_FOLDER = System.getProperty("user.dir") + File.separator + "src"
+            + File.separator
             + "test" + File.separator + "resources";
     private static final String VALUE_ATTRIBUTE = "value";
 
@@ -61,10 +65,11 @@ public class ViewAgreementOverviewActions {
         if (expected.equalsIgnoreCase("PENDING TO SIGN")) {
             BasePage.waitUntilElementPresent(viewAgreementOverviewPage.signatureStatus, 60);
             actual = BasePage.getText(viewAgreementOverviewPage.signatureStatus).trim().toUpperCase();
-        } else if (expected.equalsIgnoreCase("SIGNED") || expected.equalsIgnoreCase("ACTIVE")) {
-            BasePage.waitUntilElementPresent(viewAgreementOverviewPage.signatureStatusSigned.get(0), 60);
-            int size = viewAgreementOverviewPage.signatureStatusSigned.size();
-            actual = BasePage.getText(viewAgreementOverviewPage.signatureStatusSigned.get(size-1)).trim().toUpperCase();
+        } else if (expected.equalsIgnoreCase("Signed") || expected.equalsIgnoreCase("Active")
+            || expected.equalsIgnoreCase("Inactive")) {
+                BasePage.waitUntilElementPresent(viewAgreementOverviewPage.signatureStatusSigned.get(0), 60);
+                int size = viewAgreementOverviewPage.signatureStatusSigned.size();
+                actual = BasePage.getText(viewAgreementOverviewPage.signatureStatusSigned.get(size-1)).trim().toUpperCase();
         }
         assertThat("Agreement signature status is not correct!", actual, is(expected));
     }
@@ -87,7 +92,8 @@ public class ViewAgreementOverviewActions {
 
     private void enterDataForAttachAgreementPopup() {
         String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Agreement");
-        String absoluteFilePath = RESOURCE_FOLDER + File.separator + "Upload" + File.separator + "Agreement" + File.separator + doc;
+        String absoluteFilePath = RESOURCE_FOLDER + File.separator + "Upload" + File.separator + "Agreement"
+                + File.separator + doc;
         BasePage.uploadFile(viewAgreementOverviewPage.uploadFile, absoluteFilePath);
         waitUntilDocumentUploaded();
 
@@ -121,7 +127,8 @@ public class ViewAgreementOverviewActions {
         String providerFullText = BasePage.getText(viewAgreementOverviewPage.providerTermsAndConditionsText).trim();
         String[] strArr = providerFullText.split("on behalf of");
         String actual = strArr[1].trim();
-        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SIGNATORIES, YML_HEADER_PROVIDER, "Name");
+        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SIGNATORIES,
+                YML_HEADER_PROVIDER, "Name");
         assertThat("Provider name displays incorrectly!", actual, is(expected));
     }
 
@@ -130,7 +137,8 @@ public class ViewAgreementOverviewActions {
         String agencyFullText = BasePage.getText(viewAgreementOverviewPage.agencyTermsAndConditionsText).trim();
         String[] strArr = agencyFullText.split("on behalf of");
         String actual = strArr[1].trim();
-        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SIGNATORIES, YML_HEADER_AGENCY, "Name");
+        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SIGNATORIES,
+                YML_HEADER_AGENCY, "Name");
         assertThat("Agency name displays incorrectly!", actual, is(expected));
     }
 
@@ -146,17 +154,79 @@ public class ViewAgreementOverviewActions {
     }
 
     public void verifyContentsInWorkerRates() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying data displaying in the View Worker Rates Table >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying data displaying in the Worker Rates Popup >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementClickable(viewAgreementOverviewPage.workerRatesViewIcon, 60);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.workerRatesViewIcon);
 
-        //verify worker type
-        String expected = getWorkerType();
-        String actual = getWorkerTypeFromWorkerRatesPopup();
-        assertThat("Worker types are not equal", actual, is(expected));
+        // verify worker type
+        String expectedWorkerType = getWorkerType();
+        BasePage.genericWait(5000);
+        String actualWorkerType = getWorkerTypeFromWorkerRatesPopup();
+        assertThat("Worker types are not equal", actualWorkerType, is(expectedWorkerType));
+
+        // verify skills
+        List<String> expectedSkills = getSkills().stream().map(String::trim).toList();
+        List<String> actualSkills = getSkillsFromWorkerRatesPopup().stream().map(String::trim).toList();
+        // verifying size first for better debugging
+        assertThat("The number of skills does not match!", actualSkills.size(), is(expectedSkills.size()));
+        // Check that all expected skills are in the actual skills list
+        assertThat(actualSkills, hasItems(expectedSkills.toArray(new String[0])));
+        // Check that every item in the actual list is expected
+        assertThat(actualSkills, everyItem(isIn(expectedSkills)));
+
+        // verify agency hourly rate
+        double expectedWorkerHourlyRate = Double.parseDouble(getWorkerHourlyRate());
+        double actualWorkerMinorRate = Double.parseDouble(getHourlyRateFromWorkerRatesPopup());
+        assertThat("Worker Hourly Rate does not match!", actualWorkerMinorRate, is(expectedWorkerHourlyRate));
+
+        // verify agency margin
+        double expectedAgencyMargin = Double.parseDouble(getAgencyHourlyCostWithNoVat()) - Double
+                .parseDouble(getWorkerHourlyRate());
+        double actualAgencyMargin = Double.parseDouble(getAgencyMarginFromWorkerRatesPopup());
+        expectedAgencyMargin = Double.parseDouble(String.format("%.2f", expectedAgencyMargin));
+        actualAgencyMargin = Double.parseDouble(String.format("%.2f", actualAgencyMargin));
+        assertThat("Agency Margin does not match!", actualAgencyMargin, is(expectedAgencyMargin));
+
+        // verify agency vat
+        double expectedVat = Double.parseDouble(getAgencyHourlyCostWithVat()) - Double.parseDouble(
+                getAgencyHourlyCostWithNoVat());
+        double actualVat = Double.parseDouble(getAgencyVatFromWorkerRatesPopup());
+        expectedVat = Double.parseDouble(String.format("%.2f", expectedVat));
+        actualVat = Double.parseDouble(String.format("%.2f", actualVat));
+        assertThat("Agency VAT does not match!", actualVat, is(expectedVat));
+
+        // verify agency hourly cost with vat
+        double expectedHourlyCostWithVat = Double.parseDouble(getAgencyHourlyCostWithVat());
+        double actualHourlyCostWithVat = Double.parseDouble(getAgencyCostWithVatFromWorkerRatesPopup());
+        assertThat("Agency Hourly Cost With VAT does not match!", actualHourlyCostWithVat,
+                is(expectedHourlyCostWithVat));
+
+        // verify agency hourly cost with no vat
+        double expectedHourlyCostWithNoVat = Double.parseDouble(getAgencyHourlyCostWithNoVat());
+        double actualHourlyCostWithNoVat = Double.parseDouble(getAgencyCostWithNoVatFromWorkerRatesPopup());
+        assertThat("Agency Hourly Cost With No VAT does not match!", actualHourlyCostWithNoVat,
+                is(expectedHourlyCostWithNoVat));
+
+        // verify final rate with vat
+        double expectedFinalRateWithVat = Double.parseDouble(getFinalHourlyRateWithVat());
+        double actualFinalRateWithVat = Double.parseDouble(getFinalRateWithVatFromWorkerRatesPopup());
+        assertThat("Final Rate With VAT does not match!", actualFinalRateWithVat, is(expectedFinalRateWithVat));
+
+        // verify final rate with no vat
+        double expectedFinalRateWithNoVat = Double.parseDouble(getFinalHourlyRateWithNoVat());
+        double actualFinalRateWithNoVat = Double.parseDouble(getFinalRateWithNoVatFromWorkerRatesPopup());
+        assertThat("Final Rate With No VAT does not match!", actualFinalRateWithNoVat,
+                is(expectedFinalRateWithNoVat));
+
+        // verify care hires hourly cost
+        double exp = Double.parseDouble(getCareHiresHourlyCost());
+        double act = Double.parseDouble(getChHourlyMarginFromWorkerRatesPopup()) + Double
+                .parseDouble(getChHourlyVatFromWorkerRatesPopup());
+        assertThat("Care hires hourly cost does not match!", act, is(exp));
     }
 
     private String getWorkerType() {
+        BasePage.waitUntilElementPresent(viewAgreementOverviewPage.workerRatesTableWorkerType, 60);
         String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableWorkerType).trim();
         return value;
     }
@@ -172,32 +242,43 @@ public class ViewAgreementOverviewActions {
     }
 
     private String getWorkerHourlyRate() {
-        String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableWorkerHourlyRate).trim();
+        String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage.workerRatesTableWorkerHourlyRate).trim();
+        String value = valueWithCurrency.split(" ")[1];
         return value;
     }
 
     private String getAgencyHourlyCostWithVat() {
-        String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableAgencyHourlyCostWithVat).trim();
+        String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage.workerRatesTableAgencyHourlyCostWithVat)
+                .trim();
+        String value = valueWithCurrency.split(" ")[1];
         return value;
     }
 
     private String getAgencyHourlyCostWithNoVat() {
-        String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableAgencyHourlyCostWithNoVat).trim();
+        String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage
+                .workerRatesTableAgencyHourlyCostWithNoVat).trim();
+        String value = valueWithCurrency.split(" ")[1];
         return value;
     }
 
     private String getCareHiresHourlyCost() {
-        String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableCareHiresHourlyCost).trim();
+        String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage.workerRatesTableCareHiresHourlyCost)
+                .trim();
+        String value = valueWithCurrency.split(" ")[1];
         return value;
     }
 
     private String getFinalHourlyRateWithVat() {
-        String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableFinalHourlyRateWithVat).trim();
+        String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage.workerRatesTableFinalHourlyRateWithVat)
+                .trim();
+        String value = valueWithCurrency.split(" ")[1];
         return value;
     }
 
     private String getFinalHourlyRateWithNoVat() {
-        String value = BasePage.getText(viewAgreementOverviewPage.workerRatesTableFinalHourlyRateWithNoVat).trim();
+        String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage.workerRatesTableFinalHourlyRateWithNoVat)
+                .trim();
+        String value = valueWithCurrency.split(" ")[1];
         return value;
     }
 
@@ -207,17 +288,20 @@ public class ViewAgreementOverviewActions {
     }
 
     private List<String> getSkillsFromWorkerRatesPopup() {
-        List<String> skills = Arrays.stream(BasePage.getText(viewAgreementOverviewPage.workerRatePopupSkills).split(",")).toList();
+        List<String> skills = Arrays.stream(BasePage.getText(viewAgreementOverviewPage.workerRatePopupSkills)
+                .split(",")).toList();
         return skills;
     }
 
     private String getHourlyRateFromWorkerRatesPopup() {
-        String value = BasePage.getAttributeValue(viewAgreementOverviewPage.workerRatePopupHourlyRate, VALUE_ATTRIBUTE).trim();
+        String value = BasePage.getAttributeValue(viewAgreementOverviewPage.workerRatePopupHourlyRate,
+                VALUE_ATTRIBUTE).trim();
         return value;
     }
 
     private String getAgencyMarginFromWorkerRatesPopup() {
-        String value = BasePage.getAttributeValue(viewAgreementOverviewPage.workerRatePopupAgencyMargin, VALUE_ATTRIBUTE).trim();
+        String value = BasePage.getAttributeValue(viewAgreementOverviewPage.workerRatePopupAgencyMargin,
+                VALUE_ATTRIBUTE).trim();
         return value;
     }
 
@@ -237,7 +321,8 @@ public class ViewAgreementOverviewActions {
     }
 
     private String getChHourlyMarginFromWorkerRatesPopup() {
-        String value = BasePage.getAttributeValue(viewAgreementOverviewPage.workerRatePopupChHourlyMargin, VALUE_ATTRIBUTE).trim();
+        String value = BasePage.getAttributeValue(viewAgreementOverviewPage.workerRatePopupChHourlyMargin,
+                VALUE_ATTRIBUTE).trim();
         return value;
     }
 
@@ -251,8 +336,198 @@ public class ViewAgreementOverviewActions {
         return value;
     }
 
-    private String getFinalRatetWithNoVatFromWorkerRatesPopup() {
+    private String getFinalRateWithNoVatFromWorkerRatesPopup() {
         String value = BasePage.getText(viewAgreementOverviewPage.workerRatePopupFinalRateWithNoVat).trim();
         return value;
+    }
+
+    public void verifyContentsInSleepInRequest() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying data displaying in Sleep In Rates popup >>>>>>>>>>>>>>>>>>>>");
+        BasePage.refreshPage();
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(viewAgreementOverviewPage.sleepInRatesViewIcon, 60);
+        BasePage.scrollToWebElement(viewAgreementOverviewPage.sleepInRatesViewIcon);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.sleepInRatesViewIcon);
+
+        // verify worker type
+        String expectedWorkerType = getSleepInRatesTableWorkerType();
+        BasePage.genericWait(5000);
+        String actualWorkerType = getWorkerTypeFromSleepInRatesPopup();
+        assertThat("Worker types are not equal", actualWorkerType, is(expectedWorkerType));
+
+        // verify hourly rate
+        double expectedWorkerHourlyRate = Double.parseDouble(getSleepInRatesTableWorkerHourlyRate());
+        double actualWorkerMinorRate = Double.parseDouble(getHourlyRateFromSleepInRatesPopup());
+        assertThat("Hourly Rate does not match!", actualWorkerMinorRate, is(expectedWorkerHourlyRate));
+
+        // verify agency margin
+        double expectedAgencyMargin = Double.parseDouble(getSleepInRatesTableAgencyHourlyCostWithNoVat()) -
+                Double.parseDouble(getSleepInRatesTableWorkerHourlyRate());
+        double actualAgencyMargin = Double.parseDouble(getAgencyMarginFromSleepInRatesPopup());
+        expectedAgencyMargin = Double.parseDouble(String.format("%.2f", expectedAgencyMargin));
+        actualAgencyMargin = Double.parseDouble(String.format("%.2f", actualAgencyMargin));
+        assertThat("Agency Margin does not match!", actualAgencyMargin, is(expectedAgencyMargin));
+
+        // verify agency vat
+        double expectedVat = Double.parseDouble(getSleepInRatesTableAgencyHourlyCostWithVat()) -
+                Double.parseDouble(getSleepInRatesTableAgencyHourlyCostWithNoVat());
+        double actualVat = Double.parseDouble(getAgencyVatFromSleepInRatesPopup());
+        expectedVat = Double.parseDouble(String.format("%.2f", expectedVat));
+        actualVat = Double.parseDouble(String.format("%.2f", actualVat));
+        assertThat("Agency VAT does not match!", actualVat, is(expectedVat));
+
+        // verify agency cost with vat
+        double expectedHourlyCostWithVat = Double.parseDouble(getSleepInRatesTableAgencyHourlyCostWithVat());
+        double actualHourlyCostWithVat = Double.parseDouble(getAgencyCostWithVatFromSleepInRatesPopup());
+        assertThat("Agency Hourly Cost With VAT does not match!", actualHourlyCostWithVat,
+                is(expectedHourlyCostWithVat));
+
+        // verify agency cost with no vat
+        double expectedHourlyCostWithNoVat = Double.parseDouble(getSleepInRatesTableAgencyHourlyCostWithNoVat());
+        double actualHourlyCostWithNoVat = Double.parseDouble(getAgencyCostWithNoVatFromSleepInRatesPopup());
+        assertThat("Agency Hourly Cost With No VAT does not match!", actualHourlyCostWithNoVat,
+                is(expectedHourlyCostWithNoVat));
+
+        // verify ch hourly vat
+        double expectedChHourlyVat = Double.parseDouble(getFinalRateWithNoVatFromSleepInRatesPopup()) -
+                Double.parseDouble(getAgencyCostWithNoVatFromSleepInRatesPopup()) -
+                Double.parseDouble(getChHourlyMarginFromSleepInRatesPopup());
+        double actualChHourlyVat = Double.parseDouble(getChHourlyVatFromSleepInRatesPopup());
+        expectedChHourlyVat = Double.parseDouble(String.format("%.2f", expectedChHourlyVat));
+        actualChHourlyVat = Double.parseDouble(String.format("%.2f", actualChHourlyVat));
+        assertThat("CH Hourly Vat does not match!", actualChHourlyVat, is(expectedChHourlyVat));
+
+        // verify final rate with vat
+        double expectedFinalRateWithVat = Double.parseDouble(getSleepInRatesTableFinalHourlyRateWithVat());
+        double actualFinalRateWithVat = Double.parseDouble(getFinalRateWithVatFromSleepInRatesPopup());
+        assertThat("Final Rate With VAT does not match!", actualFinalRateWithVat, is(expectedFinalRateWithVat));
+
+        // verify final rate with no vat
+        double expectedFinalRateWithNoVat = Double.parseDouble(getSleepInRatesTableFinalHourlyRateWithNoVat());
+        double actualFinalRateWithNoVat = Double.parseDouble(getFinalRateWithNoVatFromSleepInRatesPopup());
+        assertThat("Final Rate With No VAT does not match!", actualFinalRateWithNoVat,
+                is(expectedFinalRateWithNoVat));
+    }
+
+    private String getSleepInRatesTableWorkerType() {
+        String value = BasePage.getText(viewAgreementOverviewPage.sleepInRatesTableWorkerType).trim();
+        return value;
+    }
+
+    private String getSleepInRatesTableWorkerHourlyRate() {
+        String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage.sleepInRatesTableHourlyChargeRate).trim();
+        String value = valueWithCurrency.split(" ")[1];
+        return value;
+    }
+
+    private String getSleepInRatesTableAgencyHourlyCostWithVat() {
+        String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage.sleepInRatesTableAgencyHourlyCostWithVat).trim();
+        String value = valueWithCurrency.split(" ")[1];
+        return value;
+    }
+
+    private String getSleepInRatesTableAgencyHourlyCostWithNoVat() {
+        String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage.sleepInRatesTableAgencyHourlyCostWithNoVat).trim();
+        String value = valueWithCurrency.split(" ")[1];
+        return value;
+    }
+
+    private String getSleepInRatesTableCareHiresHourlyCost() {
+        String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage.sleepInRatesTableCareHiresHourlyCost).trim();
+        String value = valueWithCurrency.split(" ")[1];
+        return value;
+    }
+
+    private String getSleepInRatesTableFinalHourlyRateWithVat() {
+        String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage.sleepInRatesTableFinalHourlyRateWithVat).trim();
+        String value = valueWithCurrency.split(" ")[1];
+        return value;
+    }
+
+    private String getSleepInRatesTableFinalHourlyRateWithNoVat() {
+        String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage.sleepInRatesTableFinalHourlyRateWithNoVat).trim();
+        String value = valueWithCurrency.split(" ")[1];
+        return value;
+    }
+
+    private String getWorkerTypeFromSleepInRatesPopup() {
+        String value = BasePage.getText(viewAgreementOverviewPage.sleepInRatesPopupWorkerType).trim();
+        return value;
+    }
+
+    private String getHourlyRateFromSleepInRatesPopup() {
+        String value = BasePage.getAttributeValue(viewAgreementOverviewPage.sleepInRatesPopupHourlyRate, VALUE_ATTRIBUTE).trim();
+        return value;
+    }
+
+    private String getAgencyMarginFromSleepInRatesPopup() {
+        String value = BasePage.getAttributeValue(viewAgreementOverviewPage.sleepInRatesPopupAgencyMargin, VALUE_ATTRIBUTE).trim();
+        return value;
+    }
+
+    private String getAgencyVatFromSleepInRatesPopup() {
+        String value = BasePage.getText(viewAgreementOverviewPage.sleepInRatesPopupAgencyVat).trim();
+        return value;
+    }
+
+    private String getAgencyCostWithVatFromSleepInRatesPopup() {
+        String value = BasePage.getText(viewAgreementOverviewPage.sleepInRatesPopupAgencyCostWithVat).trim();
+        return value;
+    }
+
+    private String getAgencyCostWithNoVatFromSleepInRatesPopup() {
+        String value = BasePage.getText(viewAgreementOverviewPage.sleepInRatesPopupAgencyCostWithNoVat).trim();
+        return value;
+    }
+
+    private String getChHourlyMarginFromSleepInRatesPopup() {
+        String value = BasePage.getAttributeValue(viewAgreementOverviewPage.sleepInRatesPopupChHourlyMargin, VALUE_ATTRIBUTE).trim();
+        return value;
+    }
+
+    private String getChHourlyVatFromSleepInRatesPopup() {
+        return null;
+    }
+
+    private String getFinalRateWithVatFromSleepInRatesPopup() {
+        String value = BasePage.getText(viewAgreementOverviewPage.sleepInRatesPopupFinalRateWithVat).trim();
+        return value;
+    }
+
+    private String getFinalRateWithNoVatFromSleepInRatesPopup() {
+        String value = BasePage.getText(viewAgreementOverviewPage.sleepInRatesPopupFinalRateWithNoVat).trim();
+        return value;
+    }
+
+    public void markAsInactive() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Agreement - Marking as Inactive >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.inactiveButton, 60);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.inactiveButton);
+        verifyInactiveSuccessMessage();
+    }
+
+    private void verifyInactiveSuccessMessage() {
+        BasePage.waitUntilElementPresent(viewAgreementOverviewPage.successMessage, 1200);
+        String actualInLowerCase = BasePage.getText(viewAgreementOverviewPage.successMessage).toLowerCase().trim();
+        String expected = "Agreement marked as inactive";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Unable to mark as inactive!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(viewAgreementOverviewPage.successMessage, 60);
+    }
+
+    public void markAsActiveAgain() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Agreement - Marking as Active Again >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.activateAgreementButton, 60);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.activateAgreementButton);
+        verifyActivateAgreementSuccessMessage();
+    }
+
+    private void verifyActivateAgreementSuccessMessage() {
+        BasePage.waitUntilElementPresent(viewAgreementOverviewPage.successMessage, 1200);
+        String actualInLowerCase = BasePage.getText(viewAgreementOverviewPage.successMessage).toLowerCase().trim();
+        String expected = "Agreement marked as active";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Unable to mark as active!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(viewAgreementOverviewPage.successMessage, 60);
     }
 }

@@ -5,7 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 
 public class LeftSideMenuSteps {
-    LeftSideMenuActions leftSideMenuActions = new LeftSideMenuActions();
+    private final LeftSideMenuActions leftSideMenuActions = new LeftSideMenuActions();
 
     @When("^User navigates to Agency Create page$")
     public void moveToAgencyCreatePage() {
@@ -45,5 +45,10 @@ public class LeftSideMenuSteps {
     @When("User navigates to Agreement View page")
     public void moveToAgreementViewPage() {
         leftSideMenuActions.gotoAgreementViewPage();
+    }
+
+    @When("User navigates to Jobs page")
+    public void moveToJobsPage() {
+        leftSideMenuActions.gotoJobsPage();
     }
 }

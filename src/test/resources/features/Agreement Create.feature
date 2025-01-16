@@ -20,6 +20,10 @@ Feature: Test CareHires create agreement with disable Bid4Care
     And User verifies agreement signature status as SIGNED
     And User clicks on Active Agreement button
     And User verifies agreement signature status as ACTIVE
+    And User makes that agreement inactive
+    And User verifies agreement signature status as INACTIVE
+    And User marks it as active again
+    And User verifies agreement signature status as ACTIVE
 
   @CreateAgreementForDDProvider
   Scenario: Create an agreement
@@ -40,3 +44,4 @@ Feature: Test CareHires create agreement with disable Bid4Care
   Scenario: View agreement and verify worker and sleep in rates
     When User navigates to Agreement View page
     Then User verifies available data in the worker rates table
+    And User verifies available data in the Sleep in Request table
