@@ -13,7 +13,7 @@ public class JobDetailsPage {
     @FindBy(xpath = "//button[contains(@class, 'status-basic')]")
     public WebElement sleepInButton;
 
-    @FindBy(id = "//nb-select[@id='care-provider']/button")
+    @FindBy(xpath = "//nb-select[@id='care-provider']/button")
     public WebElement careProviderDropdown;
 
     @FindBy(xpath = "//nb-select[@id='care-home']/button")
@@ -34,14 +34,26 @@ public class JobDetailsPage {
     @FindBy(id = "start-time")
     public WebElement startTime;
 
+    @FindBy(xpath = "//div[@class='picker-body']")
+    public WebElement startTimeAreaList;
+
     @FindBy(xpath = "//nb-card[contains(@class,'timepicker')]/div/nb-list//nb-timepicker-cell/div")
     public List<WebElement> availableStartTimes;
 
     @FindBy(xpath = "//nb-calendar-actions/button[contains(@class, 'filled')]")
-    public WebElement timeSelectionOkButton;
+    public WebElement startTimeSelectionOkButton;
 
     @FindBy(id = "end-time")
     public WebElement endTime;
+
+    @FindBy(xpath = "//div[@class='picker-body']")
+    public WebElement endTimeAreaList;
+
+    @FindBy(xpath = "//nb-card[contains(@class,'timepicker')]/div/nb-list//nb-timepicker-cell/div")
+    public List<WebElement> availableEndTimes;
+
+    @FindBy(xpath = "//nb-calendar-actions/button[contains(@class, 'filled')]")
+    public WebElement endTimeSelectionOkButton;
 
     @FindBy(xpath = "//label[contains(text(), 'Enable Recurrence')]/../../nb-toggle/label/input")
     public WebElement enableRecurrence;

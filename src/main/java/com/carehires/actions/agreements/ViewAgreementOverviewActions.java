@@ -392,6 +392,7 @@ public class ViewAgreementOverviewActions {
         double expectedChHourlyVat = Double.parseDouble(getFinalRateWithNoVatFromSleepInRatesPopup()) -
                 Double.parseDouble(getAgencyCostWithNoVatFromSleepInRatesPopup()) -
                 Double.parseDouble(getChHourlyMarginFromSleepInRatesPopup());
+        assert getChHourlyVatFromSleepInRatesPopup() != null;
         double actualChHourlyVat = Double.parseDouble(getChHourlyVatFromSleepInRatesPopup());
         expectedChHourlyVat = Double.parseDouble(String.format("%.2f", expectedChHourlyVat));
         actualChHourlyVat = Double.parseDouble(String.format("%.2f", actualChHourlyVat));
@@ -486,7 +487,8 @@ public class ViewAgreementOverviewActions {
     }
 
     private String getChHourlyVatFromSleepInRatesPopup() {
-        return null;
+        String value = BasePage.getText(viewAgreementOverviewPage.sleepInRatesPopupChHourlyVat).trim();
+        return value;
     }
 
     private String getFinalRateWithVatFromSleepInRatesPopup() {
