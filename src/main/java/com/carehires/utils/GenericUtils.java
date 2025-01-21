@@ -42,6 +42,7 @@ public class GenericUtils {
         } catch (BasePage.WebDriverInitializationException e) {
             throw new RuntimeException(e);
         }
+
         if (!addresses.isEmpty()) {
             addresses.get(1).click();
         } else {

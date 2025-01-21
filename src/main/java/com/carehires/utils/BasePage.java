@@ -810,4 +810,12 @@ public class BasePage {
             }
         });
     }
+
+    public static WebElement getElement(String xpath) {
+        try {
+            return getDriver().findElement(By.xpath(xpath));
+        } catch (WebDriverInitializationException e) {
+            throw new NoSuchElementException(e.getMessage());
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.carehires.pages.agreements;
 
+import com.carehires.utils.BasePage;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -171,4 +172,23 @@ public class ViewAgreementOverviewPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Activate Agreement')]")
     public WebElement activeAgreementButton;
+
+    @FindBy(xpath = "//button[contains(text(), 'Edit Agreement')]")
+    public WebElement editAgreementButton;
+
+    @FindBy(xpath = "//button[contains(text(), 'Edit Sites')]")
+    public WebElement editSitesButton;
+
+    public WebElement manageSiteAddRemoveCheckbox(String siteName) {
+        String xpath = String.format("//p[text()='%s']/../..//nb-checkbox//input", siteName);
+        return BasePage.getElement(xpath);
+    }
+
+    @FindBy(xpath = "//span[text()='Apply']")
+    public WebElement applyButton;
+
+    public WebElement checkboxCheckedVerification(String siteName) {
+        String xpath = String.format("//p[text()='%s']/../..//nb-checkbox//span[contains(@class, 'checkbox')]", siteName);
+        return BasePage.getElement(xpath);
+    }
 }

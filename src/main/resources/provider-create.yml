@@ -34,17 +34,17 @@ Site Management:
       ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
     Dataset2:
       SiteName: Automation Master {{increment}}
-      SiteType: Hospital
+      SiteType: Nursing
       SiteSpecialism: Mental Health,Learning
       AlsoKnownAs: Master{{increment}}
       SiteEmail: carehires+site2pr{{increment}}@zohomail.com
       PostalCode: BL0 0AY
       NoOfBeds: 20
-      SiteCode: AC-01
+      SiteCode: AC-02
       PhoneNumberType: "Other"
-      PhoneNumber: "07412001246"
-      JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
-      ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
+      PhoneNumber: "07412001346"
+      JobNotificationAddress: carehires+prjobnot2-{{increment}}@zohomail.com
+      ApprovalNotificationAddress: carehires+prappnot2-{{increment}}@zohomail.com
 
 Worker Staff Management:
   Add:

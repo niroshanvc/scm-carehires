@@ -25,6 +25,7 @@ public class ViewAgreementOverviewActions {
 
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
+    private static final String YML_FILE_PROVIDER = "provider-create";
     private static final String YML_HEADER = "Mark As Signed";
     private static final String YML_HEADER_SIGNATORIES = "Signatories";
     private static final String YML_HEADER_AGENCY = "Agency";
@@ -518,10 +519,7 @@ public class ViewAgreementOverviewActions {
     }
 
     public void markAsActiveAgain() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Agreement - Marking as Active Again >>>>>>>>>>>>>>>>>>>>");
-        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.activateAgreementButton, 60);
-        BasePage.clickWithJavaScript(viewAgreementOverviewPage.activateAgreementButton);
-        verifyActivateAgreementSuccessMessage();
+
     }
 
     private void verifyActivateAgreementSuccessMessage() {
@@ -531,5 +529,32 @@ public class ViewAgreementOverviewActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Unable to mark as active!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(viewAgreementOverviewPage.successMessage, 60);
+    }
+
+    public void editSite() {
+        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.editAgreementButton, 60);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.editAgreementButton);
+        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.editSitesButton, 60);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.editSitesButton);
+
+        String siteToBeRemoved = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_PROVIDER, "Site Management", ADD, "Dataset2", "SiteName");
+        WebElement removeSite = viewAgreementOverviewPage.manageSiteAddRemoveCheckbox(siteToBeRemoved);
+        WebElement attributeChecking = viewAgreementOverviewPage.checkboxCheckedVerification(siteToBeRemoved);
+        String attr = BasePage.getAttributeValue(attributeChecking, "class");
+        if (!attr.contains("checked")) {
+            BasePage.clickWithJavaScript(removeSite);
+        }
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.applyButton);
+        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.saveButton, 60);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.saveButton);
+    }
+
+    private void verifySiteUpdateSuccessMessage() {
+        BasePage.waitUntilElementPresent(viewAgreementOverviewPage.successMessage, 90);
+        String actualInLowerCase = BasePage.getText(viewAgreementOverviewPage.successMessage).toLowerCase().trim();
+        String expected = "Record created successfully.";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Staff information saved success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(viewAgreementOverviewPage.successMessage, 20);
     }
 }

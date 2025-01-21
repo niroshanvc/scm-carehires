@@ -47,4 +47,9 @@ public class ViewAgreementOverviewSteps {
     public void marksItAsActiveAgain() {
         viewAgreementOverviewActions.markAsActiveAgain();
     }
+
+    @And("User edit site")
+    public void editSiteInfo() {
+        viewAgreementOverviewActions.editSite();
+    }
 }

@@ -35,31 +35,33 @@ Company Information:
 
 Site Management:
   Add:
-    SiteName: BioRevolution - Care {{increment}}
-    SiteType: Learning Disabilities
-    SiteSpecialism: Adult,Autism,Childrens,Learning Disabilities
-    AlsoKnownAs: BioRevolution{{increment}}
-    SiteEmail: carehires+site1pr{{increment}}@zohomail.com
-    PostalCode: BL0 9YX
-    NoOfBeds: 25
-    SiteCode: AC-01
-    PhoneNumberType: "Office2"
-    PhoneNumber: "07412001246"
-    JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
-    ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
+    Dataset1:
+      SiteName: BioRevolution - Care {{increment}}
+      SiteType: Learning Disabilities
+      SiteSpecialism: Adult,Autism,Childrens,Learning Disabilities
+      AlsoKnownAs: BioRevolution{{increment}}
+      SiteEmail: carehires+site1pr{{increment}}@zohomail.com
+      PostalCode: BL0 9YX
+      NoOfBeds: 25
+      SiteCode: AC-01
+      PhoneNumberType: "Office2"
+      PhoneNumber: "07412001246"
+      JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
+      ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
   Update:
-    SiteName: BioRevolution Care {{increment}}
-    SiteType: Hospital
-    SiteSpecialism: Adult,Mental Health,Nursing
-    AlsoKnownAs: BioRevolution{{increment}}
-    SiteEmail: carehires+site1pr{{increment}}@zohomail.com
-    PostalCode: BL0 9YX
-    NoOfBeds: 25
-    SiteCode: AC-01
-    PhoneNumberType: "Mobile"
-    PhoneNumber: "07412001246"
-    JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
-    ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
+    Dataset1:
+      SiteName: BioRevolution Care {{increment}}
+      SiteType: Hospital
+      SiteSpecialism: Adult,Mental Health,Nursing
+      AlsoKnownAs: BioRevolution{{increment}}
+      SiteEmail: carehires+site1pr{{increment}}@zohomail.com
+      PostalCode: BL0 9YX
+      NoOfBeds: 25
+      SiteCode: AC-01
+      PhoneNumberType: "Mobile"
+      PhoneNumber: "07412001246"
+      JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
+      ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
 
 Worker Staff Management:
   Add:
