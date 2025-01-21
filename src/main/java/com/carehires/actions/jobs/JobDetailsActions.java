@@ -29,10 +29,9 @@ public class JobDetailsActions {
     private static final String YML_FILE = "job-create";
     private static final String YML_HEADER = "Job Details";
     private static final String YML_HEADER_SUB1 = "Care Provider / Site and Service Preferences";
-    private static final String YML_HEADER_SUB2 = "Job duration and Recurrence";
+    private static final String YML_HEADER_SUB2 = "Job Duration and Recurrence";
     private static final String ADD = "Add";
     private static final String TOGGLE_ATTRIBUTE_AREA_CHECKED = "aria-checked";
-    private static final String ATTRIBUTE_VALUE_FALSE = "false";
 
     private static final Logger logger = LogManager.getLogger(JobDetailsActions.class);
 
@@ -51,6 +50,7 @@ public class JobDetailsActions {
 
         selectJobType();
         selectDropdownOption("Care Provider", jobDetailsPage.careProviderDropdown);
+        BasePage.genericWait(500);
         selectDropdownOption("Site", jobDetailsPage.siteDropdown);
         selectRadioButton(jobDetailsPage.usingRadioButtons);
         selectDropdownOption("Worker Type", jobDetailsPage.workerTypeDropdown);
@@ -60,7 +60,9 @@ public class JobDetailsActions {
         selectTime("Start Time", jobDetailsPage.startTime, jobDetailsPage.startTimeAreaList, jobDetailsPage.availableStartTimes, jobDetailsPage.startTimeSelectionOkButton);
         selectTime("End Time", jobDetailsPage.endTime, jobDetailsPage.endTimeAreaList, jobDetailsPage.availableEndTimes, jobDetailsPage.endTimeSelectionOkButton);
 
+        BasePage.scrollToWebElement(jobDetailsPage.enableRecurrence);
         handleToggleOption("Enable Recurrence", jobDetailsPage.enableRecurrence);
+        BasePage.scrollToWebElement(jobDetailsPage.breaksOrIntervals);
         handleToggleOption("Breaks/ Intervals", jobDetailsPage.breaksOrIntervals);
 
         BasePage.genericWait(5000);
@@ -119,7 +121,7 @@ public class JobDetailsActions {
         assert toggleValue != null;
         String currentAttr = BasePage.getAttributeValue(toggleElement, TOGGLE_ATTRIBUTE_AREA_CHECKED);
         boolean shouldEnable = toggleValue.equalsIgnoreCase("yes");
-        boolean isCurrentlyEnabled = currentAttr.equalsIgnoreCase(ATTRIBUTE_VALUE_FALSE);
+        boolean isCurrentlyEnabled = currentAttr.equalsIgnoreCase("true");
 
         if (shouldEnable != isCurrentlyEnabled) {
             BasePage.clickWithJavaScript(toggleElement);

@@ -1,0 +1,40 @@
+Agreement Overview:
+  Agency: Automation Agency 311
+  Agency Location: North London
+  Care Provider: Automation Provider 319
+#  Care Provider: Care Net Provider
+  Site: BioRevolution Care 319
+#  Site: Bradford
+Worker Rates:
+  Worker Type: Rehabilitation Worker
+  Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+  Hourly Rate: "10.00"
+  Agency Margin: "1.85"
+  CH Hourly Margin: "1.15"
+Cancellation Policy:
+  Before Job Start: 1 hour
+  Cancellation fee percentage: "75"
+  CareHires split: "25"
+  Agency split: "75"
+Sleep In Rates:
+  Worker Type: Rehabilitation Worker
+  Hourly Rate: "10.00"
+  Agency Margin: "1.85"
+  CH Hourly Margin: "1.15"
+Policies for the Provisions of Service:
+  Billing Cycle: Weekly
+  Credit Period: 28
+Signatories:
+  Agency:
+    Name: Glenn Walter
+    Designation: Managing Executive
+    Email: carehires+agreementagency{{increment}}@zohomail.com
+  Provider:
+    Name: Ridley James
+    Designation: Finance Executive
+    Email: carehires+agreementprovider{{increment}}@zohomail.com
+Mark As Signed:
+  Agreement: Agreement.pdf
+  Note: Mark as signed not entered.
+  Provider accepts all the terms and conditions of the agreement: "Yes"
+  Agency accepts all the terms and conditions of the agreement: "Yes"

@@ -1,14 +1,14 @@
 Job Details:
   Job Type: General Job
   Care Provider / Site and Service Preferences:
-    Care Provider: Automation Provider 311
-    Site: BioRevolution Care 311
+    Care Provider: Automation Provider 319
+    Site: BioRevolution Care 319
     Using: Post Custom Job
     Worker Type: Rehabilitation Worker
     Number of Vacancies: 1
 
-  Job duration and Recurrence:
-    Start Date: 18 Jan 2025
+  Job Duration and Recurrence:
+    Start Date: "today + 1"
     Start Time: "07:00"
     End Time: "17:00"
     Enable Recurrence: "No"
@@ -16,8 +16,7 @@ Job Details:
 
 Job Preferences:
   Gender: Male
-  Preferred Skills: Autism,Complex Learning Disabilities,Elderly,Home Care,NVQ L3,Senior
+  Preferred Skills: Autism,Dementia,Driving,Leadership,NVQ L2,NVQ L3
   Enable Block Booking: "Yes"
   Agency: Automation Agency 309
-  Job Notes: "Job notes will be visible to everyone, including agency users and workers. You can enter any 
-  additional comments about this job to share further information with all parties involved."
+  Job Notes: "Job notes will be visible to everyone, including agency users and workers."

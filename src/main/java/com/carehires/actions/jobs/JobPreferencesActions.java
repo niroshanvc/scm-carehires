@@ -40,10 +40,12 @@ public class JobPreferencesActions {
         BasePage.clickWithJavaScript(getDropdownOptionXpath(gender));
 
         String[] preferredSkills = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Preferred Skills").split(",");
-        List<WebElement> availableSkills = jobPreferencesPage.preferredSkills;
-        for (WebElement el : availableSkills) {
-            for (String s : preferredSkills) {
-                if (BasePage.getText(el).equalsIgnoreCase(s)) {
+
+        for (String skill : preferredSkills) {
+            // Refresh the WebElement list to avoid stale references
+            List<WebElement> availableSkills = jobPreferencesPage.preferredSkills;
+            for (WebElement el : availableSkills) {
+                if (BasePage.getText(el).equalsIgnoreCase(skill)) {
                     BasePage.clickWithJavaScript(el);
                     break;
                 }

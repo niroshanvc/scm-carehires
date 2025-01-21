@@ -12,7 +12,7 @@ import io.cucumber.testng.CucumberOptions;
 //        tags = "@CreateAgency or @EditAgency
 //        or @CreateProvider or @CreateProviderWithCustomBilling or @EditProvider
 //        or @CreateWorker or @EditWorker"
-//        or @CreateAgreement or @CreateAgreementForDDProvider or @ViewAgreement
+//        or @CreateAgreement or @CreateAgreementForDDProvider or @ViewAgreement, @EditAgreement
 //        or @CreateJob or @EditJob or @ViewJob
 )
 

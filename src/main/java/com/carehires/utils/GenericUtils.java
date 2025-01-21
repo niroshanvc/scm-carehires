@@ -11,6 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -95,23 +96,29 @@ public class GenericUtils {
     }
 
     public void selectDateFromCalendarPopup(String targetDate) {
-        // Parse the target date to get day, month, and year
-        LocalDate target = LocalDate.parse(targetDate, DateTimeFormatter.ofPattern("dd MMM yyyy"));
-        int targetDay = target.getDayOfMonth();
-        String targetMonth = target.format(DateTimeFormatter.ofPattern("MMM"));  // e.g., "Oct"
-        int targetYear = target.getYear();
+        try {
+            // Parse the target date to get day, month, and year
+            LocalDate target = LocalDate.parse(targetDate, DateTimeFormatter.ofPattern("dd MMM yyyy"));
+            int targetDay = target.getDayOfMonth();
+            String targetMonth = target.format(DateTimeFormatter.ofPattern("MMM"));  // e.g., "Oct"
+            int targetYear = target.getYear();
 
-        // Step 1: Open the month/year dropdown
-        BasePage.clickWithJavaScript(genericElementsPage.monthAndYearDropdown);
+            // Step 1: Open the month/year dropdown
+            BasePage.clickWithJavaScript(genericElementsPage.monthAndYearDropdown);
 
-        // Step 2: Select the year
-        selectYear(targetYear);
+            // Step 2: Select the year
+            selectYear(targetYear);
 
-        // Step 3: Select the month
-        selectMonth(targetMonth);
+            // Step 3: Select the month
+            selectMonth(targetMonth);
 
-        // Step 4: Select the day
-        selectDay(targetDay);
+            // Step 4: Select the day
+            selectDay(targetDay);
+        } catch (DateTimeParseException e) {
+            logger.error("Invalid date format: {}. Expected format is 'dd MMM yyyy'", targetDate, e);
+            throw e;
+        }
+
     }
 
     // Helper method to select the year

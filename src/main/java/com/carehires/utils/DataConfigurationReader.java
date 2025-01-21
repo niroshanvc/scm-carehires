@@ -11,10 +11,14 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DataConfigurationReader {
 
@@ -92,6 +96,10 @@ public class DataConfigurationReader {
 
         if (data.contains("<costCenterNumber>")) {
             data = data.replace("<costCenterNumber>", generateCostCenterNumber(entityType));
+        }
+
+        if (data.matches(".*\\btoday\\s*[+-]\\s*\\d+\\b.*")) {
+            data = processDynamicDate(data);
         }
 
         return data;
@@ -328,5 +336,25 @@ public class DataConfigurationReader {
     private static String generateCostCenterNumber(String entityType) {
         int incrementValue = getCurrentIncrementValue(entityType); // Auto-increment value
         return String.format("CC%06d", incrementValue); // Format as CCXXXXXX
+    }
+
+    // this method is using when user wants to pass the date as today + n number of format from the yml file
+    public static String processDynamicDate(String data) {
+        Pattern datePattern = Pattern.compile("today\\s*([+-])\\s*(\\d+)");
+        Matcher matcher = datePattern.matcher(data);
+
+        while(matcher.find()) {
+            String operator = matcher.group(1); // "+" or "-"
+            int days = Integer.parseInt(matcher.group(2)); // Number of days
+
+            // Calculate the date
+            LocalDate calculatedDate = operator.equals("+") ?
+                    LocalDate.now().plusDays(days) : LocalDate.now().minusDays(days);
+
+            String formattedDate = calculatedDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+            data = data.replaceFirst(Pattern.quote(matcher.group(0)), formattedDate);
+        }
+
+        return data;
     }
 }

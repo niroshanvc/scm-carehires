@@ -12,3 +12,4 @@ Feature: Test CareHires create job
     And User moves to Post Job page
     And User enters Job Details
     And User enters Job Preferences
+    And User enters Job Summary

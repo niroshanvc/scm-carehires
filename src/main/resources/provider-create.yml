@@ -19,18 +19,32 @@ Company Information:
 
 Site Management:
   Add:
-    SiteName: BioRevolution Care {{increment}}
-    SiteType: Hospital
-    SiteSpecialism: Adult,Autism,Childrens,Elderly,Nursing
-    AlsoKnownAs: BioRevolution{{increment}}
-    SiteEmail: carehires+site1pr{{increment}}@zohomail.com
-    PostalCode: BL0 9YX
-    NoOfBeds: 25
-    SiteCode: AC-01
-    PhoneNumberType: "Other"
-    PhoneNumber: "07412001246"
-    JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
-    ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
+    Dataset1:
+      SiteName: BioRevolution Care {{increment}}
+      SiteType: Hospital
+      SiteSpecialism: Adult,Autism,Childrens,Elderly,Nursing
+      AlsoKnownAs: BioRevolution{{increment}}
+      SiteEmail: carehires+site1pr{{increment}}@zohomail.com
+      PostalCode: BL0 9YX
+      NoOfBeds: 25
+      SiteCode: AC-01
+      PhoneNumberType: "Other"
+      PhoneNumber: "07412001246"
+      JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
+      ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
+    Dataset2:
+      SiteName: Automation Master {{increment}}
+      SiteType: Hospital
+      SiteSpecialism: Mental Health,Learning
+      AlsoKnownAs: Master{{increment}}
+      SiteEmail: carehires+site2pr{{increment}}@zohomail.com
+      PostalCode: BL0 0AY
+      NoOfBeds: 20
+      SiteCode: AC-01
+      PhoneNumberType: "Other"
+      PhoneNumber: "07412001246"
+      JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
+      ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
 
 Worker Staff Management:
   Add:
