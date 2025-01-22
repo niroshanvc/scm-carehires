@@ -65,8 +65,14 @@ public class ProviderUserManagementActions {
         }
 
         BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(userManagement.addNewButton);
 
+        String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "email");
+        BasePage.genericWait(2000);
+
+        //wait until email get validated
+        genericUtils.waitUntilEmailAddressValidatedForUniqueness(email, userManagement.emailAddress, userManagement.name);
         enterUserManagementData(YML_FILE, ADD);
 
         BasePage.clickWithJavaScript(userManagement.assignToSiteDropdown);
@@ -87,9 +93,10 @@ public class ProviderUserManagementActions {
         verifySuccessMessage();
         isUserAdded();
 
+        BasePage.genericWait(10000);
         BasePage.clickWithJavaScript(userManagement.updateButton);
+        BasePage.genericWait(5000);
         BasePage.waitUntilElementDisplayed(userManagement.nextButton, 60);
-        BasePage.waitUntilElementClickable(userManagement.nextButton, 20);
         BasePage.clickWithJavaScript(userManagement.nextButton);
     }
 
@@ -122,7 +129,13 @@ public class ProviderUserManagementActions {
 
         // add new user
         BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(userManagement.addNewButton);
+        String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, "email");
+        BasePage.genericWait(2000);
+
+        //wait until email get validated
+        genericUtils.waitUntilEmailAddressValidatedForUniqueness(email, userManagement.emailAddress, userManagement.name);
         enterUserManagementData(EDIT_YML_FILE, ADD);
 
         BasePage.clickWithJavaScript(userManagement.assignToSiteDropdown);
@@ -146,7 +159,7 @@ public class ProviderUserManagementActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating User Management Information - In Edit >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementClickable(userManagement.editDetailsIcon, 60);
         BasePage.clickWithJavaScript(userManagement.editDetailsIcon);
-        BasePage.genericWait(1000);
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(userManagement.editDetailsIcon);
         enterUserManagementData(EDIT_YML_FILE, UPDATE);
         updateUserAccessLevel();
@@ -160,7 +173,7 @@ public class ProviderUserManagementActions {
     private void updateUserAccessLevel() {
         // Read access levels from the YAML file and convert them to a Set for easy comparison
         Set<String> desiredLevels = new HashSet<>(Arrays.asList(
-                DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, USER_ACCESS_LEVEL).split(",")
+                Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, USER_ACCESS_LEVEL)).split(",")
         ));
         // Click to open the worker skills dropdown
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
@@ -195,11 +208,6 @@ public class ProviderUserManagementActions {
     }
 
     private void enterUserManagementData(String ymlFile, String subHeader) {
-        String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "email");
-
-        //wait until email get validated
-        genericUtils.waitUntilEmailAddressValidatedForUniqueness(email, userManagement.emailAddress, userManagement.name);
-
         String name = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Name");
         BasePage.clearAndEnterTexts(userManagement.name, name);
 

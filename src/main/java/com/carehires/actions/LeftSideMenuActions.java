@@ -70,10 +70,24 @@ public class LeftSideMenuActions {
         logger.info(" --------------------------- Moves to Agreements Create Page ---------------------------");
     }
 
+    public void gotoAgreementViewPage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.mouseHoverAndClick(LeftSideMenuPage.agreementsMainLink, LeftSideMenuPage.agreementsViewSubLink);
+        logger.info(" --------------------------- Moves to Agreements View Page ---------------------------");
+    }
+
     public void gotoTasksPaymentAuthorisationsPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(LeftSideMenuPage.tasksMainLink, LeftSideMenuPage.paymentAuthorisationsSubLink);
         logger.info(" --------------------------- Moves to Payment Authorisations Page ---------------------------");
+    }
+
+    public void gotoJobsPage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.clickWithJavaScript(leftSideMenu.jobsIcon);
+        logger.info(" --------------------------- Moves to Jobs Page ---------------------------");
     }
 }

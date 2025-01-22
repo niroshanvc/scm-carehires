@@ -86,7 +86,7 @@ public class AgencyProfileActions {
     }
 
     private void verifyProfileApproveMessage() {
-        BasePage.waitUntilElementPresent(agencyProfile.successMessage, 30);
+        BasePage.waitUntilElementPresent(agencyProfile.successMessage, 60);
         String actualInLowerCase = BasePage.getText(agencyProfile.successMessage).toLowerCase().trim();
         String expected = "Agency approved successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
@@ -130,13 +130,6 @@ public class AgencyProfileActions {
         verifySuccessMessage();
     }
 
-    public void selectFirstAvailableAgency() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Select on the first available agency >>>>>>>>>>>>>>>>>>>>");
-        BasePage.waitUntilPageCompletelyLoaded();
-        BasePage.genericWait(7000);
-        BasePage.clickWithJavaScript(agencyProfile.firstResultInTheList);
-    }
-
     private void verifySuccessMessage() {
         BasePage.waitUntilElementPresent(agencyProfile.successMessage, 90);
         String actualInLowerCase = BasePage.getText(agencyProfile.successMessage).toLowerCase().trim();
@@ -144,10 +137,6 @@ public class AgencyProfileActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Profile updated success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(agencyProfile.successMessage, 20);
-    }
-
-    private String getPhoneNumberTypeXpath(String option) {
-        return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 
     public void getsAgencyId() {

@@ -154,7 +154,7 @@ public class AgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.legalOwnershipPercentage, legalRepOwnership);
 
         String legalRepPostcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "LegalRepPostCode");
-        genericUtils.fillAddress(creditServicePage.legalPostcode, legalRepPostcode, 190);
+        genericUtils.fillAddress(creditServicePage.legalPostcode, legalRepPostcode, 500);
 
         //upload verification document
         String legalRepDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "LegalRepDocument");

@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.function.Supplier;
 
 public class BasePage {
     private static WebDriverWait wait;
@@ -82,6 +83,16 @@ public class BasePage {
                 throw new WebDriverInitializationException("Error initializing WebDriver for browser: " + browser, e);
             }
         }
+    }
+
+    public static void waitUntil(Supplier<Boolean> condition, int timeoutInSeconds) {
+        WebDriverWait wait = null;
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+        wait.until(ExpectedConditions.refreshed(ExpectedConditions.jsReturnsValue("return (" + condition.get() + ");")));
     }
 
     public static class WebDriverInitializationException extends Exception {
@@ -283,6 +294,11 @@ public class BasePage {
         return element.getText();
     }
 
+    public static String getTextWithoutWait(WebElement element) {
+        logger.info("****************** Without waiting any second, get text in %s", element);
+        return element.getText();
+    }
+
     public static String getAttributeValue(WebElement element, String attribute) {
         logger.info("******************  attribute value from %s and %s", element, attribute);
         waitUntilElementPresent(element, 30);
@@ -352,15 +368,6 @@ public class BasePage {
             throw new RuntimeException(e);
         }
         js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-    }
-
-    public static void waitFor(int milliseconds) {
-        logger.info("****************** Wait for %s milliseconds", milliseconds);
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void scrollToBottomOfPage() {
@@ -802,5 +809,13 @@ public class BasePage {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    public static WebElement getElement(String xpath) {
+        try {
+            return getDriver().findElement(By.xpath(xpath));
+        } catch (WebDriverInitializationException e) {
+            throw new NoSuchElementException(e.getMessage());
+        }
     }
 }

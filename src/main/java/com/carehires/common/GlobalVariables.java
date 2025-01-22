@@ -45,6 +45,10 @@ public class GlobalVariables {
 
     // Method to retrieve the incremented value for an entity type
     public static int getIncrementedValue(String entityType) {
-        return (int) getVariable(entityType + "_incrementValue");
+        Object value = getVariable(entityType + "_incrementValue");
+        if (value == null) {
+            return 1; // Default value if the increment value is not set
+        }
+        return (int) value;
     }
 }

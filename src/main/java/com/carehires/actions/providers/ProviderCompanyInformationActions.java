@@ -257,6 +257,7 @@ public class ProviderCompanyInformationActions {
         // Retrieve the current increment value for the provider (from the file)
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
         enterDataForInputFields(EDIT_YML_FILE, ADD);
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(companyInformationPage.saveButton);
         verifySuccessMessage();
         BasePage.waitUntilElementClickable(companyInformationPage.updateButton, 120);

@@ -41,6 +41,8 @@ public class ProvidersSiteManagementActions {
     private static final String YML_HEADER = "Site Management";
     private static final String ADD = "Add";
     private static final String UPDATE = "Update";
+    private static final String YML_HEADER_DATASET1 = "Dataset1";
+    private static final String YML_HEADER_DATASET2 = "Dataset2";
     private static final String SITE_SPECIALISM = "SiteSpecialism";
     private static final Logger logger = LogManager.getFormatterLogger(ProvidersSiteManagementActions.class);
     Integer incrementValue;
@@ -67,13 +69,12 @@ public class ProvidersSiteManagementActions {
 
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.genericWait(3000);
+        // add first site
         BasePage.clickWithJavaScript(siteManagementPage.addNewButton);
-
-        enterSiteManagementData(YML_FILE, ADD);
-
+        enterSiteManagementData(YML_FILE, ADD, YML_HEADER_DATASET1);
         logger.info("Entering Site Specialism");
         BasePage.scrollToWebElement(siteManagementPage.siteTypeDropdown);
-        String[] siteSpecialism = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, SITE_SPECIALISM)).split(",");
+        String[] siteSpecialism = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, YML_HEADER_DATASET1, SITE_SPECIALISM)).split(",");
         BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
         BasePage.genericWait(500);
         for (String specialism : siteSpecialism) {
@@ -84,64 +85,79 @@ public class ProvidersSiteManagementActions {
         BasePage.genericWait(10000);
         BasePage.clickWithJavaScript(siteManagementPage.addButton);
         verifySuccessMessage();
-        isSiteSaved(YML_FILE, ADD);
+        isSiteSaved(YML_FILE, ADD, YML_HEADER_DATASET1);
+
+        // add second site
+        BasePage.clickWithJavaScript(siteManagementPage.addNewButton);
+        enterSiteManagementData(YML_FILE, ADD, YML_HEADER_DATASET2);
+        logger.info("Entering Site Specialism");
+        BasePage.scrollToWebElement(siteManagementPage.siteTypeDropdown);
+        String[] siteSpecialism2 = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, YML_HEADER_DATASET2, SITE_SPECIALISM)).split(",");
+        BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
+        BasePage.genericWait(500);
+        for (String specialism : siteSpecialism2) {
+            BasePage.clickWithJavaScript(getMultiSelectDropdownXpath(specialism));
+        }
+        BasePage.clickWithJavaScript(siteManagementPage.alsoKnownAs);
+        BasePage.genericWait(10000);
+        BasePage.clickWithJavaScript(siteManagementPage.addButton);
 
         BasePage.clickWithJavaScript(siteManagementPage.updateButton);
         BasePage.waitUntilElementClickable(siteManagementPage.nextButton, 90);
         BasePage.clickWithJavaScript(siteManagementPage.nextButton);
     }
 
-    private void enterSiteManagementData(String ymlFile, String subHeader) {
+    private void enterSiteManagementData(String ymlFile, String subHeader, String dataset) {
         logger.info("Entering Site Name");
-        String siteName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "SiteName");
+        String siteName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "SiteName");
         BasePage.clearAndEnterTexts(siteManagementPage.siteName, siteName);
 
         logger.info("Entering Site Type");
-        String siteType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "SiteType");
+        String siteType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "SiteType");
         BasePage.clickWithJavaScript(siteManagementPage.siteTypeDropdown);
         BasePage.waitUntilElementClickable(getDropdownXpath(siteType), 30);
         BasePage.clickWithJavaScript(getDropdownXpath(siteType));
 
         logger.info("Entering Site also known as data");
-        String alsoKnownAs = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "AlsoKnownAs");
+        String alsoKnownAs = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "AlsoKnownAs");
         BasePage.clickWithJavaScript(siteManagementPage.alsoKnownAs);
         BasePage.clearAndEnterTexts(siteManagementPage.alsoKnownAs, alsoKnownAs);
 
         logger.info("Entering Site Email");
-        String siteEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "SiteEmail");
+        String siteEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "SiteEmail");
         BasePage.clearAndEnterTexts(siteManagementPage.siteEmail, siteEmail);
 
         logger.info("Entering Site Address");
-        String postalCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "PostalCode");
+        String postalCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "PostalCode");
         BasePage.clearTexts(siteManagementPage.postalCode);
         genericUtils.fillAddress(siteManagementPage.postalCode, postalCode, 1000);
 
         logger.info("Entering Site No of beds");
-        String numberOfBeds = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "NoOfBeds");
+        String numberOfBeds = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "NoOfBeds");
         BasePage.clearAndEnterTexts(siteManagementPage.noOfBeds, numberOfBeds);
 
         logger.info("Entering Site Code");
-        String siteCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "SiteCode");
+        String siteCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "SiteCode");
         BasePage.clearAndEnterTexts(siteManagementPage.siteCode, siteCode);
 
         logger.info("Entering Site Phone Number");
-        genericUtils.fillPhoneNumber(ENTITY, ymlFile, siteManagementPage.phoneNumber, YML_HEADER, subHeader, "PhoneNumberType");
-        genericUtils.fillPhoneNumber(ENTITY, ymlFile, siteManagementPage.phoneNumber, YML_HEADER, subHeader, "PhoneNumber");
+        genericUtils.fillPhoneNumber(ENTITY, ymlFile, siteManagementPage.phoneNumber, YML_HEADER, subHeader, dataset, "PhoneNumberType");
+        genericUtils.fillPhoneNumber(ENTITY, ymlFile, siteManagementPage.phoneNumber, YML_HEADER, subHeader, dataset, "PhoneNumber");
 
         logger.info("Entering Site job notification email address");
         BasePage.scrollToWebElement(siteManagementPage.approvalNotificationAddress);
-        String jobNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "JobNotificationAddress");
+        String jobNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "JobNotificationAddress");
         BasePage.clearAndEnterTexts(siteManagementPage.jobNotificationAddress, jobNotification);
 
         logger.info("Entering site approval notification email address");
-        String approvalNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "ApprovalNotificationAddress");
+        String approvalNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "ApprovalNotificationAddress");
         BasePage.clearAndEnterTexts(siteManagementPage.approvalNotificationAddress, approvalNotification);
     }
 
-    private void isSiteSaved(String ymlFile, String subHeader) {
+    private void isSiteSaved(String ymlFile, String subHeader, String dataset) {
         BasePage.waitUntilElementPresent(siteManagementPage.siteNameAddress, 90);
         String actualSiteName = BasePage.getText(siteManagementPage.siteNameAddress).trim();
-        String expectedSiteName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "SiteName");
+        String expectedSiteName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "SiteName");
         assertThat("Site is not saved", actualSiteName, is(expectedSiteName));
     }
 
@@ -170,7 +186,7 @@ public class ProvidersSiteManagementActions {
         incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
         BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(siteManagementPage.addNewButton);
-        enterSiteManagementData(EDIT_YML_FILE, ADD);
+        enterSiteManagementData(EDIT_YML_FILE, ADD, YML_HEADER_DATASET1);
 
         logger.info("Entering Site Specialism - In Add");
         String[] siteSpecialism = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, SITE_SPECIALISM)).split(",");
@@ -190,7 +206,7 @@ public class ProvidersSiteManagementActions {
         BasePage.clickWithJavaScript(siteManagementPage.updateButton);
         BasePage.waitUntilElementDisplayed(siteManagementPage.editDetailsIcon, 30);
         BasePage.clickWithJavaScript(siteManagementPage.editDetailsIcon);
-        enterSiteManagementData(EDIT_YML_FILE, UPDATE);
+        enterSiteManagementData(EDIT_YML_FILE, UPDATE, YML_HEADER_DATASET1);
 
         BasePage.scrollToWebElement(siteManagementPage.siteTypeDropdown);
         updateSiteSpecialism();
@@ -205,7 +221,7 @@ public class ProvidersSiteManagementActions {
 
     private void updateSiteSpecialism() {
         Set<String> siteSpecialism = new HashSet<>(Arrays.asList(Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY,
-                EDIT_YML_FILE, YML_HEADER, UPDATE, SITE_SPECIALISM)).split(",")));
+                EDIT_YML_FILE, YML_HEADER, UPDATE, YML_HEADER_DATASET1, SITE_SPECIALISM)).split(",")));
         BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
         // Get all currently selected skills, default to an empty list if null
         List<String> selectedSiteSpecialism = getCurrentlySelectedSiteSpecialism();

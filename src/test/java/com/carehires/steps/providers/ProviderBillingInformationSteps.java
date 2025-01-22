@@ -16,4 +16,9 @@ public class ProviderBillingInformationSteps {
     public void moveToBillingInformationAndEditData() {
         billingInformationActions.updatingGeneralBillingInformation();
     }
+
+    @And("User enters General and Custom Billing Information")
+    public void enterGeneralAndCustomBillingInformation() {
+        billingInformationActions.savingGeneralAndCustomBillingInformation();
+    }
 }

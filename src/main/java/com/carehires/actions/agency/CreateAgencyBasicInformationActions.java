@@ -135,6 +135,7 @@ public class CreateAgencyBasicInformationActions {
 
     public void moveToBasicInfoStage() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Moving to Basic Information Stage >>>>>>>>>>>>>>>>>>>>");
+        BasePage.genericWait(1500);
         BasePage.clickWithJavaScript(createAgencyBasicInfoPage.basicInformationCompletedIcon);
     }
 

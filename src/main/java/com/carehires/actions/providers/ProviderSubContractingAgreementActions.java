@@ -42,6 +42,7 @@ public class ProviderSubContractingAgreementActions {
                 + "subContractDocument.pdf";
         BasePage.uploadFile(subContractingAgreementPage.uploadFile, absoluteFilePath);
         waitUntilDocumentUploaded();
+        BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(subContractingAgreementPage.saveButton);
 
         verifySuccessMessage();

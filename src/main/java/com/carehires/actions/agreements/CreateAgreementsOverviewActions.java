@@ -1,5 +1,6 @@
 package com.carehires.actions.agreements;
 
+import com.carehires.common.GlobalVariables;
 import com.carehires.pages.agreements.CreateAgreementsOverviewPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -39,6 +40,9 @@ public class CreateAgreementsOverviewActions {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Agreement Overview Info >>>>>>>>>>>>>>>>>>>>");
 
+        // Retrieve the current increment value for the provider (from the file)
+        int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
+
         String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Agency");
         BasePage.clickWithJavaScript(agreementsOverviewPage.agencyDropdown);
         By by = By.xpath(getDropdownOptionXpath(agency));
@@ -67,9 +71,15 @@ public class CreateAgreementsOverviewActions {
         BasePage.clickWithJavaScript(agreementsOverviewPage.siteDropdown);
         BasePage.waitUntilElementClickable(getDropdownOptionXpath(site), 30);
         selectAllSites();
-        BasePage.genericWait(2000);
+        BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(agreementsOverviewPage.continueButton);
         verifySuccessMessage();
+
+        // After successfully entering the company information, update the increment value in the file
+        DataConfigurationReader.storeNewIncrementValue(ENTITY);
+
+        // Store the increment value in GlobalVariables for reuse in other steps
+        GlobalVariables.setVariable("agreement_incrementValue", incrementValue);
     }
 
     private String getDropdownOptionXpath(String option) {

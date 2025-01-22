@@ -22,4 +22,34 @@ public class ViewAgreementOverviewSteps {
     public void clickOnActiveAgreementButton() {
         viewAgreementOverviewActions.clickOnActiveAgreement();
     }
+
+    @Then("^User verifies agreement signature status as (.*)$")
+    public void verifyAgreementSignatureStatus(String signatureStatus) {
+        viewAgreementOverviewActions.verifyAgreementSignatureStatus(signatureStatus);
+    }
+
+    @Then("User verifies available data in the worker rates table")
+    public void verifyAvailableDataInWorkerRatesTable() {
+        viewAgreementOverviewActions.verifyContentsInWorkerRates();
+    }
+
+    @Then("User verifies available data in the Sleep in Request table")
+    public void verifyAvailableDataInSleepInRequestTable() {
+        viewAgreementOverviewActions.verifyContentsInSleepInRequest();
+    }
+
+    @And("User makes that agreement inactive")
+    public void makeAgreementInactive() {
+        viewAgreementOverviewActions.markAsInactive();
+    }
+
+    @And("User marks it as active again")
+    public void marksItAsActiveAgain() {
+        viewAgreementOverviewActions.markAsActiveAgain();
+    }
+
+    @And("User edit site")
+    public void editSiteInfo() {
+        viewAgreementOverviewActions.editSite();
+    }
 }

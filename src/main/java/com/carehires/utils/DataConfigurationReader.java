@@ -11,12 +11,14 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DataConfigurationReader {
 
@@ -25,7 +27,14 @@ public class DataConfigurationReader {
     private static final String INCREMENT_FILE_PATH_AGENCY = "src/main/resources/agency_increment_value.txt";
     private static final String INCREMENT_FILE_PATH_PROVIDER = "src/main/resources/provider_increment_value.txt";
     private static final String INCREMENT_FILE_PATH_WORKER = "src/main/resources/worker_increment_value.txt";
+    private static final String INCREMENT_FILE_PATH_AGREEMENT = "src/main/resources/agreement_increment_value.txt";
     private static final String INCREMENT_VALUE = "_incrementValue";
+    private static final String INCREMENT_VARIABLE = "{{increment}}";
+
+    // Private constructor to prevent instantiation
+    private DataConfigurationReader() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated.");
+    }
 
     // Method to read data from the YAML file
     public static String readDataFromYmlFile(String entityType, String fileName, String... keys) {
@@ -61,29 +70,108 @@ public class DataConfigurationReader {
     }
 
     private static String replaceDynamicPlaceholders(String data, String entityType) {
-        return switch (data) {
-            case "<uniqueNumber>" -> generateUniqueNumber();
-            case "<insuranceNumber>" -> generateNationalInsuranceNumber();
-            case "<shareCode>" -> generateShareCodeNumber();
-            case "<passportNumber>" -> generatePassportNumber();
-            default -> replaceIncrementPlaceholder(data, entityType);
-        };
-    }
-
-    private static String replaceIncrementPlaceholder(String data, String entityType) {
-        if (data.contains("{{increment}}")) {
-            if (entityType.equals("Agency") || entityType.equals("Provider") || entityType.equals("Worker")) {
-                int incrementValue = GlobalVariables.getVariable(entityType + INCREMENT_VALUE, Integer.class);
-                data = data.replace("{{increment}}", String.valueOf(incrementValue));
-            } else {
-                logger.warn("Increment placeholder found for entity type {} which does not support increment values.", entityType);
-            }
+        if (data.contains("<uniqueNumber>")) {
+            data = data.replace("<uniqueNumber>", generateUniqueNumber());
         }
+
+        if (data.contains("<insuranceNumber>")) {
+            data = data.replace("<insuranceNumber>", generateNationalInsuranceNumber());
+        }
+
+        if (data.contains("<shareCode>")) {
+            data = data.replace("<shareCode>", generateShareCodeNumber());
+        }
+
+        if (data.contains("<passportNumber>")) {
+            data = data.replace("<passportNumber>", generatePassportNumber());
+        }
+
+        if (data.contains(INCREMENT_VARIABLE)) {
+            data = replaceIncrementPlaceholder(data, entityType);
+        }
+
+        if (data.contains("<accountNumber>")) {
+            data = data.replace("<accountNumber>", generateAccountNumber(entityType));
+        }
+
+        if (data.contains("<costCenterNumber>")) {
+            data = data.replace("<costCenterNumber>", generateCostCenterNumber(entityType));
+        }
+
+        if (data.matches(".*\\btoday\\s*[+-]\\s*\\d+\\b.*")) {
+            data = processDynamicDate(data);
+        }
+
         return data;
     }
 
+    private static String replaceIncrementPlaceholder(String data, String entityType) {
+        if (!data.contains(INCREMENT_VARIABLE)) {
+            return data; // No placeholder to replace
+        }
+
+        // Attempt to retrieve the cached increment value
+        Integer cachedIncrementValue = (Integer) GlobalVariables.getVariable(entityType + INCREMENT_VALUE);
+
+        // If not cached, read from the file and cache the value
+        if (cachedIncrementValue == null) {
+            String incrementFilePath = getFilePathForEntity(entityType);
+
+            if (incrementFilePath == null) {
+                logger.error("No increment file path found for entity type: {}", entityType);
+                return data;
+            }
+
+            cachedIncrementValue = readIncrementValueFromFile(incrementFilePath);
+
+            if (cachedIncrementValue == -1) {
+                logger.error("Failed to read increment value from file for entity type: {}", entityType);
+                return data;
+            }
+
+            // Cache the value for future use
+            GlobalVariables.storeIncrementedValue(entityType, cachedIncrementValue);
+        }
+
+        // Replace the placeholder with the increment value
+        data = data.replace(INCREMENT_VARIABLE, String.valueOf(cachedIncrementValue));
+        logger.info("Replaced {{increment}} with {} for entity type: {}", cachedIncrementValue, entityType);
+
+        // Update the increment value in the file
+        String incrementFilePath = getFilePathForEntity(entityType);
+        if (incrementFilePath != null) {
+            updateIncrementValueInFile(incrementFilePath, cachedIncrementValue + 1);
+            logger.info("Increment value updated to {} in file: {}", cachedIncrementValue + 1, incrementFilePath);
+        } else {
+            logger.error("Unable to update increment value. File path not found for entity type: {}", entityType);
+        }
+
+        return data;
+    }
+
+    private static void updateIncrementValueInFile(String filePath, int newValue) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(String.valueOf(newValue));
+            logger.info("Updated increment value to {} in file: {}", newValue, filePath);
+        } catch (IOException e) {
+            logger.error("Error updating increment value in file: {}", e.getMessage(), e);
+        }
+    }
+
+    private static int readIncrementValueFromFile(String filePath) {
+        try (FileReader reader = new FileReader(filePath)) {
+            char[] buffer = new char[10];
+            int numCharsRead = reader.read(buffer);
+            String incrementValueStr = new String(buffer, 0, numCharsRead).trim();
+            return Integer.parseInt(incrementValueStr);
+        } catch (IOException | NumberFormatException e) {
+            logger.error("Error reading increment value from file: {}", e.getMessage(), e);
+            return -1;
+        }
+    }
+
     // Change this method to public so it can be accessed from Hooks and other places
-    public static int getCurrentIncrementValue(String entityType) {
+    public static synchronized int getCurrentIncrementValue(String entityType) {
         if (incrementValue == -1) {
             incrementValue = loadIncrementValueFromFile(entityType);
         }
@@ -112,9 +200,10 @@ public class DataConfigurationReader {
     }
 
     // Save the new increment value
-    public static void storeNewIncrementValue(String entityType) {
-        incrementValue++; // Increment the value
-        saveIncrementValueToFile(entityType, incrementValue); // Save it to a file
+    public static synchronized void storeNewIncrementValue(String entityType) {
+        if (incrementValue != -1) {
+            saveIncrementValueToFile(entityType, incrementValue);
+        }
     }
 
     // Save the increment value to the file
@@ -130,12 +219,6 @@ public class DataConfigurationReader {
         }
     }
 
-    private static String generateUniqueNumber() {
-        long seed = System.nanoTime();
-        Random random = new Random(seed);
-        return String.format("%010d", random.nextInt(1000000000));
-    }
-
     private static String getFilePathForEntity(String entityType) {
         logger.info("********** Received entity type: {}", entityType);
         String lowerCaseEntityType = entityType.toLowerCase();
@@ -146,9 +229,16 @@ public class DataConfigurationReader {
             case "agency" -> INCREMENT_FILE_PATH_AGENCY;
             case "provider" -> INCREMENT_FILE_PATH_PROVIDER;
             case "worker" -> INCREMENT_FILE_PATH_WORKER;
-            case "job", "agreement" -> null; // No increment file for jobs and agreements
+            case "agreement" -> INCREMENT_FILE_PATH_AGREEMENT;
+            case "job" -> null; // No increment file for Jobs and Agreements
             default -> throw new IllegalArgumentException("Unknown entity type: " + entityType);
         };
+    }
+
+    private static String generateUniqueNumber() {
+        long seed = System.nanoTime();
+        Random random = new Random(seed);
+        return String.format("%010d", random.nextInt(1000000000));
     }
 
     public static Map<String, String> getUserCredentials(String userType) {
@@ -174,7 +264,7 @@ public class DataConfigurationReader {
      *
      * @return A unique National Insurance Number (e.g., AB123456C).
      */
-    public static String generateNationalInsuranceNumber() {
+    private static String generateNationalInsuranceNumber() {
         // Generate the first two characters
         StringBuilder niNumber = new StringBuilder();
         niNumber.append(generateRandomLetter());  // First letter
@@ -200,39 +290,11 @@ public class DataConfigurationReader {
     }
 
     /**
-     * Parses the YAML file and counts the number of datasets under a specific section.
-     *
-     * @param sectionName the name of the section to count datasets for (e.g., "Education and Training").
-     * @param ymlFile the name of the YAML file to parse.
-     * @return the number of datasets in the section.
-     */
-    public int countDataSetsInSection(String sectionName, String ymlFile) {
-        Yaml yaml = new Yaml();
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(ymlFile)) {
-            if (inputStream == null) {
-                throw new RuntimeException("YAML file not found!");
-            }
-
-            Map<String, Object> data = yaml.load(inputStream);
-            if (data.containsKey(sectionName)) {
-                // The section is represented as a LinkedHashMap
-                LinkedHashMap<String, Object> sectionData = (LinkedHashMap<String, Object>) data.get(sectionName);
-                return sectionData.size();  // Return the number of datasets
-            } else {
-                throw new RuntimeException("Section not found in the YAML file!");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    /**
      * Generates a unique Share Code Number in the format X0000000X.
      *
      * @return A unique Share Code Number (e.g., A1234567C).
      */
-    public static String generateShareCodeNumber() {
+    private static String generateShareCodeNumber() {
         // Generate the first two characters
         StringBuilder shareCode = new StringBuilder();
         shareCode.append(generateRandomLetter());  // First letter
@@ -253,7 +315,7 @@ public class DataConfigurationReader {
      *
      * @return A unique Share Code Number (e.g., AB1234567).
      */
-    public static String generatePassportNumber() {
+    private static String generatePassportNumber() {
         // Generate the first two characters
         StringBuilder passport = new StringBuilder();
         passport.append(generateRandomLetter()); // First letter
@@ -264,5 +326,35 @@ public class DataConfigurationReader {
         passport.append(numericPart);
 
         return passport.toString();
+    }
+
+    private static String generateAccountNumber(String entityType) {
+        int currentValue = getCurrentIncrementValue(entityType);
+        return String.format("%08d", currentValue);
+    }
+
+    private static String generateCostCenterNumber(String entityType) {
+        int incrementValue = getCurrentIncrementValue(entityType); // Auto-increment value
+        return String.format("CC%06d", incrementValue); // Format as CCXXXXXX
+    }
+
+    // this method is using when user wants to pass the date as today + n number of format from the yml file
+    public static String processDynamicDate(String data) {
+        Pattern datePattern = Pattern.compile("today\\s*([+-])\\s*(\\d+)");
+        Matcher matcher = datePattern.matcher(data);
+
+        while(matcher.find()) {
+            String operator = matcher.group(1); // "+" or "-"
+            int days = Integer.parseInt(matcher.group(2)); // Number of days
+
+            // Calculate the date
+            LocalDate calculatedDate = operator.equals("+") ?
+                    LocalDate.now().plusDays(days) : LocalDate.now().minusDays(days);
+
+            String formattedDate = calculatedDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+            data = data.replaceFirst(Pattern.quote(matcher.group(0)), formattedDate);
+        }
+
+        return data;
     }
 }

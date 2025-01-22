@@ -87,6 +87,7 @@ public class AgencyStaffActions {
         BasePage.typeWithStringBuilder(staffPage.minChargeHourlyRate, minChargeHourlyRate);
 
         String employeeType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "EmployeeType");
+        assert employeeType != null;
         if (employeeType.equalsIgnoreCase("Paye")) {
             BasePage.clickWithJavaScript((staffPage.employeeType.get(0)));
         } else {

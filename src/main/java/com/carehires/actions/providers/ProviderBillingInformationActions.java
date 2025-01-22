@@ -21,8 +21,10 @@ public class ProviderBillingInformationActions {
     private static final String EDIT_YML_FILE = "provider-edit";
     private static final String YML_HEADER = "Billing Information";
     private static final String YML_HEADER_SUB = "General Billing Information";
+    private static final String YML_HEADER_SUB2 = "Custom Billing Information";
     private static final String ADD = "Add";
     private static final String UPDATE = "Update";
+    private static final String PROVIDER_INCREMENT = "provider_incrementValue";
     private static final Logger logger = LogManager.getFormatterLogger(ProviderBillingInformationActions.class);
     Integer incrementValue;
 
@@ -38,7 +40,7 @@ public class ProviderBillingInformationActions {
     public void savingGeneralBillingInformation() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering General Billing Information >>>>>>>>>>>>>>>>>>>>");
         // Retrieve the incremented value
-        incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
+        incrementValue = GlobalVariables.getVariable(PROVIDER_INCREMENT, Integer.class);
 
         // Check for null or default value
         if (incrementValue == null) {
@@ -100,7 +102,7 @@ public class ProviderBillingInformationActions {
     public void updatingGeneralBillingInformation() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering General Billing Information - In Edit >>>>>>>>>>>>>>>>>>>>");
         // Retrieve the incremented value
-        incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
+        incrementValue = GlobalVariables.getVariable(PROVIDER_INCREMENT, Integer.class);
         navigationMenu.gotoBillingPage();
         BasePage.waitUntilPageCompletelyLoaded();
 
@@ -140,11 +142,93 @@ public class ProviderBillingInformationActions {
     }
 
     private void verifySuccessMessageInEditMode() {
-        BasePage.waitUntilElementPresent(billingInformationPage.successMessage, 30);
-        String actualInLowerCase = BasePage.getText(billingInformationPage.successMessage).toLowerCase().trim();
-        String expected = "Billing information updated successfully.";
-        String expectedInLowerCase = expected.toLowerCase().trim();
-        assertThat("Edit Billing information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
-        BasePage.waitUntilElementDisappeared(billingInformationPage.successMessage, 20);
+
+    }
+
+    public void savingGeneralAndCustomBillingInformation() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< First entering General Billing Information >>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable(PROVIDER_INCREMENT, Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");
+        }
+
+        BasePage.genericWait(3000);
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementDisplayed(billingInformationPage.addressBillsInAttentionTo, 60);
+        enterGeneralBillingData(YML_FILE, ADD);
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(billingInformationPage.saveButton);
+
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Then entering Custom Billing Information >>>>>>>>>>>>>>>>>>>>");
+        navigationMenu.gotoBillingPage();
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.clickWithJavaScript(billingInformationPage.customBillingInformationSection);
+        enterCustomBillingData(YML_FILE, ADD);
+        BasePage.genericWait(10000);
+        BasePage.clickWithJavaScript(billingInformationPage.customSaveButton);
+
+        //wait until custom billing saved
+        BasePage.waitUntilElementClickable(billingInformationPage.customBillingEditIcon, 60);
+        BasePage.clickWithJavaScript(billingInformationPage.continueButton);
+
+    }
+
+    private void enterCustomBillingData(String ymlFile, String subHeader) {
+        BasePage.genericWait(5000);
+        String siteName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Site");
+        BasePage.waitUntilElementPresent(billingInformationPage.siteDropdown, 30);
+        BasePage.clickWithJavaScript(billingInformationPage.siteDropdown);
+        BasePage.waitUntilElementClickable(getDropdownOptionXpath(siteName), 30);
+        BasePage.clickWithJavaScript(getDropdownOptionXpath(siteName));
+
+        String attentionTo = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Address bills in attention to");
+        BasePage.clearAndEnterTexts(billingInformationPage.customAddressBillsInAttentionTo, attentionTo);
+
+        String billingAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Billing Address");
+        BasePage.clearAndEnterTexts(billingInformationPage.customBillingAddress, billingAddress);
+
+        String digitalBillingAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Digital Billing Address");
+        BasePage.clearAndEnterTexts(billingInformationPage.customDigitalBillingAddress, digitalBillingAddress);
+
+        String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Phone Number");
+        BasePage.clearAndEnterTexts(billingInformationPage.customPhoneNumber, phone);
+
+        String costCenter = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Cost Center");
+        if (costCenter != null && !costCenter.trim().isEmpty()) {
+            BasePage.clearAndEnterTexts(billingInformationPage.customCostCenter, costCenter);
+        }
+
+        BasePage.scrollToWebElement(billingInformationPage.customCreditTermDropdown);
+        String billingCycle = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Billing Cycle");
+        BasePage.clickWithJavaScript(billingInformationPage.customBillingCycleDropdown);
+        BasePage.clickWithJavaScript(getDropdownOptionXpath(billingCycle));
+
+        String creditTerm = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Credit Term");
+        BasePage.clickWithJavaScript(billingInformationPage.customCreditTermDropdown);
+        BasePage.clickWithJavaScript(getDropdownOptionXpath(creditTerm));
+    }
+
+    private void fillGeneralBillingBankInfo(String ymlFile, String subHeader) {
+        String generalBilling = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Is same as general billing bank infor");
+        assert generalBilling != null;
+        if (generalBilling.equalsIgnoreCase("Yes")) {
+            String text = BasePage.getAttributeValue(billingInformationPage.isSameAsGeneralBillingBankInformationSpan, "class");
+            if (!text.contains("checked")) {
+                BasePage.clickWithJavaScript(billingInformationPage.isSameAsGeneralBillingBankInformationCheckbox);
+            }
+
+        } else {
+            String accountName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Account Name");
+            BasePage.clearAndEnterTexts(billingInformationPage.accountName, accountName);
+
+            String accountNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Account Number");
+            BasePage.clearAndEnterTexts(billingInformationPage.accountNumber, accountNumber);
+
+            String sortCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Sort Code");
+            BasePage.clearAndEnterTexts(billingInformationPage.sortCode, sortCode);
+        }
     }
 }

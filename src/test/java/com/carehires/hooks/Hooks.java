@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
+import java.util.Map;
+
 public class Hooks {
 
     private static final Logger logger = LogManager.getLogger(Hooks.class);
@@ -43,20 +45,19 @@ public class Hooks {
     }
 
     // Determine the entity type based on the scenario tags
+    private static final Map<String, String> ENTITY_TAGS = Map.of(
+            "@Provider", "Provider",
+            "@Agency", "Agency",
+            "@Worker", "Worker",
+            "@Agreement", "Agreement",
+            "@Job", "Job"
+    );
+
     private String determineEntityTypeFromScenario(Scenario scenario) {
-        if (scenario.getSourceTagNames().contains("@Provider")) {
-            return "Provider";
-        } else if (scenario.getSourceTagNames().contains("@Agency")) {
-            return "Agency";
-        } else if (scenario.getSourceTagNames().contains("@Worker")) {
-            return "Worker";
-        } else if (scenario.getSourceTagNames().contains("@Agreement")) {
-            return "Agreement";
-        } else if (scenario.getSourceTagNames().contains("@Job")) {
-            return "Job";
-        }
-        // If no matching entity type is found, log the issue and return "default"
-        logger.error("Unknown entity type for scenario: {}", scenario.getName());
-        return "default";
+        return ENTITY_TAGS.entrySet().stream()
+                .filter(entry -> scenario.getSourceTagNames().contains(entry.getKey()))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElse("default");
     }
 }

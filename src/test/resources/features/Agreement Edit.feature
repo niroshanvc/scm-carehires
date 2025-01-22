@@ -1,0 +1,14 @@
+@Regression-Edit
+@Agreement
+@SuperAdminUser
+Feature: Test CareHires edit agreement with disable Bid4Care
+
+  Background: login to carehires
+    Given User logins to carehires
+
+  @EditAgreement
+  Scenario: Edit an agreement
+    When User navigates to Agreement View page
+    And User searches previously created agreement
+    And User edit site
+    Then User should see the agreement edited successfully

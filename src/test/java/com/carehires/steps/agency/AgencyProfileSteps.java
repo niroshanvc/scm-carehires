@@ -34,7 +34,7 @@ public class AgencyProfileSteps {
     }
 
     @And("User moves to the profile page and gets the agency id")
-    public void getsTheAgencyId() {
+    public void getAgencyId() {
         agencyProfileActions.getsAgencyId();
     }
 }

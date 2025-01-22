@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -140,7 +141,7 @@ public class ProviderWorkerStaffActions {
 
         //select skill(s)
         BasePage.scrollToWebElement(workerStaffPage.siteDropdown);
-        String[] skills = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, SKILLS).split(",");
+        String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, SKILLS)).split(",");
         BasePage.waitUntilElementClickable(workerStaffPage.skills, 20);
         BasePage.clickWithJavaScript(workerStaffPage.skills);
         BasePage.genericWait(1500);
@@ -170,7 +171,7 @@ public class ProviderWorkerStaffActions {
     private void updateStaffSkills() {
         // Read skills from the YAML file and convert them to a Set for easy comparison
         Set<String> desiredSkills = new HashSet<>(Arrays.asList(
-                DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, SKILLS).split(",")
+                Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, SKILLS)).split(",")
         ));
         // Click to open the worker skills dropdown
         BasePage.clickWithJavaScript(workerStaffPage.skills);
@@ -208,9 +209,9 @@ public class ProviderWorkerStaffActions {
         //select site
         String site;
         if (ymlFile.equalsIgnoreCase(YML_FILE)) {
-            site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT_HEADER, ADD, "SiteName");
+            site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT_HEADER, ADD, "Dataset1", "SiteName");
         } else {
-            site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT_HEADER, UPDATE, "SiteName");
+            site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT_HEADER, UPDATE, "Dataset1", "SiteName");
         }
         BasePage.waitUntilElementClickable(workerStaffPage.siteDropdown, 20);
         BasePage.clickWithJavaScript(workerStaffPage.siteDropdown);
