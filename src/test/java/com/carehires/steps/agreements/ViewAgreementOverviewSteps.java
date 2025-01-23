@@ -52,4 +52,9 @@ public class ViewAgreementOverviewSteps {
     public void editSiteInfo() {
         viewAgreementOverviewActions.editSite();
     }
+
+    @And("User edits worker rates")
+    public void editWorkerRates() {
+        viewAgreementOverviewActions.updateWorkerRates();
+    }
 }

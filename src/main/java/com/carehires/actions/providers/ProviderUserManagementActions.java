@@ -77,11 +77,19 @@ public class ProviderUserManagementActions {
 
         BasePage.clickWithJavaScript(userManagement.assignToSiteDropdown);
         BasePage.waitUntilElementClickable(userManagement.allAvailableOptions.get(0), 20);
-        BasePage.clickWithJavaScript(userManagement.allAvailableOptions.get(1));
+        // select all sites
+        BasePage.clickWithJavaScript(userManagement.allAvailableOptions.get(0));
         // close the assign to site dropdown
         BasePage.clickWithJavaScript(userManagement.phone);
 
-        String[] userAccessLevel  = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, USER_ACCESS_LEVEL).split(",");
+        String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "MarkAsAnAuthoriser");
+        assert authoriser != null;
+        BasePage.scrollToWebElement(userManagement.addButton);
+        if(authoriser.equalsIgnoreCase("yes")) {
+            BasePage.clickWithJavaScript(userManagement.markAsAnAuthoriserToggle);
+        }
+
+        String[] userAccessLevel  = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, USER_ACCESS_LEVEL)).split(",");
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
         BasePage.genericWait(1000);
         for (String accessLevel : userAccessLevel) {
@@ -140,9 +148,17 @@ public class ProviderUserManagementActions {
 
         BasePage.clickWithJavaScript(userManagement.assignToSiteDropdown);
         BasePage.waitUntilElementClickable(userManagement.allAvailableOptions.get(0), 20);
-        BasePage.clickWithJavaScript(userManagement.allAvailableOptions.get(1));
+        // select all sites
+        BasePage.clickWithJavaScript(userManagement.allAvailableOptions.get(0));
         // close the assign to site dropdown
         BasePage.clickWithJavaScript(userManagement.phone);
+
+        String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, "MarkAsAnAuthoriser");
+        assert authoriser != null;
+        BasePage.scrollToWebElement(userManagement.addButton);
+        if(authoriser.equalsIgnoreCase("yes")) {
+            BasePage.clickWithJavaScript(userManagement.markAsAnAuthoriserToggle);
+        }
 
         String[] userAccessLevel  = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, USER_ACCESS_LEVEL)).split(",");
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
@@ -217,12 +233,6 @@ public class ProviderUserManagementActions {
         String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Phone");
         BasePage.clickWithJavaScript(userManagement.phone);
         BasePage.clearAndEnterTexts(userManagement.phone,  phone);
-
-        String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "MarkAsAnAuthoriser");
-        assert authoriser != null;
-        if(authoriser.equalsIgnoreCase("yes")) {
-            BasePage.clickWithJavaScript(userManagement.markAsAnAuthoriserToggle);
-        }
 
         //closing the user access level multi select dropdown
         BasePage.clickWithJavaScript(userManagement.phone);

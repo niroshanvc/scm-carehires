@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
+import java.util.Objects;
 
 public class JobPreferencesActions {
 
@@ -39,7 +40,7 @@ public class JobPreferencesActions {
         BasePage.scrollToWebElement(getDropdownOptionXpath(gender));
         BasePage.clickWithJavaScript(getDropdownOptionXpath(gender));
 
-        String[] preferredSkills = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Preferred Skills").split(",");
+        String[] preferredSkills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Preferred Skills")).split(",");
 
         for (String skill : preferredSkills) {
             // Refresh the WebElement list to avoid stale references

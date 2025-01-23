@@ -191,4 +191,62 @@ public class ViewAgreementOverviewPage {
         String xpath = String.format("//p[text()='%s']/../..//nb-checkbox//span[contains(@class, 'checkbox')]", siteName);
         return BasePage.getElement(xpath);
     }
+
+    @FindBy(id = "effectiveFrom")
+    public WebElement effectiveDateCalendar;
+
+    @FindBy(xpath = "//b[text()='Removed Sites']/../following-sibling::div/div[@class='carehome']")
+    public WebElement removedSiteInChangeSummaryPopup;
+
+    @FindBy(xpath = "//nb-card-footer/button[contains(text(),'Save')]")
+    public WebElement changeSummarySaveButton;
+
+    @FindBy(xpath = "(//p[@class='text-icon'])[1]")
+    public WebElement workerRatesThreeDots;
+
+    @FindBy(xpath = "//div[@class='side-menu-action-container']//nb-icon[@icon='edit']")
+    public WebElement editIcon;
+
+    @FindBy(xpath = "//div[@class='side-menu-action-container']//nb-icon[contains(@icon,'trash')]")
+    public WebElement deleteIcon;
+
+    @FindBy(xpath = "//img[@nbtooltip='Cancel Changes']")
+    public WebElement cancelChangesIcon;
+
+    @FindBy(xpath = "(//button[contains(text(), 'Add')])[1]")
+    public WebElement workerRatesAddButton;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='workerSkills']/button")
+    public WebElement skillsDropdown;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='workerType']/button")
+    public WebElement workerTypeDropdown;
+
+    public WebElement hourlyRateInput(String rateType) {
+        String xpath = String.format("//td[text()='%s']/..//input[@formcontrolname='workerHourlyRate']", rateType);
+        return BasePage.getElement(xpath);
+    }
+
+    public WebElement agencyMarginInput(String rateType) {
+        String xpath = String.format("//td[text()='%s']/..//input[@formcontrolname='agencyHourlyMargin']", rateType);
+        return BasePage.getElement(xpath);
+    }
+
+    public WebElement chHourlyMarginInput(String rateType) {
+        String xpath = String.format("//td[text()='%s']/..//input[@formcontrolname='carehiresMarginRate']", rateType);
+        return BasePage.getElement(xpath);
+    }
+
+    public WebElement checkEnableRateCheckbox(String rateType) {
+        String xpath = String.format("//div[text()='%s']/ancestor::tr/td[1]//input", rateType);
+        return BasePage.getElement(xpath);
+    }
+
+    public WebElement enableRateCheckboxSpan(String rateType) {
+        String xpath = String.format("//div[text()=%s']/ancestor::tr/td[1]//span[contains(@class, 'checkbox')]", rateType);
+        return BasePage.getElement(xpath);
+    }
+
+    @FindBy(xpath = "//ch-agreement-worker-rate-modal//button[contains(text(), 'Add')]")
+    public WebElement workerRatesPopupAddButton;
 }

@@ -6,6 +6,7 @@ import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -64,31 +65,15 @@ public class AgencyUserManagementActions {
         //wait until email validated
         BasePage.waitUntilElementPresent(userManagement.name, 30);
 
-        String name = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "Name");
-        BasePage.typeWithStringBuilder(userManagement.name, name);
+        enterData(YML_FILE, ADD);
 
-        String jobTitle = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "JobTitle");
-        BasePage.typeWithStringBuilder(userManagement.jobTitle,  jobTitle);
-
-        String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "Location");
-        BasePage.clickWithJavaScript(userManagement.location);
-        BasePage.genericWait(1000);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(location));
-
-        String city = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "City");
-        BasePage.clickWithJavaScript(userManagement.city);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(city));
-
+        BasePage.scrollToWebElement(userManagement.addButton);
         String[] userAccessLevel  = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, USER_ACCESS_LEVEL)).split(",");
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
         BasePage.genericWait(1000);
         for (String accessLevel : userAccessLevel) {
             BasePage.clickWithJavaScript(getDropdownOptionXpath(accessLevel));
         }
-
-        String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "Phone");
-        BasePage.clickWithJavaScript(userManagement.phone);
-        BasePage.typeWithStringBuilder(userManagement.phone,  phone);
 
         BasePage.genericWait(6000);
         BasePage.clickWithJavaScript(userManagement.addButton);
@@ -129,9 +114,12 @@ public class AgencyUserManagementActions {
         String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, "email");
         BasePage.clearAndEnterTexts(userManagement.emailAddress, email);
         BasePage.clickWithJavaScript(userManagement.validateEmail);
-        enterData(ADD);
-        // select access levels
-        String[] userAccessLevel  = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, USER_ACCESS_LEVEL).split(",");
+        enterData(EDIT_YML_FILE, ADD);
+
+        // selecting access levels
+        BasePage.scrollToWebElement(userManagement.addButton);
+        String[] userAccessLevel  = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY,
+                EDIT_YML_FILE, YML_HEADER, ADD, USER_ACCESS_LEVEL)).split(",");
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
         BasePage.genericWait(1000);
         for (String accessLevel : userAccessLevel) {
@@ -143,9 +131,18 @@ public class AgencyUserManagementActions {
         verifySuccessMessage();
 
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating user details - Edit a User >>>>>>>>>>>>>>>>>>>>");
-        BasePage.waitUntilElementDisplayed(userManagement.editDetailsIcon, 30);
+        BasePage.waitUntilElementClickable(userManagement.editDetailsIcon, 30);
         BasePage.clickWithJavaScript(userManagement.editDetailsIcon);
-        enterData(UPDATE);
+        BasePage.genericWait(1000);
+        try {
+            if (!BasePage.isElementDisplayed(userManagement.emailAddress)) {
+                BasePage.clickWithJavaScript(userManagement.editDetailsIcon);
+            }
+        } catch (NoSuchElementException e) {
+            logger.info(e.getMessage());
+        }
+        enterData(EDIT_YML_FILE, UPDATE);
+        BasePage.scrollToWebElement(userManagement.updateButton);
         // select access levels in edit mode
         updateUserAccessLevel();
         BasePage.genericWait(6000);
@@ -156,26 +153,26 @@ public class AgencyUserManagementActions {
         BasePage.clickWithJavaScript(userManagement.nextButton);
     }
 
-    private void enterData(String subHeader) {
+    private void enterData(String ymlFile, String subHeader) {
         //wait until email validated
         BasePage.waitUntilElementPresent(userManagement.name, 30);
 
-        String name = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, subHeader, "Name");
+        String name = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Name");
         BasePage.clearAndEnterTexts(userManagement.name, name);
 
-        String jobTitle = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, subHeader, "JobTitle");
+        String jobTitle = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "JobTitle");
         BasePage.clearAndEnterTexts(userManagement.jobTitle,  jobTitle);
 
-        String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, subHeader, "Location");
+        String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Location");
         BasePage.clickWithJavaScript(userManagement.location);
         BasePage.genericWait(1000);
         BasePage.clickWithJavaScript(getDropdownOptionXpath(location));
 
-        String city = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, subHeader, "City");
+        String city = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "City");
         BasePage.clickWithJavaScript(userManagement.city);
         BasePage.clickWithJavaScript(getDropdownOptionXpath(city));
 
-        String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, subHeader, "Phone");
+        String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Phone");
         BasePage.clickWithJavaScript(userManagement.phone);
         BasePage.clearAndEnterTexts(userManagement.phone,  phone);
     }
@@ -203,7 +200,7 @@ public class AgencyUserManagementActions {
     private void updateUserAccessLevel() {
         // Read access levels from the YAML file and convert them to a Set for easy comparison
         Set<String> desiredAccessLevels = new HashSet<>(Arrays.asList(
-                DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, USER_ACCESS_LEVEL).split(",")
+                Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, USER_ACCESS_LEVEL)).split(",")
         ));
         // Click to open the access levels dropdown
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);

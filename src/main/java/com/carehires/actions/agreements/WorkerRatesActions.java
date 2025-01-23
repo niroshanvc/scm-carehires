@@ -49,20 +49,9 @@ public class WorkerRatesActions {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Worker Rates Info >>>>>>>>>>>>>>>>>>>>");
 
-        workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Worker Type");
-        BasePage.clickWithJavaScript(workerRatesPage.workerTypeDropdown);
-        By by = By.xpath(getDropdownOptionXpath(workerType));
-        BasePage.waitUntilVisibilityOfElementLocated(by, 20);
-        BasePage.scrollToWebElement(getDropdownOptionXpath(workerType));
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(workerType));
+        enterWorkerType();
+        enterSkills();
 
-        String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Skills")).split(",");
-        BasePage.clickWithJavaScript(workerRatesPage.skillsDropdown);
-        By locator = By.xpath(getDropdownOptionXpath(skills[0]));
-        BasePage.waitUntilPresenceOfElementLocated(locator, 20);
-        for (String skill : skills) {
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(skill));
-        }
         expandSubSection(workerRatesPage.rateBreakdownTableHeader, workerRatesPage.rateBreakdownTableHeaderExpandIcon);
 
         hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Hourly Rate");
@@ -89,6 +78,26 @@ public class WorkerRatesActions {
         BasePage.scrollToWebElement(workerRatesPage.continueButton);
         verifyDataLoadedInCurrentWorkerRatesList();
         BasePage.clickWithJavaScript(workerRatesPage.continueButton);
+    }
+
+    private void enterSkills() {
+        String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Skills")).split(",");
+        BasePage.clickWithJavaScript(workerRatesPage.skillsDropdown);
+        By locator = By.xpath(getDropdownOptionXpath(skills[0]));
+        BasePage.waitUntilPresenceOfElementLocated(locator, 20);
+        for (String skill : skills) {
+            BasePage.clickWithJavaScript(getDropdownOptionXpath(skill));
+        }
+    }
+
+    private void enterWorkerType() {
+        workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Worker Type");
+        BasePage.waitUntilElementDisplayed(workerRatesPage.workerTypeDropdown, 30);
+        BasePage.clickWithJavaScript(workerRatesPage.workerTypeDropdown);
+        By by = By.xpath(getDropdownOptionXpath(workerType));
+        BasePage.waitUntilVisibilityOfElementLocated(by, 20);
+        BasePage.scrollToWebElement(getDropdownOptionXpath(workerType));
+        BasePage.clickWithJavaScript(getDropdownOptionXpath(workerType));
     }
 
     private String getDropdownOptionXpath(String option) {

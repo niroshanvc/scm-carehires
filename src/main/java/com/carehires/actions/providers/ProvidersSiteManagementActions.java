@@ -189,7 +189,7 @@ public class ProvidersSiteManagementActions {
         enterSiteManagementData(EDIT_YML_FILE, ADD, YML_HEADER_DATASET1);
 
         logger.info("Entering Site Specialism - In Add");
-        String[] siteSpecialism = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, SITE_SPECIALISM)).split(",");
+        String[] siteSpecialism = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, YML_HEADER_DATASET1, SITE_SPECIALISM)).split(",");
         BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
         BasePage.genericWait(500);
         for (String specialism : siteSpecialism) {

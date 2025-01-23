@@ -11,4 +11,5 @@ Feature: Test CareHires edit agreement with disable Bid4Care
     When User navigates to Agreement View page
     And User searches previously created agreement
     And User edit site
-    Then User should see the agreement edited successfully
+    And User edits worker rates
+

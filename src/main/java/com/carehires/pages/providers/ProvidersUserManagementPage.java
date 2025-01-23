@@ -28,10 +28,10 @@ public class ProvidersUserManagementPage {
     @FindBy(xpath = "//input[@formcontrolname='phone']")
     public WebElement phone;
 
-    @FindBy(xpath = "(//input[@type='checkbox' and @role='switch'])[1]/following-sibling::div")
+    @FindBy(xpath = "//nb-toggle[@formcontrolname='isAuthorizer']//input")
     public WebElement markAsAnAuthoriserToggle;
 
-    @FindBy(xpath = "//nb-select[@formcontrolname='userType']/button")
+    @FindBy(xpath = "//nb-select[@formcontrolname='groups']/button")
     public WebElement userAccessLevel;
 
     @FindBy(xpath = "//button[contains(text(), 'Add')]")

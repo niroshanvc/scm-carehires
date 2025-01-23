@@ -55,7 +55,7 @@ Worker Staff Management:
     ProofOfDemandDocument: Proof of demand document.pdf
 User:
   Add:
-    email: carehires+prouser{{increment}}@zohomail.com
+    email: carehires.45dc4b+prouser{{increment}}@zohomail.com
     Name: Patrick Sams{{increment}}
     JobTitle: Assistant Executive
     Phone: "07412001246"
