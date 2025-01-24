@@ -42,7 +42,9 @@ public class ViewAgreementOverviewActions {
     private static final String YML_HEADER = "Mark As Signed";
     private static final String YML_HEADER_WORKER_RATES = "Worker Rates";
     private static final String YML_HEADER_NORMAL_RATE = "Normal Rate";
+    private static final String YML_HEADER_CANCELLATION_POLICY = "Cancellation Policy";
     private static final String YML_HEADER_SPECIAL_HOLIDAY_RATE = "Special Holiday Rate";
+    private static final String YML_HEADER_BANK_HOLIDAY_RATE = "Bank Holiday Rate";
     private static final String YML_HEADER_SIGNATORIES = "Signatories";
     private static final String YML_HEADER_AGENCY = "Agency";
     private static final String YML_HEADER_PROVIDER = "Provider";
@@ -165,11 +167,6 @@ public class ViewAgreementOverviewActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on Active Agreement button >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementPresent(viewAgreementOverviewPage.activateAgreementButton, 60);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.activateAgreementButton);
-        verifyMarkAsActiveSuccessMessage();
-    }
-
-    private void verifyMarkAsActiveSuccessMessage() {
-
     }
 
     public void verifyContentsInWorkerRates() {
@@ -501,7 +498,10 @@ public class ViewAgreementOverviewActions {
     }
 
     public void markAsActiveAgain() {
-
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Agreement - Marking as Active >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.activateAgreementButton, 60);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.activateAgreementButton);
+        verifyActivateAgreementSuccessMessage();
     }
 
     private void verifyActivateAgreementSuccessMessage() {
@@ -519,12 +519,9 @@ public class ViewAgreementOverviewActions {
         BasePage.waitUntilElementClickable(viewAgreementOverviewPage.editSitesButton, 60);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.editSitesButton);
 
-        siteToBeRemoved = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_PROVIDER, "Site Management", ADD, "Dataset2", "SiteName");
-        WebElement removeSite = viewAgreementOverviewPage.manageSiteAddRemoveCheckbox(siteToBeRemoved);
-        WebElement attributeChecking = viewAgreementOverviewPage.checkboxCheckedVerification(siteToBeRemoved);
-        String attr = BasePage.getAttributeValue(attributeChecking, "class");
-        if (!attr.contains("checked")) {
-            BasePage.clickWithJavaScript(removeSite);
+        String attr = BasePage.getAttributeValue(viewAgreementOverviewPage.removingSite, "class");
+        if (attr.contains("checked")) {
+            BasePage.clickWithJavaScript(viewAgreementOverviewPage.manageSiteAddRemoveCheckbox);
         }
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.applyButton);
         BasePage.waitUntilElementClickable(viewAgreementOverviewPage.saveButton, 60);
@@ -532,7 +529,6 @@ public class ViewAgreementOverviewActions {
 
         // Change Summary popup
         BasePage.waitUntilElementDisplayed(viewAgreementOverviewPage.effectiveDateCalendar, 60);
-        verifyDataLoadedInRemovedSitesArea();
 
         // saving changes
         savingDataOnChangeSummaryPopup("Edit Site");
@@ -560,29 +556,20 @@ public class ViewAgreementOverviewActions {
         genericUtils.selectDateFromCalendarPopup(effectiveDate);
     }
 
-    private void verifyDataLoadedInRemovedSitesArea() {
-        String actual = getDataFromRemovedSitesAreaInChangeSummaryPopup();
-        String expected = siteToBeRemoved;
-        assertThat("Removed site is not correctly displayed!", actual, is(expected));
-    }
-
-    private String getDataFromRemovedSitesAreaInChangeSummaryPopup() {
-        String text = BasePage.getText(viewAgreementOverviewPage.removedSiteInChangeSummaryPopup);
-        return text;
-    }
-
-    public void updateWorkerRates() {
+    public void removeWorkerRates() {
         // delete existing worker rate
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.editAgreementButton);
         BasePage.waitUntilElementClickable(viewAgreementOverviewPage.workerRatesThreeDots, 60);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.workerRatesThreeDots);
         deleteAlreadySavedWorkerRates();
 
-        // saving changes
+        // saving effective date
         savingDataOnChangeSummaryPopup(YML_HEADER_WORKER_RATES);
         verifySiteUpdateSuccessMessage();
+    }
 
-        // add new record
+    public void updateWorkerRates() {
+                // add new record
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.editAgreementButton);
         BasePage.waitUntilElementClickable(viewAgreementOverviewPage.workerRatesAddButton, 60);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.workerRatesAddButton);
@@ -590,16 +577,35 @@ public class ViewAgreementOverviewActions {
         enterSkills();
 
         // enter normal rate data
-        enterHourlyRate(YML_HEADER_NORMAL_RATE);
-        enterAgencyMargin(YML_HEADER_NORMAL_RATE);
-        enterChHourlyMargin(YML_HEADER_NORMAL_RATE);
+        enterHourlyRate();
+        enterAgencyMargin();
+        enterChHourlyMargin();
 
         // enter special holiday rate
         doClickOnEnableRateCheckbox(YML_HEADER_SPECIAL_HOLIDAY_RATE);
-        enterHourlyRate(YML_HEADER_SPECIAL_HOLIDAY_RATE);
-        enterAgencyMargin(YML_HEADER_SPECIAL_HOLIDAY_RATE);
-        enterChHourlyMargin(YML_HEADER_SPECIAL_HOLIDAY_RATE);
+        enterFinalRateVat(YML_HEADER_SPECIAL_HOLIDAY_RATE);
+
+        // enter bank holiday rate
+        doClickOnEnableRateCheckbox(YML_HEADER_BANK_HOLIDAY_RATE);
+        enterFinalRateVat(YML_HEADER_BANK_HOLIDAY_RATE);
+
+        BasePage.scrollToWebElement(viewAgreementOverviewPage.workerRatesPopupContinueButton);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.workerRatesPopupAddButton);
+        BasePage.waitUntilElementDisplayed(viewAgreementOverviewPage.workerRatesPopupViewSpecialRateIcon, 30);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.workerRatesPopupContinueButton);
+        applyChanges();
+
+        // saving effective dates
+        savingDataOnChangeSummaryPopup(YML_HEADER_WORKER_RATES);
+        verifySiteUpdateSuccessMessage();
+    }
+
+    private void enterFinalRateVat(String rateType) {
+        String finalRateVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
+                YML_HEADER_WORKER_RATES, rateType, "Final Rate Vat");
+        WebElement element = viewAgreementOverviewPage.finalRateVat(rateType);
+        BasePage.clearAndEnterTexts(element, finalRateVat);
+        BasePage.clickTabKey(element);
     }
 
     private void doClickOnEnableRateCheckbox(String rateType) {
@@ -610,25 +616,25 @@ public class ViewAgreementOverviewActions {
         }
     }
 
-    private void enterChHourlyMargin(String rateType) {
+    private void enterChHourlyMargin() {
         String chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
                 YML_HEADER_WORKER_RATES, YML_HEADER_NORMAL_RATE, "CH Hourly Margin");
-        WebElement element = viewAgreementOverviewPage.chHourlyMarginInput(rateType);
+        WebElement element = viewAgreementOverviewPage.chHourlyMarginInput(ViewAgreementOverviewActions.YML_HEADER_NORMAL_RATE);
         BasePage.clearAndEnterTexts(element, chHourlyMargin);
         BasePage.clickTabKey(element);
     }
 
-    private void enterAgencyMargin(String rateType) {
+    private void enterAgencyMargin() {
         String agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
                 YML_HEADER_WORKER_RATES, YML_HEADER_NORMAL_RATE, "Agency Margin");
-        WebElement element = viewAgreementOverviewPage.agencyMarginInput(rateType);
+        WebElement element = viewAgreementOverviewPage.agencyMarginInput(ViewAgreementOverviewActions.YML_HEADER_NORMAL_RATE);
         BasePage.clearAndEnterTexts(element, agencyMargin);
     }
 
-    private void enterHourlyRate(String rateType) {
+    private void enterHourlyRate() {
         String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
                 YML_HEADER_WORKER_RATES, YML_HEADER_NORMAL_RATE, "Hourly Rate");
-        WebElement element = viewAgreementOverviewPage.hourlyRateInput(rateType);
+        WebElement element = viewAgreementOverviewPage.hourlyRateInput(ViewAgreementOverviewActions.YML_HEADER_NORMAL_RATE);
         BasePage.waitUntilElementDisplayed(element, 20);
         BasePage.clearAndEnterTexts(element, hourlyRate);
     }
@@ -637,10 +643,10 @@ public class ViewAgreementOverviewActions {
         String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
                 YML_HEADER_WORKER_RATES, YML_HEADER_NORMAL_RATE, "Skills")).split(",");
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.skillsDropdown);
-        By locator = By.xpath(getDropdownOptionXpath(skills[0]));
+        By locator = By.xpath(viewAgreementOverviewPage.getDropdownOptionXpath(skills[0]));
         BasePage.waitUntilPresenceOfElementLocated(locator, 20);
         for (String skill : skills) {
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(skill));
+            BasePage.clickWithJavaScript(viewAgreementOverviewPage.getDropdownOptionXpath(skill));
         }
     }
 
@@ -649,20 +655,32 @@ public class ViewAgreementOverviewActions {
                 YML_HEADER_WORKER_RATES, YML_HEADER_NORMAL_RATE, "Worker Type");
         BasePage.waitUntilElementDisplayed(viewAgreementOverviewPage.workerTypeDropdown, 30);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.workerTypeDropdown);
-        By by = By.xpath(getDropdownOptionXpath(workerType));
+        By by = By.xpath(viewAgreementOverviewPage.getDropdownOptionXpath(workerType));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
-        BasePage.scrollToWebElement(getDropdownOptionXpath(workerType));
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(workerType));
-    }
-
-    private String getDropdownOptionXpath(String option) {
-        return String.format("//nb-option[contains(text(),'%s')]", option);
+        BasePage.scrollToWebElement(viewAgreementOverviewPage.getDropdownOptionXpath(workerType));
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.getDropdownOptionXpath(workerType));
     }
 
     private void deleteAlreadySavedWorkerRates() {
         BasePage.waitUntilElementClickable(viewAgreementOverviewPage.deleteIcon, 30);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.deleteIcon);
+        applyChanges();
+    }
+
+    private void applyChanges() {
         BasePage.waitUntilElementDisplayed(viewAgreementOverviewPage.cancelChangesIcon, 30);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.saveButton);
+    }
+
+    public void removeCancellationPolicy() {
+        // delete existing worker rate
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.editAgreementButton);
+        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.cancellationPolicyThreeDots, 60);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.cancellationPolicyThreeDots);
+        deleteAlreadySavedWorkerRates();
+
+        // saving effective date
+        savingDataOnChangeSummaryPopup(YML_HEADER_CANCELLATION_POLICY);
+        verifySiteUpdateSuccessMessage();
     }
 }

@@ -53,8 +53,18 @@ public class ViewAgreementOverviewSteps {
         viewAgreementOverviewActions.editSite();
     }
 
+    @And("User remove worker rates")
+    public void removeWorkerRates() {
+        viewAgreementOverviewActions.removeWorkerRates();
+    }
+
     @And("User edits worker rates")
     public void editWorkerRates() {
         viewAgreementOverviewActions.updateWorkerRates();
+    }
+
+    @And("User removes cancellation policy")
+    public void removeCancellationPolicy() {
+        viewAgreementOverviewActions.removeCancellationPolicy();
     }
 }

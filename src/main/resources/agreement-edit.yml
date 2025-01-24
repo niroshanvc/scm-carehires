@@ -1,7 +1,7 @@
 Edit Site:
-  Effective Date: "today + 1"
+  Effective Date: "today + 0"
 Worker Rates:
-  Effective Date: "today + 1"
+  Effective Date: "today + 0"
   Normal Rate:
     Worker Type: Occupational Therapist
     Skills: NVQ L3,Physical Disabilities,Mental Health Disabilities
@@ -9,6 +9,8 @@ Worker Rates:
     Agency Margin: "1.85"
     CH Hourly Margin: "1.15"
   Special Holiday Rate:
-    Hourly Rate: "12.00"
-    Agency Margin: "2.00"
-    CH Hourly Margin: "1.50"
+    Final Rate Vat: "19.00"
+  Bank Holiday Rate:
+    Final Rate Vat: "18.00"
+  Cancellation Policy:
+    Effective Date: "today + 0"
