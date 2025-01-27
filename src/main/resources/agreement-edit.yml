@@ -12,5 +12,20 @@ Worker Rates:
     Final Rate Vat: "19.00"
   Bank Holiday Rate:
     Final Rate Vat: "18.00"
-  Cancellation Policy:
-    Effective Date: "today + 0"
+Cancellation Policy:
+  Effective Date: "today + 0"
+  Before Job Start: 1 hour
+  Cancellation fee percentage: "75"
+  CareHires split: "25"
+  Agency split: "75"
+Sleep In Request:
+  Effective Date: "today + 0"
+  Normal Rate:
+    Worker Type: Night Security Officer
+    Hourly Rate: "10.00"
+    Agency Margin: "1.85"
+    CH Hourly Margin: "1.15"
+  Special Holiday Rate:
+    Final Rate Vat: "19.00"
+  Bank Holiday Rate:
+    Final Rate Vat: "18.00"

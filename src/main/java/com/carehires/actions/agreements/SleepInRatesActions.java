@@ -20,8 +20,6 @@ public class SleepInRatesActions {
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
     private static final String YML_HEADER = "Sleep In Rates";
-    private static final String ADD = "Add";
-    private static final String EDIT_YML_FILE = "agreement-edit";
     private String workerType;
     private String hourlyRate;
     private String agencyMargin;
@@ -34,20 +32,20 @@ public class SleepInRatesActions {
         try {
             PageFactory.initElements(BasePage.getDriver(), sleepInRatesPage);
         } catch (Exception e) {
-            logger.error("Error while initializing Cancellation Policy Page elements: {}", e.getMessage());
+            logger.error("Error while initializing Sleep In Rates Page elements: {}", e.getMessage());
         }
     }
 
     public void addSleepInRates() {
         BasePage.waitUntilPageCompletelyLoaded();
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Cancellation Policy Info >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Sleep in Rates Info >>>>>>>>>>>>>>>>>>>>");
 
         workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Worker Type");
         BasePage.clickWithJavaScript(sleepInRatesPage.workerTypeDropdown);
-        By by = By.xpath(getDropdownOptionXpath(workerType));
+        By by = By.xpath(sleepInRatesPage.getDropdownOptionXpath(workerType));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
-        BasePage.scrollToWebElement(getDropdownOptionXpath(workerType));
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(workerType));
+        BasePage.scrollToWebElement(sleepInRatesPage.getDropdownOptionXpath(workerType));
+        BasePage.clickWithJavaScript(sleepInRatesPage.getDropdownOptionXpath(workerType));
 
         BasePage.scrollToWebElement(sleepInRatesPage.fridayNightRate);
         hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Hourly Rate");
@@ -232,9 +230,5 @@ public class SleepInRatesActions {
         String expectedString = roundToTwoDecimalPlaces(expected);
         String actual = getNormalRateAgencyVatAmount();
         assertThat("Normal Rate Agency VAT Amount is incorrect", actual, is(expectedString));
-    }
-
-    private String getDropdownOptionXpath(String option) {
-        return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 }

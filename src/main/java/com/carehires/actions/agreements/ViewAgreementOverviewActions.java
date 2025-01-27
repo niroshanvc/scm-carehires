@@ -3,6 +3,7 @@ package com.carehires.actions.agreements;
 import com.carehires.pages.agreements.ViewAgreementOverviewPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
+import com.carehires.utils.FileDownloadUtils;
 import com.carehires.utils.GenericUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +22,9 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.isIn;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.text.IsEmptyString.isEmptyOrNullString;
 
 public class ViewAgreementOverviewActions {
 
@@ -38,11 +42,11 @@ public class ViewAgreementOverviewActions {
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
     private static final String YML_FILE_EDIT = "agreement-edit";
-    private static final String YML_FILE_PROVIDER = "provider-create";
     private static final String YML_HEADER = "Mark As Signed";
     private static final String YML_HEADER_WORKER_RATES = "Worker Rates";
     private static final String YML_HEADER_NORMAL_RATE = "Normal Rate";
     private static final String YML_HEADER_CANCELLATION_POLICY = "Cancellation Policy";
+    private static final String YML_HEADER_SLEEP_IN_REQUEST = "Sleep In Request";
     private static final String YML_HEADER_SPECIAL_HOLIDAY_RATE = "Special Holiday Rate";
     private static final String YML_HEADER_BANK_HOLIDAY_RATE = "Bank Holiday Rate";
     private static final String YML_HEADER_SIGNATORIES = "Signatories";
@@ -143,7 +147,7 @@ public class ViewAgreementOverviewActions {
     }
 
     private void verifyProviderNameLoadedInAttachAgreementPopup() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Provider Name displaying in the Attach Agreement popup >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<< Verifying Provider Name displaying in the Attach Agreement popup >>>>>>>>>>>>>");
         BasePage.waitUntilElementPresent(viewAgreementOverviewPage.attachAgreementNote, 30);
         String providerFullText = BasePage.getText(viewAgreementOverviewPage.providerTermsAndConditionsText).trim();
         String[] strArr = providerFullText.split("on behalf of");
@@ -154,7 +158,7 @@ public class ViewAgreementOverviewActions {
     }
 
     private void verifyAgencyNameLoadedInAttachAgreementPopup() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Agency Name displaying in the Attach Agreement popup >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<< Verifying Agency Name displaying in the Attach Agreement popup >>>>>>>>>>>>>>");
         String agencyFullText = BasePage.getText(viewAgreementOverviewPage.agencyTermsAndConditionsText).trim();
         String[] strArr = agencyFullText.split("on behalf of");
         String actual = strArr[1].trim();
@@ -483,8 +487,10 @@ public class ViewAgreementOverviewActions {
 
     public void markAsInactive() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Agreement - Marking as Inactive >>>>>>>>>>>>>>>>>>>>");
-        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.inactiveButton, 60);
-        BasePage.clickWithJavaScript(viewAgreementOverviewPage.inactiveButton);
+        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.deactivateButton, 60);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.deactivateButton);
+        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.deactivateButtonInDeactivateConfirmPopup, 30);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.deactivateButtonInDeactivateConfirmPopup);
         verifyInactiveSuccessMessage();
     }
 
@@ -514,6 +520,7 @@ public class ViewAgreementOverviewActions {
     }
 
     public void editSite() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating site info >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementClickable(viewAgreementOverviewPage.editAgreementButton, 60);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.editAgreementButton);
         BasePage.waitUntilElementClickable(viewAgreementOverviewPage.editSitesButton, 60);
@@ -557,11 +564,12 @@ public class ViewAgreementOverviewActions {
     }
 
     public void removeWorkerRates() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Removing already existing Worker Rates >>>>>>>>>>>>>>>>>>>>");
         // delete existing worker rate
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.editAgreementButton);
         BasePage.waitUntilElementClickable(viewAgreementOverviewPage.workerRatesThreeDots, 60);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.workerRatesThreeDots);
-        deleteAlreadySavedWorkerRates();
+        deleteAlreadySavedRecord();
 
         // saving effective date
         savingDataOnChangeSummaryPopup(YML_HEADER_WORKER_RATES);
@@ -569,25 +577,26 @@ public class ViewAgreementOverviewActions {
     }
 
     public void updateWorkerRates() {
-                // add new record
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating Worker Rates >>>>>>>>>>>>>>>>>>>>");
+        // add new record
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.editAgreementButton);
         BasePage.waitUntilElementClickable(viewAgreementOverviewPage.workerRatesAddButton, 60);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.workerRatesAddButton);
-        enterWorkerType();
+        enterWorkerType(YML_HEADER_WORKER_RATES);
         enterSkills();
 
         // enter normal rate data
-        enterHourlyRate();
-        enterAgencyMargin();
-        enterChHourlyMargin();
+        enterHourlyRate(YML_HEADER_WORKER_RATES);
+        enterAgencyMargin(YML_HEADER_WORKER_RATES);
+        enterChHourlyMargin(YML_HEADER_WORKER_RATES);
 
         // enter special holiday rate
         doClickOnEnableRateCheckbox(YML_HEADER_SPECIAL_HOLIDAY_RATE);
-        enterFinalRateVat(YML_HEADER_SPECIAL_HOLIDAY_RATE);
+        enterFinalRateVat(YML_HEADER_WORKER_RATES, YML_HEADER_SPECIAL_HOLIDAY_RATE);
 
         // enter bank holiday rate
         doClickOnEnableRateCheckbox(YML_HEADER_BANK_HOLIDAY_RATE);
-        enterFinalRateVat(YML_HEADER_BANK_HOLIDAY_RATE);
+        enterFinalRateVat(YML_HEADER_WORKER_RATES, YML_HEADER_BANK_HOLIDAY_RATE);
 
         BasePage.scrollToWebElement(viewAgreementOverviewPage.workerRatesPopupContinueButton);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.workerRatesPopupAddButton);
@@ -600,9 +609,9 @@ public class ViewAgreementOverviewActions {
         verifySiteUpdateSuccessMessage();
     }
 
-    private void enterFinalRateVat(String rateType) {
+    private void enterFinalRateVat(String  header, String rateType) {
         String finalRateVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
-                YML_HEADER_WORKER_RATES, rateType, "Final Rate Vat");
+                header, rateType, "Final Rate Vat");
         WebElement element = viewAgreementOverviewPage.finalRateVat(rateType);
         BasePage.clearAndEnterTexts(element, finalRateVat);
         BasePage.clickTabKey(element);
@@ -616,24 +625,24 @@ public class ViewAgreementOverviewActions {
         }
     }
 
-    private void enterChHourlyMargin() {
+    private void enterChHourlyMargin(String header) {
         String chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
-                YML_HEADER_WORKER_RATES, YML_HEADER_NORMAL_RATE, "CH Hourly Margin");
+                header, YML_HEADER_NORMAL_RATE, "CH Hourly Margin");
         WebElement element = viewAgreementOverviewPage.chHourlyMarginInput(ViewAgreementOverviewActions.YML_HEADER_NORMAL_RATE);
         BasePage.clearAndEnterTexts(element, chHourlyMargin);
         BasePage.clickTabKey(element);
     }
 
-    private void enterAgencyMargin() {
+    private void enterAgencyMargin(String header) {
         String agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
-                YML_HEADER_WORKER_RATES, YML_HEADER_NORMAL_RATE, "Agency Margin");
+                header, YML_HEADER_NORMAL_RATE, "Agency Margin");
         WebElement element = viewAgreementOverviewPage.agencyMarginInput(ViewAgreementOverviewActions.YML_HEADER_NORMAL_RATE);
         BasePage.clearAndEnterTexts(element, agencyMargin);
     }
 
-    private void enterHourlyRate() {
+    private void enterHourlyRate(String header) {
         String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
-                YML_HEADER_WORKER_RATES, YML_HEADER_NORMAL_RATE, "Hourly Rate");
+                header, YML_HEADER_NORMAL_RATE, "Hourly Rate");
         WebElement element = viewAgreementOverviewPage.hourlyRateInput(ViewAgreementOverviewActions.YML_HEADER_NORMAL_RATE);
         BasePage.waitUntilElementDisplayed(element, 20);
         BasePage.clearAndEnterTexts(element, hourlyRate);
@@ -650,9 +659,9 @@ public class ViewAgreementOverviewActions {
         }
     }
 
-    private void enterWorkerType() {
+    private void enterWorkerType(String header) {
         String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
-                YML_HEADER_WORKER_RATES, YML_HEADER_NORMAL_RATE, "Worker Type");
+                header, YML_HEADER_NORMAL_RATE, "Worker Type");
         BasePage.waitUntilElementDisplayed(viewAgreementOverviewPage.workerTypeDropdown, 30);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.workerTypeDropdown);
         By by = By.xpath(viewAgreementOverviewPage.getDropdownOptionXpath(workerType));
@@ -661,7 +670,7 @@ public class ViewAgreementOverviewActions {
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.getDropdownOptionXpath(workerType));
     }
 
-    private void deleteAlreadySavedWorkerRates() {
+    private void deleteAlreadySavedRecord() {
         BasePage.waitUntilElementClickable(viewAgreementOverviewPage.deleteIcon, 30);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.deleteIcon);
         applyChanges();
@@ -669,18 +678,125 @@ public class ViewAgreementOverviewActions {
 
     private void applyChanges() {
         BasePage.waitUntilElementDisplayed(viewAgreementOverviewPage.cancelChangesIcon, 30);
+        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.saveButton, 30);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.saveButton);
     }
 
     public void removeCancellationPolicy() {
-        // delete existing worker rate
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Removing already existing Cancellation Policy >>>>>>>>>>>>>>>>>>>>");
+
+        // delete existing cancellation policy
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.editAgreementButton);
+        BasePage.genericWait(2000);
+        BasePage.scrollToWebElement(viewAgreementOverviewPage.cancellationPolicyThreeDots);
         BasePage.waitUntilElementClickable(viewAgreementOverviewPage.cancellationPolicyThreeDots, 60);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.cancellationPolicyThreeDots);
-        deleteAlreadySavedWorkerRates();
+        deleteAlreadySavedRecord();
 
         // saving effective date
         savingDataOnChangeSummaryPopup(YML_HEADER_CANCELLATION_POLICY);
         verifySiteUpdateSuccessMessage();
+    }
+
+    public void addNewCancellationPolicy() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Cancellation Policy Info >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.editAgreementButton, 60);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.editAgreementButton);
+        BasePage.scrollToWebElement(viewAgreementOverviewPage.cancellationPolicyAddButton);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.cancellationPolicyAddButton);
+
+        String beforeJobStart = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
+                YML_HEADER_CANCELLATION_POLICY, "Before Job Start");
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.beforeJobStartDropdown);
+        By by = By.xpath(viewAgreementOverviewPage.getDropdownOptionXpath(beforeJobStart));
+        BasePage.waitUntilVisibilityOfElementLocated(by, 20);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.getDropdownOptionXpath(beforeJobStart));
+
+        String cancellationFeePercentage = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
+                YML_HEADER_CANCELLATION_POLICY, "Cancellation fee percentage");
+        BasePage.clearAndEnterTexts(viewAgreementOverviewPage.cancellationFeePercentage, cancellationFeePercentage);
+
+        String careHiresSplit = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
+                YML_HEADER_CANCELLATION_POLICY, "CareHires split");
+        BasePage.clearAndEnterTexts(viewAgreementOverviewPage.careHiresSplit, careHiresSplit);
+        BasePage.clickTabKey(viewAgreementOverviewPage.careHiresSplit);
+        BasePage.clickTabKey(viewAgreementOverviewPage.agencySplit);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.cancellationPolicyPopupAddButton);
+
+        BasePage.scrollToWebElement(viewAgreementOverviewPage.continueButton);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.continueButton);
+        applyChanges();
+
+        // saving effective dates
+        savingDataOnChangeSummaryPopup(YML_HEADER_CANCELLATION_POLICY);
+        verifySiteUpdateSuccessMessage();
+    }
+
+    public void removeSleepInRequest() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Removing already existing Sleep in Request >>>>>>>>>>>>>>>>>>>>");
+
+        // delete existing sleep in request
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.editAgreementButton);
+        BasePage.genericWait(2000);
+        BasePage.scrollToWebElement(viewAgreementOverviewPage.sleepInRequestThreeDots);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.sleepInRequestThreeDots);
+        deleteAlreadySavedRecord();
+
+        // saving effective date
+        savingDataOnChangeSummaryPopup(YML_HEADER_SLEEP_IN_REQUEST);
+        verifySiteUpdateSuccessMessage();
+    }
+
+    public void addSleepInRequest() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Sleep in request Info >>>>>>>>>>>>>>>>>>>>");
+        // add new record
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.editAgreementButton);
+        BasePage.waitUntilElementClickable(viewAgreementOverviewPage.sleepInRequestAddButton, 60);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.sleepInRequestAddButton);
+        enterWorkerType(YML_HEADER_SLEEP_IN_REQUEST);
+
+        // enter normal rate data
+        enterHourlyRate(YML_HEADER_SLEEP_IN_REQUEST);
+        enterAgencyMargin(YML_HEADER_SLEEP_IN_REQUEST);
+        enterChHourlyMargin(YML_HEADER_SLEEP_IN_REQUEST);
+
+        // enter special holiday rate
+        doClickOnEnableRateCheckbox(YML_HEADER_SPECIAL_HOLIDAY_RATE);
+        enterFinalRateVat(YML_HEADER_SLEEP_IN_REQUEST, YML_HEADER_SPECIAL_HOLIDAY_RATE);
+
+        // enter bank holiday rate
+        doClickOnEnableRateCheckbox(YML_HEADER_BANK_HOLIDAY_RATE);
+        enterFinalRateVat(YML_HEADER_SLEEP_IN_REQUEST, YML_HEADER_BANK_HOLIDAY_RATE);
+
+        BasePage.scrollToWebElement(viewAgreementOverviewPage.sleepInRatesPopupContinueButton);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.sleepInRatesPopupAddButton);
+        BasePage.waitUntilElementDisplayed(viewAgreementOverviewPage.sleepInRatesPopupViewSpecialRateIcon, 30);
+        BasePage.clickWithJavaScript(viewAgreementOverviewPage.sleepInRatesPopupContinueButton);
+        applyChanges();
+
+        // saving effective dates
+        savingDataOnChangeSummaryPopup(YML_HEADER_SLEEP_IN_REQUEST);
+        verifySiteUpdateSuccessMessage();
+    }
+
+    public void downloadAndDeleteAgreement() {
+        // Trigger the download
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Downloading the manually signed agreement >>>>>>>>>>>>>>>>>>>>");
+        BasePage.scrollToWebElement(viewAgreementOverviewPage.downloadAgreement);
+        FileDownloadUtils.triggerDownloadAndCloseTab(viewAgreementOverviewPage.downloadAgreement);
+
+        // Get the downloaded file name
+        BasePage.genericWait(5000);
+        String downloadedFileName = FileDownloadUtils.getLatestDownloadedFileName();
+        if (downloadedFileName == null) {
+            logger.error("Download failed! No file detected.");
+        }
+        // Ensure the fileName is not null or empty
+        assertThat("File name should not be null", downloadedFileName, is(notNullValue()));
+        assertThat("File name should not be empty", downloadedFileName, not(isEmptyOrNullString()));
+
+        // Delete the after verification
+        boolean isDeleted = FileDownloadUtils.deleteLatestDownloadedFile();
+        assertThat("Downloaded file is not deleted", isDeleted, is(true));
     }
 }

@@ -43,31 +43,31 @@ public class CreateAgreementsOverviewActions {
 
         String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Agency");
         BasePage.clickWithJavaScript(agreementsOverviewPage.agencyDropdown);
-        By by = By.xpath(getDropdownOptionXpath(agency));
+        By by = By.xpath(agreementsOverviewPage.getDropdownOptionXpath(agency));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
-        BasePage.scrollToWebElement(getDropdownOptionXpath(agency));
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(agency));
+        BasePage.scrollToWebElement(agreementsOverviewPage.getDropdownOptionXpath(agency));
+        BasePage.clickWithJavaScript(agreementsOverviewPage.getDropdownOptionXpath(agency));
         BasePage.genericWait(2000);
 
         String agencyLocation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Agency Location");
         BasePage.clickWithJavaScript(agreementsOverviewPage.agencyLocationDropdown);
-        BasePage.waitUntilElementClickable(getDropdownOptionXpath(agencyLocation), 30);
-        By agencyLocationBy = By.xpath(getDropdownOptionXpath(agencyLocation));
+        BasePage.waitUntilElementClickable(agreementsOverviewPage.getDropdownOptionXpath(agencyLocation), 30);
+        By agencyLocationBy = By.xpath(agreementsOverviewPage.getDropdownOptionXpath(agencyLocation));
         BasePage.waitUntilVisibilityOfElementLocated(agencyLocationBy, 20);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(agencyLocation));
+        BasePage.clickWithJavaScript(agreementsOverviewPage.getDropdownOptionXpath(agencyLocation));
 
 
         String careProvider = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Care Provider");
         BasePage.clickWithJavaScript(agreementsOverviewPage.careProviderDropdown);
-        By careProviderBy = By.xpath(getDropdownOptionXpath(careProvider));
+        By careProviderBy = By.xpath(agreementsOverviewPage.getDropdownOptionXpath(careProvider));
         BasePage.waitUntilVisibilityOfElementLocated(careProviderBy, 20);
-        BasePage.scrollToWebElement(getDropdownOptionXpath(careProvider));
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(careProvider));
+        BasePage.scrollToWebElement(agreementsOverviewPage.getDropdownOptionXpath(careProvider));
+        BasePage.clickWithJavaScript(agreementsOverviewPage.getDropdownOptionXpath(careProvider));
         BasePage.genericWait(2000);
 
         String site = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Site");
         BasePage.clickWithJavaScript(agreementsOverviewPage.siteDropdown);
-        BasePage.waitUntilElementClickable(getDropdownOptionXpath(site), 30);
+        BasePage.waitUntilElementClickable(agreementsOverviewPage.getDropdownOptionXpath(site), 30);
         selectAllSites();
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(agreementsOverviewPage.continueButton);
@@ -78,10 +78,6 @@ public class CreateAgreementsOverviewActions {
 
         // Store the increment value in GlobalVariables for reuse in other steps
         GlobalVariables.setVariable("agreement_incrementValue", incrementValue);
-    }
-
-    private String getDropdownOptionXpath(String option) {
-        return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 
     // method to select all the options available in the Site multi select dropdown

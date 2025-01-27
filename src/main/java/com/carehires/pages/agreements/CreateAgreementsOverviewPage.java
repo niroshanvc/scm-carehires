@@ -26,4 +26,8 @@ public class CreateAgreementsOverviewPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    public String getDropdownOptionXpath(String option) {
+        return String.format("//nb-option[contains(text(),'%s')]", option);
+    }
 }
