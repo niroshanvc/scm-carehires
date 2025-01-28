@@ -47,6 +47,11 @@ public class LeftSideMenuSteps {
         leftSideMenuActions.gotoAgreementViewPage();
     }
 
+    @When("User navigates to Agreement Overview page")
+    public void moveToAgreementOverviewPage() {
+        leftSideMenuActions.gotoAgreementOverviewPage();
+    }
+
     @When("User navigates to Jobs page")
     public void moveToJobsPage() {
         leftSideMenuActions.gotoJobsPage();

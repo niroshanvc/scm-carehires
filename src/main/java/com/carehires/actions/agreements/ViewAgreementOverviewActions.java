@@ -52,13 +52,10 @@ public class ViewAgreementOverviewActions {
     private static final String YML_HEADER_SIGNATORIES = "Signatories";
     private static final String YML_HEADER_AGENCY = "Agency";
     private static final String YML_HEADER_PROVIDER = "Provider";
-    private static final String ADD = "Add";
     private static final String RESOURCE_FOLDER = System.getProperty("user.dir") + File.separator + "src"
             + File.separator
             + "test" + File.separator + "resources";
     private static final String VALUE_ATTRIBUTE = "value";
-
-    String siteToBeRemoved;
 
     private static final Logger logger = LogManager.getLogger(ViewAgreementOverviewActions.class);
 
@@ -68,7 +65,7 @@ public class ViewAgreementOverviewActions {
         try {
             PageFactory.initElements(BasePage.getDriver(), viewAgreementOverviewPage);
         } catch (BasePage.WebDriverInitializationException e) {
-            logger.error("Error while initializing Agreement Overview Page elements: {}", e.getMessage());
+            logger.error("Error while initializing Agreement View Page elements: {}", e.getMessage());
         }
     }
     public void verifyAgreementPaymentStatusAndSignatureStatus(String paymentStatus, String signatureStatus) {
@@ -427,11 +424,6 @@ public class ViewAgreementOverviewActions {
 
     private String getSleepInRatesTableAgencyHourlyCostWithNoVat() {
         String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage.sleepInRatesTableAgencyHourlyCostWithNoVat).trim();
-        return valueWithCurrency.split(" ")[1];
-    }
-
-    private String getSleepInRatesTableCareHiresHourlyCost() {
-        String valueWithCurrency = BasePage.getText(viewAgreementOverviewPage.sleepInRatesTableCareHiresHourlyCost).trim();
         return valueWithCurrency.split(" ")[1];
     }
 

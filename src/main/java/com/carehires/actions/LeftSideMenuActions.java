@@ -77,6 +77,13 @@ public class LeftSideMenuActions {
         logger.info(" --------------------------- Moves to Agreements View Page ---------------------------");
     }
 
+    public void gotoAgreementOverviewPage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.mouseHoverAndClick(LeftSideMenuPage.agreementsMainLink, LeftSideMenuPage.agreementsOverviewSubLink);
+        logger.info(" --------------------------- Moves to Agreements Overview Page ---------------------------");
+    }
+
     public void gotoTasksPaymentAuthorisationsPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
