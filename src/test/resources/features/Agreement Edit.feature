@@ -15,6 +15,6 @@ Feature: Test CareHires edit agreement with disable Bid4Care
     And User edits worker rates
     And User removes cancellation policy
     And User add new cancellation policy
-#    And User removes sleep in request
+    And User removes sleep in request
     And User adds sleep in request
     And User downloads the manually signed agreement with agency and provider
