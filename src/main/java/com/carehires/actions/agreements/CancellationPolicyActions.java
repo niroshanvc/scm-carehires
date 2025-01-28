@@ -18,8 +18,6 @@ public class CancellationPolicyActions {
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
     private static final String YML_HEADER = "Cancellation Policy";
-    private static final String ADD = "Add";
-    private static final String EDIT_YML_FILE = "agreement-edit";
     private String beforeJobStart;
     private String cancellationFeePercentage;
     private String careHiresSplit;
@@ -41,9 +39,9 @@ public class CancellationPolicyActions {
 
         beforeJobStart = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Before Job Start");
         BasePage.clickWithJavaScript(cancellationPolicyPage.beforeJobStartDropdown);
-        By by = By.xpath(getDropdownOptionXpath(beforeJobStart));
+        By by = By.xpath(cancellationPolicyPage.getDropdownOptionXpath(beforeJobStart));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(beforeJobStart));
+        BasePage.clickWithJavaScript(cancellationPolicyPage.getDropdownOptionXpath(beforeJobStart));
 
 
         cancellationFeePercentage = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Cancellation fee percentage");
@@ -106,9 +104,5 @@ public class CancellationPolicyActions {
         double actual = Double.parseDouble(actualString);
         double expected = 100 - Double.parseDouble(careHiresSplit);
         assertThat("Agency split is not correctly calculated!", actual, is(expected));
-    }
-
-    private String getDropdownOptionXpath(String option) {
-        return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 }

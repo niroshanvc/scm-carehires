@@ -68,4 +68,8 @@ public class SleepInRatesPage {
 
     @FindBy(xpath = "//tr[@class='ng-star-inserted']/td[5]/div[2]/div[2]/b")
     public WebElement finallyHourlyRateWithNonVat;
+
+    public String getDropdownOptionXpath(String option) {
+        return String.format("//nb-option[contains(text(),'%s')]", option);
+    }
 }

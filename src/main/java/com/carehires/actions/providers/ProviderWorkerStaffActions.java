@@ -214,8 +214,9 @@ public class ProviderWorkerStaffActions {
             site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT_HEADER, UPDATE, "Dataset1", "SiteName");
         }
         BasePage.waitUntilElementClickable(workerStaffPage.siteDropdown, 20);
+        BasePage.genericWait(2000);
         BasePage.clickWithJavaScript(workerStaffPage.siteDropdown);
-        BasePage.genericWait(1000);
+        BasePage.genericWait(2000);
         BasePage.clickWithJavaScript(getDropdownXpath(site));
 
         //select worker type

@@ -34,4 +34,8 @@ public class CancellationPolicyPage {
 
     @FindBy(xpath = "//table[@class='table ch-table']/tbody/tr/td[4]")
     public WebElement careHiresSplitValue;
+
+    public String getDropdownOptionXpath(String option) {
+        return String.format("//nb-option[contains(text(),'%s')]", option);
+    }
 }

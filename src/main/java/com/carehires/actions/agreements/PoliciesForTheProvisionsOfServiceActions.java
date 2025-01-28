@@ -13,8 +13,6 @@ public class PoliciesForTheProvisionsOfServiceActions {
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
     private static final String YML_HEADER = "Policies for the Provisions of Service";
-    private static final String ADD = "Add";
-    private static final String EDIT_YML_FILE = "agreement-edit";
 
     private static final Logger logger = LogManager.getLogger(PoliciesForTheProvisionsOfServiceActions.class);
 

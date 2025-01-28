@@ -31,7 +31,7 @@ public class AgencyUserManagementPage {
     @FindBy(xpath = "//nb-select[@formcontrolname='city']/button")
     public WebElement city;
 
-    @FindBy(xpath = "//nb-select[@formcontrolname='userType']/button")
+    @FindBy(xpath = "//nb-select[@formcontrolname='groups']/button")
     public WebElement userAccessLevel;
 
     @FindBy(xpath = "//button[contains(text(), 'Add')]")

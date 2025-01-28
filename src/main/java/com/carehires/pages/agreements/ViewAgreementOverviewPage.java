@@ -167,8 +167,11 @@ public class ViewAgreementOverviewPage {
     @FindBy(xpath = "//td[contains(@class,'final-charge')]//div[2]/div[2]")
     public WebElement sleepInRatesPopupFinalRateWithNoVat;
 
-    @FindBy(xpath = "//button[contains(text(), 'Inactive')]")
-    public WebElement inactiveButton;
+    @FindBy(xpath = "//button[contains(text(), 'Deactivate')]")
+    public WebElement deactivateButton;
+
+    @FindBy(xpath = "//ch-agreement-deactivate-modal//button[text()='Deactivate']")
+    public WebElement deactivateButtonInDeactivateConfirmPopup;
 
     @FindBy(xpath = "//button[contains(text(), 'Activate Agreement')]")
     public WebElement activeAgreementButton;
@@ -179,16 +182,124 @@ public class ViewAgreementOverviewPage {
     @FindBy(xpath = "//button[contains(text(), 'Edit Sites')]")
     public WebElement editSitesButton;
 
-    public WebElement manageSiteAddRemoveCheckbox(String siteName) {
-        String xpath = String.format("//p[text()='%s']/../..//nb-checkbox//input", siteName);
-        return BasePage.getElement(xpath);
-    }
+    @FindBy(xpath = "//p[contains(text(),'Automation Master')]/../..//nb-checkbox//span[contains(@class, 'checkbox')]")
+    public WebElement removingSite;
+
+    @FindBy(xpath = "//p[contains(text(),'Automation Master')]/../..//nb-checkbox//input")
+    public WebElement manageSiteAddRemoveCheckbox;
 
     @FindBy(xpath = "//span[text()='Apply']")
     public WebElement applyButton;
 
-    public WebElement checkboxCheckedVerification(String siteName) {
-        String xpath = String.format("//p[text()='%s']/../..//nb-checkbox//span[contains(@class, 'checkbox')]", siteName);
+    @FindBy(id = "effectiveFrom")
+    public WebElement effectiveDateCalendar;
+
+    @FindBy(xpath = "//nb-card-footer/button[contains(text(),'Save')]")
+    public WebElement changeSummarySaveButton;
+
+    @FindBy(xpath = "(//p[@class='text-icon'])[1]")
+    public WebElement workerRatesThreeDots;
+
+    @FindBy(xpath = "//div[@class='side-menu-action-container']//nb-icon[@icon='edit']")
+    public WebElement editIcon;
+
+    @FindBy(xpath = "//div[@class='side-menu-action-container']//nb-icon[contains(@icon,'trash')]")
+    public WebElement deleteIcon;
+
+    @FindBy(xpath = "//img[@nbtooltip='Cancel Changes']")
+    public WebElement cancelChangesIcon;
+
+    @FindBy(xpath = "(//button[contains(text(), 'Add')])[1]")
+    public WebElement workerRatesAddButton;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='workerSkills']/button")
+    public WebElement skillsDropdown;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='workerType']/button")
+    public WebElement workerTypeDropdown;
+
+    public WebElement hourlyRateInput(String rateType) {
+        String xpath = String.format("//td[text()='%s']/..//input[@formcontrolname='workerHourlyRate']", rateType);
         return BasePage.getElement(xpath);
     }
+
+    public WebElement agencyMarginInput(String rateType) {
+        String xpath = String.format("//td[text()='%s']/..//input[@formcontrolname='agencyHourlyMargin']", rateType);
+        return BasePage.getElement(xpath);
+    }
+
+    public WebElement chHourlyMarginInput(String rateType) {
+        String xpath = String.format("//td[text()='%s']/..//input[@formcontrolname='carehiresMarginRate']", rateType);
+        return BasePage.getElement(xpath);
+    }
+
+    public WebElement checkEnableRateCheckbox(String rateType) {
+        String xpath = String.format("//div[text()='%s']/ancestor::tr/td[1]//input", rateType);
+        return BasePage.getElement(xpath);
+    }
+
+    public WebElement enableRateCheckboxSpan(String rateType) {
+        String xpath = String.format("//div[text()='%s']/ancestor::tr/td[1]//span[contains(@class, 'checkbox')]", rateType);
+        return BasePage.getElement(xpath);
+    }
+
+    @FindBy(xpath = "//ch-agreement-worker-rate-modal//button[contains(text(), 'Add')]")
+    public WebElement workerRatesPopupAddButton;
+
+    public WebElement finalRateVat(String rateType) {
+        String xpath = String.format("//div[text()='%s']/ancestor::tr//input[@formcontrolname='finalChargeRateVat']", rateType);
+        return BasePage.getElement(xpath);
+    }
+
+    public String getDropdownOptionXpath(String option) {
+        return String.format("//nb-option[contains(text(),'%s')]", option);
+    }
+
+    @FindBy(xpath = "//ch-agreement-worker-rate-modal//button[contains(text(), 'Continue')]")
+    public WebElement workerRatesPopupContinueButton;
+
+    @FindBy(xpath = "//ch-agreement-worker-rate-modal//nb-icon[contains(@nbtooltip, 'Special Rate')]")
+    public WebElement workerRatesPopupViewSpecialRateIcon;
+
+    @FindBy(xpath = "//th[contains(text(), 'Cancellation Hours')]/ancestor::table//p[@class='text-icon']")
+    public WebElement cancellationPolicyThreeDots;
+
+    @FindBy(xpath = "//th[contains(text(), 'Cancellation Hours')]/ancestor::div[contains(@class, 'row')][1]//button")
+    public WebElement cancellationPolicyAddButton;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='noOfHours']/button")
+    public WebElement beforeJobStartDropdown;
+
+    @FindBy(xpath = "//input[@formcontrolname='cancellatonFeePercentage']")
+    public WebElement cancellationFeePercentage;
+
+    @FindBy(xpath = "//input[@formcontrolname='careHiresSplit']")
+    public WebElement careHiresSplit;
+
+    @FindBy(xpath = "//input[@formcontrolname='agencySplit']")
+    public WebElement agencySplit;
+
+    @FindBy(xpath = "//input[@formcontrolname='agencySplit']//ancestor::form/..//button[contains(text(), 'Add')]")
+    public WebElement cancellationPolicyPopupAddButton;
+
+    @FindBy(xpath = "//button[contains(text(), 'Continue')]")
+    public WebElement continueButton;
+
+    @FindBy(xpath = "//th[contains(text(), 'Hourly Charge')]/ancestor::table//p[@class='text-icon']")
+    public WebElement sleepInRequestThreeDots;
+
+    @FindBy(xpath = "//th[contains(text(), 'Hourly Charge')]/ancestor::div[contains(@class, 'row')][1]//button")
+    public WebElement sleepInRequestAddButton;
+
+    @FindBy(xpath = "//ch-agreement-sleep-rates-modal//button[contains(text(), 'Continue')]")
+    public WebElement sleepInRatesPopupContinueButton;
+
+    @FindBy(xpath = "//ch-agreement-sleep-rates-modal//button[contains(text(), 'Add')]")
+    public WebElement sleepInRatesPopupAddButton;
+
+    @FindBy(xpath = "//ch-agreement-sleep-rates-modal//nb-icon[contains(@nbtooltip, 'Special Rate')]")
+    public WebElement sleepInRatesPopupViewSpecialRateIcon;
+
+    @FindBy(linkText = "Download Agreement")
+    public WebElement downloadAgreement;
 }

@@ -19,9 +19,6 @@ public class SearchAgreementsActions {
     private static final String YML_FILE_CREATE = "agreement-create";
     private static final String YML_HEADER_CREATE = "Agreement Overview";
 
-    private static final String YML_FILE = "agreement-edit";
-
-
     private static final Logger logger = LogManager.getLogger(SearchAgreementsActions.class);
 
     public SearchAgreementsActions() {
@@ -66,13 +63,15 @@ public class SearchAgreementsActions {
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
         BasePage.scrollToWebElement(getDropdownOptionXpath(agencyLocation));
         BasePage.clickWithJavaScript(getDropdownOptionXpath(agencyLocation));
-
+        BasePage.genericWait(2000);
         BasePage.clickWithJavaScript(searchAgreementsPage.applyButton);
 
         BasePage.waitUntilElementDisappeared(searchAgreementsPage.applyButton, 60);
 
         //verifying wanted agreement loaded
-        String actual = BasePage.getText(searchAgreementsPage.firstSearchedResult);
+        BasePage.genericWait(5000);
+        String text = BasePage.getText(searchAgreementsPage.firstSearchedResult);
+        String actual = text.split("VS")[0].trim();
         assertThat("Not displaying the correct agreement!", actual, is(agency));
 
         BasePage.clickWithJavaScript(searchAgreementsPage.firstSearchedResult);
