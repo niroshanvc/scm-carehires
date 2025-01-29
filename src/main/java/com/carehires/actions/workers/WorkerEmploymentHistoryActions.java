@@ -121,10 +121,6 @@ public class WorkerEmploymentHistoryActions {
         BasePage.clickWithJavaScript(employmentHistoryPage.successPopupNoLink);
     }
 
-    private String getDropdownOptionXpath(String city) {
-        return String.format("//nb-option[contains(text(),'%s')]", city);
-    }
-
     private void verifySuccessMessage() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying data saving success message >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementPresent(employmentHistoryPage.successMessage, 90);
@@ -256,10 +252,10 @@ public class WorkerEmploymentHistoryActions {
         BasePage.waitUntilElementPresent(employmentHistoryPage.employmentTypeDropdown, 20);
 
         String employmentType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "EmploymentType");
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(employmentHistoryPage.employmentTypeDropdown);
-        BasePage.genericWait(1000);
-        BasePage.waitUntilElementClickable(getDropdownOptionXpath(employmentType), 20);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(employmentType));
+        BasePage.waitUntilElementClickable(employmentHistoryPage.getDropdownOptionXpath(employmentType), 20);
+        BasePage.clickWithJavaScript(employmentHistoryPage.getDropdownOptionXpath(employmentType));
 
         String currentlyWorkHere = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "IsCurrentlyWorkHere");
         assert currentlyWorkHere != null;
@@ -273,8 +269,8 @@ public class WorkerEmploymentHistoryActions {
             String reasonForLeaving = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "ReasonForLeaving");
             BasePage.clickWithJavaScript(employmentHistoryPage.reasonForLeavingDropdown);
             BasePage.genericWait(1000);
-            BasePage.waitUntilElementClickable(getDropdownOptionXpath(reasonForLeaving), 20);
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(reasonForLeaving));
+            BasePage.waitUntilElementClickable(employmentHistoryPage.getDropdownOptionXpath(reasonForLeaving), 20);
+            BasePage.clickWithJavaScript(employmentHistoryPage.getDropdownOptionXpath(reasonForLeaving));
         }
 
         String fromDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "From");
@@ -303,8 +299,8 @@ public class WorkerEmploymentHistoryActions {
         String referenceType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER2, ADD, dataset, "ReferenceType");
         BasePage.clickWithJavaScript(employmentHistoryPage.referenceTypeDropdown);
         BasePage.genericWait(1000);
-        BasePage.waitUntilElementClickable(getDropdownOptionXpath(referenceType), 20);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(referenceType));
+        BasePage.waitUntilElementClickable(employmentHistoryPage.getDropdownOptionXpath(referenceType), 20);
+        BasePage.clickWithJavaScript(employmentHistoryPage.getDropdownOptionXpath(referenceType));
 
         BasePage.clickWithJavaScript(employmentHistoryPage.selectWorkplaceDropdown);
         String companyName;
@@ -321,8 +317,8 @@ public class WorkerEmploymentHistoryActions {
         } else if (ymlFile.equalsIgnoreCase(YML_FILE) && dataset.equalsIgnoreCase(YML_SUB_HEADER_DATASET2)) {
             companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, ADD, YML_SUB_HEADER_DATASET2, COMPANY_NAME);
         }
-        BasePage.waitUntilElementClickable(getDropdownOptionXpath(companyName), 20);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(companyName));
+        BasePage.waitUntilElementClickable(employmentHistoryPage.getDropdownOptionXpath(companyName), 20);
+        BasePage.clickWithJavaScript(employmentHistoryPage.getDropdownOptionXpath(companyName));
 
         String uploadFile = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER2, ADD, dataset, "UploadFile");
         String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"

@@ -46,4 +46,8 @@ public class WorkerEducationAndTrainingPage {
 
     @FindBy(xpath = "(//nb-checkbox[contains(@nbtooltip, 'Care Academy issued')])[1]//input")
     public WebElement caIssuedCheckbox1;
+
+    public String getDropdownOptionXpath(String city) {
+        return String.format("//nb-option[contains(text(),'%s')]", city);
+    }
 }

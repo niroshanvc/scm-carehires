@@ -41,7 +41,9 @@ public class CreateAgreementsOverviewActions {
         // Retrieve the current increment value for the provider (from the file)
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
 
+        BasePage.waitUntilElementClickable(agreementsOverviewPage.agencyDropdown, 60);
         String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Agency");
+        BasePage.genericWait(2000);
         BasePage.clickWithJavaScript(agreementsOverviewPage.agencyDropdown);
         By by = By.xpath(agreementsOverviewPage.getDropdownOptionXpath(agency));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);

@@ -79,15 +79,11 @@ public class ProviderBillingInformationActions {
         BasePage.scrollToWebElement(billingInformationPage.saveButton);
         String billingCycle = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "BillingCycle");
         BasePage.clickWithJavaScript(billingInformationPage.billingCycleDropdown);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(billingCycle));
+        BasePage.clickWithJavaScript(billingInformationPage.getDropdownOptionXpath(billingCycle));
 
         String creditTerm = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "CreditTerm");
         BasePage.clickWithJavaScript(billingInformationPage.creditTermDropdown);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(creditTerm));
-    }
-
-    private String getDropdownOptionXpath(String city) {
-        return String.format("//nb-option[contains(text(),'%s')]", city);
+        BasePage.clickWithJavaScript(billingInformationPage.getDropdownOptionXpath(creditTerm));
     }
 
     private void verifySuccessMessage() {
@@ -138,12 +134,8 @@ public class ProviderBillingInformationActions {
 
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(billingInformationPage.saveButton);
-        verifySuccessMessageInEditMode();
     }
 
-    private void verifySuccessMessageInEditMode() {
-
-    }
 
     public void savingGeneralAndCustomBillingInformation() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< First entering General Billing Information >>>>>>>>>>>>>>>>>>>>");
@@ -181,8 +173,8 @@ public class ProviderBillingInformationActions {
         String siteName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Site");
         BasePage.waitUntilElementPresent(billingInformationPage.siteDropdown, 30);
         BasePage.clickWithJavaScript(billingInformationPage.siteDropdown);
-        BasePage.waitUntilElementClickable(getDropdownOptionXpath(siteName), 30);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(siteName));
+        BasePage.waitUntilElementClickable(billingInformationPage.getDropdownOptionXpath(siteName), 30);
+        BasePage.clickWithJavaScript(billingInformationPage.getDropdownOptionXpath(siteName));
 
         String attentionTo = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Address bills in attention to");
         BasePage.clearAndEnterTexts(billingInformationPage.customAddressBillsInAttentionTo, attentionTo);
@@ -204,11 +196,11 @@ public class ProviderBillingInformationActions {
         BasePage.scrollToWebElement(billingInformationPage.customCreditTermDropdown);
         String billingCycle = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Billing Cycle");
         BasePage.clickWithJavaScript(billingInformationPage.customBillingCycleDropdown);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(billingCycle));
+        BasePage.clickWithJavaScript(billingInformationPage.getDropdownOptionXpath(billingCycle));
 
         String creditTerm = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Credit Term");
         BasePage.clickWithJavaScript(billingInformationPage.customCreditTermDropdown);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(creditTerm));
+        BasePage.clickWithJavaScript(billingInformationPage.getDropdownOptionXpath(creditTerm));
     }
 
     private void fillGeneralBillingBankInfo(String ymlFile, String subHeader) {

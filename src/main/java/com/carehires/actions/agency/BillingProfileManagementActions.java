@@ -74,11 +74,11 @@ public class BillingProfileManagementActions {
         String billingCycle = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "BillingCycle");
         BasePage.scrollToWebElement(billingPage.sortCode);
         BasePage.clickWithJavaScript(billingPage.billingCycleDropdown);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(billingCycle));
+        BasePage.clickWithJavaScript(billingPage.getDropdownOptionXpath(billingCycle));
 
         String creditTerm = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "CreditTerm");
         BasePage.clickWithJavaScript(billingPage.creditTermDropdown);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(creditTerm));
+        BasePage.clickWithJavaScript(billingPage.getDropdownOptionXpath(creditTerm));
 
         String bankName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "BankName");
         BasePage.typeWithStringBuilder(billingPage.bankName, bankName);
@@ -91,10 +91,6 @@ public class BillingProfileManagementActions {
 
         String sortCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "SortCode");
         BasePage.typeWithStringBuilder(billingPage.sortCode, sortCode);
-    }
-
-    private String getDropdownOptionXpath(String city) {
-        return String.format("//nb-option[contains(text(),'%s')]", city);
     }
 
     private void waitUntilTwoBalloonPopupGetDisappeared() {

@@ -57,4 +57,8 @@ public class ProvidersUserManagementPage {
 
     @FindBy(xpath = "//nb-option[contains(@class,'multiple')]")
     public List<WebElement> allAvailableOptions;
+
+    public String getDropdownOptionXpath(String city) {
+        return String.format("//nb-option[contains(text(),'%s')]", city);
+    }
 }

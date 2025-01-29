@@ -30,7 +30,6 @@ public class JobDetailsActions {
     private static final String YML_HEADER = "Job Details";
     private static final String YML_HEADER_SUB1 = "Care Provider / Site and Service Preferences";
     private static final String YML_HEADER_SUB2 = "Job Duration and Recurrence";
-    private static final String ADD = "Add";
     private static final String TOGGLE_ATTRIBUTE_AREA_CHECKED = "aria-checked";
 
     private static final Logger logger = LogManager.getLogger(JobDetailsActions.class);
@@ -49,10 +48,12 @@ public class JobDetailsActions {
         BasePage.waitUntilPageCompletelyLoaded();
 
         selectJobType();
+        BasePage.genericWait(3000);
         selectDropdownOption("Care Provider", jobDetailsPage.careProviderDropdown);
         BasePage.genericWait(500);
         selectDropdownOption("Site", jobDetailsPage.siteDropdown);
         selectRadioButton(jobDetailsPage.usingRadioButtons);
+        BasePage.genericWait(2000);
         selectDropdownOption("Worker Type", jobDetailsPage.workerTypeDropdown);
         selectDropdownOption("Number of Vacancies", jobDetailsPage.numberOfVacanciesDropdown);
 
@@ -80,10 +81,10 @@ public class JobDetailsActions {
     private void selectDropdownOption(String optionKey, WebElement dropdown) {
         String optionValue = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_SUB1, optionKey);
         BasePage.clickWithJavaScript(dropdown);
-        By by = By.xpath(getDropdownOptionXpath(optionValue));
+        By by = By.xpath(jobDetailsPage.getDropdownOptionXpath(optionValue));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
-        BasePage.scrollToWebElement(getDropdownOptionXpath(optionValue));
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(optionValue));
+        BasePage.scrollToWebElement(jobDetailsPage.getDropdownOptionXpath(optionValue));
+        BasePage.clickWithJavaScript(jobDetailsPage.getDropdownOptionXpath(optionValue));
     }
 
     private void selectRadioButton(List<WebElement> radioButtons) {
@@ -126,9 +127,5 @@ public class JobDetailsActions {
         if (shouldEnable != isCurrentlyEnabled) {
             BasePage.clickWithJavaScript(toggleElement);
         }
-    }
-
-    private String getDropdownOptionXpath(String option) {
-        return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 }

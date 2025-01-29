@@ -35,13 +35,15 @@ public class JobPreferencesActions {
 
         String gender = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Gender");
         BasePage.clickWithJavaScript(jobPreferencesPage.genderDropdown);
-        By by = By.xpath(getDropdownOptionXpath(gender));
+        By by = By.xpath(jobPreferencesPage.getDropdownOptionXpath(gender));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
-        BasePage.scrollToWebElement(getDropdownOptionXpath(gender));
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(gender));
+        BasePage.scrollToWebElement(jobPreferencesPage.getDropdownOptionXpath(gender));
+        BasePage.clickWithJavaScript(jobPreferencesPage.getDropdownOptionXpath(gender));
 
-        String[] preferredSkills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Preferred Skills")).split(",");
+        String[] preferredSkills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,
+                YML_HEADER, "Preferred Skills")).split(",");
 
+        BasePage.genericWait(3000);
         for (String skill : preferredSkills) {
             // Refresh the WebElement list to avoid stale references
             List<WebElement> availableSkills = jobPreferencesPage.preferredSkills;
@@ -64,10 +66,10 @@ public class JobPreferencesActions {
                 BasePage.clickWithJavaScript(jobPreferencesPage.enableBlockBookingToggle);
                 String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Agency");
                 BasePage.waitUntilElementPresent(jobPreferencesPage.agencyDropdown, 60);
-                by = By.xpath(getDropdownOptionXpath(agency));
+                by = By.xpath(jobPreferencesPage.getDropdownOptionXpath(agency));
                 BasePage.waitUntilVisibilityOfElementLocated(by, 30);
-                BasePage.scrollToWebElement(getDropdownOptionXpath(agency));
-                BasePage.clickWithJavaScript(getDropdownOptionXpath(agency));
+                BasePage.scrollToWebElement(jobPreferencesPage.getDropdownOptionXpath(agency));
+                BasePage.clickWithJavaScript(jobPreferencesPage.getDropdownOptionXpath(agency));
 
                 BasePage.clickWithJavaScript(jobPreferencesPage.nameInput);
                 BasePage.waitUntilElementPresent(jobPreferencesPage.workersList.get(0), 30);
@@ -81,9 +83,5 @@ public class JobPreferencesActions {
         BasePage.clearAndEnterTexts(jobPreferencesPage.notes, jobNotes);
 
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
-    }
-
-    private String getDropdownOptionXpath(String option) {
-        return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 }

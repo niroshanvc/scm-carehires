@@ -67,4 +67,8 @@ public class BillingProfileManagementPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Next')]")
     public WebElement nextButton;
+
+    public String getDropdownOptionXpath(String city) {
+        return String.format("//nb-option[contains(text(),'%s')]", city);
+    }
 }

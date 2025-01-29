@@ -25,4 +25,8 @@ public class SearchAgreementsPage {
 
     @FindBy(xpath = "(//div[contains(@class, 'search-result-container')]//h6)[1]")
     public WebElement firstSearchedResult;
+
+    public String getDropdownOptionXpath(String option) {
+        return String.format("//nb-option[contains(text(),'%s')]", option);
+    }
 }

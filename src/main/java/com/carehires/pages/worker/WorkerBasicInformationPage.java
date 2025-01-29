@@ -187,4 +187,12 @@ public class WorkerBasicInformationPage {
 
     @FindBy(xpath = "//div[contains(@class, 'profile-steps')]/div[1]//span/nb-icon")
     public WebElement basicInformationStep;
+
+    public String getDropdownOptionXpath(String option) {
+        return String.format("//nb-option[contains(text(),'%s')]", option);
+    }
+
+    public String getWorkerTypeDropdownOptionXpath(String option) {
+        return String.format("//nb-option[text()='%s ']", option);
+    }
 }

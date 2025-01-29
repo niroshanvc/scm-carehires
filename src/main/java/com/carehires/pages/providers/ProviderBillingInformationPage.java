@@ -97,4 +97,8 @@ public class ProviderBillingInformationPage {
 
     @FindBy(xpath = "//div[@class='main-table']//nb-icon")
     public WebElement customBillingEditIcon;
+
+    public String getDropdownOptionXpath(String city) {
+        return String.format("//nb-option[contains(text(),'%s')]", city);
+    }
 }

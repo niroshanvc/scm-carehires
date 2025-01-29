@@ -54,4 +54,8 @@ public class AgencyUserManagementPage {
 
     @FindBy(xpath = "//nb-option[contains(@class,'multiple') and (contains(@class, 'selected'))]")
     public List<WebElement> alreadySelectedAccessLevels;
+
+    public String getDropdownOptionXpath(String city) {
+        return String.format("//nb-option[contains(text(),'%s')]", city);
+    }
 }

@@ -38,11 +38,12 @@ public class OrganizationalSettingsActions {
 
         String timeFormat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "TimeFormat");
         BasePage.clickWithJavaScript(settingsPage.timeFormatDropdown);
-        BasePage.waitUntilElementClickable(getDropdownOptionXpath(timeFormat), 10);
+        BasePage.waitUntilElementClickable(settingsPage.getDropdownOptionXpath(timeFormat), 10);
+        assert timeFormat != null;
         if (timeFormat.equals("12 Hours")) {
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(timeFormat));
+            BasePage.clickWithJavaScript(settingsPage.getDropdownOptionXpath(timeFormat));
         } else {
-            BasePage.clickWithJavaScript(getDropdownOptionXpath("24 Hours"));
+            BasePage.clickWithJavaScript(settingsPage.getDropdownOptionXpath("24 Hours"));
         }
 
         String hubspot = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "HubSpotLink");
@@ -50,18 +51,14 @@ public class OrganizationalSettingsActions {
 
         String salesPerson = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "SalesProcessCompletedBy");
         BasePage.clickWithJavaScript(settingsPage.salesProcessCompletedByDropdown);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(salesPerson));
+        BasePage.clickWithJavaScript(settingsPage.getDropdownOptionXpath(salesPerson));
 
         String onboard = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "OnboardedBDM");
         BasePage.clickWithJavaScript(settingsPage.onboardedBdmDropdown);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(onboard));
+        BasePage.clickWithJavaScript(settingsPage.getDropdownOptionXpath(onboard));
 
         BasePage.clickWithJavaScript(settingsPage.saveButton);
         verifySuccessMessage();
-    }
-
-    private String getDropdownOptionXpath(String city) {
-        return String.format("//nb-option[contains(text(),'%s')]", city);
     }
 
     private void verifySuccessMessage() {

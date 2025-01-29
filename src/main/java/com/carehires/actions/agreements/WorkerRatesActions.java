@@ -27,8 +27,6 @@ public class WorkerRatesActions {
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
     private static final String YML_HEADER = "Worker Rates";
-    private static final String ADD = "Add";
-    private static final String EDIT_YML_FILE = "agreement-edit";
     private String hourlyRate;
     private String agencyMargin;
     private String chHourlyMargin;
@@ -82,11 +80,12 @@ public class WorkerRatesActions {
 
     private void enterSkills() {
         String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Skills")).split(",");
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(workerRatesPage.skillsDropdown);
-        By locator = By.xpath(getDropdownOptionXpath(skills[0]));
+        By locator = By.xpath(workerRatesPage.getDropdownOptionXpath(skills[0]));
         BasePage.waitUntilPresenceOfElementLocated(locator, 20);
         for (String skill : skills) {
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(skill));
+            BasePage.clickWithJavaScript(workerRatesPage.getDropdownOptionXpath(skill));
         }
     }
 
@@ -94,14 +93,10 @@ public class WorkerRatesActions {
         workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Worker Type");
         BasePage.waitUntilElementDisplayed(workerRatesPage.workerTypeDropdown, 30);
         BasePage.clickWithJavaScript(workerRatesPage.workerTypeDropdown);
-        By by = By.xpath(getDropdownOptionXpath(workerType));
+        By by = By.xpath(workerRatesPage.getDropdownOptionXpath(workerType));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
-        BasePage.scrollToWebElement(getDropdownOptionXpath(workerType));
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(workerType));
-    }
-
-    private String getDropdownOptionXpath(String option) {
-        return String.format("//nb-option[contains(text(),'%s')]", option);
+        BasePage.scrollToWebElement(workerRatesPage.getDropdownOptionXpath(workerType));
+        BasePage.clickWithJavaScript(workerRatesPage.getDropdownOptionXpath(workerType));
     }
 
     private void expandSubSection(WebElement headerText, WebElement headerIcon) {

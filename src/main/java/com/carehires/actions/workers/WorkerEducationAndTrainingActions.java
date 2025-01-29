@@ -90,8 +90,8 @@ public class WorkerEducationAndTrainingActions {
     private void addEducationAndTrainingEntry(String ymlFile, String subHeader, String dataset) {
         String certificate1 = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "Certificate");
         BasePage.clickWithJavaScript(educationAndTrainingPage.certificateDropdown);
-        BasePage.waitUntilElementPresent(getDropdownOptionXpath(certificate1), 20);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(certificate1));
+        BasePage.waitUntilElementPresent(educationAndTrainingPage.getDropdownOptionXpath(certificate1), 20);
+        BasePage.clickWithJavaScript(educationAndTrainingPage.getDropdownOptionXpath(certificate1));
 
         String validUntil1 = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, dataset, "ValidUntil");
         BasePage.clickWithJavaScript(educationAndTrainingPage.validUntilInput);
@@ -105,10 +105,6 @@ public class WorkerEducationAndTrainingActions {
 
         // click on the Add button
         BasePage.clickWithJavaScript(educationAndTrainingPage.addButton);
-    }
-
-    private String getDropdownOptionXpath(String city) {
-        return String.format("//nb-option[contains(text(),'%s')]", city);
     }
 
     private void verifySuccessMessage() {

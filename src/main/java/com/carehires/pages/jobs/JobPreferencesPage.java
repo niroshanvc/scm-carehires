@@ -33,4 +33,8 @@ public class JobPreferencesPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Continue')]")
     public WebElement continueButton;
+
+    public String getDropdownOptionXpath(String option) {
+        return String.format("//nb-option[contains(text(),'%s')]", option);
+    }
 }

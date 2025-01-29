@@ -119,8 +119,8 @@ public class ProviderCompanyInformationActions {
         if (companyType != null) {
             BasePage.clickWithJavaScript(companyInformationPage.companyTypeDropdown);
             BasePage.genericWait(500);
-            BasePage.waitUntilElementPresent(getDropdownOptionXpath(companyType), 20);
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(companyType));
+            BasePage.waitUntilElementPresent(companyInformationPage.getDropdownOptionXpath(companyType), 20);
+            BasePage.clickWithJavaScript(companyInformationPage.getDropdownOptionXpath(companyType));
         }
 
         logger.info("Entering company website");
@@ -219,10 +219,6 @@ public class ProviderCompanyInformationActions {
         } else {
             BasePage.clickWithJavaScript(companyInformationPage.numberOfEmployeeOverFifty);
         }
-    }
-
-    private String getDropdownOptionXpath(String option) {
-        return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 
     //verify if company information is saved

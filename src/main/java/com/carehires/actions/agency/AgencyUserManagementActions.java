@@ -72,7 +72,7 @@ public class AgencyUserManagementActions {
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
         BasePage.genericWait(1000);
         for (String accessLevel : userAccessLevel) {
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(accessLevel));
+            BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(accessLevel));
         }
 
         BasePage.genericWait(6000);
@@ -83,10 +83,6 @@ public class AgencyUserManagementActions {
         BasePage.clickWithJavaScript(userManagement.updateButton);
         BasePage.waitUntilElementClickable(userManagement.nextButton, 60);
         BasePage.clickWithJavaScript(userManagement.nextButton);
-    }
-
-    private String getDropdownOptionXpath(String city) {
-        return String.format("//nb-option[contains(text(),'%s')]", city);
     }
 
     private void isUserAdded() {
@@ -123,7 +119,7 @@ public class AgencyUserManagementActions {
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
         BasePage.genericWait(1000);
         for (String accessLevel : userAccessLevel) {
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(accessLevel));
+            BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(accessLevel));
         }
 
         BasePage.genericWait(6000);
@@ -166,11 +162,11 @@ public class AgencyUserManagementActions {
         String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Location");
         BasePage.clickWithJavaScript(userManagement.location);
         BasePage.genericWait(1000);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(location));
+        BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(location));
 
         String city = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "City");
         BasePage.clickWithJavaScript(userManagement.city);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(city));
+        BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(city));
 
         String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Phone");
         BasePage.clickWithJavaScript(userManagement.phone);
@@ -212,13 +208,13 @@ public class AgencyUserManagementActions {
         // Deselect access levels that are not in the desired list
         for (String accessLevel : selectedAccessLevels) {
             if (!desiredAccessLevels.contains(accessLevel)) {
-                BasePage.clickWithJavaScript(getDropdownOptionXpath(accessLevel));
+                BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(accessLevel));
             }
         }
         // Select access level that are in the desired list but not currently selected
         for (String accessLevel : desiredAccessLevels) {
             if (!selectedAccessLevels.contains(accessLevel)) {
-                BasePage.clickWithJavaScript(getDropdownOptionXpath(accessLevel));
+                BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(accessLevel));
             }
         }
     }
