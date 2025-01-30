@@ -155,7 +155,7 @@ public class ProviderBillingInformationActions {
         BasePage.clickWithJavaScript(billingInformationPage.saveButton);
 
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Then entering Custom Billing Information >>>>>>>>>>>>>>>>>>>>");
-        navigationMenu.gotoBillingPage();
+        navigationMenu.gotoBillingPageUsingCircleIcon();
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(billingInformationPage.customBillingInformationSection);
         enterCustomBillingData(YML_FILE, ADD);

@@ -388,6 +388,7 @@ public class WorkerBasicInformationActions {
     private void enterAgencyInformation(String ymlFile, String subHeader) {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Agency Information >>>>>>>>>>>>>>>>>>>>");
         String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, "Agency Information", subHeader, "Agency");
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(basicInfo.agencyDropdown);
         By by = By.xpath(basicInfo.getDropdownOptionXpath(agency));
         BasePage.waitUntilVisibilityOfElementLocated(by, 60);
@@ -484,7 +485,6 @@ public class WorkerBasicInformationActions {
         BasePage.genericWait(10000);
 
         BasePage.clickWithJavaScript(basicInfo.saveButton);
-        isBasicInfoSaved();
         // After successfully entering the basic information, update the increment value in the file
         DataConfigurationReader.storeNewIncrementValue(ENTITY);
         // Store the increment value in GlobalVariables for reuse in other steps
@@ -528,6 +528,7 @@ public class WorkerBasicInformationActions {
     // get auto generated worker id and save it on the memory
     private void getWorkerId() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Reading auto generated worker id >>>>>>>>>>>>>>>>>>>>");
+        BasePage.genericWait(6000);
         BasePage.waitUntilElementPresent(basicInfo.workerId, 90);
         String headerText = BasePage.getText(basicInfo.workerId).trim();
         String workerId = headerText.split("\n")[0];

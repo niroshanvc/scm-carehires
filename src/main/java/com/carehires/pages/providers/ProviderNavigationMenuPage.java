@@ -11,34 +11,40 @@ public class ProviderNavigationMenuPage {
     @FindBy(xpath = "//div[contains(text(), 'Profile')]/..//img")
     public WebElement profileImage;
 
-    @FindBy(xpath = "//div[contains(text(), 'Site')]/../..")
+    @FindBy(xpath = "//div[contains(text(), 'Site')]/..")
     public WebElement site;
 
     @FindBy(xpath = "//div[contains(text(), 'Site')]/..//img")
     public WebElement siteImage;
 
-    @FindBy(xpath = "//div[contains(text(), 'Staff')]/../..")
+    @FindBy(xpath = "//div[contains(text(), 'Staff')]/..")
     public WebElement staff;
 
     @FindBy(xpath = "//div[contains(text(), 'Staff')]/..//img")
     public WebElement staffImage;
 
-    @FindBy(xpath = "//div[contains(text(), 'Users')]/../..")
+    @FindBy(xpath = "//div[contains(text(), 'User')]/..")
     public WebElement users;
 
-    @FindBy(xpath = "//div[contains(text(), 'Users')]/..//img")
+    @FindBy(xpath = "//div[contains(text(), 'User')]/..//img")
     public WebElement usersImage;
 
     @FindBy(xpath = "//div[contains(text(), 'Billing')]/..")
+    public WebElement billingDiv;
+
+    @FindBy(xpath = "//h6[contains(text(), 'Billing')]/..")
     public WebElement billing;
+
+    @FindBy(xpath = "//h6[contains(text(), 'Billing')]/..//nb-icon")
+    public WebElement billingIcon;
 
     @FindBy(xpath = "//div[contains(text(), 'Billing')]/..//img")
     public WebElement billingImage;
 
-    @FindBy(xpath = "//div[contains(text(), 'Agreement')]/../..")
+    @FindBy(xpath = "//h6[contains(text(), 'Agreement')]/..")
     public WebElement agreement;
 
-    @FindBy(xpath = "//div[contains(text(), 'Agreement')]/..//img")
+    @FindBy(xpath = "//h6contains(text(), 'Agreement')]/..//nb-icon")
     public WebElement agreementImage;
 
     @FindBy(xpath = "//div[contains(text(), 'Settings')]/..")
