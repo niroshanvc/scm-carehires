@@ -43,9 +43,9 @@ Agency Business Location:
 
 Staff:
   Add:
-    WorkerType: Care Assistant
+    WorkerType: Rehabilitation Worker
     NoOfWorkers: 20
-    WorkerSkills: NVQ L3,Elderly,Home Care,Care Certificate,End of life Care
+    WorkerSkills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
     MonthlyHoursAvailable: 200
     MinChargeHourlyRate: 10
     EmployeeType: PSC

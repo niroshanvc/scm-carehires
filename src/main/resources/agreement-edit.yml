@@ -3,8 +3,8 @@ Edit Site:
 Worker Rates:
   Effective Date: "today + 0"
   Normal Rate:
-    Worker Type: Occupational Therapist
-    Skills: NVQ L3,Physical Disabilities,Mental Health Disabilities
+    Worker Type: Rehabilitation Worker
+    Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
     Hourly Rate: "10.00"
     Agency Margin: "1.85"
     CH Hourly Margin: "1.15"
@@ -21,7 +21,7 @@ Cancellation Policy:
 Sleep In Request:
   Effective Date: "today + 0"
   Normal Rate:
-    Worker Type: Night Security Officer
+    Worker Type: Rehabilitation Worker
     Hourly Rate: "10.00"
     Agency Margin: "1.85"
     CH Hourly Margin: "1.15"

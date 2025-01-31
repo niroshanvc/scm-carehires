@@ -48,7 +48,7 @@ public class JobDetailsActions {
         BasePage.waitUntilPageCompletelyLoaded();
 
         selectJobType();
-        BasePage.genericWait(3000);
+        BasePage.genericWait(5000);
         selectDropdownOption("Care Provider", jobDetailsPage.careProviderDropdown);
         BasePage.genericWait(500);
         selectDropdownOption("Site", jobDetailsPage.siteDropdown);

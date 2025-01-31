@@ -65,14 +65,14 @@ Site Management:
 
 Worker Staff Management:
   Add:
-    WorkerType: Rehabilitation Worker
+    WorkerType: Care Assistant
     Skills: Elderly,Home Care,Moderate Learning Disabilities,Challenging Behaviours
     HourlyRate: 10
     MonthlyAgencyHours: 350
     ProofOfDemandDocument: Proof of demand document.pdf
   Update:
     WorkerType: Rehabilitation Worker
-    Skills: Elderly,Dementia,Home Care,NVQ L3,Driving
+    Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
     HourlyRate: 10.5
     MonthlyAgencyHours: 300
     ProofOfDemandDocument: Proof of demand document - updated.pdf

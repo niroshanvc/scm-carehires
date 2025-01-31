@@ -49,7 +49,7 @@ Site Management:
 Worker Staff Management:
   Add:
     WorkerType: Rehabilitation Worker
-    Skills: Elderly,Home Care,Moderate Learning Disabilities,Challenging Behaviours
+    Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
     HourlyRate: 10
     MonthlyAgencyHours: 350
     ProofOfDemandDocument: Proof of demand document.pdf

@@ -1,7 +1,7 @@
 Basic Information:
   Agency Information:
     Add:
-      Agency: Automation Agency 333
+      Agency: Automation Agency 336
 
   Personal Information:
     Add:
@@ -27,9 +27,9 @@ Basic Information:
 
   Employment Information:
     Add:
-      WorkerType: Care Assistant
-      Skills: NVQ L3,Elderly,Dementia,Home Care,Care Certificate
-      RegulatorySettings: Health and Care Professions Council (HCPC),Care Quality Commission (CQC),Scottish Social Services Council (SSSC),Care and Social Services Inspectorate Wales (CSSIW)
+      WorkerType: Rehabilitation Worker
+      Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+      RegulatorySettings: Not Required (NR)
       WorkerEmploymentType: PAYE
       WorkerEmploymentTypeValue: 0012390
 
