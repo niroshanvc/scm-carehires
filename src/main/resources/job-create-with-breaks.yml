@@ -11,10 +11,10 @@ Job Details:
     Start Date: "today - 1"
     Start Time: "07:00"
     End Time: "17:00"
-    Enable Recurrence: "No"
+    Enable Recurrence: "Yes"
     Repeat Type: Daily
     Ends On: "today + 3"
-    Breaks/ Intervals: "No"
+    Breaks/ Intervals: "Yes"
     Paid Breaks Duration: "02:00"
     Unpaid Breaks Duration: "03:00"
     Paid Breaks Note: "General note added for the paid breaks."

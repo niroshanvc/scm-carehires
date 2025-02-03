@@ -27,6 +27,7 @@ public class JobDetailsActions {
 
     private static final String ENTITY = "job";
     private static final String YML_FILE = "job-create";
+    private static final String YML_FILE_WITH_BREAKS = "job-create-with-breaks";
     private static final String YML_HEADER = "Job Details";
     private static final String YML_HEADER_SUB1 = "Care Provider / Site and Service Preferences";
     private static final String YML_HEADER_SUB2 = "Job Duration and Recurrence";
@@ -47,39 +48,68 @@ public class JobDetailsActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Details >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
 
-        selectJobType();
-        BasePage.genericWait(5000);
-        selectDropdownOption("Care Provider", jobDetailsPage.careProviderDropdown);
-        BasePage.genericWait(500);
-        selectDropdownOption("Site", jobDetailsPage.siteDropdown);
-        selectRadioButton(jobDetailsPage.usingRadioButtons);
-        BasePage.genericWait(2000);
-        selectDropdownOption("Worker Type", jobDetailsPage.workerTypeDropdown);
-        selectDropdownOption("Number of Vacancies", jobDetailsPage.numberOfVacanciesDropdown);
-
-        selectStartDate();
-        selectTime("Start Time", jobDetailsPage.startTime, jobDetailsPage.startTimeAreaList, jobDetailsPage.availableStartTimes, jobDetailsPage.startTimeSelectionOkButton);
-        selectTime("End Time", jobDetailsPage.endTime, jobDetailsPage.endTimeAreaList, jobDetailsPage.availableEndTimes, jobDetailsPage.endTimeSelectionOkButton);
-
-        BasePage.scrollToWebElement(jobDetailsPage.enableRecurrence);
-        handleToggleOption("Enable Recurrence", jobDetailsPage.enableRecurrence);
-        BasePage.scrollToWebElement(jobDetailsPage.breaksOrIntervals);
-        handleToggleOption("Breaks/ Intervals", jobDetailsPage.breaksOrIntervals);
+        enterCareProviderAndServicePreferences(YML_FILE);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+        enterJobDurationAndRecurrence(YML_FILE);
 
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
 
-    private void selectJobType() {
-        String jobType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Job Type");
+    /**
+     * Enter job duration and recurrence.
+     *
+     * @param ymlFile     YAML file name.
+     *
+     */
+    private void enterJobDurationAndRecurrence(String ymlFile) {
+        selectDateOnCalendar(ymlFile, jobDetailsPage.startDate, "Start Date");
+        selectTime(ymlFile, "Start Time", jobDetailsPage.startTime, jobDetailsPage.startTimeAreaList,
+                jobDetailsPage.availableStartTimes, jobDetailsPage.startTimeSelectionOkButton);
+        selectTime(ymlFile, "End Time", jobDetailsPage.endTime, jobDetailsPage.endTimeAreaList,
+                jobDetailsPage.availableEndTimes, jobDetailsPage.endTimeSelectionOkButton);
+
+        BasePage.scrollToWebElement(jobDetailsPage.enableRecurrence);
+        handleToggleOption(ymlFile, "Enable Recurrence", jobDetailsPage.enableRecurrence);
+        handleToggleOption(ymlFile, "Breaks/ Intervals", jobDetailsPage.breaksOrIntervals);
+    }
+
+    /**
+     * Enter care provider/ site and service preference.
+     *
+     * @param ymlFile     YAML file name.
+     *
+     */
+    private void enterCareProviderAndServicePreferences(String ymlFile) {
+        selectJobType(ymlFile);
+        BasePage.genericWait(5000);
+        selectDropdownOption(ymlFile, "Care Provider", jobDetailsPage.careProviderDropdown);
+        BasePage.genericWait(500);
+        selectDropdownOption(ymlFile, "Site", jobDetailsPage.siteDropdown);
+        selectRadioButton(ymlFile, jobDetailsPage.usingRadioButtons);
+        BasePage.genericWait(2000);
+        selectDropdownOption(ymlFile, "Worker Type", jobDetailsPage.workerTypeDropdown);
+        selectDropdownOption(ymlFile, "Number of Vacancies", jobDetailsPage.numberOfVacanciesDropdown);
+    }
+
+    private void selectJobType(String ymlFile) {
+        String jobType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, "Job Type");
         assert jobType != null;
         if (jobType.equalsIgnoreCase("sleep in")) {
             BasePage.clickWithJavaScript(jobDetailsPage.sleepInButton);
         }
     }
 
-    private void selectDropdownOption(String optionKey, WebElement dropdown) {
-        String optionValue = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_SUB1, optionKey);
+    /**
+     * select an option from dropdown.
+     *
+     * @param ymlFile     YAML file name.
+     * @param optionKey     dropdown option to be selected.
+     * @param dropdown     dropdown element.
+     */
+    private void selectDropdownOption(String ymlFile, String optionKey, WebElement dropdown) {
+        String optionValue = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB1,
+                optionKey);
         BasePage.clickWithJavaScript(dropdown);
         By by = By.xpath(jobDetailsPage.getDropdownOptionXpath(optionValue));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
@@ -87,21 +117,43 @@ public class JobDetailsActions {
         BasePage.clickWithJavaScript(jobDetailsPage.getDropdownOptionXpath(optionValue));
     }
 
-    private void selectRadioButton(List<WebElement> radioButtons) {
-        String value = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_SUB1, "Using");
+    private void selectRadioButton(String ymlFile, List<WebElement> radioButtons) {
+        String value = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB1,
+                "Using");
         assert value != null;
         int index = value.equalsIgnoreCase("Post custom job") ? 0 : 1;
         BasePage.clickWithJavaScript(radioButtons.get(index));
     }
 
-    private void selectStartDate() {
-        String startDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_SUB2, "Start Date");
-        BasePage.clickWithJavaScript(jobDetailsPage.startDate);
+    /**
+     * Select a date from calendar.
+     *
+     * @param ymlFile     YAML file name.
+     * @param element     calendar web element.
+     * @param date        date to be selected.
+     *
+     */
+    private void selectDateOnCalendar(String ymlFile, WebElement element, String date) {
+        String startDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_HEADER_SUB2, date);
+        BasePage.clickWithJavaScript(element);
         genericUtils.selectDateFromCalendarPopup(startDate);
     }
 
-    private void selectTime(String timeKey, WebElement timeField, WebElement timeAreaList, List<WebElement> availableTimes, WebElement okButton) {
-        String timeValue = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_SUB2, timeKey);
+    /**
+     * Enter care provider/ site and service preference.
+     *
+     * @param ymlFile     YAML file name.
+     * @param timeKey     time to be selected.
+     * @param timeField   web element to be entered.
+     * @param timeAreaList  time displaying list web element
+     * @param availableTimes  available time in the list
+     * @param okButton    Ok button web element
+     */
+    private void selectTime(String ymlFile, String timeKey, WebElement timeField, WebElement timeAreaList,
+                            List<WebElement> availableTimes, WebElement okButton) {
+        String timeValue = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2,
+                timeKey);
         BasePage.clickWithJavaScript(timeField);
         BasePage.waitUntilElementPresent(timeAreaList, 60);
         BasePage.waitUntil(() -> !availableTimes.isEmpty(), 60);
@@ -117,15 +169,56 @@ public class JobDetailsActions {
         BasePage.clickWithJavaScript(okButton);
     }
 
-    private void handleToggleOption(String toggleKey, WebElement toggleElement) {
-        String toggleValue = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_SUB2, toggleKey);
+    /**
+     * Enter care provider/ site and service preference.
+     *
+     * @param ymlFile     YAML file name.
+     * @param toggleKey     toggle button to be enabled or disabled.
+     * @param toggleElement   toggle web element.
+     */
+    private void handleToggleOption(String ymlFile, String toggleKey, WebElement toggleElement) {
+        String toggleValue = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2,
+                toggleKey);
         assert toggleValue != null;
         String currentAttr = BasePage.getAttributeValue(toggleElement, TOGGLE_ATTRIBUTE_AREA_CHECKED);
         boolean shouldEnable = toggleValue.equalsIgnoreCase("yes");
         boolean isCurrentlyEnabled = currentAttr.equalsIgnoreCase("true");
 
-        if (shouldEnable != isCurrentlyEnabled) {
+        if (toggleKey.equalsIgnoreCase("Enable Recurrence") && shouldEnable != isCurrentlyEnabled) {
             BasePage.clickWithJavaScript(toggleElement);
+            BasePage.waitUntilElementPresent(jobDetailsPage.repeatTypeDropdown, 60);
+            BasePage.clickWithJavaScript(jobDetailsPage.repeatTypeDropdown);
+            String repeatType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_HEADER_SUB2, "Repeat Type");
+            BasePage.clickWithJavaScript(jobDetailsPage.getDropdownOptionXpath(repeatType));
+            selectDateOnCalendar(ymlFile, jobDetailsPage.endsOn, "Ends On");
+        } else if (toggleKey.equalsIgnoreCase("Breaks/ Intervals") && shouldEnable != isCurrentlyEnabled) {
+            BasePage.clickWithJavaScript(toggleElement);
+            BasePage.waitUntilElementPresent(jobDetailsPage.paidBreaksDuration, 60);
+            selectTime(ymlFile, "Paid Breaks Duration", jobDetailsPage.paidBreaksDuration,
+                    jobDetailsPage.paidBreaksDurationAreaList, jobDetailsPage.availablePaidBreaksDurations,
+                    jobDetailsPage.paidBreaksDurationOkButton);
+            selectTime(ymlFile, "Unpaid Breaks Duration", jobDetailsPage.unpaidBreaksDuration,
+                    jobDetailsPage.unpaidBreaksDurationAreaList, jobDetailsPage.availableUnpaidBreaksDurations,
+                    jobDetailsPage.unpaidBreaksDurationOkButton);
+
+            String paidBreaksNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_HEADER_SUB2, "Paid Breaks Note");
+            BasePage.clearAndEnterTexts(jobDetailsPage.paidBreaksNote, paidBreaksNote);
+
+            String unpaidBreaksNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_HEADER_SUB2, "Unpaid Breaks Note");
+            BasePage.clearAndEnterTexts(jobDetailsPage.unpaidBreaksNote, unpaidBreaksNote);
         }
+    }
+
+    public void enterJobDetailsWithBreaks() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Details With Enabling Breaks >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        enterCareProviderAndServicePreferences(YML_FILE_WITH_BREAKS);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+        enterJobDurationAndRecurrence(YML_FILE_WITH_BREAKS);
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
 }
