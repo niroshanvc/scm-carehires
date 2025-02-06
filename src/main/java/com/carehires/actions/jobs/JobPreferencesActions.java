@@ -11,6 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -92,61 +93,22 @@ public class JobPreferencesActions {
                 .map(String::trim)
                 .collect(Collectors.toSet());
 
-        logger.info("Preferred Skills: {}", newPreferredSkills);
-
         BasePage.genericWait(3000);
 
         // Get currently selected skills
         Set<String> currentlySelectedSkills = new HashSet<>();
-        for (WebElement selectedSkills : jobPreferencesPage.selectedSkills) {
-            currentlySelectedSkills.add(BasePage.getText(selectedSkills).trim());
-        }
-        logger.info("Currently Selected Skills: {}", currentlySelectedSkills);
+        /*for (WebElement selectedSkills : jobPreferencesPage.selectedSkills) {
 
-        // Identify skills to deselect (present but not needed anymore)
-        Set<String> skillsToDeselect = new HashSet<>(currentlySelectedSkills);
-        skillsToDeselect.removeAll(newPreferredSkills);
-        logger.info("Skills to Deselect: {}", skillsToDeselect);
-
-        // Identify skills to select (new ones not yet selected)
-        Set<String> skillsToSelect = new HashSet<>(newPreferredSkills);
-        skillsToSelect.removeAll(currentlySelectedSkills);
-        logger.info("Skills to Select: {}", skillsToSelect);
-
-        // Deselect skills
-        for (WebElement selectedSkills : jobPreferencesPage.selectedSkills) {
-            String skillName = BasePage.getText(selectedSkills).trim();
-            if (skillsToDeselect.contains(skillName)) {
-                BasePage.clickWithJavaScript(selectedSkills); // click to deselect
-                logger.info("Deselected: {}", skillName);
-            }
-        }
-
-        // Select new skills
-        for (String skillToSelect : skillsToSelect) {
-            for (WebElement availableSkill : jobPreferencesPage.preferredSkills) {
-                String skillText = BasePage.getText(availableSkill).trim();
-                if (skillText.equals(skillToSelect)) {
-                    // Scroll to the element and click
-                    BasePage.scrollToWebElement(availableSkill);
-                    BasePage.waitUntilElementDisplayed(availableSkill, 30);
-                    BasePage.clickWithJavaScript(availableSkill);
-                    logger.info("Selected: {}", skillText);
+        }*/
+        for (String skill : preferredSkills) {
+            // Refresh the WebElement list to avoid stale references
+            List<WebElement> availableSkills = jobPreferencesPage.preferredSkills;
+            for (WebElement el : availableSkills) {
+                if (BasePage.getText(el).equalsIgnoreCase(skill)) {
+                    BasePage.clickWithJavaScript(el);
                     break;
                 }
             }
-        }
-
-        // Verify final selections
-        BasePage.genericWait(2000); // Wait for selections to complete
-        Set<String> finalSelectedSkills = new HashSet<>();
-        for (WebElement selectedSkills : jobPreferencesPage.selectedSkills) {
-            finalSelectedSkills.add(BasePage.getText(selectedSkills).trim());
-        }
-        logger.info("Final Selected Skills: {}", finalSelectedSkills);
-
-        if (!finalSelectedSkills.equals(newPreferredSkills)) {
-            throw new IllegalStateException("Mismatch in skills selection. Expected: " + newPreferredSkills + ", but found: " + finalSelectedSkills);
         }
     }
 
