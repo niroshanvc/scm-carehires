@@ -11,4 +11,9 @@ public class JobSummarySteps {
     public void enterJobSummary() {
         jobSummaryActions.enterJobSummary();
     }
+
+    @And("User clicks on Edit button on Job Summary")
+    public void clickOnEditButton() {
+        jobSummaryActions.clickOnEditButton();
+    }
 }

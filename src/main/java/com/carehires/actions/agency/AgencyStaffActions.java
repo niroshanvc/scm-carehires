@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -58,25 +59,26 @@ public class AgencyStaffActions {
 
         //select a location
         String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, LOCATION_YML_HEADER, ADD, BUSINESS_LOCATION);
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(staffPage.locationDropdown);
         BasePage.genericWait(1000);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(location));
+        BasePage.clickWithJavaScript(staffPage.getDropdownOptionXpath(location));
 
         //select a worker type
         String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "WorkerType");
         BasePage.clickWithJavaScript(staffPage.workerTypeDropdown);
         BasePage.genericWait(1000);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(workerType));
+        BasePage.clickWithJavaScript(staffPage.getDropdownOptionXpath(workerType));
 
         String noOfWorkers = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "NoOfWorkers");
         BasePage.typeWithStringBuilder(staffPage.numberOfWorkers, noOfWorkers);
 
         //select worker skills
-        String[] workerSkills = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, WORKER_SKILLS).split(",");
+        String[] workerSkills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, WORKER_SKILLS)).split(",");
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(staffPage.workerSkills);
-        BasePage.genericWait(1000);
         for (String skill : workerSkills) {
-            BasePage.clickWithJavaScript(getWorkerSkillXpath(skill));
+            BasePage.clickWithJavaScript(staffPage.getWorkerSkillXpath(skill));
         }
 
         String monthlyHoursAvailable = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "MonthlyHoursAvailable");
@@ -114,14 +116,6 @@ public class AgencyStaffActions {
         assertThat("Staff is not added", actual, is(expected));
     }
 
-    private String getDropdownOptionXpath(String city) {
-        return String.format("//nb-option[contains(text(),'%s')]", city);
-    }
-
-    private String getWorkerSkillXpath(String skill) {
-        return String.format("//nb-option[contains(@class,'multiple') and (contains(text(), '%s'))]", skill);
-    }
-
     private void verifySuccessMessage() {
         BasePage.waitUntilElementPresent(staffPage.successMessage, 90);
         String actualInLowerCase = BasePage.getText(staffPage.successMessage).toLowerCase().trim();
@@ -141,11 +135,11 @@ public class AgencyStaffActions {
         BasePage.clickWithJavaScript(staffPage.addNewButton);
         enterStaffData(ADD);
         //select worker skills
-        String[] workerSkills = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, WORKER_SKILLS).split(",");
+        String[] workerSkills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, WORKER_SKILLS)).split(",");
         BasePage.clickWithJavaScript(staffPage.workerSkills);
         BasePage.genericWait(1000);
         for (String skill : workerSkills) {
-            BasePage.clickWithJavaScript(getWorkerSkillXpath(skill));
+            BasePage.clickWithJavaScript(staffPage.getWorkerSkillXpath(skill));
         }
 
         //click on Add
@@ -191,12 +185,12 @@ public class AgencyStaffActions {
         BasePage.waitUntilElementDisplayed(staffPage.locationDropdown, 30);
         String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, LOCATION_YML_HEADER, UPDATE, BUSINESS_LOCATION);
         BasePage.clickWithJavaScript(staffPage.locationDropdown);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(location));
+        BasePage.clickWithJavaScript(staffPage.getDropdownOptionXpath(location));
 
         //select a worker type
         String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers, "WorkerType");
         BasePage.clickWithJavaScript(staffPage.workerTypeDropdown);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(workerType));
+        BasePage.clickWithJavaScript(staffPage.getDropdownOptionXpath(workerType));
 
         String noOfWorkers = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers, "NoOfWorkers");
         BasePage.clearAndEnterTexts(staffPage.numberOfWorkers, noOfWorkers);
@@ -209,6 +203,7 @@ public class AgencyStaffActions {
         BasePage.clearAndEnterTexts(staffPage.minChargeHourlyRate, minChargeHourlyRate);
 
         String employeeType = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers, "EmployeeType");
+        assert employeeType != null;
         if (employeeType.equalsIgnoreCase("Paye")) {
             BasePage.clickWithJavaScript((staffPage.employeeType.get(0)));
         } else {
@@ -231,13 +226,13 @@ public class AgencyStaffActions {
         // Deselect skills that are not in the desired list
         for (String skill : selectedSkills) {
             if (!desiredSkills.contains(skill)) {
-                BasePage.clickWithJavaScript(getWorkerSkillXpath(skill));
+                BasePage.clickWithJavaScript(staffPage.getWorkerSkillXpath(skill));
             }
         }
         // Select skills that are in the desired list but not currently selected
         for (String skill : desiredSkills) {
             if (!selectedSkills.contains(skill)) {
-                BasePage.clickWithJavaScript(getWorkerSkillXpath(skill));
+                BasePage.clickWithJavaScript(staffPage.getWorkerSkillXpath(skill));
             }
         }
     }

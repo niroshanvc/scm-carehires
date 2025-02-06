@@ -643,6 +643,7 @@ public class ViewAgreementOverviewActions {
     private void enterSkills() {
         String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
                 YML_HEADER_WORKER_RATES, YML_HEADER_NORMAL_RATE, "Skills")).split(",");
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.skillsDropdown);
         By locator = By.xpath(viewAgreementOverviewPage.getDropdownOptionXpath(skills[0]));
         BasePage.waitUntilPresenceOfElementLocated(locator, 20);
@@ -655,6 +656,7 @@ public class ViewAgreementOverviewActions {
         String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
                 header, YML_HEADER_NORMAL_RATE, "Worker Type");
         BasePage.waitUntilElementDisplayed(viewAgreementOverviewPage.workerTypeDropdown, 30);
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(viewAgreementOverviewPage.workerTypeDropdown);
         By by = By.xpath(viewAgreementOverviewPage.getDropdownOptionXpath(workerType));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);

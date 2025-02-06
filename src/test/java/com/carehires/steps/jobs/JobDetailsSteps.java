@@ -11,4 +11,19 @@ public class JobDetailsSteps {
     public void enterJobDetails() {
         jobDetailsActions.enterJobDetails();
     }
+
+    @And("User enters Job Details with Breaks")
+    public void enterJobDetailsWithBreaks() {
+        jobDetailsActions.enterJobDetailsWithBreaks();
+    }
+
+    @And("User enters data to Job Details")
+    public void enteringJobDetails() {
+        jobDetailsActions.enterJobDetailsInData();
+    }
+
+    @And("User edits the Job Details")
+    public void editJobDetails() {
+        jobDetailsActions.editInfo();
+    }
 }

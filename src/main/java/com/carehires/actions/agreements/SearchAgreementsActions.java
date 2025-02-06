@@ -35,34 +35,37 @@ public class SearchAgreementsActions {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(searchAgreementsPage.advanceFiltersLink);
         BasePage.waitUntilElementPresent(searchAgreementsPage.filterByProviderDropdown, 60);
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(searchAgreementsPage.filterByProviderDropdown);
         String provider = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE, YML_HEADER_CREATE, "Care Provider");
-        By by = By.xpath(getDropdownOptionXpath(provider));
+        By by = By.xpath(searchAgreementsPage.getDropdownOptionXpath(provider));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
-        BasePage.scrollToWebElement(getDropdownOptionXpath(provider));
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(provider));
+        BasePage.scrollToWebElement(searchAgreementsPage.getDropdownOptionXpath(provider));
+        BasePage.clickWithJavaScript(searchAgreementsPage.getDropdownOptionXpath(provider));
 
         BasePage.genericWait(500);
         String careHome = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE, YML_HEADER_CREATE, "Site");
         BasePage.clickWithJavaScript(searchAgreementsPage.filterByCarehomeDropdown);
-        by = By.xpath(getDropdownOptionXpath(careHome));
+        by = By.xpath(searchAgreementsPage.getDropdownOptionXpath(careHome));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
-        BasePage.scrollToWebElement(getDropdownOptionXpath(careHome));
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(careHome));
+        BasePage.scrollToWebElement(searchAgreementsPage.getDropdownOptionXpath(careHome));
+        BasePage.clickWithJavaScript(searchAgreementsPage.getDropdownOptionXpath(careHome));
 
         String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE, YML_HEADER_CREATE, "Agency");
+        BasePage.genericWait(2000);
         BasePage.clickWithJavaScript(searchAgreementsPage.filterByAgencyDropdown);
-        by = By.xpath(getDropdownOptionXpath(agency));
+        by = By.xpath(searchAgreementsPage.getDropdownOptionXpath(agency));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
-        BasePage.scrollToWebElement(getDropdownOptionXpath(agency));
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(agency));
+        BasePage.scrollToWebElement(searchAgreementsPage.getDropdownOptionXpath(agency));
+        BasePage.clickWithJavaScript(searchAgreementsPage.getDropdownOptionXpath(agency));
 
         String agencyLocation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE, YML_HEADER_CREATE, "Agency Location");
+        BasePage.genericWait(2000);
         BasePage.clickWithJavaScript(searchAgreementsPage.filterByAgencyLocationDropdown);
-        by = By.xpath(getDropdownOptionXpath(agencyLocation));
+        by = By.xpath(searchAgreementsPage.getDropdownOptionXpath(agencyLocation));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
-        BasePage.scrollToWebElement(getDropdownOptionXpath(agencyLocation));
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(agencyLocation));
+        BasePage.scrollToWebElement(searchAgreementsPage.getDropdownOptionXpath(agencyLocation));
+        BasePage.clickWithJavaScript(searchAgreementsPage.getDropdownOptionXpath(agencyLocation));
         BasePage.genericWait(2000);
         BasePage.clickWithJavaScript(searchAgreementsPage.applyButton);
 
@@ -75,9 +78,5 @@ public class SearchAgreementsActions {
         assertThat("Not displaying the correct agreement!", actual, is(agency));
 
         BasePage.clickWithJavaScript(searchAgreementsPage.firstSearchedResult);
-    }
-
-    private String getDropdownOptionXpath(String option) {
-        return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 }

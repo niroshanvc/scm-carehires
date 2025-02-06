@@ -9,13 +9,16 @@ executors:
 parameters:
   browser:
     type: string
-    default: "chrome"
+    default: "Chrome"
   feature_tag:
     type: string
     default: "@smoke"
   environment:
     type: string
     default: "dev"
+  email:
+    type: string
+    default: "niroshan.desilva@carehires.com"
 
 jobs:
   test:
@@ -30,6 +33,9 @@ jobs:
       environment:
         type: string
         default: "<< parameters.environment >>"
+      email:
+        type: string
+        default: "<< parameters.email >>"
     steps:
       - checkout
       - run:
@@ -49,6 +55,24 @@ jobs:
           name: Run Tests
           command: |
             mvn clean test -Dbrowser=<< parameters.browser >> -Dcucumber.options="--tags << parameters.feature_tag >>" -Denvironment=<< parameters.environment >>
+      - run:
+          name: Send Email
+          command: |
+            curl -X POST \
+              https://api.sendgrid.com/v3/mail/send \
+              -H "Authorization: Bearer $SENDGRID_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "personalizations": [{
+                  "to": [{"email": "<< parameters.email >>"}],
+                  "subject": "Test Execution Report"
+                }],
+                "from": {"email": "no-reply@example.com"},
+                "content": [{
+                  "type": "text/plain",
+                  "value": "The test execution report is attached."
+                }]
+                    }'
 
 workflows:
   version: 2
@@ -58,3 +82,4 @@ workflows:
           browser: << pipeline.parameters.browser >>
           feature_tag: << pipeline.parameters.feature_tag >>
           environment: << pipeline.parameters.environment >>
+          email: << pipeline.parameters.email >>

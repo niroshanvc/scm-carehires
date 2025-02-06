@@ -74,8 +74,7 @@ public class WorkerBasicInformationActions {
         // Retrieve the current increment value for the worker (from the file)
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
 
-        BasePage.clickWithJavaScript(basicInfo.firstName);
-
+        BasePage.genericWait(2000);
         enterAgencyInformation(YML_FILE, ADD);
         enterPersonalInformation(YML_FILE, ADD);
         enterResidentialAddressInformation(YML_FILE, ADD);
@@ -122,13 +121,13 @@ public class WorkerBasicInformationActions {
 
             String issuedCountry = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_5, subHeader, "IssuedCountry");
             BasePage.clickWithJavaScript(basicInfo.issuedCountryDropdown);
-            BasePage.waitUntilElementClickable(getDropdownOptionXpath(issuedCountry), 30);
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(issuedCountry));
+            BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(issuedCountry), 30);
+            BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(issuedCountry));
 
             String visaType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_5, subHeader, "VisaType");
             BasePage.clickWithJavaScript(basicInfo.visaTypeDropdown);
-            BasePage.waitUntilElementClickable(getDropdownOptionXpath(visaType), 30);
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(visaType));
+            BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(visaType), 30);
+            BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(visaType));
 
             // to view maximum weekly hours field
             BasePage.clickWithJavaScript(basicInfo.passportNumber);
@@ -207,16 +206,16 @@ public class WorkerBasicInformationActions {
 
     private void selectWorkerType(String workerType) {
         BasePage.clickWithJavaScript(basicInfo.workerTypeDropdown);
-        BasePage.waitUntilElementClickable(getWorkerTypeDropdownOptionXpath(workerType), 20);
-        BasePage.clickWithJavaScript(getWorkerTypeDropdownOptionXpath(workerType));
+        BasePage.waitUntilElementClickable(basicInfo.getWorkerTypeDropdownOptionXpath(workerType), 20);
+        BasePage.clickWithJavaScript(basicInfo.getWorkerTypeDropdownOptionXpath(workerType));
     }
 
     private void handleSkillsForAdd(String ymlFile) {
         String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_4, ADD, "Skills")).split(",");
         BasePage.clickWithJavaScript(basicInfo.workerSkillsDropdown);
-        BasePage.waitUntilElementClickable(getDropdownOptionXpath(skills[0]), 20);
+        BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(skills[0]), 20);
         for (String skill : skills) {
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(skill));
+            BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(skill));
         }
     }
 
@@ -238,9 +237,9 @@ public class WorkerBasicInformationActions {
     private void handleRegulatorySettingsForAdd(String ymlFile) {
         String[] settings = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_4, ADD, "RegulatorySettings")).split(",");
         BasePage.clickWithJavaScript(basicInfo.regulatorySettingsDropdown);
-        BasePage.waitUntilElementClickable(getDropdownOptionXpath(settings[0]), 20);
+        BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(settings[0]), 20);
         for (String setting : settings) {
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(setting));
+            BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(setting));
         }
     }
 
@@ -267,7 +266,7 @@ public class WorkerBasicInformationActions {
     private void deselectUnwantedOptions(List<String> alreadySelectedOptions, Set<String> desiredOptions) {
         for (String skill : alreadySelectedOptions) {
             if (!desiredOptions.contains(skill)) {
-                BasePage.clickWithJavaScript(getDropdownOptionXpath(skill));
+                BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(skill));
             }
         }
     }
@@ -275,7 +274,7 @@ public class WorkerBasicInformationActions {
     private void selectNewOptions(List<String> alreadySelectedOptions, Set<String> desiredOptions) {
         for (String option : desiredOptions) {
             if (!alreadySelectedOptions.contains(option)) {
-                BasePage.clickWithJavaScript(getDropdownOptionXpath(option));
+                BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(option));
             }
         }
     }
@@ -285,7 +284,7 @@ public class WorkerBasicInformationActions {
         expandSubSection(basicInfo.residentialAddressInformationHeader, basicInfo.residentialAddressInformationHeaderExpandIcon);
         String country = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_3, subHeader, "Country");
         BasePage.clickWithJavaScript(basicInfo.countryDropdown);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(country));
+        BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(country));
 
         //enter postcode and select a valid address
         String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_3, subHeader, "PostCode");
@@ -383,27 +382,24 @@ public class WorkerBasicInformationActions {
 
         nationality = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2, subHeader, "Nationality");
         BasePage.clickWithJavaScript(basicInfo.nationalityDropdown);
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(nationality));
+        BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(nationality));
     }
 
     private void enterAgencyInformation(String ymlFile, String subHeader) {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Agency Information >>>>>>>>>>>>>>>>>>>>");
         String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, "Agency Information", subHeader, "Agency");
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(basicInfo.agencyDropdown);
-        By by = By.xpath(getDropdownOptionXpath(agency));
-        BasePage.waitUntilVisibilityOfElementLocated(by, 20);
-        BasePage.scrollToWebElement(getDropdownOptionXpath(agency));
-        BasePage.clickWithJavaScript(getDropdownOptionXpath(agency));
+        By by = By.xpath(basicInfo.getDropdownOptionXpath(agency));
+        BasePage.waitUntilVisibilityOfElementLocated(by, 60);
+        BasePage.scrollToWebElement(basicInfo.getDropdownOptionXpath(agency));
+        BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(agency));
 
         BasePage.genericWait(2000);
         String agencyLocation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_AGENCY_FILE, "Agency Business Location", UPDATE, "BusinessLocation");
         BasePage.clickWithJavaScript(basicInfo.agencyLocationDropdown);
-        BasePage.waitUntilElementClickable(getDropdownOptionXpath(agencyLocation), 30);
+        BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(agencyLocation), 30);
         selectAllAgencyLocations();
-    }
-
-    private String getDropdownOptionXpath(String option) {
-        return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 
     private void waitUntilDocumentUploaded() {
@@ -412,10 +408,6 @@ public class WorkerBasicInformationActions {
         String expected = "Document is added";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Document uploaded success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
-    }
-
-    private String getWorkerTypeDropdownOptionXpath(String option) {
-        return String.format("//nb-option[text()='%s ']", option);
     }
 
     // method to select all the options available in the Agency Location multi select dropdown
@@ -493,7 +485,6 @@ public class WorkerBasicInformationActions {
         BasePage.genericWait(10000);
 
         BasePage.clickWithJavaScript(basicInfo.saveButton);
-        isBasicInfoSaved();
         // After successfully entering the basic information, update the increment value in the file
         DataConfigurationReader.storeNewIncrementValue(ENTITY);
         // Store the increment value in GlobalVariables for reuse in other steps
@@ -537,6 +528,7 @@ public class WorkerBasicInformationActions {
     // get auto generated worker id and save it on the memory
     private void getWorkerId() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Reading auto generated worker id >>>>>>>>>>>>>>>>>>>>");
+        BasePage.genericWait(6000);
         BasePage.waitUntilElementPresent(basicInfo.workerId, 90);
         String headerText = BasePage.getText(basicInfo.workerId).trim();
         String workerId = headerText.split("\n")[0];

@@ -13,4 +13,7 @@ public class JobSummaryPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    @FindBy(xpath = "//button[contains(text(), 'Edit')]")
+    public WebElement editIcon;
 }

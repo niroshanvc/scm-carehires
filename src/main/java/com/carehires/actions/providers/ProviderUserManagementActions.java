@@ -93,7 +93,7 @@ public class ProviderUserManagementActions {
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
         BasePage.genericWait(1000);
         for (String accessLevel : userAccessLevel) {
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(accessLevel));
+            BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(accessLevel));
         }
 
         BasePage.genericWait(10000);
@@ -106,10 +106,6 @@ public class ProviderUserManagementActions {
         BasePage.genericWait(5000);
         BasePage.waitUntilElementDisplayed(userManagement.nextButton, 60);
         BasePage.clickWithJavaScript(userManagement.nextButton);
-    }
-
-    private String getDropdownOptionXpath(String city) {
-        return String.format("//nb-option[contains(text(),'%s')]", city);
     }
 
     private void isUserAdded() {
@@ -164,7 +160,7 @@ public class ProviderUserManagementActions {
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
         BasePage.genericWait(1000);
         for (String accessLevel : userAccessLevel) {
-            BasePage.clickWithJavaScript(getDropdownOptionXpath(accessLevel));
+            BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(accessLevel));
         }
 
         BasePage.genericWait(10000);
@@ -201,13 +197,13 @@ public class ProviderUserManagementActions {
         // Deselect skills that are not in the desired list
         for (String level : selectedLevels) {
             if (!desiredLevels.contains(level)) {
-                BasePage.clickWithJavaScript(getDropdownOptionXpath(level));
+                BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(level));
             }
         }
         // Select skills that are in the desired list but not currently selected
         for (String level : desiredLevels) {
             if (!selectedLevels.contains(level)) {
-                BasePage.clickWithJavaScript(getDropdownOptionXpath(level));
+                BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(level));
             }
         }
     }

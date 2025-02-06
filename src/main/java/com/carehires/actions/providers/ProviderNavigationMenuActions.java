@@ -47,8 +47,14 @@ public class ProviderNavigationMenuActions {
 
     public void gotoBillingPage() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Moving to Billing page >>>>>>>>>>>>>>>>>>>>");
-        BasePage.mouseHoverOverElement(navigationMenuPage.billing);
+        BasePage.mouseHoverOverElement(navigationMenuPage.billingDiv);
         BasePage.clickWithJavaScript(navigationMenuPage.billingImage);
+    }
+
+    public void gotoBillingPageUsingCircleIcon() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Moving to Billing page Using Circle Icon Menu >>>>>>>>>>>>>>>>>>>>");
+        BasePage.mouseHoverOverElement(navigationMenuPage.billing);
+        BasePage.clickWithJavaScript(navigationMenuPage.billingIcon);
     }
 
     public void gotoAgreementPage() {

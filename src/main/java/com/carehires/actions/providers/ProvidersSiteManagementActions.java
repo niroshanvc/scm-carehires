@@ -82,6 +82,7 @@ public class ProvidersSiteManagementActions {
         }
         BasePage.clickWithJavaScript(siteManagementPage.alsoKnownAs);
 
+        BasePage.scrollToWebElement(siteManagementPage.addButton);
         BasePage.genericWait(10000);
         BasePage.clickWithJavaScript(siteManagementPage.addButton);
         verifySuccessMessage();

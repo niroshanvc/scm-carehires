@@ -65,14 +65,14 @@ Site Management:
 
 Worker Staff Management:
   Add:
-    WorkerType: Rehabilitation Worker
+    WorkerType: Care Assistant
     Skills: Elderly,Home Care,Moderate Learning Disabilities,Challenging Behaviours
     HourlyRate: 10
     MonthlyAgencyHours: 350
     ProofOfDemandDocument: Proof of demand document.pdf
   Update:
     WorkerType: Rehabilitation Worker
-    Skills: Elderly,Dementia,Home Care,NVQ L3,Driving
+    Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
     HourlyRate: 10.5
     MonthlyAgencyHours: 300
     ProofOfDemandDocument: Proof of demand document - updated.pdf
@@ -82,14 +82,14 @@ User:
     email: carehires+prouser{{increment}}@zohomail.com
     Name: Patrick Sams{{increment}}
     JobTitle: Assistant Executive
-    Phone: "07432301246"
+    Phone: "07700123456"
     MarkAsAnAuthoriser: "No"
     UserAccessLevel: Shift Admin (With rate),Site Admin
   Update:
     email: carehires+provuser{{increment}}@zohomail.com
     Name: Douglas Sams{{increment}}
     JobTitle: Assistant Engineer
-    Phone: "07435301344"
+    Phone: "07700123457"
     MarkAsAnAuthoriser: "Yes"
     UserAccessLevel: Org Admin
 

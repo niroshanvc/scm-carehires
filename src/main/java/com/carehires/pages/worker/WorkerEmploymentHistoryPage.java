@@ -115,4 +115,8 @@ public class WorkerEmploymentHistoryPage {
 
     @FindBy(xpath = "(//b[text()= 'Reference Type']/ancestor::div[@class='ch-table-new']//div[contains(@class, 'common-document')])[2]//nb-icon[@nbtooltip='Delete Details']")
     public WebElement referenceDeleteIcon1;
+
+    public String getDropdownOptionXpath(String city) {
+        return String.format("//nb-option[contains(text(),'%s')]", city);
+    }
 }

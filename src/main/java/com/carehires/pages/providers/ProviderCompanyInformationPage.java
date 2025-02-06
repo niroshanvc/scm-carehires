@@ -95,4 +95,8 @@ public class ProviderCompanyInformationPage {
     public WebElement updateProfileLink;
 
     public By updateProfileLinkChildElement = By.xpath("//div[contains(@class, 'side')]/ul[@class='expanded-nav']/li[1]");
+
+    public String getDropdownOptionXpath(String option) {
+        return String.format("//nb-option[contains(text(),'%s')]", option);
+    }
 }

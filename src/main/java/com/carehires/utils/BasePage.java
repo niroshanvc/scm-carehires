@@ -262,10 +262,12 @@ public class BasePage {
         JavascriptExecutor js = null;
         try {
             js = (JavascriptExecutor) getDriver();
+            js.executeScript(JAVASCRIPT_CLICK, ele);
+            logger.info("JavaScript click executed successfully on {}", ele);
         } catch (WebDriverInitializationException e) {
+            logger.error("JavaScript click failed on element: {}", ele, e);
             throw new RuntimeException(e);
         }
-        js.executeScript(JAVASCRIPT_CLICK, ele);
     }
 
     public static List<WebElement> findListOfWebElements(String xpath) {

@@ -61,16 +61,16 @@ Agency Business Location:
 
 Staff:
   Add:
-    WorkerType: Occupational Therapist
+    WorkerType: Care Assistant
     NoOfWorkers: 20
-    WorkerSkills: NVQ L3,Physical Disabilities,Home Care,Mental Health Disabilities
+    WorkerSkills: NVQ L3,Elderly,Dementia,Home Care,Care Certificate
     MonthlyHoursAvailable: 200
     MinChargeHourlyRate: 10
     EmployeeType: PSC
   Update:
-    WorkerType: Occupational Therapist
+    WorkerType: Rehabilitation Worker
     NoOfWorkers: 30
-    WorkerSkills: NVQ L3,Challenging Behaviours,Driving
+    WorkerSkills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
     MonthlyHoursAvailable: 180
     MinChargeHourlyRate: 10
     EmployeeType: PAYE

@@ -41,6 +41,7 @@ public class SleepInRatesActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Sleep in Rates Info >>>>>>>>>>>>>>>>>>>>");
 
         workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Worker Type");
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(sleepInRatesPage.workerTypeDropdown);
         By by = By.xpath(sleepInRatesPage.getDropdownOptionXpath(workerType));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);

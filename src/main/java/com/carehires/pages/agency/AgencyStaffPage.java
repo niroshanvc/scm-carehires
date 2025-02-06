@@ -51,4 +51,12 @@ public class AgencyStaffPage {
 
     @FindBy(xpath = "//nb-option[contains(@class,'multiple') and (contains(@class, 'selected'))]")
     public List<WebElement> alreadySelectedWorkerSkills;
+
+    public String getDropdownOptionXpath(String city) {
+        return String.format("//nb-option[contains(text(),'%s')]", city);
+    }
+
+    public String getWorkerSkillXpath(String skill) {
+        return String.format("//nb-option[contains(@class,'multiple') and (contains(text(), '%s'))]", skill);
+    }
 }

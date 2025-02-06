@@ -59,7 +59,7 @@ public class JobDetailsPage {
     public WebElement enableRecurrence;
 
     @FindBy(xpath = "//nb-select[@id='type-name']/button")
-    public WebElement repeatType;
+    public WebElement repeatTypeDropdown;
 
     @FindBy(id = "ends-on")
     public WebElement endsOn;
@@ -69,6 +69,24 @@ public class JobDetailsPage {
 
     @FindBy(id = "paidDuration")
     public WebElement paidBreaksDuration;
+
+    @FindBy(xpath = "//div[@class='picker-body']")
+    public WebElement paidBreaksDurationAreaList;
+
+    @FindBy(xpath = "//div[@class='picker-body']")
+    public WebElement unpaidBreaksDurationAreaList;
+
+    @FindBy(xpath = "//nb-card[contains(@class,'timepicker')]/div/nb-list//nb-timepicker-cell/div")
+    public List<WebElement> availablePaidBreaksDurations;
+
+    @FindBy(xpath = "//nb-card[contains(@class,'timepicker')]/div/nb-list//nb-timepicker-cell/div")
+    public List<WebElement> availableUnpaidBreaksDurations;
+
+    @FindBy(xpath = "//nb-calendar-actions/button[contains(@class, 'filled')]")
+    public WebElement paidBreaksDurationOkButton;
+
+    @FindBy(xpath = "//nb-calendar-actions/button[contains(@class, 'filled')]")
+    public WebElement unpaidBreaksDurationOkButton;
 
     @FindBy(id = "unpaidDuration")
     public WebElement unpaidBreaksDuration;
@@ -81,4 +99,11 @@ public class JobDetailsPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Continue')]")
     public WebElement continueButton;
+
+    public String getDropdownOptionXpath(String option) {
+        return String.format("//nb-option[contains(text(),'%s')]", option);
+    }
+
+    @FindBy(xpath = "//nb-card[@class='confirm-card']//button")
+    public WebElement pendingActionPopupYesButton;
 }

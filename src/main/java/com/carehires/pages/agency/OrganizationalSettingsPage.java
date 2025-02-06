@@ -28,4 +28,8 @@ public class OrganizationalSettingsPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    public String getDropdownOptionXpath(String city) {
+        return String.format("//nb-option[contains(text(),'%s')]", city);
+    }
 }

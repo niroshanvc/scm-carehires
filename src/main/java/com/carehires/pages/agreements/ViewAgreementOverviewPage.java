@@ -170,7 +170,7 @@ public class ViewAgreementOverviewPage {
     @FindBy(xpath = "//button[contains(text(), 'Deactivate')]")
     public WebElement deactivateButton;
 
-    @FindBy(xpath = "//ch-agreement-deactivate-modal//button[text()='Deactivate']")
+        @FindBy(xpath = "//ch-agreement-deactivate-modal//button")
     public WebElement deactivateButtonInDeactivateConfirmPopup;
 
     @FindBy(xpath = "//button[contains(text(), 'Activate Agreement')]")
