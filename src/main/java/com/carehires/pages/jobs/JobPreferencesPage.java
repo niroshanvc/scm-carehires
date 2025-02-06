@@ -13,6 +13,9 @@ public class JobPreferencesPage {
     @FindBy(xpath = "//div[@class='skill-container']//button")
     public List<WebElement> preferredSkills;
 
+    @FindBy(xpath = "//div[@class='skill-container']//button[@aria-pressed='true']")
+    public List<WebElement> selectedSkills;
+
     @FindBy(xpath = "//nb-toggle[@formcontrolname='enabledBlockBooking']//input")
     public WebElement enableBlockBookingToggle;
 
@@ -27,6 +30,9 @@ public class JobPreferencesPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Add worker')]")
     public WebElement addWorkerButton;
+
+    @FindBy(xpath = "//table//img[@nbtooltip='Remove Worker']")
+    public WebElement removeWorkerIcon;
 
     @FindBy(xpath = "//textarea[@formcontrolname='notes']")
     public WebElement notes;

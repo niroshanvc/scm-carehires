@@ -103,4 +103,7 @@ public class JobDetailsPage {
     public String getDropdownOptionXpath(String option) {
         return String.format("//nb-option[contains(text(),'%s')]", option);
     }
+
+    @FindBy(xpath = "//nb-card[@class='confirm-card']//button")
+    public WebElement pendingActionPopupYesButton;
 }

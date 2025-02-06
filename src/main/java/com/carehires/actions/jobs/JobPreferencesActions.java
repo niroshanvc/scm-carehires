@@ -9,15 +9,21 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class JobPreferencesActions {
 
     private final JobPreferencesPage jobPreferencesPage;
     private static final String ENTITY = "job";
     private static final String YML_FILE = "job-create";
+    private static final String YML_FILE_WITH_BREAKS = "job-create-with-breaks";
+    private static final String YML_FILE_EDIT = "job-post-edit";
     private static final String YML_HEADER = "Job Preferences";
+    private static final String YML_HEADER_EDIT = "Edit Job Preferences";
 
     private static final Logger logger = LogManager.getLogger(JobPreferencesActions.class);
 
@@ -33,55 +39,153 @@ public class JobPreferencesActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Preferences >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
 
-        String gender = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Gender");
-        BasePage.clickWithJavaScript(jobPreferencesPage.genderDropdown);
-        By by = By.xpath(jobPreferencesPage.getDropdownOptionXpath(gender));
-        BasePage.waitUntilVisibilityOfElementLocated(by, 30);
-        BasePage.scrollToWebElement(jobPreferencesPage.getDropdownOptionXpath(gender));
-        BasePage.clickWithJavaScript(jobPreferencesPage.getDropdownOptionXpath(gender));
+        selectGender(YML_FILE, YML_HEADER);
+        selectPreferences(YML_FILE, YML_HEADER);
+        enableDisableBlockBooking(YML_FILE, YML_HEADER);
+        enterJobNotes(YML_FILE, YML_HEADER);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
 
-        String[] preferredSkills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,
-                YML_HEADER, "Preferred Skills")).split(",");
+    private void enterJobNotes(String ymlFile, String header) {
+        String jobNotes = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Job Notes");
+        BasePage.clearAndEnterTexts(jobPreferencesPage.notes, jobNotes);
+    }
 
-        BasePage.genericWait(3000);
-        for (String skill : preferredSkills) {
-            // Refresh the WebElement list to avoid stale references
-            List<WebElement> availableSkills = jobPreferencesPage.preferredSkills;
-            for (WebElement el : availableSkills) {
-                if (BasePage.getText(el).equalsIgnoreCase(skill)) {
-                    BasePage.clickWithJavaScript(el);
-                    break;
-                }
-            }
-        }
-
-        String enableBlockBooking = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Enable Block Booking");
+    private void enableDisableBlockBooking(String ymlFile, String header) {
+        String enableBlockBooking = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Enable Block Booking");
         assert enableBlockBooking != null;
         if (enableBlockBooking.equalsIgnoreCase("yes")) {
             String currentAttr = BasePage.getAttributeValue(jobPreferencesPage.enableBlockBookingToggle, "aria-checked");
             boolean shouldEnable = enableBlockBooking.equalsIgnoreCase("yes");
-            boolean isCurrentlyEnabled = currentAttr.equalsIgnoreCase("false");
+            boolean isCurrentlyEnabled = currentAttr.equalsIgnoreCase("true");
 
             if (shouldEnable != isCurrentlyEnabled) {
+                BasePage.scrollToWebElement(jobPreferencesPage.continueButton);
                 BasePage.clickWithJavaScript(jobPreferencesPage.enableBlockBookingToggle);
-                String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Agency");
+                BasePage.genericWait(1000);
+                String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Agency");
                 BasePage.waitUntilElementPresent(jobPreferencesPage.agencyDropdown, 60);
-                by = By.xpath(jobPreferencesPage.getDropdownOptionXpath(agency));
+                BasePage.clickWithJavaScript(jobPreferencesPage.agencyDropdown);
+                By by = By.xpath(jobPreferencesPage.getDropdownOptionXpath(agency));
                 BasePage.waitUntilVisibilityOfElementLocated(by, 30);
                 BasePage.scrollToWebElement(jobPreferencesPage.getDropdownOptionXpath(agency));
                 BasePage.clickWithJavaScript(jobPreferencesPage.getDropdownOptionXpath(agency));
 
                 BasePage.clickWithJavaScript(jobPreferencesPage.nameInput);
+                BasePage.genericWait(2000);
                 BasePage.waitUntilElementPresent(jobPreferencesPage.workersList.get(0), 30);
                 BasePage.clickWithJavaScript(jobPreferencesPage.workersList.get(0));
 
                 BasePage.waitUntilElementClickable(jobPreferencesPage.addWorkerButton, 60);
                 BasePage.clickWithJavaScript(jobPreferencesPage.addWorkerButton);
+                BasePage.waitUntilElementClickable(jobPreferencesPage.removeWorkerIcon, 60);
             }
         }
-        String jobNotes = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Job Notes");
-        BasePage.clearAndEnterTexts(jobPreferencesPage.notes, jobNotes);
+    }
 
+    private void selectPreferences(String ymlFile, String header) {
+        String[] preferredSkills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
+                header, "Preferred Skills")).split(",");
+
+        // Trim spaces and convert to a Set for easy comparison
+        Set<String> newPreferredSkills = Arrays.stream(preferredSkills)
+                .map(String::trim)
+                .collect(Collectors.toSet());
+
+        logger.info("Preferred Skills: {}", newPreferredSkills);
+
+        BasePage.genericWait(3000);
+
+        // Get currently selected skills
+        Set<String> currentlySelectedSkills = new HashSet<>();
+        for (WebElement selectedSkills : jobPreferencesPage.selectedSkills) {
+            currentlySelectedSkills.add(BasePage.getText(selectedSkills).trim());
+        }
+        logger.info("Currently Selected Skills: {}", currentlySelectedSkills);
+
+        // Identify skills to deselect (present but not needed anymore)
+        Set<String> skillsToDeselect = new HashSet<>(currentlySelectedSkills);
+        skillsToDeselect.removeAll(newPreferredSkills);
+        logger.info("Skills to Deselect: {}", skillsToDeselect);
+
+        // Identify skills to select (new ones not yet selected)
+        Set<String> skillsToSelect = new HashSet<>(newPreferredSkills);
+        skillsToSelect.removeAll(currentlySelectedSkills);
+        logger.info("Skills to Select: {}", skillsToSelect);
+
+        // Deselect skills
+        for (WebElement selectedSkills : jobPreferencesPage.selectedSkills) {
+            String skillName = BasePage.getText(selectedSkills).trim();
+            if (skillsToDeselect.contains(skillName)) {
+                BasePage.clickWithJavaScript(selectedSkills); // click to deselect
+                logger.info("Deselected: {}", skillName);
+            }
+        }
+
+        // Select new skills
+        for (String skillToSelect : skillsToSelect) {
+            for (WebElement availableSkill : jobPreferencesPage.preferredSkills) {
+                String skillText = BasePage.getText(availableSkill).trim();
+                if (skillText.equals(skillToSelect)) {
+                    // Scroll to the element and click
+                    BasePage.scrollToWebElement(availableSkill);
+                    BasePage.waitUntilElementDisplayed(availableSkill, 30);
+                    BasePage.clickWithJavaScript(availableSkill);
+                    logger.info("Selected: {}", skillText);
+                    break;
+                }
+            }
+        }
+
+        // Verify final selections
+        BasePage.genericWait(2000); // Wait for selections to complete
+        Set<String> finalSelectedSkills = new HashSet<>();
+        for (WebElement selectedSkills : jobPreferencesPage.selectedSkills) {
+            finalSelectedSkills.add(BasePage.getText(selectedSkills).trim());
+        }
+        logger.info("Final Selected Skills: {}", finalSelectedSkills);
+
+        if (!finalSelectedSkills.equals(newPreferredSkills)) {
+            throw new IllegalStateException("Mismatch in skills selection. Expected: " + newPreferredSkills + ", but found: " + finalSelectedSkills);
+        }
+    }
+
+    private void selectGender(String ymlFile, String header) {
+        String gender = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Gender");
+        BasePage.clickWithJavaScript(jobPreferencesPage.genderDropdown);
+        By by = By.xpath(jobPreferencesPage.getDropdownOptionXpath(gender));
+        BasePage.waitUntilVisibilityOfElementLocated(by, 30);
+        BasePage.scrollToWebElement(jobPreferencesPage.getDropdownOptionXpath(gender));
+        BasePage.clickWithJavaScript(jobPreferencesPage.getDropdownOptionXpath(gender));
+    }
+
+    public void enterJobPreferencesAndEnablingBlockBooking() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Preferences and Enable Block Booking >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_WITH_BREAKS, YML_HEADER);
+        selectPreferences(YML_FILE_WITH_BREAKS, YML_HEADER);
+        enableDisableBlockBooking(YML_FILE_WITH_BREAKS, YML_HEADER);
+        enterJobNotes(YML_FILE_WITH_BREAKS, YML_HEADER);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void enterJobPreferencesData() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Preferences Data to test Edit Job Posting >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_EDIT, YML_HEADER);
+        selectPreferences(YML_FILE_EDIT, YML_HEADER);
+        enableDisableBlockBooking(YML_FILE_EDIT, YML_HEADER);
+        enterJobNotes(YML_FILE_EDIT, YML_HEADER);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void editPreferences() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Edit Job Preferences >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_EDIT, YML_HEADER_EDIT);
+        selectPreferences(YML_FILE_EDIT, YML_HEADER_EDIT);
+        enableDisableBlockBooking(YML_FILE_EDIT, YML_HEADER_EDIT);
+        enterJobNotes(YML_FILE_EDIT, YML_HEADER_EDIT);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
     }
 }

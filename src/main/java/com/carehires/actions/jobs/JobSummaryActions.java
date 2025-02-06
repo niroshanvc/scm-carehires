@@ -43,4 +43,11 @@ public class JobSummaryActions {
         assertThat("Job post did not work!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(jobSummaryPage.successMessage, 60);
     }
+
+    public void clickOnEditButton() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on Job Posting Edit icon >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementClickable(jobSummaryPage.editIcon, 30);
+        BasePage.clickWithJavaScript(jobSummaryPage.editIcon);
+    }
 }

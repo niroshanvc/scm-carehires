@@ -19,5 +19,5 @@ Feature: Test CareHires create job
     When User navigates to Jobs page
     And User moves to Post Job page
     And User enters Job Details with Breaks
-    And User enters Job Preferences
+    And User enters Job Preferences and enabling block booking
     And User enters Job Summary
