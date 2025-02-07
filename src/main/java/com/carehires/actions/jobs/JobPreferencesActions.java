@@ -144,8 +144,8 @@ public class JobPreferencesActions {
     private void selectNewSkills(Set<String> skillsToSelect) {
         for (String skillToSelect : skillsToSelect) {
             boolean skillFound = false;
+            BasePage.genericWait(3000);
             for (WebElement availableSkill : jobPreferencesPage.preferredSkills) {
-                BasePage.genericWait(3000);
                 String skillText = BasePage.getText(availableSkill).trim().toLowerCase(); // Convert to lowercase
                 logger.info("Checking available skill: {}", skillText);
                 if (skillText.equals(skillToSelect)) {
