@@ -11,7 +11,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,7 +40,7 @@ public class JobPreferencesActions {
         BasePage.waitUntilPageCompletelyLoaded();
 
         selectGender(YML_FILE, YML_HEADER);
-        selectPreferences(YML_FILE, YML_HEADER);
+        selectPreferences(YML_FILE, YML_HEADER, false);
         enableDisableBlockBooking(YML_FILE, YML_HEADER);
         enterJobNotes(YML_FILE, YML_HEADER);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
@@ -84,31 +83,97 @@ public class JobPreferencesActions {
         }
     }
 
-    private void selectPreferences(String ymlFile, String header) {
+    private void selectPreferences(String ymlFile, String header, boolean isEditMode) {
+        Set<String> newPreferredSkills = getPreferredSkillsFromYml(ymlFile, header);
+        Set<String> currentlySelectedSkills = getCurrentlySelectedSkills();
+
+        Set<String> skillsToDeselect = getSkillsToDeselect(currentlySelectedSkills, newPreferredSkills);
+        Set<String> skillsToSelect = getSkillsToSelect(currentlySelectedSkills, newPreferredSkills);
+
+        if (isEditMode) {
+            deselectSkills(skillsToDeselect);
+        }
+
+        selectNewSkills(skillsToSelect);
+
+        verifyFinalSelections(newPreferredSkills);
+    }
+
+    private Set<String> getPreferredSkillsFromYml(String ymlFile, String header) {
         String[] preferredSkills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
                 header, "Preferred Skills")).split(",");
-
-        // Trim spaces and convert to a Set for easy comparison
-        Set<String> newPreferredSkills = Arrays.stream(preferredSkills)
+        return Arrays.stream(preferredSkills)
                 .map(String::trim)
+                .map(String::toLowerCase) // Convert to lowercase for case-insensitive comparison
                 .collect(Collectors.toSet());
+    }
 
-        BasePage.genericWait(3000);
-
-        // Get currently selected skills
+    private Set<String> getCurrentlySelectedSkills() {
         Set<String> currentlySelectedSkills = new HashSet<>();
-        /*for (WebElement selectedSkills : jobPreferencesPage.selectedSkills) {
+        for (WebElement selectedSkills : jobPreferencesPage.selectedSkills) {
+            currentlySelectedSkills.add(BasePage.getText(selectedSkills).trim().toLowerCase()); // Convert to lowercase
+        }
+        logger.info("Currently Selected Skills: {}", currentlySelectedSkills);
+        return currentlySelectedSkills;
+    }
 
-        }*/
-        for (String skill : preferredSkills) {
-            // Refresh the WebElement list to avoid stale references
-            List<WebElement> availableSkills = jobPreferencesPage.preferredSkills;
-            for (WebElement el : availableSkills) {
-                if (BasePage.getText(el).equalsIgnoreCase(skill)) {
-                    BasePage.clickWithJavaScript(el);
+    private Set<String> getSkillsToDeselect(Set<String> currentlySelectedSkills, Set<String> newPreferredSkills) {
+        Set<String> skillsToDeselect = new HashSet<>(currentlySelectedSkills);
+        skillsToDeselect.removeAll(newPreferredSkills);
+        logger.info("Skills to Deselect: {}", skillsToDeselect);
+        return skillsToDeselect;
+    }
+
+    private Set<String> getSkillsToSelect(Set<String> currentlySelectedSkills, Set<String> newPreferredSkills) {
+        Set<String> skillsToSelect = new HashSet<>(newPreferredSkills);
+        skillsToSelect.removeAll(currentlySelectedSkills);
+        logger.info("Skills to Select: {}", skillsToSelect);
+        return skillsToSelect;
+    }
+
+    private void deselectSkills(Set<String> skillsToDeselect) {
+        for (WebElement selectedSkills : jobPreferencesPage.selectedSkills) {
+            String skillName = BasePage.getText(selectedSkills).trim().toLowerCase(); // Convert to lowercase
+            if (skillsToDeselect.contains(skillName)) {
+                BasePage.clickWithJavaScript(selectedSkills); // click to deselect
+                logger.info("Deselected: {}", skillName);
+            }
+        }
+    }
+
+    private void selectNewSkills(Set<String> skillsToSelect) {
+        for (String skillToSelect : skillsToSelect) {
+            boolean skillFound = false;
+            for (WebElement availableSkill : jobPreferencesPage.preferredSkills) {
+                BasePage.genericWait(3000);
+                String skillText = BasePage.getText(availableSkill).trim().toLowerCase(); // Convert to lowercase
+                logger.info("Checking available skill: {}", skillText);
+                if (skillText.equals(skillToSelect)) {
+                    // Scroll to the element and click
+                    BasePage.scrollToWebElement(availableSkill);
+                    BasePage.waitUntilElementDisplayed(availableSkill, 30);
+                    BasePage.clickWithJavaScript(availableSkill);
+                    logger.info("Selected: {}", skillText);
+                    skillFound = true;
                     break;
                 }
             }
+            if (!skillFound) {
+                logger.warn("Skill not found: {}", skillToSelect);
+            }
+        }
+    }
+
+    private void verifyFinalSelections(Set<String> newPreferredSkills) {
+        BasePage.genericWait(2000); // Wait for selections to complete
+        Set<String> finalSelectedSkills = new HashSet<>();
+        for (WebElement selectedSkills : jobPreferencesPage.selectedSkills) {
+            finalSelectedSkills.add(BasePage.getText(selectedSkills).trim().toLowerCase()); // Convert to lowercase
+        }
+        logger.info("Final Selected Skills: {}", finalSelectedSkills);
+
+        if (!finalSelectedSkills.equals(newPreferredSkills)) {
+            throw new IllegalStateException("Mismatch in skills selection. Expected: " + newPreferredSkills + ", but found: " + finalSelectedSkills);
         }
     }
 
@@ -125,7 +190,7 @@ public class JobPreferencesActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Preferences and Enable Block Booking >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         selectGender(YML_FILE_WITH_BREAKS, YML_HEADER);
-        selectPreferences(YML_FILE_WITH_BREAKS, YML_HEADER);
+        selectPreferences(YML_FILE_WITH_BREAKS, YML_HEADER, false);
         enableDisableBlockBooking(YML_FILE_WITH_BREAKS, YML_HEADER);
         enterJobNotes(YML_FILE_WITH_BREAKS, YML_HEADER);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
@@ -135,7 +200,7 @@ public class JobPreferencesActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Preferences Data to test Edit Job Posting >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         selectGender(YML_FILE_EDIT, YML_HEADER);
-        selectPreferences(YML_FILE_EDIT, YML_HEADER);
+        selectPreferences(YML_FILE_EDIT, YML_HEADER, false);
         enableDisableBlockBooking(YML_FILE_EDIT, YML_HEADER);
         enterJobNotes(YML_FILE_EDIT, YML_HEADER);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
@@ -145,7 +210,7 @@ public class JobPreferencesActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Edit Job Preferences >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         selectGender(YML_FILE_EDIT, YML_HEADER_EDIT);
-        selectPreferences(YML_FILE_EDIT, YML_HEADER_EDIT);
+        selectPreferences(YML_FILE_EDIT, YML_HEADER_EDIT, true);
         enableDisableBlockBooking(YML_FILE_EDIT, YML_HEADER_EDIT);
         enterJobNotes(YML_FILE_EDIT, YML_HEADER_EDIT);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);

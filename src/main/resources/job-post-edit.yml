@@ -22,7 +22,7 @@ Job Details:
 
 Job Preferences:
   Gender: Male
-  Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+  Preferred Skills: Dementia,Autism,NVQ L2,Leadership,Driving
   Enable Block Booking: "Yes"
   Agency: Automation Agency 336
   Job Notes: "Job notes will be visible to everyone, including agency users and workers."
@@ -51,7 +51,7 @@ Edit Job Details:
 
 Edit Job Preferences:
   Gender: Female
-  Preferred Skills: NVQ L3
+  Preferred Skills: NVQ L3,Autism
   Enable Block Booking: "No"
   Agency: Automation Agency 336
   Job Notes: "Edit job preferences note entered."
