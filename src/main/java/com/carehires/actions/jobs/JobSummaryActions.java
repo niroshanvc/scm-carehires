@@ -48,6 +48,7 @@ public class JobSummaryActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on Job Posting Edit icon >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementClickable(jobSummaryPage.editIcon, 30);
+        BasePage.scrollToWebElement(jobSummaryPage.editIcon);
         BasePage.clickWithJavaScript(jobSummaryPage.editIcon);
     }
 }
