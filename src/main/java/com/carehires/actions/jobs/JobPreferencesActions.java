@@ -54,15 +54,16 @@ public class JobPreferencesActions {
     private void enableDisableBlockBooking(String ymlFile, String header) {
         String enableBlockBooking = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Enable Block Booking");
         assert enableBlockBooking != null;
-        if (enableBlockBooking.equalsIgnoreCase("yes")) {
-            String currentAttr = BasePage.getAttributeValue(jobPreferencesPage.enableBlockBookingToggle, "aria-checked");
-            boolean shouldEnable = enableBlockBooking.equalsIgnoreCase("yes");
-            boolean isCurrentlyEnabled = currentAttr.equalsIgnoreCase("true");
+        String currentAttr = BasePage.getAttributeValue(jobPreferencesPage.enableBlockBookingToggle, "aria-checked");
+        boolean shouldEnable = enableBlockBooking.equalsIgnoreCase("yes");
+        boolean isCurrentlyEnabled = currentAttr.equalsIgnoreCase("true");
 
-            if (shouldEnable != isCurrentlyEnabled) {
-                BasePage.scrollToWebElement(jobPreferencesPage.continueButton);
-                BasePage.clickWithJavaScript(jobPreferencesPage.enableBlockBookingToggle);
-                BasePage.genericWait(1000);
+        if (shouldEnable != isCurrentlyEnabled) {
+            BasePage.scrollToWebElement(jobPreferencesPage.continueButton);
+            BasePage.clickWithJavaScript(jobPreferencesPage.enableBlockBookingToggle);
+            BasePage.genericWait(1000);
+
+            if (shouldEnable) {
                 String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Agency");
                 BasePage.waitUntilElementPresent(jobPreferencesPage.agencyDropdown, 60);
                 BasePage.clickWithJavaScript(jobPreferencesPage.agencyDropdown);
@@ -73,12 +74,16 @@ public class JobPreferencesActions {
 
                 BasePage.clickWithJavaScript(jobPreferencesPage.nameInput);
                 BasePage.genericWait(2000);
-                BasePage.waitUntilElementPresent(jobPreferencesPage.workersList.get(0), 30);
-                BasePage.clickWithJavaScript(jobPreferencesPage.workersList.get(0));
+                if (!jobPreferencesPage.workersList.isEmpty()) {
+                    BasePage.waitUntilElementPresent(jobPreferencesPage.workersList.get(0), 30);
+                    BasePage.clickWithJavaScript(jobPreferencesPage.workersList.get(0));
 
-                BasePage.waitUntilElementClickable(jobPreferencesPage.addWorkerButton, 60);
-                BasePage.clickWithJavaScript(jobPreferencesPage.addWorkerButton);
-                BasePage.waitUntilElementClickable(jobPreferencesPage.removeWorkerIcon, 60);
+                    BasePage.waitUntilElementClickable(jobPreferencesPage.addWorkerButton, 60);
+                    BasePage.clickWithJavaScript(jobPreferencesPage.addWorkerButton);
+                    BasePage.waitUntilElementClickable(jobPreferencesPage.removeWorkerIcon, 60);
+                } else {
+                    logger.warn("Workers list is empty, cannot select a worker.");
+                }
             }
         }
     }
