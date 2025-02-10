@@ -290,6 +290,11 @@ public class BasePage {
         element.sendKeys(sb);
     }
 
+    public static void sendKeys(WebElement element, String data) {
+        logger.info("****************** Send keys in %s", element);
+        element.sendKeys(data);
+    }
+
     public static String getText(WebElement element) {
         logger.info("****************** Get text in %s", element);
         waitUntilElementPresent(element, 30);
