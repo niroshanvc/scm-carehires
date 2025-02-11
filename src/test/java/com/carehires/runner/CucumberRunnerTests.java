@@ -13,7 +13,7 @@ import io.cucumber.testng.CucumberOptions;
 //        or @CreateProvider or @CreateProviderWithCustomBilling or @EditProvider
 //        or @CreateWorker or @EditWorker"
 //        or @CreateAgreement or @CreateAgreementForDDProvider or @ViewAgreement, @EditAgreement, @OverviewAgreement
-//        or @CreateJob or @ViewJob, @CreateJobWithBreaks, @EditJobPost
+//        or @CreateJobPost or @ViewJob, @CreateJobPostWithBreaks, @EditJobPost
 )
 
 public class CucumberRunnerTests extends AbstractTestNGCucumberTests {

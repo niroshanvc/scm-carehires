@@ -22,7 +22,7 @@ Site Management:
     Dataset1:
       SiteName: BioRevolution Care {{increment}}
       SiteType: Hospital
-      SiteSpecialism: Adult,Autism,Childrens,Elderly,Nursing
+      SiteSpecialism: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
       AlsoKnownAs: BioRevolution{{increment}}
       SiteEmail: carehires+site1pr{{increment}}@zohomail.com
       PostalCode: BL0 9YX

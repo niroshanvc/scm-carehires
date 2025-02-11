@@ -6,7 +6,7 @@ Feature: Test CareHires create job
   Background: login to carehires
     Given User logins to carehires
 
-  @CreateJob
+  @CreateJobPost
   Scenario: Create a job
     When User navigates to Jobs page
     And User moves to Post Job page
@@ -15,7 +15,7 @@ Feature: Test CareHires create job
     Then User enters Job Summary
     And User writes the job id into a text file
 
-  @CreateJobWithBreaks
+  @CreateJobPostWithBreaks
   Scenario: Create a job with breaks
     When User navigates to Jobs page
     And User moves to Post Job page

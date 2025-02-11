@@ -2,13 +2,24 @@ package com.carehires.actions.jobs;
 
 import com.carehires.pages.jobs.JobsListViewPage;
 import com.carehires.utils.BasePage;
+import com.carehires.utils.ClipboardUtils;
+import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.asserts.SoftAssert;
 
 public class JobsListViewActions {
 
     JobsListViewPage listViewPage;
+
+    private static final String ENTITY = "job";
+    private static final String YML_FILE = "job-create";
+    private static final String YML_HEADER_JOB_PREFERENCES = "Job Preferences";
+    private static final String YML_HEADER_JOB_DETAILS = "Job Details";
+    private static final String YML_SUB_HEADER_CARE_PROVIDER = "Care Provider / Site and Service Preferences";
+
 
     private static final Logger logger = LogManager.getLogger(JobsListViewActions.class);
 
@@ -28,6 +39,31 @@ public class JobsListViewActions {
         String jobId = jobIdFullText.split("item-body-")[1];
     }
 
+    private String getWorkerId() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Get Worker ID from UI >>>>>>>>>>>>>>>>>>>>");
+        return BasePage.getText(listViewPage.allocatedWorkerName).trim();
+    }
+
+    private String getJobStartDate() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Get Job Start Date from UI >>>>>>>>>>>>>>>>>>>>");
+        return BasePage.getText(listViewPage.jobStartDate).trim();
+    }
+
+    private String getJobStartTime() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Get Job Start Time from UI >>>>>>>>>>>>>>>>>>>>");
+        return BasePage.getText(listViewPage.jobStartTime).trim();
+    }
+
+    private String getJobEndDate() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Get Job End Date from UI >>>>>>>>>>>>>>>>>>>>");
+        return BasePage.getText(listViewPage.jobEndDate).trim();
+    }
+
+    private String getJobEndTime() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Get Job End Time from UI >>>>>>>>>>>>>>>>>>>>");
+        return BasePage.getText(listViewPage.jobEndTime).trim();
+    }
+
     private void clickOnViewDetailedJobInfo() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Move to a three dots and open Detailed Job Info >>>>>>>>>>>>>>>>>>>>");
         BasePage.mouseHoverAndClick(JobsListViewPage.firstThreeDots, JobsListViewPage.viewDetailedJobInfo);
@@ -36,6 +72,40 @@ public class JobsListViewActions {
     private void clickOnCopyJobDetails() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Move to a three dots and Copy Job Details >>>>>>>>>>>>>>>>>>>>");
         BasePage.mouseHoverAndClick(JobsListViewPage.firstThreeDots, JobsListViewPage.copyJobDetails);
+    }
+
+    public void verifyFunctionalityOfCopyJobDetails() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying functionality of Copy Job Details >>>>>>>>>>>>>>>>>>>>");
+        clickOnCopyJobDetails();
+        BasePage.genericWait(3000); // Wait for the text to be copied
+        String expectedJobId = "";
+        String expectedJobStatus = "";
+        String expectedProvider = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_JOB_DETAILS, YML_SUB_HEADER_CARE_PROVIDER, "Care Provider");
+        String expectedSite = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_JOB_DETAILS, YML_SUB_HEADER_CARE_PROVIDER, "Site");
+        String expectedAgency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_JOB_PREFERENCES, "Agency");
+        String expectedWorker = getWorkerId();
+        String expectedStartDate = getJobStartDate();
+        String expectedStartTime = getJobStartTime();
+        String expectedEndDate = getJobEndDate();
+        String expectedEndTime = getJobEndTime();
+
+        String copiedText = ClipboardUtils.getClipboardText();
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(copiedText.contains(expectedJobId), "Job ID mismatch!");
+        softAssert.assertTrue(copiedText.contains(expectedJobStatus), "Job Status mismatch!");
+        assert expectedProvider != null;
+        softAssert.assertTrue(copiedText.contains(expectedProvider), "Provider name mismatch!");
+        assert expectedSite != null;
+        softAssert.assertTrue(copiedText.contains(expectedSite), "Provider Site mismatch!");
+        assert expectedAgency != null;
+        softAssert.assertTrue(copiedText.contains(expectedAgency), "Agency name mismatch!");
+        softAssert.assertTrue(copiedText.contains(expectedWorker), "Worker name mismatch!");
+        softAssert.assertTrue(copiedText.contains(expectedStartDate), "Job start date mismatch!");
+        softAssert.assertTrue(copiedText.contains(expectedStartTime), "Job start time mismatch!");
+        softAssert.assertTrue(copiedText.contains(expectedEndDate), "Job end date mismatch!");
+        softAssert.assertTrue(copiedText.contains(expectedEndTime), "Job end time mismatch!");
+        softAssert.assertAll();
     }
 
     private void clickOnChAdminNote() {
@@ -94,6 +164,13 @@ public class JobsListViewActions {
 
     private void eligibleWorkersFilterByAgency() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Searching eligible workers >>>>>>>>>>>>>>>>>>>>");
-//        BasePage.waitUntilElementClickable();
+        BasePage.waitUntilElementClickable(listViewPage.detailViewEligibleWorkersFilterByAgencyDropdown, 30);
+        BasePage.clickWithJavaScript(listViewPage.detailViewEligibleWorkersFilterByAgencyDropdown);
+        String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_JOB_PREFERENCES, "Agency");
+        By by = By.xpath(listViewPage.getDropdownOptionXpath(agency));
+        BasePage.waitUntilVisibilityOfElementLocated(by, 30);
+        BasePage.scrollToWebElement(listViewPage.getDropdownOptionXpath(agency));
+        BasePage.clickWithJavaScript(listViewPage.getDropdownOptionXpath(agency));
+        BasePage.clickTabKey(listViewPage.detailViewEligibleWorkersFilterByAgencyDropdown);
     }
 }

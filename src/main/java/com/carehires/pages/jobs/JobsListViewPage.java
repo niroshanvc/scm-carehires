@@ -49,4 +49,23 @@ public class JobsListViewPage {
 
     @FindBy(xpath = "//nb-tabset/ul/li/a/span[text()='Rejected Workers']")
     public WebElement detailViewRejectedWorkersTab;
+
+    public String getDropdownOptionXpath(String option) {
+        return String.format("//nb-option[contains(text(),'%s')]", option);
+    }
+
+    @FindBy(xpath = "(//div[contains(@class, 'worker-container')]//p[@class='ch-job-list-Details'])[1]")
+    public WebElement allocatedWorkerName;
+
+    @FindBy(xpath = "(//div[contains(@class, 'worker-container')]//div[img[@class = 'time-icon']])[1]")
+    public WebElement jobStartDate;
+
+    @FindBy(xpath = "(//div[contains(@class, 'worker-container')]//div[img[@class = 'time-icon']])[3]")
+    public WebElement jobStartTime;
+
+    @FindBy(xpath = "(//div[contains(@class, 'worker-container')]//div[img[@class = 'time-icon']])[2]")
+    public WebElement jobEndDate;
+
+    @FindBy(xpath = "(//div[contains(@class, 'worker-container')]//div[img[@class = 'time-icon']])[4]")
+    public WebElement jobEndTime;
 }

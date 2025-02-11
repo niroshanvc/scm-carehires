@@ -263,9 +263,9 @@ public class BasePage {
         try {
             js = (JavascriptExecutor) getDriver();
             js.executeScript(JAVASCRIPT_CLICK, ele);
-            logger.info("JavaScript click executed successfully on {}", ele);
+            logger.info("JavaScript click executed successfully on %s", ele);
         } catch (WebDriverInitializationException e) {
-            logger.error("JavaScript click failed on element: {}", ele, e);
+            logger.error("JavaScript click failed on element: %s", e.toString());
             throw new RuntimeException(e);
         }
     }
@@ -339,7 +339,7 @@ public class BasePage {
 
     public static void clickShiftAndTabKeyTogether(WebElement element) {
         logger.info("****************** Click shift + tab key in %s", element);
-        Actions actions = null;
+        Actions actions;
         try {
             actions = new Actions(getDriver());
         } catch (WebDriverInitializationException e) {
