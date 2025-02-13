@@ -51,8 +51,8 @@ Site Management:
   Update:
     Dataset1:
       SiteName: BioRevolution Care {{increment}}
-      SiteType: Hospital
-      SiteSpecialism: Adult,Mental Health,Nursing
+      SiteType: Nursing
+      SiteSpecialism: Adult,Autism,Elderly,Nursing
       AlsoKnownAs: BioRevolution{{increment}}
       SiteEmail: carehires+site1pr{{increment}}@zohomail.com
       PostalCode: BL0 9YX

@@ -73,7 +73,7 @@ User:
     Location: Select All Locations
     Phone: "07412001245"
     City: City of London
-    UserAccessLevel: Onboarding Admin,Shift Admin,Org Admin
+    UserAccessLevel: Org Admin
 
 Sub Contract:
   Add:

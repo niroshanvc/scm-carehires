@@ -16,13 +16,15 @@ import java.util.List;
 public class JobDetailsActions {
 
     private final JobDetailsPage jobDetailsPage;
-    private static final GenericUtils genericUtils;
+    private static GenericUtils genericUtils = null;
+
+    private static final Logger logger = LogManager.getLogger(JobDetailsActions.class);
 
     static {
         try {
             genericUtils = new GenericUtils();
         } catch (BasePage.WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            logger.error("Error while initializing GenericUtils: {}}", e.toString());
         }
     }
 
@@ -35,8 +37,6 @@ public class JobDetailsActions {
     private static final String YML_HEADER_SUB1 = "Care Provider / Site and Service Preferences";
     private static final String YML_HEADER_SUB2 = "Job Duration and Recurrence";
     private static final String TOGGLE_ATTRIBUTE_AREA_CHECKED = "aria-checked";
-
-    private static final Logger logger = LogManager.getLogger(JobDetailsActions.class);
 
     public JobDetailsActions() {
         jobDetailsPage = new JobDetailsPage();

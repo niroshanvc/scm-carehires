@@ -86,7 +86,7 @@ public class BasePage {
     }
 
     public static void waitUntil(Supplier<Boolean> condition, int timeoutInSeconds) {
-        WebDriverWait wait = null;
+        WebDriverWait wait;
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
         } catch (WebDriverInitializationException e) {
@@ -247,7 +247,7 @@ public class BasePage {
 
     public static void scrollToWebElement(WebElement ele) {
         logger.info("****************** Scroll to web element %s", ele);
-        JavascriptExecutor js = null;
+        JavascriptExecutor js;
         try {
             js = ((JavascriptExecutor) getDriver());
         } catch (WebDriverInitializationException e) {
@@ -259,7 +259,7 @@ public class BasePage {
     public static void clickWithJavaScript(WebElement ele) {
         logger.info("****************** Clicking on the web element captured using webelement: %s", ele);
         waitUntilElementPresent(ele, 30);
-        JavascriptExecutor js = null;
+        JavascriptExecutor js;
         try {
             js = (JavascriptExecutor) getDriver();
             js.executeScript(JAVASCRIPT_CLICK, ele);
@@ -328,7 +328,7 @@ public class BasePage {
     }
 
     public static void selectFirstOption(String xpath) {
-        Select sel = null;
+        Select sel;
         try {
             sel = new Select(getDriver().findElement(By.xpath(xpath)));
         } catch (WebDriverInitializationException e) {
@@ -368,7 +368,7 @@ public class BasePage {
 
     public static void moveToBottomOfThePage() {
         logger.info("****************** Move to bottom of the page.");
-        JavascriptExecutor js = null;
+        JavascriptExecutor js;
         try {
             js = (JavascriptExecutor) getDriver();
         } catch (WebDriverInitializationException e) {
@@ -379,7 +379,7 @@ public class BasePage {
 
     public static void scrollToBottomOfPage() {
         logger.info("****************** Scroll down to bottom of the page.");
-        Actions actions = null;
+        Actions actions;
         try {
             actions = new Actions(getDriver());
         } catch (WebDriverInitializationException e) {
@@ -493,7 +493,7 @@ public class BasePage {
 
     public static void clickWithJavaScript(String xpath) {
         logger.info("****************** Clicking on the web element captured using xpath: %s", xpath);
-        WebElement ele = null;
+        WebElement ele;
         try {
             ele = getDriver().findElement(By.xpath(xpath));
             waitUntilElementPresent(ele, 30);
@@ -532,7 +532,7 @@ public class BasePage {
 
     public static void waitUntilElementClickable(String xpath, int timeOutSeconds) {
         logger.info("****************** Wait until element clickable at xpath: %s", xpath);
-        WebElement element = null;
+        WebElement element;
         try {
             element = getDriver().findElement(By.xpath(xpath));
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
@@ -575,7 +575,7 @@ public class BasePage {
 
     public static void mouseHoverOverElement(WebElement element) {
         waitUntilElementClickable(element, 30);
-        Actions actions = null;
+        Actions actions;
         try {
             actions = new Actions(getDriver());
         } catch (WebDriverInitializationException e) {
@@ -626,7 +626,7 @@ public class BasePage {
 
     public static void waitUntilElementPresent(String xpath, int timeOutSeconds) {
         logger.info("****************** Wait until element present at xpath: %s, in seconds: %s", xpath, timeOutSeconds);
-        WebElement element = null;
+        WebElement element;
         try {
             element = getDriver().findElement(By.xpath(xpath));
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
@@ -638,13 +638,13 @@ public class BasePage {
 
     public static void scrollToWebElement(String xpath) {
         logger.info("****************** Scroll to web element at xpath %s", xpath);
-        JavascriptExecutor js = null;
+        JavascriptExecutor js;
         try {
             js = ((JavascriptExecutor) getDriver());
         } catch (WebDriverInitializationException e) {
             throw new RuntimeException(e);
         }
-        WebElement element = null;
+        WebElement element;
         try {
             element = getDriver().findElement(By.xpath(xpath));
         } catch (WebDriverInitializationException e) {
@@ -677,7 +677,7 @@ public class BasePage {
         try {
             wait.until((ExpectedCondition<Boolean>) driver -> {
                 assert driver != null;
-                String attributeValue = null;
+                String attributeValue;
                 try {
                     attributeValue = Objects.requireNonNull(((JavascriptExecutor) getDriver()).executeScript
                             ("return arguments[0].getAttribute(arguments[1]);", element, attribute)).toString();
@@ -702,7 +702,7 @@ public class BasePage {
         logger.info("****************** Verify element present: %s, in seconds: %s", locator, timeOutSeconds);
 
         // Create a WebDriverWait instance
-        WebDriverWait wait = null;
+        WebDriverWait wait;
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
         } catch (WebDriverInitializationException e) {
@@ -712,7 +712,7 @@ public class BasePage {
         // Wait until at least one element is present
         wait.until((ExpectedCondition<Boolean>) driver -> {
             assert driver != null;
-            List<WebElement> elements = null;
+            List<WebElement> elements;
             try {
                 elements = getDriver().findElements(locator);
             } catch (WebDriverInitializationException e) {
@@ -722,7 +722,7 @@ public class BasePage {
         });
 
         // After waiting, assert that the element is present
-        List<WebElement> elements = null;
+        List<WebElement> elements;
         try {
             elements = getDriver().findElements(locator);
         } catch (WebDriverInitializationException e) {
@@ -734,7 +734,7 @@ public class BasePage {
     // mouse hover and release webelement
     public static void mouseHoverAndRelease(WebElement element, WebElement subElement) {
         waitUntilElementClickable(element, 30);
-        Actions actions = null;
+        Actions actions;
         try {
             actions = new Actions(getDriver());
         } catch (WebDriverInitializationException e) {
@@ -772,7 +772,7 @@ public class BasePage {
     public static void mouseHoverAndClick(By mainLocator, By subLocator) {
         WebElement mainLink = wait.until(ExpectedConditions.visibilityOfElementLocated(mainLocator));
         waitUntilElementPresent(mainLink, 60);
-        Actions actions = null;
+        Actions actions;
         try {
             actions = new Actions(getDriver());
         } catch (WebDriverInitializationException e) {
@@ -795,6 +795,7 @@ public class BasePage {
             logger.error("Element was not present after waiting for %s seconds. Locator: %s", timeoutSeconds, locator);
         }
     }
+
 
     public static void waitUntilDisabledAttributeDisappears(WebElement element, int timeOutSeconds) {
         logger.info("****************** Wait until element attribute disappeared: %s", element);
@@ -823,6 +824,18 @@ public class BasePage {
             return getDriver().findElement(By.xpath(xpath));
         } catch (WebDriverInitializationException e) {
             throw new NoSuchElementException(e.getMessage());
+        }
+    }
+
+    public static void waitUntilAttributeContains(WebElement element, String attributeName, String attributeValue, int timeoutSeconds) {
+        logger.info("****************** Wait until element attribute contains: %s", attributeValue);
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutSeconds));
+
+            // Wait until the 'attributeName' attribute contains 'attributeValue'
+            wait.until(ExpectedConditions.attributeContains(element, attributeName, attributeValue));
+        } catch (WebDriverInitializationException e) {
+            logger.error("Element attribute not get updated %s", attributeValue);
         }
     }
 }

@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.List;
+
 public class JobsListViewPage {
 
     @FindBy(xpath = "(//ch-job-list-item)[1]/div[2]")
@@ -11,9 +13,20 @@ public class JobsListViewPage {
 
     public static final By firstThreeDots = By.xpath("(//ch-job-list-item)[1]//button");
 
+    public static final By jobDetailsPopupThreeDots = By.xpath("//span[contains(@class, 'menu-wrapper')]//p");
+
     public static final By viewDetailedJobInfo = By.xpath("//nb-context-menu//a[@title='View Detailed Job Info']");
 
     public static final By copyJobDetails = By.xpath("//nb-context-menu//a[@title='Copy Job Details']");
+
+    public static final By jobDetailsPopupCopyJobDetails = By.xpath("//div[contains(@class, 'side-menu')]//" +
+            "span[contains(text(), 'Copy Job Details')]");
+
+    public static final By jobDetailsPopupAuditLog = By.xpath("//div[contains(@class, 'side-menu')]//" +
+            "span[contains(text(), 'Audit Log')]");
+
+    public static final By jobDetailsPopupCancelJob = By.xpath("//div[contains(@class, 'side-menu')]//" +
+            "span[contains(text(), 'Cancel Job')]");
 
     public static final By chAdminNote = By.xpath("//nb-context-menu//a[@title='CH Admin Note']");
 
@@ -68,4 +81,52 @@ public class JobsListViewPage {
 
     @FindBy(xpath = "(//div[contains(@class, 'worker-container')]//div[img[@class = 'time-icon']])[4]")
     public WebElement jobEndTime;
+
+    @FindBy(id = "business-name")
+    public WebElement searchByJobIdInput;
+
+    @FindBy(xpath = "//input[@placeholder='Date Range']")
+    public WebElement dateRangeInput;
+
+    @FindBy(xpath = "//nb-select[@id='provider-id']/button")
+    public WebElement providerDropdown;
+
+    @FindBy(xpath = "//nb-select[@placeholder='Site']/button")
+    public WebElement siteDropdown;
+
+    @FindBy(xpath = "//div[contains(@class, 'btn')]/button[1]")
+    public WebElement allStatusButton;
+
+    @FindBy(xpath = "//div[contains(@class, 'btn')]/button[2]")
+    public WebElement openStatusButton;
+
+    @FindBy(xpath = "//div[contains(@class, 'btn')]/button[3]")
+    public WebElement openOverDueStatusButton;
+
+    @FindBy(xpath = "//div[contains(@class, 'btn')]/button[4]")
+    public WebElement suggestedStatusButton;
+
+    @FindBy(xpath = "//div[contains(@class, 'btn')]/button[5]")
+    public WebElement allocatedStatusButton;
+
+    @FindBy(xpath = "//div[contains(@class, 'btn')]/button[6]")
+    public WebElement completedStatusButton;
+
+    @FindBy(xpath = "//div[contains(@class, 'btn')]/button[7]")
+    public WebElement cancelledStatusButton;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='reason']/button")
+    public WebElement reasonDropdownButtonOnCancelJobPopup;
+
+    @FindBy(xpath = "//textarea[@formcontrolname='description']")
+    public WebElement descriptionTextAreaOnCancelJobsPopup;
+
+    @FindBy(xpath = "//button[contains(text(), 'Continue')]")
+    public WebElement continueButtonOnCancelJobPopup;
+
+    @FindBy(xpath = "//span[contains(text(), 'Suggest')]/parent::button")
+    public List<WebElement> suggestButtonOnJobDetailsPopup;
+
+    @FindBy(xpath = "//p[contains(text(), 'Suggest this worker')]/parent::button")
+    public WebElement suggestThisWorkerButton;
 }
