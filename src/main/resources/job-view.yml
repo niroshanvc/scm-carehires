@@ -1,3 +1,9 @@
 Cancel Job:
   Reason: "Cancelling to repost"
   Description: "Job cancel description added."
+Suggested Worker:
+  Reject Worker:
+    Reason to reject: Here is the reason to reject that suggested worker.
+Selected Worker:
+  Reject Worker:
+    Reason to reject: Here is the reason to reject that selected worker.

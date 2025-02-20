@@ -10,4 +10,8 @@ public class JobsLandingSteps {
     public void moveToJobPost() {
         jobsLanding.clickOnPostJobButton();
     }
+
+    @And("User finds recently posted job")
+    public void userFindsRecentlyPostedJob() {
+    }
 }

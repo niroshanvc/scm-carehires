@@ -66,7 +66,7 @@ Site Management:
 Worker Staff Management:
   Add:
     WorkerType: Care Assistant
-    Skills: Elderly,Home Care,End of life Care,Mandatory Training
+    Skills: Elderly,Home Care,End of Life Care,Mandatory Training
     HourlyRate: 10
     MonthlyAgencyHours: 350
     ProofOfDemandDocument: Proof of demand document.pdf
@@ -89,7 +89,7 @@ User:
     email: carehires+provuser{{increment}}@zohomail.com
     Name: Douglas Sams{{increment}}
     JobTitle: Assistant Engineer
-    Phone: "07700123457"
+    Phone: "07874483362"
     MarkAsAnAuthoriser: "Yes"
     UserAccessLevel: Org Admin
 

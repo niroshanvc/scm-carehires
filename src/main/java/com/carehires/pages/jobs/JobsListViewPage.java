@@ -48,8 +48,8 @@ public class JobsListViewPage {
     @FindBy(xpath = "//nb-tabset/ul/li/a/span[text()='Eligible Workers']")
     public WebElement detailViewEligibleWorkersTab;
 
-    @FindBy(xpath = "//nb-tab[@tabtitle='Eligible Workers']//nb-select[@placeholder='Filter By Agency']/button")
-    public WebElement detailViewEligibleWorkersFilterByAgencyDropdown;
+    @FindBy(xpath = "//nb-tab[contains(@class,'content-active')]//nb-select[@placeholder='Filter By Agency']/button")
+    public WebElement detailViewWorkersFilterByAgencyDropdown;
 
     @FindBy(xpath = "//nb-tabset/ul/li/a/span[text()='Suggested Workers']")
     public WebElement detailViewSuggestedWorkersTab;
@@ -57,11 +57,11 @@ public class JobsListViewPage {
     @FindBy(xpath = "//nb-tabset/ul/li/a/span[text()='Selected Workers']")
     public WebElement detailViewSelectedWorkersTab;
 
-    @FindBy(xpath = "//nb-tab[@tabtitle='Selected Workers']//button[contains(text(),'Reject')]")
-    public WebElement detailViewSelectedWorkersRejectButton;
-
     @FindBy(xpath = "//nb-tabset/ul/li/a/span[text()='Rejected Workers']")
     public WebElement detailViewRejectedWorkersTab;
+
+    @FindBy(xpath = "//nb-tab[contains(@class,'content-active')]//button[contains(text(),'Reject')]")
+    public WebElement rejectButtonOnViewJobDetailPopup;
 
     public String getDropdownOptionXpath(String option) {
         return String.format("//nb-option[contains(text(),'%s')]", option);
@@ -125,8 +125,27 @@ public class JobsListViewPage {
     public WebElement continueButtonOnCancelJobPopup;
 
     @FindBy(xpath = "//span[contains(text(), 'Suggest')]/parent::button")
-    public List<WebElement> suggestButtonOnJobDetailsPopup;
+    public WebElement suggestButtonOnJobDetailsPopup;
 
     @FindBy(xpath = "//p[contains(text(), 'Suggest this worker')]/parent::button")
     public WebElement suggestThisWorkerButton;
+
+    @FindBy(xpath = "//div[contains(@class, 'ch-job-list-Header')]/../div[3]")
+    public WebElement finishSearch;
+
+    @FindBy(xpath = "//ch-job-list-item/div[contains(@id, 'item')]//div[contains(@style, 'inline')]/span[contains" +
+            "(@class, 'jobType badge')]")
+    public List<WebElement> jobStatuses;
+
+    @FindBy(xpath = "//nb-toast//span")
+    public WebElement successMessage;
+
+    @FindBy(xpath = "//nb-dialog-container//nb-card/nb-card-body//textarea")
+    public WebElement reasonToRejectTextareaOnSuggestedWorkerRejectPopup;
+
+    @FindBy(xpath = "//nb-tab[contains(@class,'content-active')]//button[contains(text(), 'Select')]")
+    public WebElement selectButtonOnDetailViewTab;
+
+    @FindBy(xpath = "//nb-dialog-container//nb-card/nb-card-footer//button")
+    public WebElement rejectButtonOnRejectPopup;
 }

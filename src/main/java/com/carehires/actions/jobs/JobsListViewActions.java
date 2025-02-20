@@ -4,17 +4,26 @@ import com.carehires.pages.jobs.JobsListViewPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.ClipboardUtils;
 import com.carehires.utils.DataConfigurationReader;
+import com.carehires.utils.FileWriterUtils;
 import com.carehires.utils.GenericUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.asserts.SoftAssert;
 
+import java.io.File;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+
 public class JobsListViewActions {
 
-    JobsListViewPage listViewPage;
+    private final JobsListViewPage listViewPage;
     private static GenericUtils genericUtils = null;
 
     private static final Logger logger = LogManager.getLogger(JobsListViewActions.class);
@@ -33,7 +42,11 @@ public class JobsListViewActions {
     private static final String YML_HEADER_JOB_PREFERENCES = "Job Preferences";
     private static final String YML_HEADER_JOB_DETAILS = "Job Details";
     private static final String YML_HEADER_JOB_CANCEL = "Cancel Job";
+    private static final String YML_HEADER_JOB_DURATION = "Job Duration and Recurrence";
     private static final String YML_SUB_HEADER_CARE_PROVIDER = "Care Provider / Site and Service Preferences";
+    private static final String YML_HEADER_SUGGESTED_WORKER = "Suggested Worker";
+    private static final String YML_HEADER_SELECTED_WORKER = "Selected Worker";
+    private static final String YML_HEADER_REJECT_WORKER = "Reject Worker";
 
     public JobsListViewActions() {
         listViewPage = new JobsListViewPage();
@@ -49,6 +62,11 @@ public class JobsListViewActions {
         BasePage.waitUntilPageCompletelyLoaded();
         String jobIdFullText = BasePage.getAttributeValue(listViewPage.firstJobId, "id");
         String jobId = jobIdFullText.split("item-body-")[1];
+        String fileName = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" +
+                File.separator + "resources" + File.separator + "most-recent-job-post.txt";
+
+        FileWriterUtils.clearContent(fileName);
+        FileWriterUtils.writeJobIdToAFile(jobId, fileName);
     }
 
     private void searchJobByJobId(String jobId) {
@@ -62,23 +80,34 @@ public class JobsListViewActions {
         BasePage.clickOnEnterKey(listViewPage.searchByJobIdInput);
     }
 
-    private void searchJobByDateRange(String startDate, String endDate) {
+    public void searchJobByDateRange() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Searching jobs by entering a date range >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementDisplayed(listViewPage.dateRangeInput, 30);
         BasePage.clickWithJavaScript(listViewPage.dateRangeInput);
+        String startDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE,
+                YML_HEADER_JOB_DETAILS, YML_HEADER_JOB_DURATION, "Start Date");
+        String endDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE,
+                YML_HEADER_JOB_DETAILS, YML_HEADER_JOB_DURATION, "Ends On");
         genericUtils.selectDateFromCalendarPopup(startDate);
         genericUtils.selectDateFromCalendarPopup(endDate);
+        BasePage.clickTabKey(listViewPage.dateRangeInput);
+        BasePage.waitUntilElementPresent(listViewPage.finishSearch, 60);
     }
 
-    private void searchByProviderName(String providerName) {
+    public void searchByProviderName() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Searching jobs by selecting a provider name >>>>>>>>>>>>>>>>>>>>");
-        BasePage.waitUntilElementClickable(listViewPage.providerDropdown, 30);
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(listViewPage.providerDropdown);
         BasePage.genericWait(1000);
+        String providerName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE,
+                YML_HEADER_JOB_DETAILS, YML_SUB_HEADER_CARE_PROVIDER, "Care Provider");
         By by = By.xpath(listViewPage.getDropdownOptionXpath(providerName));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
         BasePage.scrollToWebElement(listViewPage.getDropdownOptionXpath(providerName));
         BasePage.clickWithJavaScript(listViewPage.getDropdownOptionXpath(providerName));
+        BasePage.clickTabKey(listViewPage.providerDropdown);
+        BasePage.waitUntilElementPresent(listViewPage.finishSearch, 60);
     }
 
     private void searchByProviderSite(String siteName) {
@@ -91,40 +120,77 @@ public class JobsListViewActions {
         BasePage.clickWithJavaScript(listViewPage.getDropdownOptionXpath(siteName));
     }
 
-    private void selectJobByJobStatus(String jobStatus) {
+    public void selectJobByJobStatus(String status) {
+        BasePage.refreshPage();
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(listViewPage.finishSearch, 60);
+        doSelectJobsByJobStatus(status);
+
+        List<WebElement> statuses = listViewPage.jobStatuses;
+        BasePage.waitUntilElementPresent(statuses.get(0), 60);
+
+        if (status.equalsIgnoreCase("All Open")) {
+            status = "OPEN";
+        } else {
+            status = status.toUpperCase();
+        }
+
+        // verify all status display as Suggested
+        for (WebElement el : statuses) {
+            BasePage.scrollToWebElement(el);
+            String text = el.getText();
+            if (status.equalsIgnoreCase("Open")) {
+                if (text.equalsIgnoreCase("Suggested")
+                        || text.equalsIgnoreCase("Open Over-due")) {
+                    text = "OPEN";
+                }
+            } else if (status.equalsIgnoreCase("Open Over-due") && text.equalsIgnoreCase(
+                    "Suggested")) {
+                    text = "OPEN OVER-DUE";
+                }
+
+
+            assertThat("Filter by status is not working.", text, is(status));
+        }
+    }
+
+    private void doSelectJobsByJobStatus(String jobStatus) {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Searching jobs by clicking on status button >>>>>>>>>>>>>>>>>>>>");
-        switch(jobStatus) {
-            case "Open":
-                BasePage.waitUntilElementClickable(listViewPage.openStatusButton, 30);
+        BasePage.waitUntilPageCompletelyLoaded();
+        String normalizedStatus = jobStatus.trim().toLowerCase();  // Normalize input
+        switch(normalizedStatus) {
+            case "all open":
+                BasePage.waitUntilElementClickable(listViewPage.openStatusButton, 60);
                 BasePage.clickWithJavaScript(listViewPage.openStatusButton);
                 break;
-            case "Over due":
-                BasePage.waitUntilElementClickable(listViewPage.openOverDueStatusButton, 30);
+            case "open over-due":
+                BasePage.waitUntilElementClickable(listViewPage.openOverDueStatusButton, 60);
                 BasePage.clickWithJavaScript(listViewPage.openOverDueStatusButton);
                 break;
-            case "Suggested":
-                BasePage.waitUntilElementClickable(listViewPage.suggestedStatusButton, 30);
+            case "suggested":
+                BasePage.waitUntilElementClickable(listViewPage.suggestedStatusButton, 60);
                 BasePage.clickWithJavaScript(listViewPage.suggestedStatusButton);
                 break;
-            case "Allocated":
-                BasePage.waitUntilElementClickable(listViewPage.allocatedWorkerName, 30);
+            case "allocated":
+                BasePage.waitUntilElementClickable(listViewPage.allocatedWorkerName, 60);
                 BasePage.clickWithJavaScript(listViewPage.allocatedStatusButton);
                 break;
-            case "Completed":
-                BasePage.waitUntilElementClickable(listViewPage.completedStatusButton, 30);
+            case "completed":
+                BasePage.waitUntilElementClickable(listViewPage.completedStatusButton, 60);
                 BasePage.clickWithJavaScript(listViewPage.completedStatusButton);
                 break;
-            case "Cancelled":
-                BasePage.waitUntilElementClickable(listViewPage.cancelledStatusButton, 30);
+            case "cancelled":
+                BasePage.waitUntilElementClickable(listViewPage.cancelledStatusButton, 60);
                 BasePage.clickWithJavaScript(listViewPage.cancelledStatusButton);
                 break;
-            case "All":
-                BasePage.waitUntilElementClickable(listViewPage.allStatusButton, 30);
+            case "all":
+                BasePage.waitUntilElementClickable(listViewPage.allStatusButton, 60);
                 BasePage.clickWithJavaScript(listViewPage.allStatusButton);
                 break;
            default:
                logger.error("Invalid job status {}", jobStatus);
         }
+        BasePage.waitUntilElementPresent(listViewPage.finishSearch, 60);
     }
 
     private String getWorkerId() {
@@ -172,12 +238,14 @@ public class JobsListViewActions {
 
     private void clickOnAuditLogOnJobDetailsPopup() {
         logger.info("<<<<<<<<<<<<<<<< Move to three dots on Job Detail popup and Click on Audit Log >>>>>>>>>>>>>");
-        BasePage.mouseHoverAndClick(JobsListViewPage.jobDetailsPopupThreeDots, JobsListViewPage.jobDetailsPopupAuditLog);
+        BasePage.mouseHoverAndClick(JobsListViewPage.jobDetailsPopupThreeDots, JobsListViewPage.
+                jobDetailsPopupAuditLog);
     }
 
     private void clickOnCancelJobOnJobDetailsPopup() {
         logger.info("<<<<<<<<<<<<<<<< Move to three dots on Job Detail popup and Click on Cancel Job >>>>>>>>>>>>>");
-        BasePage.mouseHoverAndClick(JobsListViewPage.jobDetailsPopupThreeDots, JobsListViewPage.jobDetailsPopupAuditLog);
+        BasePage.mouseHoverAndClick(JobsListViewPage.jobDetailsPopupThreeDots, JobsListViewPage.
+                jobDetailsPopupAuditLog);
     }
 
     public void verifyCancelJobFunctionalityOnJobDetailsPopup() {
@@ -275,15 +343,18 @@ public class JobsListViewActions {
     private void gotoEligibleWorkersTabOnJobDetailPopup() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Move to Eligible Workers tab on Job Detail Popup >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementClickable(listViewPage.detailViewEligibleWorkersTab, 30);
+        BasePage.scrollToWebElement(listViewPage.detailViewEligibleWorkersTab);
         BasePage.clickWithJavaScript(listViewPage.detailViewEligibleWorkersTab);
     }
 
     public void suggestAWorkerOnJobDetailsPopup() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Suggesting a worker >>>>>>>>>>>>>>>>>>>>");
+        BasePage.refreshPage();
         clickOnViewDetailedJobInfo();
         gotoEligibleWorkersTabOnJobDetailPopup();
-        eligibleWorkersFilterByAgencyOnJobDetailsPopup();
-        waitAndSuggestThisWorkerButtonOnConfirmActionPopup();
+        workersFilterByAgencyOnJobDetailsPopup();
+        clickOnSuggestButtonOnJobDetails();
+        verifyWorkerSuggestSuccessMessage();
     }
 
     private void waitAndSuggestThisWorkerButtonOnConfirmActionPopup() {
@@ -298,8 +369,8 @@ public class JobsListViewActions {
 
     private void clickOnSuggestButtonOnJobDetails() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on Suggest button on Job Details popup >>>>>>>>>>>>>>>>>>>>");
-        BasePage.waitUntilElementClickable(listViewPage.suggestButtonOnJobDetailsPopup.get(0), 60);
-        BasePage.clickWithJavaScript(listViewPage.suggestButtonOnJobDetailsPopup.get(0));
+        BasePage.waitUntilElementClickable(listViewPage.suggestButtonOnJobDetailsPopup, 60);
+        BasePage.clickWithJavaScript(listViewPage.suggestButtonOnJobDetailsPopup);
     }
 
     private void gotoSuggestedWorkersTabOnJobDetailPopup() {
@@ -320,17 +391,18 @@ public class JobsListViewActions {
         BasePage.clickWithJavaScript(listViewPage.detailViewRejectedWorkersTab);
     }
 
-    private void eligibleWorkersFilterByAgencyOnJobDetailsPopup() {
+    private void workersFilterByAgencyOnJobDetailsPopup() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Searching eligible workers >>>>>>>>>>>>>>>>>>>>");
-        BasePage.waitUntilElementClickable(listViewPage.detailViewEligibleWorkersFilterByAgencyDropdown, 30);
-        BasePage.clickWithJavaScript(listViewPage.detailViewEligibleWorkersFilterByAgencyDropdown);
+        BasePage.waitUntilElementClickable(listViewPage.detailViewWorkersFilterByAgencyDropdown,
+                30);
+        BasePage.clickWithJavaScript(listViewPage.detailViewWorkersFilterByAgencyDropdown);
         String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE,
                 YML_HEADER_JOB_PREFERENCES, "Agency");
         By by = By.xpath(listViewPage.getDropdownOptionXpath(agency));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
         BasePage.scrollToWebElement(listViewPage.getDropdownOptionXpath(agency));
         BasePage.clickWithJavaScript(listViewPage.getDropdownOptionXpath(agency));
-        BasePage.clickTabKey(listViewPage.detailViewEligibleWorkersFilterByAgencyDropdown);
+        BasePage.clickTabKey(listViewPage.detailViewWorkersFilterByAgencyDropdown);
     }
 
     private void clickOnChAdminNote() {
@@ -346,5 +418,78 @@ public class JobsListViewActions {
     private void clickOnCancelVacancy() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Move to a three dots and open Cancel Vacancy >>>>>>>>>>>>>>>>>>>>");
         BasePage.mouseHoverAndClick(JobsListViewPage.firstThreeDots, JobsListViewPage.cancelVacancy);
+    }
+
+    private void verifyWorkerSuggestSuccessMessage() {
+        BasePage.waitUntilElementPresent(listViewPage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(listViewPage.successMessage).toLowerCase().trim();
+        String expected = "Created new application for";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Worker suggest success message is wrong!", actualInLowerCase, containsString(
+                expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(listViewPage.successMessage, 20);
+    }
+
+    private void verifyWorkerRejectSuccessMessage() {
+        BasePage.waitUntilElementPresent(listViewPage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(listViewPage.successMessage).toLowerCase().trim();
+        String expected = "Rejected application by";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Worker reject success message is wrong!", actualInLowerCase, containsString(
+                expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(listViewPage.successMessage, 20);
+    }
+
+    public void rejectSuggestedWorkerOnJobDetailsPopup() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Rejecting a suggested worker >>>>>>>>>>>>>>>>>>>>");
+        gotoSuggestedWorkersTabOnJobDetailPopup();
+        workersFilterByAgencyOnJobDetailsPopup();
+        clickOnRejectButtonOnSelectedTabJobDetailsPopup(YML_HEADER_SUGGESTED_WORKER);
+        verifyWorkerRejectSuccessMessage();
+    }
+
+    private void clickOnRejectButtonOnSelectedTabJobDetailsPopup(String mainHeader) {
+        logger.info("<<<<<<<<<<<<<<<< Clicking on Reject button on Suggested Worker - Job Details popup >>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(listViewPage.rejectButtonOnViewJobDetailPopup, 60);
+        BasePage.clickWithJavaScript(listViewPage.rejectButtonOnViewJobDetailPopup);
+
+        // on reject popup
+        BasePage.waitUntilElementClickable(listViewPage.rejectButtonOnViewJobDetailPopup, 60);
+        String text = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, mainHeader,
+                YML_HEADER_REJECT_WORKER, "Reason to reject");
+        BasePage.typeWithStringBuilder(listViewPage.reasonToRejectTextareaOnSuggestedWorkerRejectPopup, text);
+        BasePage.clickWithJavaScript(listViewPage.rejectButtonOnRejectPopup);
+    }
+
+    public void selectRejectedWorkerOnJobDetailsPopup() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Selecting a suggested worker >>>>>>>>>>>>>>>>>>>>");
+        gotoRejectedWorkersTabOnJobDetailPopup();
+        workersFilterByAgencyOnJobDetailsPopup();
+        clickOnSelectButtonOnJobDetails();
+        verifyWorkerSelectSuccessMessage();
+    }
+
+    private void clickOnSelectButtonOnJobDetails() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on Select button on Job Details popup >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(listViewPage.selectButtonOnDetailViewTab, 60);
+        BasePage.clickWithJavaScript(listViewPage.selectButtonOnDetailViewTab);
+    }
+
+    private void verifyWorkerSelectSuccessMessage() {
+        BasePage.waitUntilElementPresent(listViewPage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(listViewPage.successMessage).toLowerCase().trim();
+        String expected = "Accepted application by";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Worker select success message is wrong!", actualInLowerCase, containsString(
+                expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(listViewPage.successMessage, 20);
+    }
+
+    public void rejectSelectedWorkerOnJobDetailsPopup() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Reject a selected worker >>>>>>>>>>>>>>>>>>>>");
+        gotoSelectedWorkersTabOnJobDetailPopup();
+        workersFilterByAgencyOnJobDetailsPopup();
+        clickOnRejectButtonOnSelectedTabJobDetailsPopup(YML_HEADER_SELECTED_WORKER);
+        verifyWorkerRejectSuccessMessage();
     }
 }

@@ -10,8 +10,8 @@ Feature: Test CareHires create agreement with disable Bid4Care
   Scenario: Create an agreement
     When User navigates to Agreement Create page
     And user enters agreement overview data
-    And User enters Worker Rates
-    And User enters Cancellation Policy
+    And User enters Worker Rates and verify calculations
+    And User enters Cancellation Policy and verify calculations
     And User enters Sleep In Rates
     And User enters Policies for the provisions of service
     And User enters Signatories information
@@ -29,8 +29,8 @@ Feature: Test CareHires create agreement with disable Bid4Care
   Scenario: Create an agreement
     When User navigates to Agreement Create page
     And user enters agreement overview data
-    And User enters Worker Rates
-    And User enters Cancellation Policy
+    And User enters Worker Rates and verify calculations
+    And User enters Cancellation Policy and verify calculations
     And User enters Sleep In Rates
     And User enters Policies for the provisions of service
     And User enters Signatories information

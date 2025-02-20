@@ -6,7 +6,7 @@ import io.cucumber.java.en.And;
 public class CancellationPolicySteps {
     CancellationPolicyActions cancellationPolicy = new CancellationPolicyActions();
 
-    @And("User enters Cancellation Policy")
+    @And("User enters Cancellation Policy and verify calculations")
     public void enterCancellationPolicy() {
         cancellationPolicy.addCancellationPolicy();
     }

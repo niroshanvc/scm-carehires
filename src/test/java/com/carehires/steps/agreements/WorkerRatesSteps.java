@@ -7,7 +7,7 @@ public class WorkerRatesSteps {
 
     WorkerRatesActions workerRates = new WorkerRatesActions();
 
-    @And("User enters Worker Rates")
+    @And("User enters Worker Rates and verify calculations")
     public void enterWorkerRates() {
         workerRates.enterWorkerRates();
     }
