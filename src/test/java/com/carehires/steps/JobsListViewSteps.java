@@ -46,4 +46,14 @@ public class JobsListViewSteps {
     public void rejectSelectedWorker() {
         jobsListViewActions.rejectSelectedWorkerOnJobDetailsPopup();
     }
+
+    @And("User fills out the timesheets")
+    public void fillOutTimesheets() {
+        jobsListViewActions.fillingTimesheets();
+    }
+
+    @And("^User (.*) the timesheet$")
+    public void approveOrDisputeTimesheet(String action) {
+        jobsListViewActions.approveOrDisputeTimesheet(action);
+    }
 }

@@ -39,10 +39,12 @@ public class JobsListViewActions {
     private static final String ENTITY = "job";
     private static final String YML_FILE = "job-view";
     private static final String YML_FILE_CREATE = "job-create";
+    private static final String YML_FILE_CREATE_BREAKS = "job-create-with-breaks";
     private static final String YML_HEADER_JOB_PREFERENCES = "Job Preferences";
     private static final String YML_HEADER_JOB_DETAILS = "Job Details";
     private static final String YML_HEADER_JOB_CANCEL = "Cancel Job";
     private static final String YML_HEADER_JOB_DURATION = "Job Duration and Recurrence";
+    private static final String YML_HEADER_SUBMIT_TIMESHEET = "Submit Timesheet";
     private static final String YML_SUB_HEADER_CARE_PROVIDER = "Care Provider / Site and Service Preferences";
     private static final String YML_HEADER_SUGGESTED_WORKER = "Suggested Worker";
     private static final String YML_HEADER_SELECTED_WORKER = "Selected Worker";
@@ -396,7 +398,7 @@ public class JobsListViewActions {
         BasePage.waitUntilElementClickable(listViewPage.detailViewWorkersFilterByAgencyDropdown,
                 30);
         BasePage.clickWithJavaScript(listViewPage.detailViewWorkersFilterByAgencyDropdown);
-        String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE,
+        String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE_BREAKS,
                 YML_HEADER_JOB_PREFERENCES, "Agency");
         By by = By.xpath(listViewPage.getDropdownOptionXpath(agency));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
@@ -491,5 +493,152 @@ public class JobsListViewActions {
         workersFilterByAgencyOnJobDetailsPopup();
         clickOnRejectButtonOnSelectedTabJobDetailsPopup(YML_HEADER_SELECTED_WORKER);
         verifyWorkerRejectSuccessMessage();
+    }
+
+    public void fillingTimesheets() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Filling timesheet for the selected job >>>>>>>>>>>>>>>>>>>>");
+        clickOnTimesheetsButton();
+        clickOnSubmitTimesheetButton();
+        enterDataOnEditTimesheet();
+    }
+
+    private void enterDataOnEditTimesheet() {
+        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SUBMIT_TIMESHEET,
+                "Proof Document");
+        String docPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Job" + File.separator +
+                "Timesheet"+ File.separator + doc;
+        BasePage.uploadFile(listViewPage.proofDocument, docPath);
+
+        String startDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE_BREAKS,
+                YML_HEADER_JOB_DETAILS, YML_HEADER_JOB_DURATION, "Start Date");
+        BasePage.clickWithJavaScript(listViewPage.startDateInput);
+        genericUtils.selectDateFromCalendarPopup(startDate);
+
+        selectTime("Start Time", listViewPage.startTimeInput, listViewPage.startTimeAreaList, listViewPage.
+                availableStartTimes, listViewPage.startTimeSelectionOkButton);
+
+        String endDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,
+                YML_HEADER_SUBMIT_TIMESHEET, "Ends On");
+        BasePage.clickWithJavaScript(listViewPage.endDateInput);
+        genericUtils.selectDateFromCalendarPopup(endDate);
+
+        selectTime("Ends Time", listViewPage.endTimeInput, listViewPage.endTimeAreaList, listViewPage.
+                availableEndTimes, listViewPage.endTimeSelectionOkButton);
+
+        String reason = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SUBMIT_TIMESHEET,
+                "Reason to Amend Timesheet");
+        BasePage.typeWithStringBuilder(listViewPage.reasonToAmendTimesheetTextarea, reason);
+
+        selectTime("Paid Breaks Duration", listViewPage.paidBreakDurationInput, listViewPage.
+                paidBreakDurationAreaList, listViewPage.availablePaidBreakDuration,
+                listViewPage.paidBreakDurationSelectionOkButton);
+
+        selectTime("Unpaid Breaks Duration", listViewPage.unpaidBreakDurationInput, listViewPage.
+                        unpaidBreakDurationAreaList, listViewPage.availableUnpaidBreakDuration,
+                listViewPage.unpaidBreakDurationSelectionOkButton);
+
+        String paidBreaksNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,
+                YML_HEADER_SUBMIT_TIMESHEET, "Paid Breaks Note");
+        BasePage.typeWithStringBuilder(listViewPage.paidBreakNoteInput, paidBreaksNote);
+
+        String unpaidBreakNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,
+                YML_HEADER_SUBMIT_TIMESHEET, "Unpaid Breaks Note");
+        BasePage.typeWithStringBuilder(listViewPage.unpaidBreakNoteInput, unpaidBreakNote);
+
+        BasePage.waitUntilElementClickable(listViewPage.timeSheetUpdateButton, 10);
+        BasePage.clickWithJavaScript(listViewPage.timeSheetUpdateButton);
+        verifySubmitTimesheetSuccessMessage();
+    }
+
+    private void verifySubmitTimesheetSuccessMessage() {
+        BasePage.waitUntilElementPresent(listViewPage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(listViewPage.successMessage).toLowerCase().trim();
+        String expected = "Updated timesheet for worker";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Submit Timesheet is not success!", actualInLowerCase, containsString(
+                expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(listViewPage.successMessage, 20);
+    }
+
+    /**
+     * Enter care provider/ site and service preference.
+     *
+     * @param timeKey     time to be selected.
+     * @param timeField   web element to be entered.
+     * @param timeAreaList  time displaying list web element
+     * @param availableTimes  available time in the list
+     * @param okButton    Ok button web element
+     */
+    private void selectTime(String timeKey, WebElement timeField, WebElement timeAreaList,
+                            List<WebElement> availableTimes, WebElement okButton) {
+        String timeValue = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE_BREAKS,
+                YML_HEADER_JOB_DETAILS, YML_HEADER_JOB_DURATION, timeKey);
+        BasePage.clickWithJavaScript(timeField);
+        BasePage.waitUntilElementPresent(timeAreaList, 60);
+        BasePage.waitUntil(() -> !availableTimes.isEmpty(), 60);
+
+        for (WebElement timeOption : availableTimes) {
+            BasePage.scrollToWebElement(timeOption);
+            BasePage.waitUntilElementClickable(timeOption, 10);
+            if (BasePage.getTextWithoutWait(timeOption).equalsIgnoreCase(timeValue)) {
+                BasePage.clickWithJavaScript(timeOption);
+                break;
+            }
+        }
+        BasePage.clickWithJavaScript(okButton);
+    }
+
+    /**
+     * Select a date from calendar.
+     *
+     * @param element     calendar web element.
+     * @param date        date to be selected.
+     *
+     */
+    private void selectDateOnCalendar(String header, WebElement element, String date) {
+        String dateToBePicked = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE_BREAKS,
+                YML_HEADER_JOB_DETAILS, YML_HEADER_JOB_DURATION, header, date);
+        BasePage.clickWithJavaScript(element);
+        genericUtils.selectDateFromCalendarPopup(dateToBePicked);
+    }
+
+    private void clickOnSubmitTimesheetButton() {
+        BasePage.waitUntilElementClickable(listViewPage.detailViewSubmitTimesheetButtonOn, 60);
+        BasePage.clickWithJavaScript(listViewPage.detailViewSubmitTimesheetButtonOn);
+    }
+
+    private void clickOnTimesheetsButton() {
+        BasePage.waitUntilElementClickable(listViewPage.detailViewTimeSheetsButton, 60);
+        BasePage.scrollToWebElement(listViewPage.detailViewTimeSheetsButton);
+        BasePage.clickWithJavaScript(listViewPage.detailViewTimeSheetsButton);
+    }
+
+    public void approveOrDisputeTimesheet(String action) {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Approving or Disputing the timesheet >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(listViewPage.detailViewApproveTimesheetButtonOn, 60);
+        if (action.equalsIgnoreCase("Approves")) {
+            BasePage.clickWithJavaScript(listViewPage.detailViewApproveTimesheetButtonOn);
+            BasePage.waitUntilElementClickable(listViewPage.approvePopupApproveButton, 60);
+            BasePage.clickWithJavaScript(listViewPage.approvePopupApproveButton);
+            verifyApproveTimesheetSuccessMessage();
+        } else if (action.equalsIgnoreCase("Disputes")) {
+            BasePage.clickWithJavaScript(listViewPage.detailViewDisputeTimesheetButtonOn);
+            String reason = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, "Dispute Timesheet",
+                    "Reason to Dispute");
+            BasePage.waitUntilElementPresent(listViewPage.reasonToDisputeTextarea, 60);
+            BasePage.typeWithStringBuilder(listViewPage.reasonToDisputeTextarea, reason);
+            BasePage.clickWithJavaScript(listViewPage.disputePopupDisputeButton);
+        }
+    }
+
+    private void verifyApproveTimesheetSuccessMessage() {
+        BasePage.waitUntilElementPresent(listViewPage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(listViewPage.successMessage).toLowerCase().trim();
+        String expected = "Approved timesheet for worker";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Approving Timesheet is not success!", actualInLowerCase, containsString(
+                expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(listViewPage.successMessage, 20);
     }
 }

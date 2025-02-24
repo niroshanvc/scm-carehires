@@ -18,8 +18,9 @@ Feature: Test CareHires create job
 #    And User filters jobs by status as Completed
 #    And User filters jobs by status as Cancelled
 #    And User suggests a worker
-    And User rejects suggested worker
-    And User selects rejected worker
-    And User rejects selected worker
-    And User selects rejected worker
-
+#    And User rejects suggested worker
+#    And User selects rejected worker
+#    And User rejects selected worker
+#    And User selects rejected worker
+#    And User fills out the timesheets
+    And User Approves the timesheet

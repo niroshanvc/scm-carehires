@@ -13,9 +13,11 @@ public class JobsListViewPage {
 
     public static final By firstThreeDots = By.xpath("(//ch-job-list-item)[1]//button");
 
-    public static final By jobDetailsPopupThreeDots = By.xpath("//span[contains(@class, 'menu-wrapper')]//p");
+    public static final By jobDetailsPopupThreeDots = By.xpath("//span[contains(@class, 'menu-wrapper')]//" +
+            "p");
 
-    public static final By viewDetailedJobInfo = By.xpath("//nb-context-menu//a[@title='View Detailed Job Info']");
+    public static final By viewDetailedJobInfo = By.xpath("//nb-context-menu//a[@title='View Detailed Job " +
+            "Info']");
 
     public static final By copyJobDetails = By.xpath("//nb-context-menu//a[@title='Copy Job Details']");
 
@@ -36,13 +38,14 @@ public class JobsListViewPage {
 
     public static final By detailViewThreeDots = By.xpath("//span[contains(@class, 'menu-wrapper')]");
 
-    public static final By detailViewCopyJobDetails = By.xpath("//span[contains(@class, 'menu-wrapper')]//li[1]/img");
+    public static final By detailViewCopyJobDetails = By.xpath("//span[contains(@class, 'menu-wrapper')]//" +
+            "li[1]/img");
 
     public static final By detailViewAuditLog = By.xpath("//span[contains(@class, 'menu-wrapper')]//li[2]/img");
 
     public static final By detailViewCancelJob = By.xpath("//span[contains(@class, 'menu-wrapper')]//li[3]/img");
 
-    @FindBy(xpath = "//button[contains(text(),'Time Sheets')]")
+    @FindBy(xpath = "//button[contains(text(),'Timesheets')]")
     public WebElement detailViewTimeSheetsButton;
 
     @FindBy(xpath = "//nb-tabset/ul/li/a/span[text()='Eligible Workers']")
@@ -148,4 +151,91 @@ public class JobsListViewPage {
 
     @FindBy(xpath = "//nb-dialog-container//nb-card/nb-card-footer//button")
     public WebElement rejectButtonOnRejectPopup;
+
+    @FindBy(xpath = "//button[contains(text(),'Submit Timesheet')]")
+    public WebElement detailViewSubmitTimesheetButtonOn;
+
+    @FindBy(xpath = "//input[@id='start-date']")
+    public WebElement startDateInput;
+
+    @FindBy(xpath = "//input[@id='start-time']")
+    public WebElement startTimeInput;
+
+    @FindBy(xpath = "//div[@class='picker-body']")
+    public WebElement startTimeAreaList;
+
+    @FindBy(xpath = "//nb-card[contains(@class,'timepicker')]/div/nb-list//nb-timepicker-cell/div")
+    public List<WebElement> availableStartTimes;
+
+    @FindBy(xpath = "//nb-calendar-actions/button[contains(@class, 'filled')]")
+    public WebElement startTimeSelectionOkButton;
+
+    @FindBy(id = "end-date")
+    public WebElement endDateInput;
+
+    @FindBy(xpath = "//input[@id='end-time']")
+    public WebElement endTimeInput;
+
+    @FindBy(xpath = "//div[@class='picker-body']")
+    public WebElement endTimeAreaList;
+
+    @FindBy(xpath = "//nb-card[contains(@class,'timepicker')]/div/nb-list//nb-timepicker-cell/div")
+    public List<WebElement> availableEndTimes;
+
+    @FindBy(xpath = "//nb-calendar-actions/button[contains(@class, 'filled')]")
+    public WebElement endTimeSelectionOkButton;
+
+    @FindBy(xpath = "//textarea")
+    public WebElement reasonToAmendTimesheetTextarea;
+
+    @FindBy(id = "paidDuration")
+    public WebElement paidBreakDurationInput;
+
+    @FindBy(xpath = "//div[@class='picker-body']")
+    public WebElement paidBreakDurationAreaList;
+
+    @FindBy(xpath = "//nb-card[contains(@class,'timepicker')]/div/nb-list//nb-timepicker-cell/div")
+    public List<WebElement> availablePaidBreakDuration;
+
+    @FindBy(xpath = "//nb-calendar-actions/button[contains(@class, 'filled')]")
+    public WebElement paidBreakDurationSelectionOkButton;
+
+    @FindBy(id = "unpaidDuration")
+    public WebElement unpaidBreakDurationInput;
+
+    @FindBy(xpath = "//div[@class='picker-body']")
+    public WebElement unpaidBreakDurationAreaList;
+
+    @FindBy(xpath = "//nb-card[contains(@class,'timepicker')]/div/nb-list//nb-timepicker-cell/div")
+    public List<WebElement> availableUnpaidBreakDuration;
+
+    @FindBy(xpath = "//nb-calendar-actions/button[contains(@class, 'filled')]")
+    public WebElement unpaidBreakDurationSelectionOkButton;
+
+    @FindBy(id = "paidNote")
+    public WebElement paidBreakNoteInput;
+
+    @FindBy(id = "unpaidNote")
+    public WebElement unpaidBreakNoteInput;
+
+    @FindBy(xpath = "//input[@type='file']")
+    public WebElement proofDocument;
+
+    @FindBy(xpath = "//nb-card/nb-card-footer//button[contains(text(), 'Update')]")
+    public WebElement timeSheetUpdateButton;
+
+    @FindBy(xpath = "//button[contains(text(),'Approve Timesheet')]")
+    public WebElement detailViewApproveTimesheetButtonOn;
+
+    @FindBy(xpath = "//button[contains(text(),'Dispute Timesheet')]")
+    public WebElement detailViewDisputeTimesheetButtonOn;
+
+    @FindBy(xpath = "//nb-card//button")
+    public WebElement approvePopupApproveButton;
+
+    @FindBy(xpath = "//nb-card//textarea")
+    public WebElement reasonToDisputeTextarea;
+
+    @FindBy(xpath = "//nb-card//button")
+    public WebElement disputePopupDisputeButton;
 }
