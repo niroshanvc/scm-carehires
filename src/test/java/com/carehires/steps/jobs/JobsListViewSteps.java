@@ -1,7 +1,8 @@
-package com.carehires.steps;
+package com.carehires.steps.jobs;
 
 import com.carehires.actions.jobs.JobsListViewActions;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 
 public class JobsListViewSteps {
 
@@ -52,8 +53,42 @@ public class JobsListViewSteps {
         jobsListViewActions.fillingTimesheets();
     }
 
-    @And("^User (.*) the timesheet$")
+    @Then("^User (.*) the timesheet$")
     public void approveOrDisputeTimesheet(String action) {
         jobsListViewActions.approveOrDisputeTimesheet(action);
+    }
+
+    @And("User clicks on the Cancel Job menu in job detail page")
+    public void cancelJobFromJobDetailPage() {
+        jobsListViewActions.cancelJobFromDetailPage();
+    }
+
+    @And("User clicks on the Cancel Job menu in job view page")
+    public void cancelJobFromJobViewPage() {
+        jobsListViewActions.cancelJobFromViewPage();
+    }
+
+    @And("User sends a message using CH Admin Note")
+    public void sendMessageUsingChAdminNote() {
+        jobsListViewActions.chAdminNote();
+    }
+
+    @Then("User verifies ch admin note is added successfully")
+    public void chAdminNoteAddedSuccessfully() {
+        jobsListViewActions.verifyChAdminNoteSaved();
+    }
+
+    @And("User modifies the cancellation reason")
+    public void modifyCancellationReason() {
+        jobsListViewActions.modifyCancellationReason();
+    }
+
+    @And("User assign a worker to recently posted job")
+    public void assignWorkerToJob() {
+        jobsListViewActions.assignWorker();
+    }
+
+    @Then("User verifies Special Holiday worker rates")
+    public void userVerifiesSpecialHolidayWorkerRates() {
     }
 }

@@ -44,4 +44,16 @@ public class FileWriterUtils {
     public static FileWriterUtils createFileWriterUtils() {
         return new FileWriterUtils();
     }
+
+    public static void writeWorkerRatesToAFile(String fileName, String[] values) {
+        logger.info("Writing on text file: %s ", fileName);
+
+        try (FileWriter writer = new FileWriter(fileName)) {
+            writer.append(String.join(",", values));
+            writer.append("\n");
+            writer.flush();
+        } catch (IOException e) {
+            logger.error("Unable to write on file %s ", e.toString());
+        }
+    }
 }

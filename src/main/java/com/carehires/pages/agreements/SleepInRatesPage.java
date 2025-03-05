@@ -1,5 +1,6 @@
 package com.carehires.pages.agreements;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -71,5 +72,18 @@ public class SleepInRatesPage {
 
     public String getDropdownOptionXpath(String option) {
         return String.format("//nb-option[contains(text(),'%s')]", option);
+    }
+
+    public String getRateTypeCheckbox(String rateType) {
+        return String.format("//div[contains(text(), '%s')]/ancestor::tr//input", rateType);
+    }
+
+    public String getFinalRateWithVatInput(String rateType) {
+        return String.format("//div[contains(text(), '%s')]/ancestor::tr//span/input[@formcontrolname=" +
+                "'finalChargeRateVat']", rateType);
+    }
+
+    public By finalRateVat(String rateType) {
+        return By.xpath(getFinalRateWithVatInput(rateType));
     }
 }

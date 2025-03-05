@@ -34,7 +34,7 @@ public class JobsListViewPage {
 
     public static final By manageAllocations = By.xpath("//nb-context-menu//a[@title='Manage Allocations']");
 
-    public static final By cancelVacancy = By.xpath("//nb-context-menu//a[@title='Cancel Vacancy']");
+    public static final By cancelJob = By.xpath("//nb-context-menu//a[@title='Cancel Job']");
 
     public static final By detailViewThreeDots = By.xpath("//span[contains(@class, 'menu-wrapper')]");
 
@@ -65,6 +65,9 @@ public class JobsListViewPage {
 
     @FindBy(xpath = "//nb-tab[contains(@class,'content-active')]//button[contains(text(),'Reject')]")
     public WebElement rejectButtonOnViewJobDetailPopup;
+
+    @FindBy(xpath = "//nb-tab[contains(@class,'content-active')]//button[contains(text(),'Select')]")
+    public WebElement selectButtonOnViewJobDetailPopup;
 
     public String getDropdownOptionXpath(String option) {
         return String.format("//nb-option[contains(text(),'%s')]", option);
@@ -128,7 +131,7 @@ public class JobsListViewPage {
     public WebElement continueButtonOnCancelJobPopup;
 
     @FindBy(xpath = "//span[contains(text(), 'Suggest')]/parent::button")
-    public WebElement suggestButtonOnJobDetailsPopup;
+    public List<WebElement> suggestButtonOnJobDetailsPopup;
 
     @FindBy(xpath = "//p[contains(text(), 'Suggest this worker')]/parent::button")
     public WebElement suggestThisWorkerButton;
@@ -238,4 +241,41 @@ public class JobsListViewPage {
 
     @FindBy(xpath = "//nb-card//button")
     public WebElement disputePopupDisputeButton;
+
+    @FindBy(xpath = "(//ch-job-list-item)[1]/div[2]//p[contains(@class, 'job-id')]//img")
+    public WebElement firstCopyJobIdIcon;
+
+    @FindBy(xpath = "//button[text()='Cancel Job']")
+    public WebElement cancelJobButton;
+
+    @FindBy(xpath = "//quill-editor//p")
+    public WebElement cheAdminNoteInput;
+
+    @FindBy(xpath = "//nb-card/nb-card-footer//button")
+    public WebElement chAdminNoteSaveButton;
+
+    @FindBy(xpath = "//button[@nbcontextmenutrigger='hover']/preceding-sibling::div/div/span[contains(@style, 'blue')]" +
+            "/following-sibling::span")
+    public WebElement jobViewChAdminNote;
+
+    public static final By modifyCancellationReason = By.xpath("//nb-context-menu//a[@title=" +
+            "'Modify Cancellation Reason']");
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='reason']/button")
+    public WebElement reasonDropdownButtonOnModifyCancellationReason;
+
+    @FindBy(xpath = "//nb-card//button[contains(@class, 'primary')]")
+    public WebElement modifyCancellationReasonSaveButton;
+
+    @FindBy(xpath = "//nb-card//form//textarea")
+    public WebElement statementOfWorkNoteTextarea;
+
+    @FindBy(xpath = "//nb-card//form//input[@type='checkbox']")
+    public WebElement statementOfWorkConfirmCheckbox;
+
+    @FindBy(xpath = "//nb-card//form//nb-checkbox")
+    public WebElement statementOfWorkCheckboxSelectOrNot;
+
+    @FindBy(xpath = "//nb-card/nb-card-footer//button[contains(text(), 'Select')]")
+    public WebElement statementOfWorkSelectButton;
 }

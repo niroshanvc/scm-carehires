@@ -53,9 +53,6 @@ public class ViewAgreementOverviewPage {
     @FindBy(xpath = "//button[contains(text(), 'Activate Agreement')]")
     public WebElement activateAgreementButton;
 
-    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//nb-icon[@nbtooltip]")
-    public WebElement workerRatesViewIcon;
-
     @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[2]")
     public WebElement workerRatesTableWorkerType;
 
@@ -302,4 +299,32 @@ public class ViewAgreementOverviewPage {
 
     @FindBy(linkText = "Download Agreement")
     public WebElement downloadAgreement;
+
+    @FindBy(xpath = "(//table[@class='table ch-table'])[1]//td[1]/div[2][contains(text(),'AGR')]")
+    public WebElement firstId;
+
+    @FindBy(id = "business-name")
+    public WebElement searchInput;
+
+    @FindBy(xpath = "//div[@class='result result-active']")
+    public WebElement firstSearchedResult;
+
+    public String getAgencyCostNoVat(String rateType) {
+        return String.format("//div[contains(text(), '%s')]/ancestor::tr/td[5]/span/div[2]/div[2]", rateType);
+    }
+
+    public String getAgencyCostVat(String rateType) {
+        return String.format("//div[contains(text(), '%s')]/ancestor::tr/td[5]/span/div[1]/div[2]", rateType);
+    }
+
+    public String getChHourlyMargin(String rateType) {
+        return String.format("//div[contains(text(), '%s')]/ancestor::tr/td[6]", rateType);
+    }
+
+    public String getChHourlyVat(String rateType) {
+        return String.format("//div[contains(text(), '%s')]/ancestor::tr/td[7]/p", rateType);
+    }
+
+    @FindBy(xpath = "//tr/td[10]//nb-icon[contains(@nbtooltip, 'Special')]")
+    public WebElement workerRatesViewIcon;
 }

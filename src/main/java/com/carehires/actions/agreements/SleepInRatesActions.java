@@ -20,6 +20,11 @@ public class SleepInRatesActions {
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
     private static final String YML_HEADER = "Sleep In Rates";
+    private static final String NORMAL_RATE = "Normal Rate";
+    private static final String SPECIAL_HOLIDAY_RATE = "Special Holiday Rate";
+    private static final String BANK_HOLIDAY_RATE = "Bank Holiday Rate";
+    private static final String FRIDAY_NIGHT_RATE = "Friday Night Rate";
+    private static final String FINAL_RATE_WITH_VAT = "Final Rate with Vat";
     private String workerType;
     private String hourlyRate;
     private String agencyMargin;
@@ -49,14 +54,17 @@ public class SleepInRatesActions {
         BasePage.clickWithJavaScript(sleepInRatesPage.getDropdownOptionXpath(workerType));
 
         BasePage.scrollToWebElement(sleepInRatesPage.fridayNightRate);
-        hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Hourly Rate");
+        hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+                "Hourly Rate");
         BasePage.waitUntilElementDisplayed(sleepInRatesPage.normalRateHourlyRateInput, 20);
         BasePage.clearAndEnterTexts(sleepInRatesPage.normalRateHourlyRateInput, hourlyRate);
 
-        agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Agency Margin");
+        agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+                "Agency Margin");
         BasePage.clearAndEnterTexts(sleepInRatesPage.normalRateAgencyMarginInput, agencyMargin);
 
-        chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "CH Hourly Margin");
+        chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+                "CH Hourly Margin");
         BasePage.clearAndEnterTexts(sleepInRatesPage.normalRateChHourlyMarginInput, chHourlyMargin);
         BasePage.clickTabKey(sleepInRatesPage.normalRateChHourlyMarginInput);
 
@@ -66,6 +74,21 @@ public class SleepInRatesActions {
         verifyNormalRateChHourlyVat();
         verifyNormalRateFinalRateWithVatAmount();
         verifyNormalRateFinalRateWithNoVatAmount();
+
+        String specialHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                SPECIAL_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
+        enableRate(SPECIAL_HOLIDAY_RATE);
+        fillFinalRateVat(SPECIAL_HOLIDAY_RATE, specialHolidayVat);
+
+        String bankHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                BANK_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
+        enableRate(BANK_HOLIDAY_RATE);
+        fillFinalRateVat(BANK_HOLIDAY_RATE, bankHolidayVat);
+
+        String fridayNightVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                FRIDAY_NIGHT_RATE, FINAL_RATE_WITH_VAT);
+        enableRate(FRIDAY_NIGHT_RATE);
+        fillFinalRateVat(FRIDAY_NIGHT_RATE, fridayNightVat);
 
         BasePage.scrollToWebElement(sleepInRatesPage.addButton);
         BasePage.clickWithJavaScript(sleepInRatesPage.addButton);
@@ -231,5 +254,14 @@ public class SleepInRatesActions {
         String expectedString = roundToTwoDecimalPlaces(expected);
         String actual = getNormalRateAgencyVatAmount();
         assertThat("Normal Rate Agency VAT Amount is incorrect", actual, is(expectedString));
+    }
+
+    private void enableRate(String rateType) {
+        BasePage.clickWithJavaScript(sleepInRatesPage.getRateTypeCheckbox(rateType));
+    }
+
+    private void fillFinalRateVat(String rateType, String value) {
+        BasePage.waitUntilElementClickable(sleepInRatesPage.getFinalRateWithVatInput(rateType), 30);
+        BasePage.sendKeys(sleepInRatesPage.finalRateVat(rateType), value);
     }
 }

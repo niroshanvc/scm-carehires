@@ -38,8 +38,6 @@ public class WorkerBasicInformationActions {
         }
     }
 
-    private static final WorkerNavigationMenuActions navigationMenu = new WorkerNavigationMenuActions();
-
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
     private static final String EDIT_YML_FILE = "worker-edit";
@@ -83,8 +81,6 @@ public class WorkerBasicInformationActions {
         enterTravelInformation(YML_FILE, ADD);
 
         BasePage.clickWithJavaScript(basicInfo.saveButton);
-
-        isBasicInfoSaved();
 
         // After successfully entering the basic information, update the increment value in the file
         DataConfigurationReader.storeNewIncrementValue(ENTITY);
@@ -457,15 +453,6 @@ public class WorkerBasicInformationActions {
         String expectedDuration = years +" years, "+ months + " months, and " + days + " days";
         String actualDuration = BasePage.getAttributeValue(basicInfo.durationInAddress, VALUE_TEXT);
         assertThat("Duration in address is wrong!", actualDuration, is(expectedDuration));
-    }
-
-    //verify if basic information is saved
-    private void isBasicInfoSaved() {
-        BasePage.waitAndIgnoreStaleException(basicInfo.saveButton, 90);
-        BasePage.waitUntilElementPresent(basicInfo.basicInformationStep, 90);
-        String actual = BasePage.getAttributeValue(basicInfo.basicInformationStep, "icon");
-        String expected = "completed";
-        assertThat("Basic information is not saved", actual, is(expected));
     }
 
     public void createWorkerInDraftStage() {

@@ -295,6 +295,18 @@ public class BasePage {
         element.sendKeys(data);
     }
 
+    public static void sendKeys(By by, String data) {
+        logger.info("****************** Type using by locator in %s", by);
+        WebElement element = null;
+        try {
+            element = getDriver().findElement(by);
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+        element.clear();
+        element.sendKeys(data);
+    }
+
     public static String getText(WebElement element) {
         logger.info("****************** Get text in %s", element);
         waitUntilElementPresent(element, 30);

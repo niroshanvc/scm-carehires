@@ -24,6 +24,9 @@ Feature: Test CareHires create agreement with disable Bid4Care
     And User verifies agreement signature status as INACTIVE
     And User marks it as active again
     And User verifies agreement signature status as ACTIVE
+    And User moves to worker rates popup
+    And User write downs Special Holiday Rate worker rates into a text file
+    And User write downs Bank Holiday Rate worker rates into a text file
 
   @CreateAgreementForDDProvider
   Scenario: Create an agreement

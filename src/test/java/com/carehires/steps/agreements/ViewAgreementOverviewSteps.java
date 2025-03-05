@@ -87,4 +87,14 @@ public class ViewAgreementOverviewSteps {
     public void downloadAgreement() {
         viewAgreementOverviewActions.downloadAndDeleteAgreement();
     }
+
+    @And("^User write downs (.*) worker rates into a text file$")
+    public void writeWorkerRates(String rateType) {
+        viewAgreementOverviewActions.writeDownWorkerRates(rateType);
+    }
+
+    @And("User moves to worker rates popup")
+    public void moveToWorkerRatesPopup() {
+        viewAgreementOverviewActions.openWorkerRatesPopup();
+    }
 }

@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 
 public class ClipboardUtils {
 
@@ -24,5 +26,16 @@ public class ClipboardUtils {
         }
 
         return "";
+    }
+
+    public static String getCopiedJobId() {
+        String clipboardText = "";
+        try {
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboardText = (String) clipboard.getData(DataFlavor.stringFlavor);
+        } catch (UnsupportedFlavorException | IOException e) {
+            logger.error("An error occurred when calling the getCopiedJobId() {}", e.toString());
+        }
+        return clipboardText;
     }
 }

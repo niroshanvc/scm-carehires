@@ -102,6 +102,7 @@ public class WorkerEducationAndTrainingActions {
                 + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
                 + uploadCertificate1;
         BasePage.uploadFile(educationAndTrainingPage.uploadCertificate, absoluteFilePath1);
+        BasePage.genericWait(2000);
 
         // click on the Add button
         BasePage.clickWithJavaScript(educationAndTrainingPage.addButton);

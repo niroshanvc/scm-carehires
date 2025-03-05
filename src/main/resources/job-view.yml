@@ -1,5 +1,8 @@
 Cancel Job:
-  Reason: "Cancelling to repost"
+  Reason: "Other"
+  Description: "Job cancel description added."
+Modify Cancel Job:
+  Reason: "No agencies available"
   Description: "Job cancel description added."
 Suggested Worker:
   Reject Worker:
@@ -17,4 +20,7 @@ Submit Timesheet:
   Unpaid Breaks Note: Here is the unpaid breaks description.
 Dispute Timesheet:
   Reason to Dispute: Here is the note to dispute the timesheet.
-
+Ch Admin Note: Here is the sample text for admin note.
+Manage Allocation:
+  Select Worker:
+    Note: Here is the note for the selected worker.

@@ -14,4 +14,9 @@ public class JobsLandingSteps {
     @And("User finds recently posted job")
     public void userFindsRecentlyPostedJob() {
     }
+
+    @And("User creates a job")
+    public void createJob() {
+        jobsLanding.createNewJob();
+    }
 }
