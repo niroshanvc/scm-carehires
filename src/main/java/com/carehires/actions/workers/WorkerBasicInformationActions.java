@@ -92,10 +92,12 @@ public class WorkerBasicInformationActions {
     private void enterTravelInformation(String ymlFile, String subHeader) {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Travel & Other Information >>>>>>>>>>>>>>>>>>>>");
         expandSubSection(basicInfo.travelInformationHeader, basicInfo.travelInformationHeaderExpandIcon);
-        String travelDistance = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, "Travel Information", subHeader, "PreferredTravelDistance");
+        String travelDistance = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                "Travel Information", subHeader, "PreferredTravelDistance");
         BasePage.clearAndEnterTexts(basicInfo.travelDistance, travelDistance);
 
-        String isDrivingLicenceAvailable = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, "Travel Information", subHeader, "DrivingLicence");
+        String isDrivingLicenceAvailable = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
+                YML_HEADER, "Travel Information", subHeader, "DrivingLicence");
         assert isDrivingLicenceAvailable != null;
         if (isDrivingLicenceAvailable.equalsIgnoreCase("Yes")) {
             BasePage.clickWithJavaScript((basicInfo.hasDrivingLicenseRadioButton).get(0));
@@ -112,48 +114,58 @@ public class WorkerBasicInformationActions {
         BasePage.scrollToWebElement(basicInfo.travelInformationHeader);
 
         if (!nationality.equalsIgnoreCase("British")) {
-            String passportNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_5, subHeader, "PassportNumber");
+            String passportNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_SUB_HEADER_5, subHeader, "PassportNumber");
             BasePage.clearAndEnterTexts(basicInfo.passportNumber, passportNumber);
 
-            String issuedCountry = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_5, subHeader, "IssuedCountry");
+            String issuedCountry = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_SUB_HEADER_5, subHeader, "IssuedCountry");
             BasePage.clickWithJavaScript(basicInfo.issuedCountryDropdown);
             BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(issuedCountry), 30);
             BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(issuedCountry));
 
-            String visaType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_5, subHeader, "VisaType");
+            String visaType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_SUB_HEADER_5, subHeader, "VisaType");
             BasePage.clickWithJavaScript(basicInfo.visaTypeDropdown);
             BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(visaType), 30);
             BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(visaType));
 
             // to view maximum weekly hours field
             BasePage.clickWithJavaScript(basicInfo.passportNumber);
-            String maximumHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_5, subHeader, "MaximumWeeklyHours");
+            String maximumHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_SUB_HEADER_5, subHeader, "MaximumWeeklyHours");
             BasePage.waitUntilElementPresent(basicInfo.maximumWeeklyHours, 20);
             BasePage.clearAndEnterTexts(basicInfo.maximumWeeklyHours, maximumHours);
 
             assert visaType != null;
-            if (visaType.equalsIgnoreCase("Health and care worker visa") || visaType.equalsIgnoreCase("Skilled Worker")) {
-                String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_5, subHeader, "CompanyName");
+            if (visaType.equalsIgnoreCase("Health and care worker visa") || visaType.equalsIgnoreCase(
+                    "Skilled Worker")) {
+                String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                        YML_SUB_HEADER_5, subHeader, "CompanyName");
                 BasePage.clearAndEnterTexts(basicInfo.companyNameCosDocument, companyName);
             }
 
-            String shareCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_5, subHeader, "ShareCode");
+            String shareCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_SUB_HEADER_5, subHeader, "ShareCode");
             assert shareCode != null;
             if (!shareCode.equalsIgnoreCase("same")) {
                 BasePage.clearAndEnterTexts(basicInfo.shareCode, shareCode);
             }
         }
 
-        String nationalInsuranceNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_5, subHeader, "NationalInsuranceNumber");
+        String nationalInsuranceNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER_5, subHeader, "NationalInsuranceNumber");
         assert nationalInsuranceNumber != null;
         if (!nationalInsuranceNumber.equalsIgnoreCase("same")) {
             BasePage.clearAndEnterTexts(basicInfo.nationalInsuranceNumber, nationalInsuranceNumber);
         }
 
-        String dbs = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_5, subHeader, "DbsCertificateNumber");
+        String dbs = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_5,
+                subHeader, "DbsCertificateNumber");
         BasePage.clearAndEnterTexts(basicInfo.dbsCertificateNumber, dbs);
 
-        String isConviction = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_5, subHeader, "IsThereAnyConviction");
+        String isConviction = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER_5, subHeader, "IsThereAnyConviction");
         assert isConviction != null;
         if (isConviction.equalsIgnoreCase("Yes")) {
             BasePage.clickWithJavaScript((basicInfo.hasConvictionRadioButton).get(0));
@@ -180,16 +192,19 @@ public class WorkerBasicInformationActions {
             handleRegulatorySettingsForUpdate();
         }
 
-        String employmentType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_4, subHeader, "WorkerEmploymentType");
+        String employmentType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER_4, subHeader, "WorkerEmploymentType");
         if (Objects.requireNonNull(employmentType).equalsIgnoreCase("paye")) {
             BasePage.clickWithJavaScript(basicInfo.payeEmploymentTypeRadio);
             BasePage.waitUntilElementPresent(basicInfo.payrollReferenceNumberInput, 10);
-            String text = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_4, subHeader, "WorkerEmploymentTypeValue");
+            String text = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_SUB_HEADER_4, subHeader, "WorkerEmploymentTypeValue");
             BasePage.clearAndEnterTexts(basicInfo.payrollReferenceNumberInput, text);
         } else if (employmentType.equalsIgnoreCase("umbrella")) {
             BasePage.clickWithJavaScript(basicInfo.umbrellaEmploymentTypeRadio);
             BasePage.waitUntilElementPresent(basicInfo.umbrellaCompanyNameInput, 10);
-            String text = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_4, subHeader, "WorkerEmploymentTypeValue");
+            String text = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_SUB_HEADER_4, subHeader, "WorkerEmploymentTypeValue");
             BasePage.clearAndEnterTexts(basicInfo.umbrellaCompanyNameInput, text);
         } else {
             BasePage.clickWithJavaScript(basicInfo.otherEmploymentTypeRadio);
@@ -197,7 +212,8 @@ public class WorkerBasicInformationActions {
     }
 
     private String fetchWorkerType(String ymlFile, String subHeader) {
-        return DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_4, subHeader, "WorkerType");
+        return DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_4,
+                subHeader, "WorkerType");
     }
 
     private void selectWorkerType(String workerType) {
@@ -207,7 +223,8 @@ public class WorkerBasicInformationActions {
     }
 
     private void handleSkillsForAdd(String ymlFile) {
-        String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_4, ADD, "Skills")).split(",");
+        String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
+                YML_HEADER, YML_SUB_HEADER_4, ADD, "Skills")).split(",");
         BasePage.clickWithJavaScript(basicInfo.workerSkillsDropdown);
         BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(skills[0]), 20);
         for (String skill : skills) {
@@ -226,12 +243,14 @@ public class WorkerBasicInformationActions {
 
     private Set<String> fetchDesiredSkills() {
         return new HashSet<>(Arrays.asList(
-                Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, YML_SUB_HEADER_4, UPDATE, "Skills")).split(",")
+                Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE,
+                        YML_HEADER, YML_SUB_HEADER_4, UPDATE, "Skills")).split(",")
         ));
     }
 
     private void handleRegulatorySettingsForAdd(String ymlFile) {
-        String[] settings = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_4, ADD, "RegulatorySettings")).split(",");
+        String[] settings = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
+                YML_HEADER, YML_SUB_HEADER_4, ADD, "RegulatorySettings")).split(",");
         BasePage.clickWithJavaScript(basicInfo.regulatorySettingsDropdown);
         BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(settings[0]), 20);
         for (String setting : settings) {
@@ -250,7 +269,8 @@ public class WorkerBasicInformationActions {
 
     private Set<String> fetchDesiredRegulatorySettings() {
         return new HashSet<>(Arrays.asList(
-                Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, YML_SUB_HEADER_4, UPDATE, "RegulatorySettings")).split(",")
+                Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE,
+                        YML_HEADER, YML_SUB_HEADER_4, UPDATE, "RegulatorySettings")).split(",")
         ));
     }
 
@@ -277,31 +297,37 @@ public class WorkerBasicInformationActions {
 
     private void enterResidentialAddressInformation(String ymlFile, String subHeader) {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Residential Address Information >>>>>>>>>>>>>>>>>>>>");
-        expandSubSection(basicInfo.residentialAddressInformationHeader, basicInfo.residentialAddressInformationHeaderExpandIcon);
-        String country = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_3, subHeader, "Country");
+        expandSubSection(basicInfo.residentialAddressInformationHeader, basicInfo.
+                residentialAddressInformationHeaderExpandIcon);
+        String country = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER_3, subHeader, "Country");
         BasePage.clickWithJavaScript(basicInfo.countryDropdown);
         BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(country));
 
         //enter postcode and select a valid address
-        String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_3, subHeader, "PostCode");
+        String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER_3, subHeader, "PostCode");
         BasePage.clickWithJavaScript(basicInfo.postcode);
         if (Objects.requireNonNull(country).equalsIgnoreCase("United Kingdom")) {
             genericUtils.fillAddress(basicInfo.postcode, postcode, 190);
         } else {
             BasePage.clearAndEnterTexts(basicInfo.postcode, postcode);
-            String residentialAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_3, subHeader, "ResidentialAddress");
+            String residentialAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                 YML_SUB_HEADER_3, subHeader, "ResidentialAddress");
             BasePage.clearAndEnterTexts(basicInfo.residentialAddressInput, residentialAddress);
         }
 
         //scroll down to employment information
         BasePage.scrollToWebElement(basicInfo.employmentInformationHeader);
 
-        String fromDateMonthYear = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_3, subHeader, "From");
+        String fromDateMonthYear = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER_3, subHeader, "From");
         BasePage.clickWithJavaScript(basicInfo.livingFrom);
         genericUtils.selectDateFromCalendarPopup(fromDateMonthYear);
 
         if (country.equalsIgnoreCase("United Kingdom")) {
-            String currentlyLivingThisAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_3, subHeader, "CurrentlyLivingInThisAddress");
+            String currentlyLivingThisAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
+                    YML_HEADER, YML_SUB_HEADER_3, subHeader, "CurrentlyLivingInThisAddress");
             assert currentlyLivingThisAddress != null;
             if(currentlyLivingThisAddress.equalsIgnoreCase("Yes")) {
                 String text = BasePage.getAttributeValue(basicInfo.isCurrentlyLivingCheckboxChecked, CLASS_TEXT);
@@ -310,12 +336,14 @@ public class WorkerBasicInformationActions {
                     BasePage.waitUntilElementDisappeared(basicInfo.livingTo, 20);
                 }
             } else {
-                String toDateMonthYear = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_3, subHeader, "To");
+                String toDateMonthYear = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                        YML_SUB_HEADER_3, subHeader, "To");
                 BasePage.clickWithJavaScript(basicInfo.livingTo);
                 genericUtils.selectDateFromCalendarPopup(toDateMonthYear);
             }
         } else {
-            String toDateMonthYear = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_3, subHeader, "To");
+            String toDateMonthYear = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_SUB_HEADER_3, subHeader, "To");
             BasePage.clickWithJavaScript(basicInfo.livingTo);
             genericUtils.selectDateFromCalendarPopup(toDateMonthYear);
         }
@@ -324,7 +352,8 @@ public class WorkerBasicInformationActions {
         verifyDurationInAddress(ymlFile, subHeader);
 
         //upload proof of address document
-        String document = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_3, subHeader, "ProofOfAddressDocument");
+        String document = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER_3, subHeader, "ProofOfAddressDocument");
         String absoluteFilePath1 = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
                 + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
                 + document;
@@ -336,7 +365,8 @@ public class WorkerBasicInformationActions {
     private void enterPersonalInformation(String ymlFile, String subHeader) {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Personal Information >>>>>>>>>>>>>>>>>>>>");
         //upload a logo
-        String workerImage = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2, subHeader, "WorkerLogo");
+        String workerImage = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER_2, subHeader, "WorkerLogo");
         String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
                 + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
                 + workerImage;
@@ -345,28 +375,36 @@ public class WorkerBasicInformationActions {
         BasePage.waitUntilElementDisplayed(basicInfo.imageSaveButton, 60);
         BasePage.clickWithJavaScript(basicInfo.imageSaveButton);
 
-        String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2, subHeader, "FirstName");
+        String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER_2, subHeader, "FirstName");
         BasePage.clearAndEnterTexts(basicInfo.firstName, firstName);
 
-        String lastName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2, subHeader, "LastName");
+        String lastName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER_2, subHeader, "LastName");
         BasePage.clearAndEnterTexts(basicInfo.lastName, lastName);
 
-        String alsoKnownAs = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2, subHeader, "AlsoKnownAs");
+        String alsoKnownAs = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER_2, subHeader, "AlsoKnownAs");
         BasePage.clearAndEnterTexts(basicInfo.alsoKnownAs, alsoKnownAs);
 
-        String workerEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2, subHeader, "WorkerEmailAddress");
+        String workerEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER_2, subHeader, "WorkerEmailAddress");
         BasePage.clearAndEnterTexts(basicInfo.email, workerEmail);
 
         BasePage.scrollToWebElement(basicInfo.passportInformationHeader);
 
-        genericUtils.fillPhoneNumber(ENTITY, ymlFile, basicInfo.phoneNumberInput, YML_HEADER, YML_SUB_HEADER_2, subHeader, "PhoneNumberType");
-        genericUtils.fillPhoneNumber(ENTITY, ymlFile, basicInfo.phoneNumberInput, YML_HEADER, YML_SUB_HEADER_2, subHeader, "PhoneNumber");
+        genericUtils.fillPhoneNumber(ENTITY, ymlFile, basicInfo.phoneNumberInput, YML_HEADER, YML_SUB_HEADER_2,
+                subHeader, "PhoneNumberType");
+        genericUtils.fillPhoneNumber(ENTITY, ymlFile, basicInfo.phoneNumberInput, YML_HEADER, YML_SUB_HEADER_2,
+                subHeader, "PhoneNumber");
 
-        String dateOfBirth = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2, subHeader, "DateOfBirth");
+        String dateOfBirth = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER_2, subHeader, "DateOfBirth");
         BasePage.clickWithJavaScript(basicInfo.dateOfBirth);
         genericUtils.selectDateFromCalendarPopup(dateOfBirth);
 
-        String gender = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2, subHeader, "Gender");
+        String gender = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2,
+                subHeader, "Gender");
         assert gender != null;
         if (gender.equalsIgnoreCase("Male")) {
             BasePage.clickWithJavaScript((basicInfo.genderRadioButton).get(0));
@@ -376,14 +414,23 @@ public class WorkerBasicInformationActions {
             BasePage.clickWithJavaScript((basicInfo.genderRadioButton).get(2));
         }
 
-        nationality = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2, subHeader, "Nationality");
+        nationality = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2,
+                subHeader, "Nationality");
         BasePage.clickWithJavaScript(basicInfo.nationalityDropdown);
         BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(nationality));
     }
 
     private void enterAgencyInformation(String ymlFile, String subHeader) {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Agency Information >>>>>>>>>>>>>>>>>>>>");
-        String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, "Agency Information", subHeader, "Agency");
+        // Retrieve the latest agency increment value
+        int agencyIncrementValue = DataConfigurationReader.getCurrentIncrementValue("agency");
+
+        // Read agency name from YAML and replace <agencyIncrement> placeholder
+        String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                "Agency Information", subHeader, "Agency");
+        assert agencyTemplate != null;
+        String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
+
         BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(basicInfo.agencyDropdown);
         By by = By.xpath(basicInfo.getDropdownOptionXpath(agency));
@@ -392,7 +439,8 @@ public class WorkerBasicInformationActions {
         BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(agency));
 
         BasePage.genericWait(2000);
-        String agencyLocation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_AGENCY_FILE, "Agency Business Location", UPDATE, "BusinessLocation");
+        String agencyLocation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_AGENCY_FILE,
+                "Agency Business Location", UPDATE, "BusinessLocation");
         BasePage.clickWithJavaScript(basicInfo.agencyLocationDropdown);
         BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(agencyLocation), 30);
         selectAllAgencyLocations();
@@ -424,7 +472,8 @@ public class WorkerBasicInformationActions {
 
     private void verifyDurationInAddress(String ymlFile, String subHeader) {
         String fromDate = BasePage.getAttributeValue(basicInfo.livingFrom, VALUE_TEXT);
-        String currentlyLivingThisAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_3, subHeader, "CurrentlyLivingInThisAddress");
+        String currentlyLivingThisAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
+                YML_HEADER, YML_SUB_HEADER_3, subHeader, "CurrentlyLivingInThisAddress");
 
         // Define the date format (e.g., 13 Nov 2019)
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");

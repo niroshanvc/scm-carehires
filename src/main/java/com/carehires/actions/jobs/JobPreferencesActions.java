@@ -69,7 +69,14 @@ public class JobPreferencesActions {
             BasePage.genericWait(1000);
 
             if (shouldEnable) {
-                String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Agency");
+                // Retrieve the latest agency increment value
+                int agencyIncrementValue = DataConfigurationReader.getCurrentIncrementValue("agency");
+
+                // Read agency name from YAML and replace <agencyIncrement> placeholder
+                String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Agency");
+                assert agencyTemplate != null;
+                String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
+
                 BasePage.waitUntilElementPresent(jobPreferencesPage.agencyDropdown, 60);
                 BasePage.clickWithJavaScript(jobPreferencesPage.agencyDropdown);
                 By by = By.xpath(jobPreferencesPage.getDropdownOptionXpath(agency));

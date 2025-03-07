@@ -58,6 +58,8 @@ public class AgencyProfileActions {
         String actual = BasePage.getText(agencyProfile.profileStatus).toLowerCase().trim();
         String expected = status.toLowerCase();
         assertThat("Agent profile status is not valid", actual, is(expected));
+        int agencyIncrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
+        GlobalVariables.storeIncrementedValue(ENTITY, agencyIncrementValue);
     }
 
     private void waitUntilCreatingPaymentProfilePopupGetDisappeared() {

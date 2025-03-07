@@ -179,10 +179,10 @@ public class ViewAgreementOverviewPage {
     @FindBy(xpath = "//button[contains(text(), 'Edit Sites')]")
     public WebElement editSitesButton;
 
-    @FindBy(xpath = "//p[contains(text(),'Automation Master')]/../..//nb-checkbox//span[contains(@class, 'checkbox')]")
+    @FindBy(xpath = "//p[contains(text(),'AUTO Master')]/../..//nb-checkbox//span[contains(@class, 'checkbox')]")
     public WebElement removingSite;
 
-    @FindBy(xpath = "//p[contains(text(),'Automation Master')]/../..//nb-checkbox//input")
+    @FindBy(xpath = "//p[contains(text(),'AUTO Master')]/../..//nb-checkbox//input")
     public WebElement manageSiteAddRemoveCheckbox;
 
     @FindBy(xpath = "//span[text()='Apply']")

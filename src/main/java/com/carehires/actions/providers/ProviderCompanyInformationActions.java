@@ -24,6 +24,11 @@ public class ProviderCompanyInformationActions {
     
     ProviderCompanyInformationPage companyInformationPage;
     GenericUtils genericUtils;
+    ProviderSiteManagementActions siteManagementActions;
+    ProviderWorkerStaffActions workerStaffActions;
+    ProviderUserManagementActions userManagementActions;
+    ProviderBillingInformationActions billingInformationActions;
+    ProviderSubContractingAgreementActions subContractingAgreementActions;
 
     {
         try {
@@ -291,5 +296,16 @@ public class ProviderCompanyInformationActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Company information update success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(companyInformationPage.successMessage, 20);
+    }
+
+    public void completeProviderCreationSteps() {
+        enterCompanyInformation();
+        siteManagementActions.addSiteManagementData();
+        workerStaffActions.addingWorkerStaffData();
+        workerStaffActions.clickingOnAddButton();
+        workerStaffActions.moveToUserManagementPage();
+        userManagementActions.addUser();
+        billingInformationActions.savingGeneralBillingInformation();
+        subContractingAgreementActions.clickOnCompleteProfileButton();
     }
 }

@@ -20,7 +20,7 @@ import java.util.Set;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class ProvidersSiteManagementActions {
+public class ProviderSiteManagementActions {
 
     private final ProvidersSiteManagementPage siteManagementPage;
     private static final GenericUtils genericUtils;
@@ -44,10 +44,10 @@ public class ProvidersSiteManagementActions {
     private static final String YML_HEADER_DATASET1 = "Dataset1";
     private static final String YML_HEADER_DATASET2 = "Dataset2";
     private static final String SITE_SPECIALISM = "SiteSpecialism";
-    private static final Logger logger = LogManager.getFormatterLogger(ProvidersSiteManagementActions.class);
+    private static final Logger logger = LogManager.getFormatterLogger(ProviderSiteManagementActions.class);
     Integer incrementValue;
 
-    public ProvidersSiteManagementActions() {
+    public ProviderSiteManagementActions() {
         siteManagementPage = new ProvidersSiteManagementPage();
         try {
             PageFactory.initElements(BasePage.getDriver(), siteManagementPage);

@@ -1,9 +1,9 @@
 Basic Information:
   Agency Information:
     Add:
-      Agency: Automation Agency 356
+      Agency: AUTO AGN "<agencyIncrement>"
     Update:
-      Agency: Automation Agency 356
+      Agency: Automation Agency "<agencyIncrement>"
 
   Personal Information:
     Add:

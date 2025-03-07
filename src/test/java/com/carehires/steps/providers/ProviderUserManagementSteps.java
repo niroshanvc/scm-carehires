@@ -3,7 +3,7 @@ package com.carehires.steps.providers;
 import com.carehires.actions.providers.ProviderUserManagementActions;
 import io.cucumber.java.en.And;
 
-public class ProvidersUserManagementSteps {
+public class ProviderUserManagementSteps {
 
     ProviderUserManagementActions userManagementActions = new ProviderUserManagementActions();
 

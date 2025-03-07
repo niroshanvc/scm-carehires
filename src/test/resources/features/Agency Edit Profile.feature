@@ -9,7 +9,7 @@ Feature: Test CareHires edit agency and make profile approved
   @EditAgency
   Scenario: Edit agency details where profile is in draft stage
     When User navigates to Agency Create page
-    And User creates a agency in draft stage
+    And User creates an agency in draft stage
     And User moves to Agency - Basic Information page again
     And User collects agencyId from Basic Information page
     And User logins off from Carehires

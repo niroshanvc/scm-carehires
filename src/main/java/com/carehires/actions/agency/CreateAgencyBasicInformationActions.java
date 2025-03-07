@@ -21,6 +21,12 @@ public class CreateAgencyBasicInformationActions {
 
     CreateAgencyBasicInfoPage createAgencyBasicInfoPage;
     private static final GenericUtils genericUtils;
+    AgencyBusinessLocationsActions businessLocationsActions;
+    AgencyCreditServiceActions creditServiceActions;
+    AgencyStaffActions staffActions;
+    BillingProfileManagementActions billingProfileManagementActions;
+    AgencyUserManagementActions userManagementActions;
+    SubContractingAgreementActions subContractingAgreementActions;
 
     static {
         try {
@@ -151,4 +157,17 @@ public class CreateAgencyBasicInformationActions {
         String agencyId = headerText.split("\n")[0];
         GlobalVariables.setVariable("agencyId", agencyId);
     }
+
+    public void completeCreateAgencyProcess() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Completing new agency creation >>>>>>>>>>>>>>>>>>>>");
+        enterBasicInfo();
+        creditServiceActions.enterCreditServiceInformation();
+        businessLocationsActions.addLocationDetails();
+        staffActions.addStaff();
+        billingProfileManagementActions.addBilling();
+        userManagementActions.addUser();
+        subContractingAgreementActions.clickOnCompleteProfileButton();
+    }
+
 }

@@ -3,7 +3,7 @@ package com.carehires.utils;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
-public class RecentWeekendUtil {
+public class RecentWeekendUtils {
 
     public static LocalDate getMostRecentWeekend() {
         LocalDate today = LocalDate.now();

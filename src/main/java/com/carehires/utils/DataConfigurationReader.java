@@ -30,6 +30,9 @@ public class DataConfigurationReader {
     private static final String INCREMENT_FILE_PATH_AGREEMENT = "src/main/resources/agreement_increment_value.txt";
     private static final String INCREMENT_VALUE = "_incrementValue";
     private static final String INCREMENT_VARIABLE = "{{increment}}";
+    private static final String AGENCY = "agency";
+    private static final String PROVIDER = "provider";
+    private static final String UNIQUE_NUMBER = "<uniqueNumber>";
 
     // Private constructor to prevent instantiation
     private DataConfigurationReader() {
@@ -70,8 +73,8 @@ public class DataConfigurationReader {
     }
 
     private static String replaceDynamicPlaceholders(String data, String entityType) {
-        if (data.contains("<uniqueNumber>")) {
-            data = data.replace("<uniqueNumber>", generateUniqueNumber());
+        if (data.contains(UNIQUE_NUMBER)) {
+            data = data.replace(UNIQUE_NUMBER, generateUniqueNumber());
         }
 
         if (data.contains("<insuranceNumber>")) {
@@ -106,8 +109,32 @@ public class DataConfigurationReader {
     }
 
     private static String replaceIncrementPlaceholder(String data, String entityType) {
-        if (!data.contains(INCREMENT_VARIABLE)) {
-            return data; // No placeholder to replace
+        if (data.contains(UNIQUE_NUMBER)) {
+            data = data.replace(UNIQUE_NUMBER, generateUniqueNumber());
+        }
+
+        if (data.contains(INCREMENT_VARIABLE)) {
+            data = replaceIncrementPlaceholder(data, entityType);
+        }
+
+        // Replace agency increment value
+        if (data.contains("<agencyIncrement>")) {
+            Integer agencyIncrement = (Integer) GlobalVariables.getVariable(AGENCY + INCREMENT_VALUE);
+            if (agencyIncrement != null) {
+                data = data.replace("<agencyIncrement>", String.valueOf(agencyIncrement));
+            } else {
+                logger.error("Agency increment value not found in GlobalVariables.");
+            }
+        }
+
+        // Replace provider increment value
+        if (data.contains("<providerIncrement>")) {
+            Integer providerIncrement = (Integer) GlobalVariables.getVariable(PROVIDER + INCREMENT_VALUE);
+            if (providerIncrement != null) {
+                data = data.replace("<providerIncrement>", String.valueOf(providerIncrement));
+            } else {
+                logger.error("Provider increment value not found in GlobalVariables.");
+            }
         }
 
         // Attempt to retrieve the cached increment value
@@ -222,12 +249,12 @@ public class DataConfigurationReader {
     private static String getFilePathForEntity(String entityType) {
         logger.info("********** Received entity type: {}", entityType);
         String lowerCaseEntityType = entityType.toLowerCase();
-        if (!Arrays.asList("agency", "provider", "worker", "job", "agreement").contains(lowerCaseEntityType)) {
+        if (!Arrays.asList(AGENCY, PROVIDER, "worker", "job", "agreement").contains(lowerCaseEntityType)) {
             throw new IllegalArgumentException("Unknown entity type: " + entityType);
         }
         return switch (lowerCaseEntityType) {
-            case "agency" -> INCREMENT_FILE_PATH_AGENCY;
-            case "provider" -> INCREMENT_FILE_PATH_PROVIDER;
+            case AGENCY -> INCREMENT_FILE_PATH_AGENCY;
+            case PROVIDER -> INCREMENT_FILE_PATH_PROVIDER;
             case "worker" -> INCREMENT_FILE_PATH_WORKER;
             case "agreement" -> INCREMENT_FILE_PATH_AGREEMENT;
             case "job" -> null; // No increment file for Jobs and Agreements

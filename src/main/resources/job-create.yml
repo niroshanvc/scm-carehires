@@ -1,8 +1,8 @@
 Job Details:
   Job Type: General Job
   Care Provider / Site and Service Preferences:
-    Care Provider: Automation Provider 386
-    Site: BioRevolution Care 386
+    Care Provider: Automation Provider "<providerIncrement>"
+    Site: BioRevolution Care "<providerIncrement>"
     Using: Post Custom Job
     Worker Type: Rehabilitation Worker
     Number of Vacancies: 1
@@ -35,5 +35,5 @@ Job Preferences:
   Gender: Male
   Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
   Enable Block Booking: "No"
-  Agency: Automation Agency 356
-  Job Notes: "Please note: By enabling 'Block Booking', you gain control over which agencies and workers have access to this job. "
+  Agency: Automation Agency "<agencyIncrement>"
+  Job Notes: "Sample Job Post Note added."

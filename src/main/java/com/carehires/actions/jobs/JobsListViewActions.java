@@ -3,7 +3,7 @@ package com.carehires.actions.jobs;
 import com.carehires.pages.jobs.JobsListViewPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.ClipboardUtils;
-import com.carehires.utils.CsvReaderUtil;
+import com.carehires.utils.CsvReaderUtils;
 import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.FileWriterUtils;
 import com.carehires.utils.GenericUtils;
@@ -802,7 +802,7 @@ public class JobsListViewActions {
         String actualCareHiresVat =getActualRate("CareHires Vat");
 
         // read values from csv
-        List<String> csvValues = CsvReaderUtil.readCsvFile(SPECIAL_CSV);
+        List<String> csvValues = CsvReaderUtils.readCsvFile(SPECIAL_CSV);
         if (csvValues == null || csvValues.isEmpty()) {
             throw new RuntimeException("CSV file is empty or not found!");
         }

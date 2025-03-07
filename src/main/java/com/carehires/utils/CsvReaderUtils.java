@@ -10,13 +10,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class CsvReaderUtil {
+public class CsvReaderUtils {
 
-    private CsvReaderUtil() {
+    private CsvReaderUtils() {
         throw new IllegalStateException("Utility class");
     }
 
-    private static final Logger logger = LogManager.getFormatterLogger(CsvReaderUtil.class);
+    private static final Logger logger = LogManager.getFormatterLogger(CsvReaderUtils.class);
 
     public static List<String> readCsvFile(String fileName) {
         logger.info("Reading values in csv file called: %s", fileName );

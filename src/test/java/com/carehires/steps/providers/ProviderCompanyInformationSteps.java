@@ -4,7 +4,7 @@ import com.carehires.actions.providers.ProviderCompanyInformationActions;
 import com.carehires.utils.BasePage;
 import io.cucumber.java.en.And;
 
-public class ProvidersCompanyInformationSteps {
+public class ProviderCompanyInformationSteps {
 
     ProviderCompanyInformationActions companyInformationActions;
 
@@ -29,5 +29,10 @@ public class ProvidersCompanyInformationSteps {
     @And("User moves to the payment profile page and edit data")
     public void moveToThePaymentProfileAndEditData() {
         companyInformationActions.updatePaymentProfile();
+    }
+
+    @And("User creates a provider")
+    public void createProvider() {
+        companyInformationActions.completeProviderCreationSteps();
     }
 }
