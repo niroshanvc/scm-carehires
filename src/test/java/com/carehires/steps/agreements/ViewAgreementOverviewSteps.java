@@ -13,6 +13,11 @@ public class ViewAgreementOverviewSteps {
         viewAgreementOverviewActions.verifyAgreementPaymentStatusAndSignatureStatus(paymentStatus, signatureStatus);
     }
 
+    @And("User clicks on Mark as signed button and do verifications")
+    public void clickOnMarkAsSignedButtonAndDoVerifications() {
+        viewAgreementOverviewActions.clickOnMarkAsSignedAndDoVerifications();
+    }
+
     @And("User clicks on Mark as signed button")
     public void clickOnMarkAsSignedButton() {
         viewAgreementOverviewActions.clickOnMarkAsSigned();
@@ -96,5 +101,10 @@ public class ViewAgreementOverviewSteps {
     @And("User moves to worker rates popup")
     public void moveToWorkerRatesPopup() {
         viewAgreementOverviewActions.openWorkerRatesPopup();
+    }
+
+    @And("User closes worker rates popup")
+    public void closeWorkerRatesPopup() {
+        viewAgreementOverviewActions.closeWorkerRatesPopup();
     }
 }

@@ -1,0 +1,31 @@
+@Regression-Create
+@Job
+@SuperAdminUser
+Feature: Test CareHires agreement's worker rates display in jobs
+
+  Background: login to carehires
+    Given User logins to carehires
+
+  @VerifyJobPostForSpecialHoliday
+  Scenario: Verify vat exempt provider has an agreement for a special holiday job
+    When User navigates to Agreement Create page
+    And user enters agreement overview data
+    And User enters Worker Rates
+    And User enters Cancellation Policy
+    And User enters Sleep In Rates
+    And User enters Policies for the provisions of service
+    And User enters Signatories information
+    And User clicks on Mark as signed button
+    And User clicks on Active Agreement button
+    And User verifies agreement signature status as ACTIVE
+    And User moves to worker rates popup
+    And User write downs Special Holiday Rate worker rates into a text file
+    And User write downs Bank Holiday Rate worker rates into a text file
+    And User closes worker rates popup
+    And User navigates to Jobs page
+    And User moves to Post Job page
+    And User enters Job Details for special holiday
+    And User enters Job Preferences
+    And User enters Job Summary
+    When User suggests a worker
+    Then User moves to suggested workers tab and verifies Special Holiday worker rates

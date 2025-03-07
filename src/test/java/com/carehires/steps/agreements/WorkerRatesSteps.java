@@ -8,6 +8,11 @@ public class WorkerRatesSteps {
     WorkerRatesActions workerRates = new WorkerRatesActions();
 
     @And("User enters Worker Rates and verify calculations")
+    public void enterWorkerRatesAndVerifyCalculations() {
+        workerRates.enterWorkerRatesVerifyCalculations();
+    }
+
+    @And("User enters Worker Rates")
     public void enterWorkerRates() {
         workerRates.enterWorkerRates();
     }

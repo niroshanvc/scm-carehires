@@ -48,9 +48,9 @@ public class WorkerRatesActions {
         }
     }
 
-    public void enterWorkerRates() {
+    public void enterWorkerRatesVerifyCalculations() {
         BasePage.waitUntilPageCompletelyLoaded();
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Worker Rates Info >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Worker Rates Info and Verifying Calculations >>>>>>>>>>>>>>>>>>>>");
 
         enterWorkerType();
         enterSkills();
@@ -77,21 +77,6 @@ public class WorkerRatesActions {
         verifyNormalRateChHourlyVat();
         verifyNormalRateFinalRateWithVatAmount();
         verifyNormalRateFinalRateWithNoVatAmount();
-
-        String specialHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
-                SPECIAL_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
-        enableRate(SPECIAL_HOLIDAY_RATE);
-        fillFinalRateVat(SPECIAL_HOLIDAY_RATE, specialHolidayVat);
-
-        String bankHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
-                BANK_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
-        enableRate(BANK_HOLIDAY_RATE);
-        fillFinalRateVat(BANK_HOLIDAY_RATE, bankHolidayVat);
-
-        String fridayNightVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
-                FRIDAY_NIGHT_RATE, FINAL_RATE_WITH_VAT);
-        enableRate(FRIDAY_NIGHT_RATE);
-        fillFinalRateVat(FRIDAY_NIGHT_RATE, fridayNightVat);
 
         BasePage.scrollToWebElement(workerRatesPage.addButton);
         BasePage.clickWithJavaScript(workerRatesPage.addButton);
@@ -301,5 +286,51 @@ public class WorkerRatesActions {
     private void fillFinalRateVat(String rateType, String value) {
         BasePage.waitUntilElementClickable(workerRatesPage.getFinalRateWithVatInput(rateType), 30);
         BasePage.sendKeys(workerRatesPage.finalRateVat(rateType), value);
+    }
+
+    public void enterWorkerRates() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Worker Rates Info >>>>>>>>>>>>>>>>>>>>");
+
+        enterWorkerType();
+        enterSkills();
+
+        expandSubSection(workerRatesPage.rateBreakdownTableHeader, workerRatesPage.rateBreakdownTableHeaderExpandIcon);
+
+        hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+                "Hourly Rate");
+        BasePage.waitUntilElementDisplayed(workerRatesPage.hourlyRateInput, 20);
+        BasePage.clearAndEnterTexts(workerRatesPage.hourlyRateInput, hourlyRate);
+
+        agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+                "Agency Margin");
+        BasePage.clearAndEnterTexts(workerRatesPage.agencyMarginInput, agencyMargin);
+
+        chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+                "CH Hourly Margin");
+        BasePage.clearAndEnterTexts(workerRatesPage.chHourlyMarginInput, chHourlyMargin);
+        BasePage.clickTabKey(workerRatesPage.chHourlyMarginInput);
+
+        String specialHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                SPECIAL_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
+        enableRate(SPECIAL_HOLIDAY_RATE);
+        fillFinalRateVat(SPECIAL_HOLIDAY_RATE, specialHolidayVat);
+
+        String bankHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                BANK_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
+        enableRate(BANK_HOLIDAY_RATE);
+        fillFinalRateVat(BANK_HOLIDAY_RATE, bankHolidayVat);
+
+        String fridayNightVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                FRIDAY_NIGHT_RATE, FINAL_RATE_WITH_VAT);
+        enableRate(FRIDAY_NIGHT_RATE);
+        fillFinalRateVat(FRIDAY_NIGHT_RATE, fridayNightVat);
+
+        BasePage.scrollToWebElement(workerRatesPage.addButton);
+        BasePage.clickWithJavaScript(workerRatesPage.addButton);
+        verifyWorkerRateIsAddedSuccessfully();
+        BasePage.scrollToWebElement(workerRatesPage.continueButton);
+        verifyDataLoadedInCurrentWorkerRatesList();
+        BasePage.clickWithJavaScript(workerRatesPage.continueButton);
     }
 }

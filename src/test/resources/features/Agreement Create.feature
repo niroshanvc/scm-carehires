@@ -12,11 +12,11 @@ Feature: Test CareHires create agreement with disable Bid4Care
     And user enters agreement overview data
     And User enters Worker Rates and verify calculations
     And User enters Cancellation Policy and verify calculations
-    And User enters Sleep In Rates
+    And User enters Sleep In Rates and verify calculations
     And User enters Policies for the provisions of service
     And User enters Signatories information
     Then User verifies agreement signature status as PENDING TO SIGN
-    And User clicks on Mark as signed button
+    And User clicks on Mark as signed button and do verifications
     And User verifies agreement signature status as SIGNED
     And User clicks on Active Agreement button
     And User verifies agreement signature status as ACTIVE
@@ -24,9 +24,6 @@ Feature: Test CareHires create agreement with disable Bid4Care
     And User verifies agreement signature status as INACTIVE
     And User marks it as active again
     And User verifies agreement signature status as ACTIVE
-    And User moves to worker rates popup
-    And User write downs Special Holiday Rate worker rates into a text file
-    And User write downs Bank Holiday Rate worker rates into a text file
 
   @CreateAgreementForDDProvider
   Scenario: Create an agreement
@@ -34,11 +31,11 @@ Feature: Test CareHires create agreement with disable Bid4Care
     And user enters agreement overview data
     And User enters Worker Rates and verify calculations
     And User enters Cancellation Policy and verify calculations
-    And User enters Sleep In Rates
+    And User enters Sleep In Rates and verify calculations
     And User enters Policies for the provisions of service
     And User enters Signatories information
     Then User verifies agreement payment status as PENDING PAYMENT AUTHORISATION and signature status as PENDING TO SIGN
-    And User clicks on Mark as signed button
+    And User clicks on Mark as signed button and do verifications
     And User verifies agreement payment status as PENDING PAYMENT AUTHORISATION and signature status as SIGNED
     And User clicks on Active Agreement button
     And User verifies agreement payment status as PENDING PAYMENT AUTHORISATION and signature status as ACTIVE

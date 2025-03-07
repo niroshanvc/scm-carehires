@@ -19,7 +19,7 @@ public class JobsLandingActions {
         try {
             PageFactory.initElements(BasePage.getDriver(), jobsLandingPage);
         } catch (BasePage.WebDriverInitializationException e) {
-            logger.error("Error while initializing Job Landing Page elements: {}", e.getMessage());
+            logger.error("Error while initializing Job Landing Page elements: %s", e.getMessage());
         }
     }
 

@@ -107,8 +107,8 @@ public class ViewAgreementOverviewActions {
         assertThat("Agreement payment status is not correct!", actual, is(expected));
     }
 
-    public void clickOnMarkAsSigned() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on Mark as Signed button >>>>>>>>>>>>>>>>>>>>");
+    public void clickOnMarkAsSignedAndDoVerifications() {
+        logger.info("<<<<<<<<<<<<<<<<<<<< Clicking on Mark as Signed button and Doing Verifications >>>>>>>>>>>>>>>>>");
         BasePage.scrollToWebElement(agreementOverviewPage.markAsSignedButton);
         BasePage.clickWithJavaScript(agreementOverviewPage.markAsSignedButton);
         verifyProviderNameLoadedInAttachAgreementPopup();
@@ -807,7 +807,7 @@ public class ViewAgreementOverviewActions {
     public void writeDownWorkerRates(String rateType) {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Writing worker rates into a text file >>>>>>>>>>>>>>>>>>>>");
         // array to store worker rates
-        String[] workerRates = new String[3];
+        String[] workerRates = new String[4];
 
         String fileName1 = TEST_RESOURCE_FOLDER + File.separator + "agreement-special-rates.csv";
         String fileName2 = TEST_RESOURCE_FOLDER + File.separator + "agreement-bank-rates.csv";
@@ -815,6 +815,7 @@ public class ViewAgreementOverviewActions {
         workerRates[0] = BasePage.getText(BasePage.getElement(agreementOverviewPage.getAgencyCostNoVat(rateType)));
         workerRates[1] = BasePage.getText(BasePage.getElement(agreementOverviewPage.getChHourlyMargin(rateType)));
         workerRates[2] = BasePage.getText(BasePage.getElement(agreementOverviewPage.getChHourlyVat(rateType)));
+        workerRates[3] = BasePage.getText(BasePage.getElement(agreementOverviewPage.getFinalRateNoVat(rateType)));
         if (rateType.contains("Special")) {
             FileWriterUtils.clearContent(fileName1);
             FileWriterUtils.writeWorkerRatesToAFile(fileName1, workerRates);
@@ -837,5 +838,18 @@ public class ViewAgreementOverviewActions {
         searchAgreementByAgreementId();
         BasePage.waitUntilElementClickable(agreementOverviewPage.workerRatesViewIcon, 60);
         BasePage.clickWithJavaScript(agreementOverviewPage.workerRatesViewIcon);
+    }
+
+    public void clickOnMarkAsSigned() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Clicking on Mark as Signed button >>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.scrollToWebElement(agreementOverviewPage.markAsSignedButton);
+        BasePage.clickWithJavaScript(agreementOverviewPage.markAsSignedButton);
+        enterDataForAttachAgreementPopup();
+    }
+
+    public void closeWorkerRatesPopup() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Close worker rates popup >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(agreementOverviewPage.workerRatesCloseIcon, 30);
+        BasePage.clickWithJavaScript(agreementOverviewPage.workerRatesCloseIcon);
     }
 }

@@ -8,7 +8,7 @@ import io.cucumber.testng.CucumberOptions;
         glue = {"com.carehires.steps", "com.carehires.hooks"},
         plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"},
         monochrome = true,
-        tags = "@CreateAgreement"
+        tags = "@VerifyJobPostForSpecialHoliday"
 //        tags = "CreateAgency, EditAgency
 //        or CreateProvider, CreateProviderWithCustomBilling, EditProvider
 //        or CreateWorker, EditWorker"
@@ -17,6 +17,7 @@ import io.cucumber.testng.CucumberOptions;
 //        EditJobPost, ViewJob, CancelJobFromJobDetail,
 //        or CancelJobFromJobView, ManageAllocations
 //        or JobsAgencyView
+//        VerifyJobPostForSpecialHoliday
 )
 
 public class CucumberRunnerTests extends AbstractTestNGCucumberTests {

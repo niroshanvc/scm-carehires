@@ -88,7 +88,8 @@ public class JobsListViewSteps {
         jobsListViewActions.assignWorker();
     }
 
-    @Then("User verifies Special Holiday worker rates")
-    public void userVerifiesSpecialHolidayWorkerRates() {
+    @Then("User moves to suggested workers tab and verifies Special Holiday worker rates")
+    public void verifySpecialHolidayWorkerRates() {
+        jobsListViewActions.moveToSuggestedTabAndVerifySpecialHolidayWorkerRates();
     }
 }

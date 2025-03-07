@@ -20,11 +20,3 @@ Feature: Test CareHires create job
     And User enters Job Details with Breaks
     When User enters Job Preferences and enabling block booking
     Then User enters Job Summary
-
-  @VerifyJobPostForSpecialHoliday
-  Scenario: Create a job for special holiday
-    And User enters Job Details for special holiday
-    And User enters Job Preferences
-    And User enters Job Summary
-    When User suggests a worker
-    Then User verifies Special Holiday worker rates

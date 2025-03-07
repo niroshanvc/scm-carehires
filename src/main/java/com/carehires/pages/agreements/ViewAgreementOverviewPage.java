@@ -327,4 +327,11 @@ public class ViewAgreementOverviewPage {
 
     @FindBy(xpath = "//tr/td[10]//nb-icon[contains(@nbtooltip, 'Special')]")
     public WebElement workerRatesViewIcon;
+
+    @FindBy(xpath = "//nb-card//div[@class='close']/img")
+    public WebElement workerRatesCloseIcon;
+
+    public String getFinalRateNoVat(String rateType) {
+        return String.format("//div[contains(text(), '%s')]/ancestor::tr/td[8]/span/div[2]/div[2]", rateType);
+    }
 }

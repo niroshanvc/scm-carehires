@@ -7,6 +7,11 @@ public class SleepInRatesSteps {
 
     SleepInRatesActions sleepInRates = new SleepInRatesActions();
 
+    @And("User enters Sleep In Rates and verify calculations")
+    public void enterSleepInRatesAndVerifyCalculations() {
+        sleepInRates.addSleepInRatesAndVerifyCalculations();
+    }
+
     @And("User enters Sleep In Rates")
     public void enterSleepInRates() {
         sleepInRates.addSleepInRates();

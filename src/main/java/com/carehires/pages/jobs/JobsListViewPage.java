@@ -278,4 +278,16 @@ public class JobsListViewPage {
 
     @FindBy(xpath = "//nb-card/nb-card-footer//button[contains(text(), 'Select')]")
     public WebElement statementOfWorkSelectButton;
+
+    @FindBy(xpath = "(//h4[contains(@class,'hourly-charge-rate')])[1]")
+    public WebElement suggestedWorkerHourlyRate;
+
+    @FindBy(xpath = "(//h5[contains(@class,'worker-type-name')])[1]")
+    public WebElement suggestedWorkerAgencyCharge;
+
+    @FindBy(xpath = "(//h5[contains(@class,'worker-type-name')])[2]")
+    public WebElement suggestedWorkerCareHiresMargin;
+
+    @FindBy(xpath = "(//h5[contains(@class,'worker-type-name')])[3]")
+    public WebElement suggestedWorkerCareHiresVat;
 }

@@ -33,16 +33,15 @@ public class CancellationPolicyActions {
         }
     }
 
-    public void addCancellationPolicy() {
+    public void addCancellationPolicyAndVerifyCalculations() {
         BasePage.waitUntilPageCompletelyLoaded();
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Cancellation Policy Info >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Cancellation Policy Info and Verifying Calculations >>>>>>>>>>>>>>>>>>>>");
 
         beforeJobStart = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Before Job Start");
         BasePage.clickWithJavaScript(cancellationPolicyPage.beforeJobStartDropdown);
         By by = By.xpath(cancellationPolicyPage.getDropdownOptionXpath(beforeJobStart));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
         BasePage.clickWithJavaScript(cancellationPolicyPage.getDropdownOptionXpath(beforeJobStart));
-
 
         cancellationFeePercentage = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Cancellation fee percentage");
         BasePage.clearAndEnterTexts(cancellationPolicyPage.cancellationFeePercentage, cancellationFeePercentage);
@@ -104,5 +103,28 @@ public class CancellationPolicyActions {
         double actual = Double.parseDouble(actualString);
         double expected = 100 - Double.parseDouble(careHiresSplit);
         assertThat("Agency split is not correctly calculated!", actual, is(expected));
+    }
+
+    public void addCancellationPolicy() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Cancellation Policy Info >>>>>>>>>>>>>>>>>>>>");
+
+        beforeJobStart = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Before Job Start");
+        BasePage.clickWithJavaScript(cancellationPolicyPage.beforeJobStartDropdown);
+        By by = By.xpath(cancellationPolicyPage.getDropdownOptionXpath(beforeJobStart));
+        BasePage.waitUntilVisibilityOfElementLocated(by, 20);
+        BasePage.clickWithJavaScript(cancellationPolicyPage.getDropdownOptionXpath(beforeJobStart));
+
+        cancellationFeePercentage = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Cancellation fee percentage");
+        BasePage.clearAndEnterTexts(cancellationPolicyPage.cancellationFeePercentage, cancellationFeePercentage);
+
+        careHiresSplit = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "CareHires split");
+        BasePage.clearAndEnterTexts(cancellationPolicyPage.careHiresSplit, careHiresSplit);
+        BasePage.clickTabKey(cancellationPolicyPage.careHiresSplit);
+        BasePage.clickTabKey(cancellationPolicyPage.agencySplit);
+        BasePage.clickWithJavaScript(cancellationPolicyPage.addButton);
+        verifyCancellationPolicyAddedSuccessfully();
+        BasePage.scrollToWebElement(cancellationPolicyPage.continueButton);
+        BasePage.clickWithJavaScript(cancellationPolicyPage.continueButton);
     }
 }
