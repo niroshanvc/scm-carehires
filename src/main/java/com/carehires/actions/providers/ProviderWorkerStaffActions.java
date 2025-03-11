@@ -47,8 +47,13 @@ public class ProviderWorkerStaffActions {
     }
 
     public void addingWorkerStaffData() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Worker Staff information >>>>>>>>>>>>>>>>>>>>");
+
         // Retrieve the incremented value
         incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
+
+        // Log the retrieved value
+        logger.info("Retrieved provider increment value in WorkerStaff: %s", incrementValue);
 
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering staff information >>>>>>>>>>>>>>>>>>>>");

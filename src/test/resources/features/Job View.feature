@@ -1,0 +1,71 @@
+@Regression-View
+@Job
+@SuperAdminUser
+Feature: Test CareHires view job
+
+  Background: login to carehires
+    Given User logins to carehires
+    When User navigates to Jobs page
+
+  @ViewJob
+  Scenario: Test view job
+    And User searches jobs by date range
+    And User searches jobs by provider
+    And User filters jobs by status as All Open
+    And User filters jobs by status as Open Over-due
+    And User filters jobs by status as Suggested
+    And User filters jobs by status as Allocated
+    And User filters jobs by status as Completed
+    And User filters jobs by status as Cancelled
+    And User suggests a worker
+    And User rejects suggested worker
+    And User selects rejected worker
+    And User rejects selected worker
+    And User selects rejected worker
+    And User fills out the timesheets
+    Then User Approves the timesheet
+
+  @CancelJobFromJobDetail
+  Scenario: Test cancel job from job detail screen
+    And User creates a job
+    And User clicks on the Cancel Job menu in job detail page
+
+  @CancelJobFromJobView
+  Scenario: Test cancel job from job view page
+    And User creates a job
+    And User clicks on the Cancel Job menu in job view page
+    And User sends a message using CH Admin Note
+    And User navigates to Jobs page
+    Then User verifies ch admin note is added successfully
+    And User modifies the cancellation reason
+
+  @ManageAllocations
+    @Worker
+  Scenario: Test manage allocations for a job
+    And User navigates to Worker Create page
+    And User enters valid worker - basic information
+    And User enters Document and Proof information
+    And User enters Education and Training data
+    And User enters Emergency Information data
+    And User enters Vaccination and Allergy Information data
+    And User enters Employment Information data
+    And User collects workerId from Worker - Employment History page
+    And User navigates to Worker View page
+    When User finds recently created worker
+    And User accepts all the compliance
+    And User updates the worker profile as Submitted for Review
+    And User updates the worker profile as Approve
+    And User verifies the worker profile status as Approved
+    And User navigates to Jobs page
+    And User creates a job
+    And User assign a worker to recently posted job
+
+  @JobsAgencyView
+  Scenario: Test functionality of job's agency view
+    And User creates a job
+    When User navigates to Jobs Agency View page
+    Then User views recently created job post
+    And User Cancels recently posted job
+
+  @JobSiteView
+  Scenario: Test functionality of job's site view

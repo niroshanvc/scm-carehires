@@ -10,13 +10,13 @@ Feature: Test CareHires create agreement with disable Bid4Care
   Scenario: Create an agreement
     When User navigates to Agreement Create page
     And user enters agreement overview data
-    And User enters Worker Rates
-    And User enters Cancellation Policy
-    And User enters Sleep In Rates
+    And User enters Worker Rates and verify calculations
+    And User enters Cancellation Policy and verify calculations
+    And User enters Sleep In Rates and verify calculations
     And User enters Policies for the provisions of service
     And User enters Signatories information
     Then User verifies agreement signature status as PENDING TO SIGN
-    And User clicks on Mark as signed button
+    And User clicks on Mark as signed button and do verifications
     And User verifies agreement signature status as SIGNED
     And User clicks on Active Agreement button
     And User verifies agreement signature status as ACTIVE
@@ -29,13 +29,13 @@ Feature: Test CareHires create agreement with disable Bid4Care
   Scenario: Create an agreement
     When User navigates to Agreement Create page
     And user enters agreement overview data
-    And User enters Worker Rates
-    And User enters Cancellation Policy
-    And User enters Sleep In Rates
+    And User enters Worker Rates and verify calculations
+    And User enters Cancellation Policy and verify calculations
+    And User enters Sleep In Rates and verify calculations
     And User enters Policies for the provisions of service
     And User enters Signatories information
     Then User verifies agreement payment status as PENDING PAYMENT AUTHORISATION and signature status as PENDING TO SIGN
-    And User clicks on Mark as signed button
+    And User clicks on Mark as signed button and do verifications
     And User verifies agreement payment status as PENDING PAYMENT AUTHORISATION and signature status as SIGNED
     And User clicks on Active Agreement button
     And User verifies agreement payment status as PENDING PAYMENT AUTHORISATION and signature status as ACTIVE

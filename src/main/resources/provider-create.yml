@@ -21,8 +21,8 @@ Site Management:
   Add:
     Dataset1:
       SiteName: BioRevolution Care {{increment}}
-      SiteType: Hospital
-      SiteSpecialism: Adult,Autism,Childrens,Elderly,Nursing
+      SiteType: Nursing
+      SiteSpecialism: Adult,Autism,Elderly,Nursing
       AlsoKnownAs: BioRevolution{{increment}}
       SiteEmail: carehires+site1pr{{increment}}@zohomail.com
       PostalCode: BL0 9YX
@@ -55,7 +55,7 @@ Worker Staff Management:
     ProofOfDemandDocument: Proof of demand document.pdf
 User:
   Add:
-    email: carehires.45dc4b+prouser{{increment}}@zohomail.com
+    email: carehires+prouser{{increment}}@zohomail.com
     Name: Patrick Sams{{increment}}
     JobTitle: Assistant Executive
     Phone: "07700123455"

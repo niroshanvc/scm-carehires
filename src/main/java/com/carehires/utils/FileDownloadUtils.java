@@ -17,7 +17,7 @@ public class FileDownloadUtils {
     private static final String DOWNLOAD_DIR = System.getProperty("user.dir") + File.separator + "src" + File.separator
             + "test" + File.separator + "resources" + File.separator + "downloads";
 
-    private static final Logger logger = LogManager.getFormatterLogger(BasePage.class);
+    private static final Logger logger = LogManager.getFormatterLogger(FileDownloadUtils.class);
 
     public static boolean deleteLatestDownloadedFile() {
         String latestFileName = getLatestDownloadedFileName();

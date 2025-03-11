@@ -1,16 +1,21 @@
 Agreement Overview:
-  Agency: Automation Agency 336
+  Agency: Automation Agency "<agencyIncrement>"
   Agency Location: North London
-  Care Provider: Automation Provider 357
-#  Care Provider: Care Net Provider
-  Site: BioRevolution Care 357
-#  Site: Bradford
+  Care Provider: Automation Provider "<providerIncrement>"
+  Site: BioRevolution Care "<providerIncrement>"
 Worker Rates:
   Worker Type: Rehabilitation Worker
   Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
-  Hourly Rate: "10.00"
-  Agency Margin: "1.85"
-  CH Hourly Margin: "1.15"
+  Normal Rate:
+    Hourly Rate: "10.00"
+    Agency Margin: "1.85"
+    CH Hourly Margin: "1.15"
+  Special Holiday Rate:
+    Final Rate with Vat: "25.00"
+  Bank Holiday Rate:
+    Final Rate with Vat: "20.00"
+  Friday Night Rate:
+    Final Rate with Vat: "18.00"
 Cancellation Policy:
   Before Job Start: 1 hour
   Cancellation fee percentage: "75"
@@ -18,9 +23,16 @@ Cancellation Policy:
   Agency split: "75"
 Sleep In Rates:
   Worker Type: Rehabilitation Worker
-  Hourly Rate: "10.00"
-  Agency Margin: "1.85"
-  CH Hourly Margin: "1.15"
+  Normal Rate:
+    Hourly Rate: "12.00"
+    Agency Margin: "1.85"
+    CH Hourly Margin: "1.15"
+  Special Holiday Rate:
+    Final Rate with Vat: "18.00"
+  Bank Holiday Rate:
+    Final Rate with Vat: "16.00"
+  Friday Night Rate:
+    Final Rate with Vat: "15.00"
 Policies for the Provisions of Service:
   Billing Cycle: Weekly
   Credit Period: 28

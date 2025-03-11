@@ -1,7 +1,9 @@
 package com.carehires.actions.providers;
 
+import com.carehires.common.GlobalVariables;
 import com.carehires.pages.providers.ProviderProfilePage;
 import com.carehires.utils.BasePage;
+import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
@@ -46,6 +48,8 @@ public class ProviderProfileActions {
         String actual = BasePage.getText(profilePage.profileStatus).toLowerCase().trim();
         String expected = status.toLowerCase();
         assertThat("Provider profile is not valid", actual, is(expected));
+        int providerIncrementValue = DataConfigurationReader.getCurrentIncrementValue("provider");
+        GlobalVariables.storeIncrementedValue("provider", providerIncrementValue);
     }
 
     private void verifySuccessMessage() {

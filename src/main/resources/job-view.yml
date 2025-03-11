@@ -1,0 +1,26 @@
+Cancel Job:
+  Reason: "Other"
+  Description: "Job cancel description added."
+Modify Cancel Job:
+  Reason: "No agencies available"
+  Description: "Job cancel description added."
+Suggested Worker:
+  Reject Worker:
+    Reason to reject: Here is the reason to reject that suggested worker.
+Selected Worker:
+  Reject Worker:
+    Reason to reject: Here is the reason to reject that selected worker.
+Submit Timesheet:
+  Ends On: "today - 1"
+  Proof Document: proof of document.pdf
+  Reason to Amend Timesheet: Here is the reason to amend the timesheet.
+  Paid Breaks Duration: 00:15
+  Paid Breaks Note: Here is the paid breaks description.
+  Unpaid Breaks Duration: 00:15
+  Unpaid Breaks Note: Here is the unpaid breaks description.
+Dispute Timesheet:
+  Reason to Dispute: Here is the note to dispute the timesheet.
+Ch Admin Note: Here is the sample text for admin note.
+Manage Allocation:
+  Select Worker:
+    Note: Here is the note for the selected worker.

@@ -1,13 +1,13 @@
 @Regression-Edit
 @Job
 @SuperAdminUser
-Feature: Test CareHires create job
+Feature: Test CareHires edit job
 
   Background: login to carehires
     Given User logins to carehires
 
   @EditJobPost
-  Scenario: Create a job with breaks
+  Scenario: Edit a job post
     When User navigates to Jobs page
     And User moves to Post Job page
     And User enters data to Job Details

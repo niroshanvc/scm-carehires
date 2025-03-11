@@ -21,7 +21,7 @@ Credit Service:
     FirstName: Thomas
     LastName: Perk
     JobTitle: Manager
-    EmailAddress: automation.qa+agency{{increment}}@zohomail.com
+    EmailAddress: carehires+agency{{increment}}@zohomail.com
     Phone: "07412001245"
     DateOfBirth: 01 Apr 1997
     NINumber: "AD787876Y"
@@ -37,7 +37,7 @@ Credit Service:
     LegalRepLegalLastName: Writer
     LegalRepMaidenName: Smith
     LegalRepJobTitle: Legal Manager
-    LegalRepEmailAddress: automation.qa+agencyleg{{increment}}@zohomail.com
+    LegalRepEmailAddress: carehires+agencyleg{{increment}}@zohomail.com
     LegalRepPhone: "07412001245"
     LegalRepDateOfBirth: 01 Sep 1990
     LegalRepPersonalIdNumber: "AD787876Y"
@@ -48,16 +48,16 @@ Credit Service:
 Agency Business Location:
   Add:
     BusinessLocation: North Leicester
-    BusinessEmailAddress: automation.qa+{{increment}}@zohomail.com
+    BusinessEmailAddress: carehires+{{increment}}@zohomail.com
     City: Leicester
-    JobNotificationAddress: automation.qa+agencyjobnot{{increment}}@zohomail.com
-    ApprovalNotificationAddress: automation.qa+agencyappnot{{increment}}@zohomail.com
+    JobNotificationAddress: carehires+agencyjobnot{{increment}}@zohomail.com
+    ApprovalNotificationAddress: carehires+agencyappnot{{increment}}@zohomail.com
   Update:
     BusinessLocation: North London
-    BusinessEmailAddress: automation.qa+agencybuss{{increment}}@zohomail.com
+    BusinessEmailAddress: carehires+agencybuss{{increment}}@zohomail.com
     City: Lancashire
-    JobNotificationAddress: automation.qa+agencyjobnot{{increment}}@zohomail.com
-    ApprovalNotificationAddress: automation.qa+agencyappnot{{increment}}@zohomail.com
+    JobNotificationAddress: carehires+agencyjobnot{{increment}}@zohomail.com
+    ApprovalNotificationAddress: carehires+agencyappnot{{increment}}@zohomail.com
 
 Staff:
   Add:
@@ -80,8 +80,8 @@ Billing Profile Management:
     AttentionTo: IWS Solutions
     BillingAddress: "10 Downing Street, London, SW1A 2AA"
     CostCenter: "<uniqueNumber>"
-    DigitalBillingAddress: automation.qa+agencydigi{{increment}}@zohomail.com
-    CCDigitalBillingAddress: automation.qa+agencyccdig{{increment}}@zohomail.com
+    DigitalBillingAddress: carehires+agencydigi{{increment}}@zohomail.com
+    CCDigitalBillingAddress: carehires+agencyccdig{{increment}}@zohomail.com
     PhoneNumber: "07412901245"
     BillingCycle: Bi Weekly
     CreditTerm: 14 Days
@@ -93,8 +93,8 @@ Billing Profile Management:
     AttentionTo: IWS Solution Pvt Ltd
     BillingAddress: "10B Downing Street, London, SW1A 2AA"
     CostCenter: "<uniqueNumber>"
-    DigitalBillingAddress: automation.qa+agencydigi{{increment}}@zohomail.com
-    CCDigitalBillingAddress: automation.qa+agencyccdig{{increment}}@zohomail.com
+    DigitalBillingAddress: carehires+agencydigi{{increment}}@zohomail.com
+    CCDigitalBillingAddress: carehires+agencyccdig{{increment}}@zohomail.com
     PhoneNumber: "07415901345"
     BillingCycle: Bi Weekly
     CreditTerm: 30 Days
@@ -105,7 +105,7 @@ Billing Profile Management:
 
 User:
   Add:
-    email: automation.qa+agencyuserQ{{increment}}@zohomail.com
+    email: carehires+agencyuserQ{{increment}}@zohomail.com
     Name: William Brook {{increment}}
     JobTitle: Assistant Executive
     Location: Select All Locations
@@ -113,7 +113,7 @@ User:
     City: Nottingham
     UserAccessLevel: Onboarding Admin,Shift Admin
   Update:
-    email: automation.qa+agencyuserW{{increment}}@zohomail.com
+    email: carehires+agencyuserW{{increment}}@zohomail.com
     Name: William Fredrik {{increment}}
     JobTitle: Sales Executive
     Location: Select All Locations

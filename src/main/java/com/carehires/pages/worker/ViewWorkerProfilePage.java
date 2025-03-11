@@ -25,7 +25,7 @@ public class ViewWorkerProfilePage {
     @FindBy(xpath = "//div[contains(@class,'compliance-table')]//nb-checkbox//input")
     public List<WebElement> complianceCheckboxes;
 
-    @FindBy(xpath = "//button[contains(text(), 'Save')]")
+    @FindBy(xpath = "//nb-tab//button[contains(text(), 'Save')]")
     public WebElement complianceSaveButton;
 
     @FindBy(xpath = "//span[contains(text(), 'Review Profile')]/ancestor::button")

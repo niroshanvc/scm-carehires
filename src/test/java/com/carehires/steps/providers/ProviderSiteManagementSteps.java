@@ -1,11 +1,11 @@
 package com.carehires.steps.providers;
 
-import com.carehires.actions.providers.ProvidersSiteManagementActions;
+import com.carehires.actions.providers.ProviderSiteManagementActions;
 import io.cucumber.java.en.And;
 
-public class ProvidersSiteManagementSteps {
+public class ProviderSiteManagementSteps {
 
-    ProvidersSiteManagementActions siteManagementActions = new ProvidersSiteManagementActions();
+    ProviderSiteManagementActions siteManagementActions = new ProviderSiteManagementActions();
 
     @And("User enters valid provider - site management data")
     public void enterSiteManagementData() {

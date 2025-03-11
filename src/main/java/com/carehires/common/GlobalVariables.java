@@ -1,7 +1,7 @@
 package com.carehires.common;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GlobalVariables {
 
@@ -10,8 +10,8 @@ public class GlobalVariables {
         // Prevent instantiation
     }
 
-    // Store variables in a map
-    private static final Map<String, Object> variables = new HashMap<>();
+    // Store variables in a thread-safe map
+    private static final Map<String, Object> variables = new ConcurrentHashMap<>();
 
     // Method to add or update variables
     public static void setVariable(String key, Object value) {

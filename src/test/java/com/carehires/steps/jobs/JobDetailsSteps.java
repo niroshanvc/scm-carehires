@@ -26,4 +26,9 @@ public class JobDetailsSteps {
     public void editJobDetails() {
         jobDetailsActions.editInfo();
     }
+
+    @And("User enters Job Details for special holiday")
+    public void enterJobDetailsForSpecialHoliday() {
+        jobDetailsActions.enterJobDetailsForSpecialHoliday();
+    }
 }

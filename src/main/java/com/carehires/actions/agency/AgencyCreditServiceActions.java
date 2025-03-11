@@ -64,6 +64,9 @@ public class AgencyCreditServiceActions {
         // Retrieve the incremented value
         Integer incrementValue = GlobalVariables.getVariable("agency_incrementValue", Integer.class);
 
+        // Log the retrieved value
+        logger.info("Retrieved agency increment value in CreditService: {}", incrementValue);
+
         // Check for null or default value
         if (incrementValue == null) {
             throw new NullPointerException("Increment value for agency is not set in GlobalVariables.");
@@ -103,7 +106,7 @@ public class AgencyCreditServiceActions {
         BasePage.clearAndEnterTexts(creditServicePage.ownershipPercentage, ownership);
 
         String postcode = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "PostCode");
-        genericUtils.fillAddress(creditServicePage.postcode, postcode, 190);
+        genericUtils.fillAddress(creditServicePage.postcode, postcode, 800);
 
         //upload verification document
         String agencyOwnerDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "AgencyOwnerDocument");

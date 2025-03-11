@@ -64,8 +64,11 @@ public class ViewWorkerProfileActions {
         for (WebElement checkbox : checkboxes) {
             BasePage.clickWithJavaScript(checkbox);
         }
-
         BasePage.clickWithJavaScript(profilePage.complianceSaveButton);
+        BasePage.genericWait(1500);
+        if (BasePage.isElementDisplayed(profilePage.complianceSaveButton)) {
+            BasePage.clickWithJavaScript(profilePage.complianceSaveButton);
+        }
     }
 
     private void verifyComplianceSavedSuccessMessage() {

@@ -32,10 +32,10 @@ public class GenericElementsPage {
     @FindBy(xpath = "//button[contains(@class, 'prev-month')]")
     public WebElement previousMonthButton;
 
-    @FindBy(xpath = "//nb-calendar-day-cell[not(contains(@class, 'bounding')) and not(contains(@class, 'disabled'))]/div")
+    @FindBy(xpath = "//nb-calendar-day-picker//nb-calendar-picker//*[not(contains(@class, 'bounding')) and not(contains(@class, 'disabled'))]/div")
     public List<WebElement> calendarDays;
 
-    @FindBy(xpath = "//nb-calendar-year-cell/div")
+    @FindBy(xpath = "//nb-calendar-picker//div")
     public List<WebElement> yearOptions;
 
     @FindBy(xpath = "//nb-calendar-pageable-navigation/button[contains(@class, 'prev-month')]")
@@ -49,6 +49,6 @@ public class GenericElementsPage {
 
     // Method to return a dynamic By locator for the calendar month based on the parse month
     public By getMonthLocator(String selectedMonth) {
-        return By.xpath("//nb-calendar-month-cell/div[contains(text(), '" + selectedMonth + "')]");
+        return By.xpath("//nb-calendar-picker//div[contains(text(), '" + selectedMonth + "')]");
     }
 }

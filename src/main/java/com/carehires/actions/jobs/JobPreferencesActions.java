@@ -6,6 +6,7 @@ import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -48,11 +49,16 @@ public class JobPreferencesActions {
 
     private void enterJobNotes(String ymlFile, String header) {
         String jobNotes = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Job Notes");
-        BasePage.clearAndEnterTexts(jobPreferencesPage.notes, jobNotes);
+        for (int i = 0; i< Objects.requireNonNull(jobNotes).length(); i++) {
+            char c = jobNotes.charAt(i);
+            String s = String.valueOf(c);
+            BasePage.sendKeys(jobPreferencesPage.notes, s);
+        }
     }
 
     private void enableDisableBlockBooking(String ymlFile, String header) {
-        String enableBlockBooking = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Enable Block Booking");
+        String enableBlockBooking = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
+                "Enable Block Booking");
         assert enableBlockBooking != null;
         String currentAttr = BasePage.getAttributeValue(jobPreferencesPage.enableBlockBookingToggle, "aria-checked");
         boolean shouldEnable = enableBlockBooking.equalsIgnoreCase("yes");
@@ -64,7 +70,15 @@ public class JobPreferencesActions {
             BasePage.genericWait(1000);
 
             if (shouldEnable) {
-                String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Agency");
+                // Retrieve the latest agency increment value
+                int agencyIncrementValue = DataConfigurationReader.getCurrentIncrementValue("agency");
+
+                // Read agency name from YAML and replace <agencyIncrement> placeholder
+                String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Agency");
+                assert agencyTemplate != null;
+                String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
+                agency = agency.replace("\"", "").trim();
+
                 BasePage.waitUntilElementPresent(jobPreferencesPage.agencyDropdown, 60);
                 BasePage.clickWithJavaScript(jobPreferencesPage.agencyDropdown);
                 By by = By.xpath(jobPreferencesPage.getDropdownOptionXpath(agency));
@@ -157,10 +171,22 @@ public class JobPreferencesActions {
                     // Scroll to the element and click
                     BasePage.scrollToWebElement(availableSkill);
                     BasePage.waitUntilElementDisplayed(availableSkill, 30);
-                    BasePage.clickWithJavaScript(availableSkill);
-                    logger.info("Selected: {}", skillText);
-                    skillFound = true;
-                    break;
+                    try {
+                        BasePage.clickWithJavaScript(availableSkill);
+                        logger.info("Selected: {}", skillText);
+                        skillFound = true;
+                        break;
+                    } catch (StaleElementReferenceException e) {
+                        logger.warn("StaleElementReferenceException caught, retrying: {}", skillText);
+                        availableSkill = jobPreferencesPage.preferredSkills.stream()
+                                .filter(skill -> BasePage.getText(skill).trim().toLowerCase().equals(skillToSelect))
+                                .findFirst()
+                                .orElseThrow(() -> new RuntimeException("Skill not found after retry: " + skillToSelect));
+                        BasePage.clickWithJavaScript(availableSkill);
+                        logger.info("Selected after retry: {}", skillText);
+                        skillFound = true;
+                        break;
+                    }
                 }
             }
             if (!skillFound) {
