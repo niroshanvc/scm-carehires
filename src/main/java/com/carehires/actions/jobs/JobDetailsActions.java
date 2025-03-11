@@ -92,16 +92,18 @@ public class JobDetailsActions {
         // Retrieve the latest provider increment value
         int providerIncrementValue = DataConfigurationReader.getCurrentIncrementValue("provider");
 
+        BasePage.clickWithJavaScript(jobDetailsPage.careProviderDropdown);
+
         // Read care provider name from YAML and replace <providerIncrement> placeholder
         String providerTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
                 YML_HEADER_PROVIDER, "Care Provider");
         assert providerTemplate != null;
         String careProvider = providerTemplate.replace("<providerIncrement>", String.valueOf(
                 providerIncrementValue));
-        BasePage.clickWithJavaScript(jobDetailsPage.careProviderDropdown);
-        BasePage.genericWait(1000);
+        careProvider = careProvider.replace("\"", "").trim();
+        BasePage.genericWait(3000);
         By by = By.xpath(jobDetailsPage.getDropdownOptionXpath(careProvider));
-        BasePage.waitUntilVisibilityOfElementLocated(by, 30);
+        BasePage.waitUntilVisibilityOfElementLocated(by, 60);
         BasePage.scrollToWebElement(jobDetailsPage.getDropdownOptionXpath(careProvider));
         BasePage.clickWithJavaScript(jobDetailsPage.getDropdownOptionXpath(careProvider));
 
@@ -110,12 +112,13 @@ public class JobDetailsActions {
                 YML_HEADER_PROVIDER, "Site");
         assert siteTemplates != null;
         String site = siteTemplates.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
+        site = site.replace("\"", "").trim();
         BasePage.clickWithJavaScript(jobDetailsPage.siteDropdown);
         BasePage.genericWait(1000);
         by = By.xpath(jobDetailsPage.getDropdownOptionXpath(site));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
         BasePage.scrollToWebElement(jobDetailsPage.getDropdownOptionXpath(site));
-        BasePage.clickWithJavaScript(jobDetailsPage.getDropdownOptionXpath(careProvider));
+        BasePage.clickWithJavaScript(jobDetailsPage.getDropdownOptionXpath(site));
 
         selectRadioButton(ymlFile, header, jobDetailsPage.usingRadioButtons);
         BasePage.genericWait(2000);

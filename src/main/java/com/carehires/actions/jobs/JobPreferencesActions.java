@@ -57,7 +57,8 @@ public class JobPreferencesActions {
     }
 
     private void enableDisableBlockBooking(String ymlFile, String header) {
-        String enableBlockBooking = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Enable Block Booking");
+        String enableBlockBooking = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
+                "Enable Block Booking");
         assert enableBlockBooking != null;
         String currentAttr = BasePage.getAttributeValue(jobPreferencesPage.enableBlockBookingToggle, "aria-checked");
         boolean shouldEnable = enableBlockBooking.equalsIgnoreCase("yes");
@@ -76,6 +77,7 @@ public class JobPreferencesActions {
                 String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Agency");
                 assert agencyTemplate != null;
                 String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
+                agency = agency.replace("\"", "").trim();
 
                 BasePage.waitUntilElementPresent(jobPreferencesPage.agencyDropdown, 60);
                 BasePage.clickWithJavaScript(jobPreferencesPage.agencyDropdown);

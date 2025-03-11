@@ -54,6 +54,13 @@ public class ProviderCompanyInformationActions {
         companyInformationPage =  new ProviderCompanyInformationPage();
         try {
             PageFactory.initElements(BasePage.getDriver(), companyInformationPage);
+
+            // initialize other action classes
+            siteManagementActions = new ProviderSiteManagementActions();
+            workerStaffActions = new ProviderWorkerStaffActions();
+            userManagementActions = new ProviderUserManagementActions();
+            billingInformationActions = new ProviderBillingInformationActions();
+            subContractingAgreementActions = new ProviderSubContractingAgreementActions();
         } catch (BasePage.WebDriverInitializationException e) {
             throw new BasePage.WebDriverInitializationException("Failed to initialize WebDriver for GenericUtils", e);
         }
@@ -65,6 +72,8 @@ public class ProviderCompanyInformationActions {
 
         // Retrieve the current increment value for the provider (from the file)
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
+        logger.info("Initial increment value retrieved for provider: {}", incrementValue);
+
 
         enterDataForInputFields(YML_FILE, ADD);
 
@@ -73,11 +82,18 @@ public class ProviderCompanyInformationActions {
         BasePage.waitUntilElementClickable(companyInformationPage.updateButton, 120);
         isCompanyInfoSaved();
 
-        // After successfully entering the company information, update the increment value in the file
-        DataConfigurationReader.storeNewIncrementValue(ENTITY);
+        // Update the increment value for next use
+        int nextIncrementValue = incrementValue + 1;
 
-        // Store the increment value in GlobalVariables for reuse in other steps
-        GlobalVariables.setVariable("provider_incrementValue", incrementValue);
+        // Store the updated value both in file and GlobalVariables
+        String filePath = DataConfigurationReader.getFilePathForEntity(ENTITY);
+        if (filePath != null) {
+            DataConfigurationReader.updateIncrementValueInFile(filePath, nextIncrementValue);
+        }
+
+        // Store in GlobalVariables for use by subsequent methods
+        GlobalVariables.setVariable(ENTITY + "_incrementValue", incrementValue);
+        logger.info("Stored current provider_incrementValue {} in GlobalVariables", incrementValue);
     }
 
     private void enterDataForInputFields(String ymlFile, String subHeader) {

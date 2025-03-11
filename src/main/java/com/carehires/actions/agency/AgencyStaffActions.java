@@ -49,6 +49,9 @@ public class AgencyStaffActions {
         // Retrieve the incremented value
         Integer incrementValue = GlobalVariables.getVariable("agency_incrementValue", Integer.class);
 
+        // Log the retrieved value
+        logger.info("Retrieved agency increment value in Staff: %s", incrementValue);
+
         // Check for null or default value
         if (incrementValue == null) {
             throw new NullPointerException("Increment value for agency is not set in GlobalVariables.");

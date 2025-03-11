@@ -49,6 +49,7 @@ public class CreateAgreementsOverviewActions {
         String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Agency");
         assert agencyTemplate != null;
         String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
+        agency = agency.replace("\"", "").trim();
 
         BasePage.waitUntilElementClickable(agreementsOverviewPage.agencyDropdown, 60);
         BasePage.genericWait(2000);
@@ -68,9 +69,12 @@ public class CreateAgreementsOverviewActions {
         BasePage.clickWithJavaScript(agreementsOverviewPage.getDropdownOptionXpath(agencyLocation));
 
         // Read provider name from YAML and replace <providerIncrement> placeholder
-        String careProviderTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Care Provider");
+        String careProviderTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                "Care Provider");
         assert careProviderTemplate != null;
-        String careProvider = careProviderTemplate.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
+        String careProvider = careProviderTemplate.replace("<providerIncrement>", String.valueOf(
+                providerIncrementValue));
+        careProvider = careProvider.replace("\"", "").trim();
         BasePage.clickWithJavaScript(agreementsOverviewPage.careProviderDropdown);
         By careProviderBy = By.xpath(agreementsOverviewPage.getDropdownOptionXpath(careProvider));
         BasePage.waitUntilVisibilityOfElementLocated(careProviderBy, 20);
@@ -81,6 +85,7 @@ public class CreateAgreementsOverviewActions {
         String siteTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Site");
         assert siteTemplate != null;
         String site = siteTemplate.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
+        site = site.replace("\"", "").trim();
         BasePage.clickWithJavaScript(agreementsOverviewPage.siteDropdown);
         BasePage.waitUntilElementClickable(agreementsOverviewPage.getDropdownOptionXpath(site), 30);
         selectAllSites();

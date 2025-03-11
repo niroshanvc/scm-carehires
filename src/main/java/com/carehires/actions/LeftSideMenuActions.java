@@ -50,6 +50,8 @@ public class LeftSideMenuActions {
     }
 
     public void gotoProviderCreatePage() {
+        BasePage.refreshPage();
+        BasePage.genericWait(2000);
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(LeftSideMenuPage.providersMainLink, LeftSideMenuPage.providersCreateSubLink);

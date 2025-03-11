@@ -41,7 +41,6 @@ public class CreateAgencyBasicInformationActions {
     private static final String EDIT_YML_FILE = "agency-edit";
     private static final String YML_HEADER = "Basic Info";
     private static final String ADD = "Add";
-    private static final String UPDATE = "Update";
     private static final Logger logger = LogManager.getLogger(CreateAgencyBasicInformationActions.class);
 
     public CreateAgencyBasicInformationActions()  {
@@ -51,6 +50,14 @@ public class CreateAgencyBasicInformationActions {
         } catch (BasePage.WebDriverInitializationException e) {
             throw new RuntimeException(e);
         }
+
+        // Initialize action classes
+        businessLocationsActions = new AgencyBusinessLocationsActions();
+        creditServiceActions = new AgencyCreditServiceActions();
+        staffActions = new AgencyStaffActions();
+        billingProfileManagementActions = new BillingProfileManagementActions();
+        userManagementActions = new AgencyUserManagementActions();
+        subContractingAgreementActions = new SubContractingAgreementActions();
     }
 
     public void enterBasicInfo()  {
@@ -59,6 +66,7 @@ public class CreateAgencyBasicInformationActions {
 
         // Retrieve the current increment value for the agency (from the file)
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
+        logger.info("Initial increment value retrieved for agency: {}", incrementValue);
 
         enterData(YML_FILE, ADD);
         BasePage.genericWait(5000);
@@ -68,11 +76,18 @@ public class CreateAgencyBasicInformationActions {
 
         isBasicInfoSaved();
 
-        // After successfully entering the basic information, update the increment value in the file
-        DataConfigurationReader.storeNewIncrementValue(ENTITY);
+        // Update the increment value for next use
+        int nextIncrementValue = incrementValue + 1;
 
-        // Store the increment value in GlobalVariables for reuse in other steps
-        GlobalVariables.setVariable("agency_incrementValue", incrementValue);
+        // Store the updated value both in file and GlobalVariables
+        String filePath = DataConfigurationReader.getFilePathForEntity(ENTITY);
+        if (filePath != null) {
+            DataConfigurationReader.updateIncrementValueInFile(filePath, nextIncrementValue);
+        }
+
+        // Store in GlobalVariables for use by subsequent methods
+        GlobalVariables.setVariable(ENTITY + "_incrementValue", incrementValue);
+        logger.info("Stored current agency_incrementValue {} in GlobalVariables", incrementValue);
     }
 
     private void enterData(String ymlFile, String subHeader) {
@@ -169,5 +184,4 @@ public class CreateAgencyBasicInformationActions {
         userManagementActions.addUser();
         subContractingAgreementActions.clickOnCompleteProfileButton();
     }
-
 }

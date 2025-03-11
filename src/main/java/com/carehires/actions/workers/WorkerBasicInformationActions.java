@@ -53,6 +53,11 @@ public class WorkerBasicInformationActions {
     private static final String VALUE_TEXT = "value";
     private static final String CLASS_TEXT = "class";
     private String nationality;
+    WorkerDocumentsAndProofActions documentsAndProofActions;
+    WorkerEducationAndTrainingActions educationAndTrainingActions;
+    WorkerEmergencyInformationActions emergencyInformationActions;
+    WorkerVaccinationAndAllergyInformationActions vaccinationAndAllergyInformationActions;
+    WorkerEmploymentHistoryActions employmentHistoryActions;
 
     private static final Logger logger = LogManager.getLogger(WorkerBasicInformationActions.class);
 
@@ -63,6 +68,12 @@ public class WorkerBasicInformationActions {
         } catch (BasePage.WebDriverInitializationException e) {
             throw new RuntimeException(e);
         }
+
+        documentsAndProofActions = new WorkerDocumentsAndProofActions();
+        educationAndTrainingActions = new WorkerEducationAndTrainingActions();
+        emergencyInformationActions = new WorkerEmergencyInformationActions();
+        vaccinationAndAllergyInformationActions = new WorkerVaccinationAndAllergyInformationActions();
+        employmentHistoryActions = new WorkerEmploymentHistoryActions();
     }
 
     public void enterWorkerBasicInformationData() {
@@ -430,7 +441,7 @@ public class WorkerBasicInformationActions {
                 "Agency Information", subHeader, "Agency");
         assert agencyTemplate != null;
         String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
-
+        agency = agency.replace("\"", "").trim();
         BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(basicInfo.agencyDropdown);
         By by = By.xpath(basicInfo.getDropdownOptionXpath(agency));
@@ -573,5 +584,16 @@ public class WorkerBasicInformationActions {
 
     public void getGeneratedWorkerId() {
         getWorkerId();
+    }
+
+    public void completeCreateWorkerProcess() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Completing new worker creation >>>>>>>>>>>>>>>>>>>>");
+        enterWorkerBasicInformationData();
+        documentsAndProofActions.enterDocumentsAndProofData();
+        educationAndTrainingActions.enterDataForEducationAndTraining();
+        emergencyInformationActions.enterDataForEmergencyInformation();
+        vaccinationAndAllergyInformationActions.enterDataForVaccinationInformation();
+        employmentHistoryActions.enterDataForEmploymentHistory();
     }
 }

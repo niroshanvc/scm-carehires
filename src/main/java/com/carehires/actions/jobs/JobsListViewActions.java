@@ -400,8 +400,15 @@ public class JobsListViewActions {
         BasePage.genericWait(2000);
         BasePage.waitUntilElementClickable(listViewPage.detailViewWorkersFilterByAgencyDropdown,30);
         BasePage.clickWithJavaScript(listViewPage.detailViewWorkersFilterByAgencyDropdown);
-        String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE_BREAKS,
+        String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE_BREAKS,
                 YML_HEADER_JOB_PREFERENCES, "Agency");
+
+        // Retrieve the latest agency increment value
+        int agencyIncrementValue = DataConfigurationReader.getCurrentIncrementValue("agency");
+
+        assert agencyTemplate != null;
+        String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
+        agency = agency.replace("\"", "").trim();
         By by = By.xpath(listViewPage.getDropdownOptionXpath(agency));
         BasePage.waitUntilVisibilityOfElementLocated(by,30);
         BasePage.scrollToWebElement(listViewPage.getDropdownOptionXpath(agency));

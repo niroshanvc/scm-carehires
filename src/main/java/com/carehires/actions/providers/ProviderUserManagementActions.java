@@ -59,6 +59,9 @@ public class ProviderUserManagementActions {
         // Retrieve the incremented value
         incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
 
+        // Log the retrieved value
+        logger.info("Retrieved provider increment value in UserManagement: %s", incrementValue);
+
         // Check for null or default value
         if (incrementValue == null) {
             throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");

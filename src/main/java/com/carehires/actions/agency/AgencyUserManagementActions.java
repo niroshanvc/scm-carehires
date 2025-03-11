@@ -50,6 +50,9 @@ public class AgencyUserManagementActions {
         // Retrieve the incremented value
         Integer incrementValue = GlobalVariables.getVariable("agency_incrementValue", Integer.class);
 
+        // Log the retrieved value
+        logger.info("Retrieved agency increment value in UserManagement: %s", incrementValue);
+
         // Check for null or default value
         if (incrementValue == null) {
             throw new NullPointerException("Increment value for agency is not set in GlobalVariables.");
@@ -75,7 +78,7 @@ public class AgencyUserManagementActions {
             BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(accessLevel));
         }
 
-        BasePage.genericWait(6000);
+        BasePage.genericWait(12000);
         BasePage.clickWithJavaScript(userManagement.addButton);
         verifySuccessMessage();
         isUserAdded();

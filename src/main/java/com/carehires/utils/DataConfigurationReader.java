@@ -109,74 +109,61 @@ public class DataConfigurationReader {
     }
 
     private static String replaceIncrementPlaceholder(String data, String entityType) {
-        if (data.contains(UNIQUE_NUMBER)) {
-            data = data.replace(UNIQUE_NUMBER, generateUniqueNumber());
-        }
+        // Replace specific placeholders for agency and provider
+        data = replaceSpecificIncrement(data, "<agencyIncrement>", AGENCY);
+        data = replaceSpecificIncrement(data, "<providerIncrement>", PROVIDER);
 
+        // Replace generic increment placeholder "{{increment}}"
         if (data.contains(INCREMENT_VARIABLE)) {
-            data = replaceIncrementPlaceholder(data, entityType);
-        }
-
-        // Replace agency increment value
-        if (data.contains("<agencyIncrement>")) {
-            Integer agencyIncrement = (Integer) GlobalVariables.getVariable(AGENCY + INCREMENT_VALUE);
-            if (agencyIncrement != null) {
-                data = data.replace("<agencyIncrement>", String.valueOf(agencyIncrement));
-            } else {
-                logger.error("Agency increment value not found in GlobalVariables.");
+            Integer cachedValue = getOrLoadIncrementValue(entityType);
+            if (cachedValue != null) {
+                data = data.replace(INCREMENT_VARIABLE, String.valueOf(cachedValue));
+                logger.info("Replaced {{increment}} with {} for entity type: {}", cachedValue, entityType);
+                // Update the increment value in the file
+                String filePath = getFilePathForEntity(entityType);
+                if (filePath != null) {
+                    updateIncrementValueInFile(filePath, cachedValue + 1);
+                    logger.info("Increment value updated to {} in file: {}", cachedValue + 1, filePath);
+                } else {
+                    logger.error("Unable to update increment value. File path not found for entity type: {}", entityType);
+                }
             }
         }
-
-        // Replace provider increment value
-        if (data.contains("<providerIncrement>")) {
-            Integer providerIncrement = (Integer) GlobalVariables.getVariable(PROVIDER + INCREMENT_VALUE);
-            if (providerIncrement != null) {
-                data = data.replace("<providerIncrement>", String.valueOf(providerIncrement));
-            } else {
-                logger.error("Provider increment value not found in GlobalVariables.");
-            }
-        }
-
-        // Attempt to retrieve the cached increment value
-        Integer cachedIncrementValue = (Integer) GlobalVariables.getVariable(entityType + INCREMENT_VALUE);
-
-        // If not cached, read from the file and cache the value
-        if (cachedIncrementValue == null) {
-            String incrementFilePath = getFilePathForEntity(entityType);
-
-            if (incrementFilePath == null) {
-                logger.error("No increment file path found for entity type: {}", entityType);
-                return data;
-            }
-
-            cachedIncrementValue = readIncrementValueFromFile(incrementFilePath);
-
-            if (cachedIncrementValue == -1) {
-                logger.error("Failed to read increment value from file for entity type: {}", entityType);
-                return data;
-            }
-
-            // Cache the value for future use
-            GlobalVariables.storeIncrementedValue(entityType, cachedIncrementValue);
-        }
-
-        // Replace the placeholder with the increment value
-        data = data.replace(INCREMENT_VARIABLE, String.valueOf(cachedIncrementValue));
-        logger.info("Replaced {{increment}} with {} for entity type: {}", cachedIncrementValue, entityType);
-
-        // Update the increment value in the file
-        String incrementFilePath = getFilePathForEntity(entityType);
-        if (incrementFilePath != null) {
-            updateIncrementValueInFile(incrementFilePath, cachedIncrementValue + 1);
-            logger.info("Increment value updated to {} in file: {}", cachedIncrementValue + 1, incrementFilePath);
-        } else {
-            logger.error("Unable to update increment value. File path not found for entity type: {}", entityType);
-        }
-
         return data;
     }
 
-    private static void updateIncrementValueInFile(String filePath, int newValue) {
+    private static String replaceSpecificIncrement(String data, String placeholder, String key) {
+        if (data.contains(placeholder)) {
+            Integer value = (Integer) GlobalVariables.getVariable(key + INCREMENT_VALUE);
+            if (value != null) {
+                data = data.replace(placeholder, String.valueOf(value));
+            } else {
+                logger.error("{} increment value not found in GlobalVariables.", key);
+            }
+        }
+        return data;
+    }
+
+    private static Integer getOrLoadIncrementValue(String entityType) {
+        Integer cachedValue = (Integer) GlobalVariables.getVariable(entityType + INCREMENT_VALUE);
+        if (cachedValue == null) {
+            String filePath = getFilePathForEntity(entityType);
+            if (filePath == null) {
+                logger.error("No increment file path found for entity type: {}", entityType);
+                return null;
+            }
+            cachedValue = readIncrementValueFromFile(filePath);
+            if (cachedValue == -1) {
+                logger.error("Failed to read increment value from file for entity type: {}", entityType);
+                return null;
+            }
+            GlobalVariables.storeIncrementedValue(entityType, cachedValue);
+        }
+        return cachedValue;
+    }
+
+
+    public static void updateIncrementValueInFile(String filePath, int newValue) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(String.valueOf(newValue));
             logger.info("Updated increment value to {} in file: {}", newValue, filePath);
@@ -199,10 +186,33 @@ public class DataConfigurationReader {
 
     // Change this method to public so it can be accessed from Hooks and other places
     public static synchronized int getCurrentIncrementValue(String entityType) {
-        if (incrementValue == -1) {
-            incrementValue = loadIncrementValueFromFile(entityType);
+        // First check if we have it in GlobalVariables
+        Integer cachedValue = (Integer) GlobalVariables.getVariable(entityType + "_incrementValue");
+        if (cachedValue != null) {
+            logger.info("Retrieved {} increment value from GlobalVariables: {}", entityType, cachedValue);
+            return cachedValue;
         }
-        return incrementValue;
+
+        // If not in GlobalVariables, load from file
+        String filePath = getFilePathForEntity(entityType);
+        if (filePath == null || filePath.isEmpty()) {
+            logger.error("File path for entity {} is invalid or not found, defaulting to 1", entityType);
+            return 1;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line = reader.readLine();
+            if (line != null) {
+                int value = Integer.parseInt(line.trim());
+                // Store in GlobalVariables for future use
+                GlobalVariables.setVariable(entityType + "_incrementValue", value);
+                logger.info("Loaded {} increment value from file and stored in GlobalVariables: {}", entityType, value);
+                return value;
+            }
+        } catch (IOException e) {
+            logger.error("Failed to load increment value for {}", entityType, e);
+        }
+        return 1;
     }
 
     // Private method to load the increment value from file
@@ -246,7 +256,7 @@ public class DataConfigurationReader {
         }
     }
 
-    private static String getFilePathForEntity(String entityType) {
+    public static String getFilePathForEntity(String entityType) {
         logger.info("********** Received entity type: {}", entityType);
         String lowerCaseEntityType = entityType.toLowerCase();
         if (!Arrays.asList(AGENCY, PROVIDER, "worker", "job", "agreement").contains(lowerCaseEntityType)) {
