@@ -1,5 +1,6 @@
 package com.carehires.actions.agency;
 
+
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.agency.AgencyBusinessLocationsPage;
 import com.carehires.utils.BasePage;
