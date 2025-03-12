@@ -19,8 +19,6 @@ public class SearchProviderActions {
     private static final String EDIT_YML_FILE = "provider-edit";
     private static final String YML_HEADER = "Company Information";
     private static final String ADD = "Add";
-    private static final String UPDATE = "Update";
-
 
 
     private static final Logger logger = LogManager.getFormatterLogger(ProviderSiteManagementActions.class);

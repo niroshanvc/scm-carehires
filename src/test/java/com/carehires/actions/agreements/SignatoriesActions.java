@@ -19,8 +19,6 @@ public class SignatoriesActions {
     private static final String YML_HEADER = "Signatories";
     private static final String YML_HEADER_AGENCY = "Agency";
     private static final String YML_HEADER_PROVIDER = "Provider";
-    private static final String ADD = "Add";
-    private static final String EDIT_YML_FILE = "agreement-edit";
     Integer incrementValue;
 
     private static final Logger logger = LogManager.getLogger(SignatoriesActions.class);
