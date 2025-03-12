@@ -1,5 +1,6 @@
 package com.carehires.actions.agency;
 
+
 import com.carehires.pages.agency.SubContractingAgreementPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -11,10 +12,10 @@ import org.openqa.selenium.support.PageFactory;
 import java.io.File;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.hamcrest.text.IsEmptyString.isEmptyOrNullString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 
 public class SubContractingAgreementActions {
 
@@ -26,7 +27,6 @@ public class SubContractingAgreementActions {
     private static final String EDIT_YML_FILE = "agency-edit";
     private static final String YML_HEADER = "Sub Contract";
     private static final String ADD = "Add";
-    private static final String UPDATE = "Update";
     private static final String RESOURCE_FOLDER = System.getProperty("user.dir") + File.separator + "src" + File.separator
             + "test" + File.separator + "resources";
 

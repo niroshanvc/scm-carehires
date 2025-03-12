@@ -1,5 +1,6 @@
 package com.carehires.actions.agency;
 
+
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.agency.AgencyCreditServicePage;
 import com.carehires.pages.agency.CreateAgencyBasicInfoPage;
@@ -39,7 +40,6 @@ public class AgencyCreditServiceActions {
     private static final String EDIT_YML_FILE = "agency-edit";
     private static final String YML_HEADER = "Credit Service";
     private static final String ADD = "Add";
-    private static final String UPDATE = "Update";
     private static final String EDIT_YML_SUB_HEADER = "Agency Owner Information";
     private static final String CLASS_ATTRIBUTE = "class";
     private static final String CHECKED_VALUE = "custom-checkbox checked";

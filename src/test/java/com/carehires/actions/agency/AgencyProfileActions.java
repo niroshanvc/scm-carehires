@@ -1,5 +1,6 @@
 package com.carehires.actions.agency;
 
+
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.agency.AgencyProfilePage;
 import com.carehires.utils.BasePage;
@@ -9,17 +10,15 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class AgencyProfileActions {
 
     AgencyProfilePage agencyProfile;
 
     private static final String ENTITY = "agency";
-    private static final String YML_FILE = "agency-edit";
     private static final String EDIT_YML_FILE = "agency-edit";
     private static final String YML_HEADER = "Basic Info";
-    private static final String ADD = "Add";
     private static final String UPDATE = "Update";
     private static final Logger logger = LogManager.getFormatterLogger(AgencyProfileActions.class);
 
@@ -116,15 +115,6 @@ public class AgencyProfileActions {
         String updatingNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, "PhoneNumber");
         BasePage.clearAndEnterTexts(agencyProfile.phoneNumberInput, updatingNumber);
 
-        // add new phone number
-        /*BasePage.clickWithJavaScript(agencyProfile.addAnotherPhoneNumberLink);
-        BasePage.waitUntilElementPresent(agencyProfile.removePhoneNumberInput, 20);
-        BasePage.clickWithJavaScript(agencyProfile.phoneNumberType2);
-        String phoneNumberType2 = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PhoneType");
-        BasePage.waitUntilElementPresent(getPhoneNumberTypeXpath(phoneNumberType2), 20);
-        BasePage.clickWithJavaScript(getPhoneNumberTypeXpath(phoneNumberType2));
-        String phoneNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "PhoneNumber");
-        BasePage.clearAndEnterTexts(agencyProfile.phoneNumberInput2, phoneNumber);*/
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(agencyProfile.saveButton);
         verifySuccessMessage();

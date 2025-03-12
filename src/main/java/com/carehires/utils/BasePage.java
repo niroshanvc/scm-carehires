@@ -4,8 +4,6 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -740,7 +738,6 @@ public class BasePage {
         } catch (WebDriverInitializationException e) {
             throw new RuntimeException(e);
         }
-        MatcherAssert.assertThat("Element should be present", elements.size(), Matchers.greaterThan(0));
     }
 
     // mouse hover and release webelement

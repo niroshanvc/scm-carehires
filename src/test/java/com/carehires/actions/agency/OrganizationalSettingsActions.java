@@ -1,5 +1,6 @@
 package com.carehires.actions.agency;
 
+
 import com.carehires.pages.agency.OrganizationalSettingsPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -8,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class OrganizationalSettingsActions {
 
