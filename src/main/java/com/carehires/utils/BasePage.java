@@ -319,7 +319,7 @@ public class BasePage {
     public static String getAttributeValue(WebElement element, String attribute) {
         logger.info("******************  attribute value from %s and %s", element, attribute);
         waitUntilElementPresent(element, 30);
-        return element.getAttribute(attribute);
+        return element.getDomAttribute(attribute);
     }
 
     public static void clickTabKey(WebElement element) {
