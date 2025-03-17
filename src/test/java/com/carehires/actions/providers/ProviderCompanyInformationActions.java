@@ -236,7 +236,9 @@ public class ProviderCompanyInformationActions {
     private void enterAverageNumberOfEmployees(String ymlFile, String subHeader) {
         logger.info("Entering number of employees");
         String averageNumEmp = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "AverageNumberOfEmployees");
-        if (averageNumEmp.equalsIgnoreCase("Under 50")) {
+        if (averageNumEmp == null) {
+            logger.error("Average number of employees value is null");
+        } else if (averageNumEmp.equalsIgnoreCase("Under 50")) {
             BasePage.clickWithJavaScript(companyInformationPage.numberOfEmployeeUnderFifty);
         } else {
             BasePage.clickWithJavaScript(companyInformationPage.numberOfEmployeeOverFifty);

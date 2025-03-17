@@ -86,14 +86,16 @@ public class ProviderUserManagementActions {
         // close the assign to site dropdown
         BasePage.clickWithJavaScript(userManagement.phone);
 
-        String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "MarkAsAnAuthoriser");
+        String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD,
+                "MarkAsAnAuthoriser");
         assert authoriser != null;
         BasePage.scrollToWebElement(userManagement.addButton);
         if(authoriser.equalsIgnoreCase("yes")) {
             BasePage.clickWithJavaScript(userManagement.markAsAnAuthoriserToggle);
         }
 
-        String[] userAccessLevel  = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, USER_ACCESS_LEVEL)).split(",");
+        String[] userAccessLevel  = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,
+                YML_HEADER, ADD, USER_ACCESS_LEVEL)).split(",");
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
         BasePage.genericWait(1000);
         for (String accessLevel : userAccessLevel) {
@@ -125,7 +127,8 @@ public class ProviderUserManagementActions {
         String actualInLowerCase = BasePage.getText(userManagement.successMessage).toLowerCase().trim();
         String expected = "Record created successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
-        assertThat("User management information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        assertThat("User management information success message is wrong!", actualInLowerCase, is(
+                expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(userManagement.successMessage, 20);
     }
 
@@ -139,11 +142,13 @@ public class ProviderUserManagementActions {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(userManagement.addNewButton);
-        String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, "email");
+        String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD,
+                "email");
         BasePage.genericWait(2000);
 
         //wait until email get validated
-        genericUtils.waitUntilEmailAddressValidatedForUniqueness(email, userManagement.emailAddress, userManagement.name);
+        genericUtils.waitUntilEmailAddressValidatedForUniqueness(email, userManagement.emailAddress, userManagement.
+                name);
         enterUserManagementData(EDIT_YML_FILE, ADD);
 
         BasePage.clickWithJavaScript(userManagement.assignToSiteDropdown);
@@ -153,14 +158,16 @@ public class ProviderUserManagementActions {
         // close the assign to site dropdown
         BasePage.clickWithJavaScript(userManagement.phone);
 
-        String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, "MarkAsAnAuthoriser");
+        String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD,
+                "MarkAsAnAuthoriser");
         assert authoriser != null;
         BasePage.scrollToWebElement(userManagement.addButton);
         if(authoriser.equalsIgnoreCase("yes")) {
             BasePage.clickWithJavaScript(userManagement.markAsAnAuthoriserToggle);
         }
 
-        String[] userAccessLevel  = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, USER_ACCESS_LEVEL)).split(",");
+        String[] userAccessLevel  = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY,
+                EDIT_YML_FILE, YML_HEADER, ADD, USER_ACCESS_LEVEL)).split(",");
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
         BasePage.genericWait(1000);
         for (String accessLevel : userAccessLevel) {
@@ -189,21 +196,26 @@ public class ProviderUserManagementActions {
     private void updateUserAccessLevel() {
         // Read access levels from the YAML file and convert them to a Set for easy comparison
         Set<String> desiredLevels = new HashSet<>(Arrays.asList(
-                Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, USER_ACCESS_LEVEL)).split(",")
+                Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
+                        UPDATE, USER_ACCESS_LEVEL)).split(",")
         ));
+
         // Click to open the worker skills dropdown
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
-        // Get all currently selected skills, default to an empty list if null
+
+        // Get all currently selected skills
         List<String> selectedLevels = getCurrentlySelectedOptions();
-        if (selectedLevels == null) {
-            selectedLevels = new ArrayList<>();
-        }
+
+        // If getCurrentlySelectedOptions() always returns a non-null list (even if empty),
+        // this check is redundant
+
         // Deselect skills that are not in the desired list
         for (String level : selectedLevels) {
             if (!desiredLevels.contains(level)) {
                 BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(level));
             }
         }
+
         // Select skills that are in the desired list but not currently selected
         for (String level : desiredLevels) {
             if (!selectedLevels.contains(level)) {
@@ -227,10 +239,12 @@ public class ProviderUserManagementActions {
         String name = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Name");
         BasePage.clearAndEnterTexts(userManagement.name, name);
 
-        String jobTitle = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "JobTitle");
+        String jobTitle = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
+                "JobTitle");
         BasePage.clearAndEnterTexts(userManagement.jobTitle,  jobTitle);
 
-        String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Phone");
+        String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
+                "Phone");
         BasePage.clickWithJavaScript(userManagement.phone);
         BasePage.clearAndEnterTexts(userManagement.phone,  phone);
 

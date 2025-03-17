@@ -284,7 +284,7 @@ public class JobsListViewActions {
 
     private void verifyingFunctionalityOfCopyJobDetails() {
         BasePage.genericWait(3000); // Wait for the text to be copied
-        String expectedJobId = "";
+        String expectedJobId = getFirstJobId();
         String expectedJobStatus = "";
         String expectedProvider = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE,
                 YML_HEADER_JOB_DETAILS, YML_SUB_HEADER_CARE_PROVIDER, "Care Provider");

@@ -19,12 +19,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.isIn;
+import static org.hamcrest.Matchers.in;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 
@@ -195,7 +196,7 @@ public class ViewAgreementOverviewActions {
         // Check that all expected skills are in the actual skills list
         assertThat(actualSkills, hasItems(expectedSkills.toArray(new String[0])));
         // Check that every item in the actual list is expected
-        assertThat(actualSkills, everyItem(isIn(expectedSkills)));
+        assertThat(actualSkills, everyItem(is(in(expectedSkills))));
 
         // verify agency hourly rate
         double expectedWorkerHourlyRate = Double.parseDouble(getWorkerHourlyRate());
@@ -797,9 +798,14 @@ public class ViewAgreementOverviewActions {
         if (downloadedFileName == null) {
             logger.error("Download failed! No file detected.");
         }
+
         // Ensure the fileName is not null or empty
         assertThat("File name should not be null", downloadedFileName, is(notNullValue()));
-        assertThat("File name should not be empty", downloadedFileName, not(isEmptyOrNullString()));
+
+        // Replace the deprecated isEmptyOrNullString() with either:
+        assertThat("File name should not be empty", downloadedFileName, not(emptyOrNullString()));
+        // OR
+        assertThat("File name should not be empty", downloadedFileName, not(emptyString()));
 
         // Delete the after verification
         boolean isDeleted = FileDownloadUtils.deleteLatestDownloadedFile();
