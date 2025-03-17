@@ -31,4 +31,10 @@ public class JobDetailsSteps {
     public void enterJobDetailsForSpecialHoliday() {
         jobDetailsActions.enterJobDetailsForSpecialHoliday();
     }
+
+    @And("User enters Job Details without Recurrence, Breaks and No Skills")
+    public void enterJobDetailsWithoutRecurrenceBreaksAndNoSkills() {
+        jobDetailsActions.enterCareProviderDetailsWithPostCustomJob();
+        jobDetailsActions.enterJobDurationWithoutRecurrenceAndBreaks();
+    }
 }

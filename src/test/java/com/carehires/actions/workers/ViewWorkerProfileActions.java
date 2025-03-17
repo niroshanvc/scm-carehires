@@ -1,5 +1,6 @@
 package com.carehires.actions.workers;
 
+
 import com.carehires.pages.worker.ViewWorkerProfilePage;
 import com.carehires.utils.BasePage;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class ViewWorkerProfileActions {
 

@@ -1,5 +1,6 @@
 package com.carehires.actions.workers;
 
+
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.worker.WorkerBasicInformationPage;
 import com.carehires.utils.BasePage;
@@ -23,7 +24,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class WorkerBasicInformationActions {
 

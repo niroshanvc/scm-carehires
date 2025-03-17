@@ -1,5 +1,6 @@
 package com.carehires.actions;
 
+
 import com.carehires.actions.agency.AgencyProfileActions;
 import com.carehires.pages.OverviewPage;
 import com.carehires.utils.BasePage;
@@ -8,8 +9,8 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.PageFactory;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 public class OverviewActions {
     OverviewPage overview;

@@ -1,5 +1,6 @@
 package com.carehires.actions.agreements;
 
+
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.agreements.SignatoriesPage;
 import com.carehires.utils.BasePage;
@@ -9,13 +10,14 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class SignatoriesActions {
 
     SignatoriesPage signatoriesPage;
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
+    private static final String SKILLS = "With Skills";
     private static final String YML_HEADER = "Signatories";
     private static final String YML_HEADER_AGENCY = "Agency";
     private static final String YML_HEADER_PROVIDER = "Provider";
@@ -43,22 +45,22 @@ public class SignatoriesActions {
             throw new NullPointerException("Increment value for agreement is not set in GlobalVariables.");
         }
 
-        String agencyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_AGENCY, "Name");
+        String agencyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, YML_HEADER_AGENCY, "Name");
         BasePage.clearAndEnterTexts(signatoriesPage.agencyName, agencyName);
 
-        String agencyDesignation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_AGENCY, "Designation");
+        String agencyDesignation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, YML_HEADER_AGENCY, "Designation");
         BasePage.clearAndEnterTexts(signatoriesPage.agencyDesignation, agencyDesignation);
 
-        String agencyEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_AGENCY, "Email");
+        String agencyEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, YML_HEADER_AGENCY, "Email");
         BasePage.clearAndEnterTexts(signatoriesPage.agencyEmail, agencyEmail);
 
-        String providerName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_PROVIDER, "Name");
+        String providerName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, YML_HEADER_PROVIDER, "Name");
         BasePage.clearAndEnterTexts(signatoriesPage.providerName, providerName);
 
-        String providerDesignation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_PROVIDER, "Designation");
+        String providerDesignation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, YML_HEADER_PROVIDER, "Designation");
         BasePage.clearAndEnterTexts(signatoriesPage.providerDesignation, providerDesignation);
 
-        String providerEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_HEADER_PROVIDER, "Email");
+        String providerEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, YML_HEADER_PROVIDER, "Email");
         BasePage.clearAndEnterTexts(signatoriesPage.providerEmail, providerEmail);
 
         BasePage.clickWithJavaScript(signatoriesPage.agreementCheckbox);

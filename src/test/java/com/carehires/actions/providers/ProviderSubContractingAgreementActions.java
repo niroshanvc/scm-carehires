@@ -1,5 +1,6 @@
 package com.carehires.actions.providers;
 
+
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.providers.ProviderSubContractingAgreementPage;
 import com.carehires.utils.BasePage;
@@ -11,7 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 import java.io.File;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class ProviderSubContractingAgreementActions {
 

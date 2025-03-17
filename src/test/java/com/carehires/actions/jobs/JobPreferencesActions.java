@@ -1,5 +1,6 @@
 package com.carehires.actions.jobs;
 
+
 import com.carehires.pages.jobs.JobPreferencesPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -24,6 +25,7 @@ public class JobPreferencesActions {
     private static final String YML_FILE_WITH_BREAKS = "job-create-with-breaks";
     private static final String YML_FILE_EDIT = "job-post-edit";
     private static final String YML_HEADER = "Job Preferences";
+    private static final String YML_HEADER_SCENARIO1 = "Job Details Scenario1";
     private static final String YML_HEADER_EDIT = "Edit Job Preferences";
 
     private static final Logger logger = LogManager.getLogger(JobPreferencesActions.class);
@@ -244,6 +246,14 @@ public class JobPreferencesActions {
         selectPreferences(YML_FILE_EDIT, YML_HEADER_EDIT, true);
         enableDisableBlockBooking(YML_FILE_EDIT, YML_HEADER_EDIT);
         enterJobNotes(YML_FILE_EDIT, YML_HEADER_EDIT);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void noNoteAndDisablingBlockBooking() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Preferences without Skills >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_EDIT, YML_HEADER_EDIT);
+        enableDisableBlockBooking(YML_FILE_EDIT, YML_HEADER_EDIT);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
     }
 }

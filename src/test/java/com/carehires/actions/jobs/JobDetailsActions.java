@@ -1,5 +1,6 @@
 package com.carehires.actions.jobs;
 
+
 import com.carehires.pages.jobs.JobDetailsPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -30,9 +31,11 @@ public class JobDetailsActions {
 
     private static final String ENTITY = "job";
     private static final String YML_FILE = "job-create";
+    private static final String YML_FILE_SCENARIO1 = "scenario - job post";
     private static final String YML_FILE_EDIT = "job-post-edit";
     private static final String YML_FILE_WITH_BREAKS = "job-create-with-breaks";
     private static final String YML_HEADER = "Job Details";
+    private static final String YML_HEADER_SCENARIO1 = "Job Details Scenario1";
     private static final String NORMAL_DAY = "Normal Day";
     private static final String YML_HEADER_EDIT = "Edit Job Details";
     private static final String YML_HEADER_PROVIDER = "Care Provider / Site and Service Preferences";
@@ -314,6 +317,20 @@ public class JobDetailsActions {
         BasePage.scrollToWebElement(jobDetailsPage.continueButton);
         enterJobDurationAndRecurrence(YML_FILE, YML_HEADER, "Special Holiday");
         BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void enterCareProviderDetailsWithPostCustomJob() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Care Provider by Selecting Custom Job >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderAndServicePreferences(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1);
+
+    }
+
+    public void enterJobDurationWithoutRecurrenceAndBreaks() {
+        enterJobDurationAndRecurrence(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1, NORMAL_DAY);
+        BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
 }

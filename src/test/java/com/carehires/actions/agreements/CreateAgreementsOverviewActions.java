@@ -20,6 +20,7 @@ public class CreateAgreementsOverviewActions {
     CreateAgreementsOverviewPage agreementsOverviewPage;
 
     private static final String ENTITY = "agreement";
+    private static final String SKILLS = "With Skills";
     private static final String YML_FILE = "agreement-create";
     private static final String YML_HEADER = "Agreement Overview";
 
@@ -46,7 +47,7 @@ public class CreateAgreementsOverviewActions {
         int providerIncrementValue = DataConfigurationReader.getCurrentIncrementValue("provider");
 
         // Read agency name from YAML and replace <agencyIncrement> placeholder
-        String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Agency");
+        String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Agency");
         assert agencyTemplate != null;
         String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
         agency = agency.replace("\"", "").trim();
@@ -60,7 +61,7 @@ public class CreateAgreementsOverviewActions {
         BasePage.clickWithJavaScript(agreementsOverviewPage.getDropdownOptionXpath(agency));
         BasePage.genericWait(2000);
 
-        String agencyLocation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+        String agencyLocation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
                 "Agency Location");
         BasePage.clickWithJavaScript(agreementsOverviewPage.agencyLocationDropdown);
         BasePage.waitUntilElementClickable(agreementsOverviewPage.getDropdownOptionXpath(agencyLocation), 30);
@@ -69,7 +70,7 @@ public class CreateAgreementsOverviewActions {
         BasePage.clickWithJavaScript(agreementsOverviewPage.getDropdownOptionXpath(agencyLocation));
 
         // Read provider name from YAML and replace <providerIncrement> placeholder
-        String careProviderTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+        String careProviderTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
                 "Care Provider");
         assert careProviderTemplate != null;
         String careProvider = careProviderTemplate.replace("<providerIncrement>", String.valueOf(
@@ -82,7 +83,7 @@ public class CreateAgreementsOverviewActions {
         BasePage.clickWithJavaScript(agreementsOverviewPage.getDropdownOptionXpath(careProvider));
         BasePage.genericWait(2000);
 
-        String siteTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Site");
+        String siteTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Site");
         assert siteTemplate != null;
         String site = siteTemplate.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
         site = site.replace("\"", "").trim();

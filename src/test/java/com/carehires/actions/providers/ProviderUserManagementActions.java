@@ -1,5 +1,6 @@
 package com.carehires.actions.providers;
 
+
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.providers.ProvidersUserManagementPage;
 import com.carehires.utils.BasePage;
@@ -18,7 +19,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class ProviderUserManagementActions {
 
@@ -242,7 +243,7 @@ public class ProviderUserManagementActions {
         String actualInLowerCase = BasePage.getText(userManagement.successMessage).toLowerCase().trim();
         String expected = "Record updated successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
-        assertThat("Worker staff update success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        assertThat("Worker user update success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(userManagement.successMessage, 20);
     }
 }

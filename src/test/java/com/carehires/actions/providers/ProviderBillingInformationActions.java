@@ -1,20 +1,24 @@
 package com.carehires.actions.providers;
 
+
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.providers.ProviderBillingInformationPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
+import com.carehires.utils.GenericUtils;
+import com.carehires.utils.WebDriverInitializationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class ProviderBillingInformationActions {
 
     ProviderBillingInformationPage billingInformationPage;
     private static final ProviderNavigationMenuActions navigationMenu = new ProviderNavigationMenuActions();
+    GenericUtils genericUtils;
 
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
@@ -28,12 +32,20 @@ public class ProviderBillingInformationActions {
     private static final Logger logger = LogManager.getFormatterLogger(ProviderBillingInformationActions.class);
     Integer incrementValue;
 
-    public ProviderBillingInformationActions() {
+    {
+        try {
+            genericUtils = new GenericUtils();
+        } catch (WebDriverInitializationException e) {
+            throw new WebDriverInitializationException("Failed to initialize WebDriver for GenericUtils", e);
+        }
+    }
+
+    public ProviderBillingInformationActions() throws BasePage.WebDriverInitializationException {
         billingInformationPage = new ProviderBillingInformationPage();
         try {
             PageFactory.initElements(BasePage.getDriver(), billingInformationPage);
         } catch (BasePage.WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new BasePage.WebDriverInitializationException("Failed to initialize WebDriver for GenericUtils", e);
         }
     }
 
@@ -65,11 +77,11 @@ public class ProviderBillingInformationActions {
         String attentionTo = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "AddressBillsInAttentionTo");
         BasePage.clearAndEnterTexts(billingInformationPage.addressBillsInAttentionTo, attentionTo);
 
-        String billingAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "BillingAddress");
-        BasePage.clearAndEnterTexts(billingInformationPage.billingAddress, billingAddress);
-
         String digitalBillingAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "DigitalBillingAddress");
         BasePage.clearAndEnterTexts(billingInformationPage.digitalBillingAddress, digitalBillingAddress);
+
+        String postalCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "Postal Code");
+        genericUtils.fillAddress(billingInformationPage.postalCode, postalCode, 300);
 
         String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB, subHeader, "PhoneNumber");
         BasePage.clearAndEnterTexts(billingInformationPage.phoneNumber, phone);
@@ -135,6 +147,9 @@ public class ProviderBillingInformationActions {
         String contactPhone = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, YML_HEADER_SUB, UPDATE, "PhoneNumberContact");
         BasePage.clearAndEnterTexts(billingInformationPage.phoneNumberBillingContact, contactPhone);
 
+        String creditLimit = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, YML_HEADER_SUB, UPDATE, "CreditLimitAmount");
+
+
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(billingInformationPage.saveButton);
     }
@@ -150,7 +165,7 @@ public class ProviderBillingInformationActions {
             throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");
         }
 
-        BasePage.genericWait(3000);
+        BasePage.genericWait(5000);
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementDisplayed(billingInformationPage.addressBillsInAttentionTo, 60);
         enterGeneralBillingData(YML_FILE, ADD);
@@ -182,11 +197,11 @@ public class ProviderBillingInformationActions {
         String attentionTo = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Address bills in attention to");
         BasePage.clearAndEnterTexts(billingInformationPage.customAddressBillsInAttentionTo, attentionTo);
 
-        String billingAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Billing Address");
-        BasePage.clearAndEnterTexts(billingInformationPage.customBillingAddress, billingAddress);
-
         String digitalBillingAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Digital Billing Address");
         BasePage.clearAndEnterTexts(billingInformationPage.customDigitalBillingAddress, digitalBillingAddress);
+
+        String postalCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Postal Code");
+        genericUtils.fillAddress(billingInformationPage.customBillingPostalCode, postalCode, 300);
 
         String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Phone Number");
         BasePage.clearAndEnterTexts(billingInformationPage.customPhoneNumber, phone);

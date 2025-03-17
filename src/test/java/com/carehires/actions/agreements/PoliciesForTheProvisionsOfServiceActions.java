@@ -12,6 +12,7 @@ public class PoliciesForTheProvisionsOfServiceActions {
     PoliciesForTheProvisionsOfServicePage policiesPage;
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
+    private static final String SKILLS = "With Skills";
     private static final String YML_HEADER = "Policies for the Provisions of Service";
 
     private static final Logger logger = LogManager.getLogger(PoliciesForTheProvisionsOfServiceActions.class);
@@ -28,13 +29,13 @@ public class PoliciesForTheProvisionsOfServiceActions {
     public void enterPolicies() {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Cancellation Policy Info >>>>>>>>>>>>>>>>>>>>");
-        String billingCycle = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Billing Cycle");
+        String billingCycle = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Billing Cycle");
         assert billingCycle != null;
         if (billingCycle.equalsIgnoreCase("weekly")) {
             BasePage.clickWithJavaScript(policiesPage.weeklyBillingCycle);
         }
 
-        String creditPeriodStr = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Credit Period");
+        String creditPeriodStr = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Credit Period");
         assert creditPeriodStr != null;
         int creditPeriod = Integer.parseInt(creditPeriodStr);
         switch(creditPeriod) {

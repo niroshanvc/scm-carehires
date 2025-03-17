@@ -26,4 +26,9 @@ public class JobPreferencesSteps {
     public void enterDataToJobPreferences() {
         jobPreferencesActions.enterJobPreferencesData();
     }
+
+    @And("User enters Job Preferences without Job note and disabling block booking")
+    public void enterWithoutJobNoteAndDisablingBlockBooking() {
+        jobPreferencesActions.noNoteAndDisablingBlockBooking();
+    }
 }

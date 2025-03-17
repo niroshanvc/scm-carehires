@@ -58,7 +58,7 @@ User:
     email: carehires+prouser{{increment}}@zohomail.com
     Name: Patrick Sams{{increment}}
     JobTitle: Assistant Executive
-    Phone: "07700123455"
+    Phone: "07874483609"
     MarkAsAnAuthoriser: "Yes"
     UserAccessLevel: Org Admin
 
@@ -66,10 +66,9 @@ Billing Information:
   General Billing Information:
     Add:
       AddressBillsInAttentionTo: IBS Solutions QQQQ
-      BillingAddress: "Uber9s Ltd, Gb697 6910 69, Unit 21 Silverstone Tech Park, Silverstone, Towcester, Northamptonshire"
       DigitalBillingAddress: carehires+progeneralbilling{{increment}}@zohomail.com
+      Postal Code: LE10 0AN
       PhoneNumber: "07412001246"
-      PaymentMethod: Pay on Invoice
       CreditLimitAmount: 600
       BillingCycle: Bi Weekly
       CreditTerm: 28 Days
@@ -81,16 +80,13 @@ Billing Information:
     Add:
       Site: BioRevolution Care {{increment}}
       Address bills in attention to: "Uber9s Ltd"
-      Billing Address: "Uber9s Ltd, Gb697 6910 69, Unit 21 Silverstone Tech Park, Silverstone, Towcester, Northamptonshire"
       Digital Billing Address: carehires+procustombilling{{increment}}@zohomail.com
+      Postal Code: LE10 1AN
       Cost Center: "<costCenterNumber>"
       Phone Number: "07412001246"
       Billing Cycle: Bi Weekly
       Credit Term: 28 Days
-      Is same as general billing bank info: "Yes"
-      Account Name: William Sandrock
-      Account Number: "<accountNumber>"
-      Sort Code: 108866
+
 
 SubContract:
   Note: Sub contract agreement note is entered.

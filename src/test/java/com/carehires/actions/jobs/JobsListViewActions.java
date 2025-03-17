@@ -1,5 +1,6 @@
 package com.carehires.actions.jobs;
 
+
 import com.carehires.pages.jobs.JobsListViewPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.ClipboardUtils;

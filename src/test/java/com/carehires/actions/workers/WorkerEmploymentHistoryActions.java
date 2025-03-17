@@ -1,5 +1,6 @@
 package com.carehires.actions.workers;
 
+
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.worker.WorkerEmploymentHistoryPage;
 import com.carehires.utils.BasePage;
@@ -16,7 +17,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class WorkerEmploymentHistoryActions {
 

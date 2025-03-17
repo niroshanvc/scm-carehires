@@ -17,6 +17,9 @@ public class ProviderBillingInformationPage {
     @FindBy(xpath = "(//input[@formcontrolname='telephoneNumber'])[1]")
     public WebElement phoneNumber;
 
+    @FindBy(xpath = "(//input[@id='post-code'])[1]")
+    public WebElement postalCode;
+
     @FindBy(xpath = "//nb-select[@formcontrolname='paymentMethod']/button")
     public WebElement paymentMethodDropdown;
 
@@ -52,6 +55,9 @@ public class ProviderBillingInformationPage {
 
     @FindBy(xpath = "//span[text()='Custom Billing Information']/parent::a")
     public WebElement customBillingInformationSection;
+
+    @FindBy(xpath = "(//input[@id='post-code'])[2]")
+    public WebElement customBillingPostalCode;
 
     @FindBy(xpath = "//nb-select[@formcontrolname='careHome']/button")
     public WebElement siteDropdown;

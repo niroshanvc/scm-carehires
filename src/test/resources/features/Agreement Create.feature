@@ -45,3 +45,10 @@ Feature: Test CareHires create agreement with disable Bid4Care
     When User navigates to Agreement View page
     Then User verifies available data in the worker rates table
     And User verifies available data in the Sleep in Request table
+
+  @CreateAgreementWithoutSkills
+  Scenario: Create an agreement without skills
+    When User navigates to Agreement Create page
+    And user enters agreement overview data
+    And User enters Worker Rates without skills
+    And User enters Cancellation Policy and verify calculations
