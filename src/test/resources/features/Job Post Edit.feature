@@ -9,7 +9,7 @@ Feature: Test CareHires edit job
   @EditJobPost
   Scenario: Edit a job post
     When User navigates to Jobs page
-    And User moves to Post Job page
+    And User moves to Post New Job page
     And User enters data to Job Details
     And User enters data to Job Preferences
     And User clicks on Edit button on Job Summary

@@ -319,7 +319,7 @@ public class BasePage {
     public static String getAttributeValue(WebElement element, String attribute) {
         logger.info("******************  attribute value from %s and %s", element, attribute);
         waitUntilElementPresent(element, 30);
-        return element.getDomAttribute(attribute);
+        return element.getAttribute(attribute);
     }
 
     public static void clickTabKey(WebElement element) {
@@ -375,6 +375,12 @@ public class BasePage {
         logger.info("****************** Clear texts in %s", element);
         element.clear();
     }
+
+    public static void clearTextsUsingSendKeys(WebElement element) {
+        logger.info("****************** Clear texts in %s using Send Keys", element);
+        element.sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+    }
+
 
     public static void moveToBottomOfThePage() {
         logger.info("****************** Move to bottom of the page.");
@@ -846,5 +852,49 @@ public class BasePage {
         } catch (WebDriverInitializationException e) {
             logger.error("Element attribute not get updated %s", attributeValue);
         }
+    }
+
+    /**
+     * Waits until a specific value is loaded in a dropdown (without opening it)
+     * @param dropdown The WebElement representing the dropdown
+     * @param expectedValue The expected value to wait for
+     * @param timeoutInSeconds Maximum time to wait
+     */
+    public static void waitUntilValueLoadedInDropdown(WebElement dropdown, String expectedValue, int timeoutInSeconds) {
+        logger.info("Waiting for value %s to be loaded in dropdown", expectedValue);
+
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+
+        wait.until(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                try {
+                    // Get the current selected value without opening the dropdown
+                    String currentValue = dropdown.getText().trim();
+                    logger.debug("Current dropdown value: %s", currentValue);
+
+                    // Check if it matches the expected value
+                    return currentValue.equals(expectedValue);
+                } catch (StaleElementReferenceException e) {
+                    // Handle case where element is being updated in DOM
+                    logger.debug("Stale element exception while waiting for dropdown value, retrying...");
+                    return false;
+                } catch (Exception e) {
+                    logger.debug("Exception while checking dropdown value: %s", e.getMessage());
+                    return false;
+                }
+            }
+
+            @Override
+            public String toString() {
+                return "value to be '" + expectedValue + "' in dropdown";
+            }
+        });
+
+        logger.info("Dropdown now contains the expected value: %s", expectedValue);
     }
 }

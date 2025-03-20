@@ -24,8 +24,10 @@ public class JobPreferencesActions {
     private static final String YML_FILE = "job-create";
     private static final String YML_FILE_WITH_BREAKS = "job-create-with-breaks";
     private static final String YML_FILE_EDIT = "job-post-edit";
+    private static final String YML_FILE_SCENARIO1 = "scenario - job post";
     private static final String YML_HEADER = "Job Preferences";
-    private static final String YML_HEADER_SCENARIO1 = "Job Details Scenario1";
+    private static final String YML_HEADER_SCENARIO1B = "Job Preferences Scenario1B";
+    private static final String YML_HEADER_SCENARIO1E = "Job Preferences Scenario1E";
     private static final String YML_HEADER_EDIT = "Edit Job Preferences";
 
     private static final Logger logger = LogManager.getLogger(JobPreferencesActions.class);
@@ -62,7 +64,8 @@ public class JobPreferencesActions {
         String enableBlockBooking = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
                 "Enable Block Booking");
         assert enableBlockBooking != null;
-        String currentAttr = BasePage.getAttributeValue(jobPreferencesPage.enableBlockBookingToggle, "aria-checked");
+        String currentAttr = BasePage.getAttributeValue(jobPreferencesPage.enableBlockBookingToggle,
+                "aria-checked");
         boolean shouldEnable = enableBlockBooking.equalsIgnoreCase("yes");
         boolean isCurrentlyEnabled = currentAttr.equalsIgnoreCase("true");
 
@@ -76,7 +79,8 @@ public class JobPreferencesActions {
                 int agencyIncrementValue = DataConfigurationReader.getCurrentIncrementValue("agency");
 
                 // Read agency name from YAML and replace <agencyIncrement> placeholder
-                String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Agency");
+                String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
+                        "Agency");
                 assert agencyTemplate != null;
                 String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
                 agency = agency.replace("\"", "").trim();
@@ -181,7 +185,8 @@ public class JobPreferencesActions {
                     } catch (StaleElementReferenceException e) {
                         logger.warn("StaleElementReferenceException caught, retrying: {}", skillText);
                         availableSkill = jobPreferencesPage.preferredSkills.stream()
-                                .filter(skill -> BasePage.getText(skill).trim().toLowerCase().equals(skillToSelect))
+                                .filter(skill -> BasePage.getText(skill).trim().toLowerCase().equals(
+                                        skillToSelect))
                                 .findFirst()
                                 .orElseThrow(() -> new RuntimeException("Skill not found after retry: " + skillToSelect));
                         BasePage.clickWithJavaScript(availableSkill);
@@ -206,7 +211,8 @@ public class JobPreferencesActions {
         logger.info("Final Selected Skills: {}", finalSelectedSkills);
 
         if (!finalSelectedSkills.equals(newPreferredSkills)) {
-            throw new IllegalStateException("Mismatch in skills selection. Expected: " + newPreferredSkills + ", but found: " + finalSelectedSkills);
+            throw new IllegalStateException("Mismatch in skills selection. Expected: " + newPreferredSkills + ", " +
+                    "but found: " + finalSelectedSkills);
         }
     }
 
@@ -230,7 +236,7 @@ public class JobPreferencesActions {
     }
 
     public void enterJobPreferencesData() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Preferences Data to test Edit Job Posting >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<<<< Entering Job Preferences Data to test Edit Job Posting >>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         selectGender(YML_FILE_EDIT, YML_HEADER);
         selectPreferences(YML_FILE_EDIT, YML_HEADER, false);
@@ -249,11 +255,61 @@ public class JobPreferencesActions {
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
     }
 
-    public void noNoteAndDisablingBlockBooking() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Preferences without Skills >>>>>>>>>>>>>>>>>>>>");
+    public void enterJobPreferencesWithJobNoteAndEnablingBlockBooking() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering with Job Note and Enable Block Booking >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
-        selectGender(YML_FILE_EDIT, YML_HEADER_EDIT);
-        enableDisableBlockBooking(YML_FILE_EDIT, YML_HEADER_EDIT);
+        selectGender(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B);
+        selectPreferences(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B, false);
+        enableDisableBlockBooking(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B);
+        enterJobNotes(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void enterWithSkillsAndWithoutJobNoteAndDisablingBlockBooking() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Skills but no Job Note and Block Booking >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B);
+        selectPreferences(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1E, false);
+        enableDisableBlockBooking(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1E);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void enterWithSkillsAndEnablingBlockBookingButNoNote() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Skills with Block Booking but no Note >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B);
+        selectPreferences(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1E, false);
+        enableDisableBlockBooking(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void clickContinueButtonAndRemovingJobNote() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<< Just click on Continue button and remove Job Note >>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.clearTexts(jobPreferencesPage.notes);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void clickContinueButton() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<< Just click on Continue button >>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void noNoteAndDisablingBlockBooking() {
+        logger.info("<<<<<<<<<<<<<<<< Entering Job Preferences without Note and disabling Block Booking >>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_SCENARIO1, YML_HEADER);
+        enableDisableBlockBooking(YML_FILE_SCENARIO1, YML_HEADER);
+        BasePage.clearTextsUsingSendKeys(jobPreferencesPage.notes);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void clearJobNote() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<< Entering Job Preferences without Note >>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_SCENARIO1, YML_HEADER);
+        BasePage.clearTextsUsingSendKeys(jobPreferencesPage.notes);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
     }
 }

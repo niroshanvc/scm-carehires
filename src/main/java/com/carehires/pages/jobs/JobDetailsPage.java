@@ -106,4 +106,10 @@ public class JobDetailsPage {
 
     @FindBy(xpath = "//nb-card[@class='confirm-card']//button")
     public WebElement pendingActionPopupYesButton;
+
+    @FindBy(xpath = "//span[contains(text(), 'Post using Template')]/preceding-sibling::input")
+    public WebElement postUsingTemplateRadioButton;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='template']/button")
+    public WebElement templateDropdownButton;
 }

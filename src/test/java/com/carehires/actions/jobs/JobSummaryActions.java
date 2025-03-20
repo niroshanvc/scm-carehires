@@ -52,4 +52,15 @@ public class JobSummaryActions {
         BasePage.scrollToWebElement(jobSummaryPage.editIcon);
         BasePage.clickWithJavaScript(jobSummaryPage.editIcon);
     }
+
+    public void verifySummaryForScenario1() {
+    }
+
+    public void enterJobSummaryFromTemplate() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<< Posting a Job without directs to Template saving  popup>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementClickable(jobSummaryPage.postJobButton, 60);
+        BasePage.clickWithJavaScript(jobSummaryPage.postJobButton);
+        verifyJobPostedSuccessfully();
+    }
 }
