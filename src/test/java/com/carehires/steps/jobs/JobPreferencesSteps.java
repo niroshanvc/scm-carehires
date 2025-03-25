@@ -62,4 +62,19 @@ public class JobPreferencesSteps {
     public void proceedWithoutJobNote() {
         jobPreferencesActions.clearJobNote();
     }
+
+    @And("User enters Job Preferences without Job note and disabling block booking")
+    public void enterWithoutJobNoteAndDisablingBlockBooking() {
+        jobPreferencesActions.customJobNoNoteAndDisablingBlockBooking();
+    }
+
+    @When("User selects skills without Job note and disabling block booking")
+    public void selectSkillsWithoutJobNoteAndDisablingBlockBooking() {
+        jobPreferencesActions.selectSkillsWithoutBlockBookingAndNote();
+    }
+
+    @When("User selects skills without Job note and enabling block booking")
+    public void selectSkillsWithoutJobNoteAndEnablingBlockBooking() {
+        jobPreferencesActions.selectSkillsWithBlockBookingAndNote();
+    }
 }

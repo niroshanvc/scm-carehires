@@ -10,7 +10,7 @@ public class JobDetailsPage {
     @FindBy(xpath = "//button[contains(@class, 'status-primary')]")
     public WebElement generalJobButton;
 
-    @FindBy(xpath = "//button[contains(@class, 'status-basic')]")
+    @FindBy(xpath = "//nb-button-group[@role='group']/button[2]")
     public WebElement sleepInButton;
 
     @FindBy(xpath = "//nb-select[@id='care-provider']/button")

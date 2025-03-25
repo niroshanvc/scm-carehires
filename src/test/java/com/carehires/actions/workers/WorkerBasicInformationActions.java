@@ -230,7 +230,7 @@ public class WorkerBasicInformationActions {
 
     private void selectWorkerType(String workerType) {
         BasePage.clickWithJavaScript(basicInfo.workerTypeDropdown);
-        BasePage.waitUntilElementClickable(basicInfo.getWorkerTypeDropdownOptionXpath(workerType), 20);
+        BasePage.genericWait(1000);
         BasePage.clickWithJavaScript(basicInfo.getWorkerTypeDropdownOptionXpath(workerType));
     }
 

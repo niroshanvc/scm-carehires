@@ -72,4 +72,14 @@ public class JobDetailsSteps {
     public void enterJobDurationAndEnablingRecurrence() {
         jobDetailsActions.enterJobDurationAndEnablingRecurrenceOnly();
     }
+
+    @And("User selects job type as Sleep In and proceed with custom job")
+    public void userSelectsJobTypeAsSleepInAndProceedWithCustomJobForVacancy() {
+        jobDetailsActions.enterSleepInJobDetails();
+    }
+
+    @And("User selects job type as Sleep In and proceed with multiple vacancies")
+    public void selectJobTypeAsSleepInAndProceedWithMultipleVacancies() {
+        jobDetailsActions.sleepInJobWithMultipleVacancies();
+    }
 }

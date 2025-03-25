@@ -25,8 +25,10 @@ public class JobPreferencesActions {
     private static final String YML_FILE_WITH_BREAKS = "job-create-with-breaks";
     private static final String YML_FILE_EDIT = "job-post-edit";
     private static final String YML_FILE_SCENARIO1 = "scenario - job post";
+    private static final String YML_FILE_SLEEP_IN_SCENARIO1 = "sleep in scenario - job post";
     private static final String YML_HEADER = "Job Preferences";
     private static final String YML_HEADER_SCENARIO1B = "Job Preferences Scenario1B";
+    private static final String YML_HEADER_SCENARIO1C = "Job Preferences Scenario1C";
     private static final String YML_HEADER_SCENARIO1E = "Job Preferences Scenario1E";
     private static final String YML_HEADER_EDIT = "Edit Job Preferences";
 
@@ -310,6 +312,35 @@ public class JobPreferencesActions {
         BasePage.waitUntilPageCompletelyLoaded();
         selectGender(YML_FILE_SCENARIO1, YML_HEADER);
         BasePage.clearTextsUsingSendKeys(jobPreferencesPage.notes);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void customJobNoNoteAndDisablingBlockBooking() {
+        logger.info("<<<<<<<<<<<<<<<< Custom Job without Note and disabling Block Booking >>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B);
+        enableDisableBlockBooking(YML_FILE_SCENARIO1, YML_HEADER);
+        BasePage.clearTextsUsingSendKeys(jobPreferencesPage.notes);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void selectSkillsWithoutBlockBookingAndNote() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Custom Job with Skills only >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_SLEEP_IN_SCENARIO1, YML_HEADER_SCENARIO1B);
+        selectPreferences(YML_FILE_SLEEP_IN_SCENARIO1, YML_HEADER_SCENARIO1B, true);
+        enableDisableBlockBooking(YML_FILE_SLEEP_IN_SCENARIO1, YML_HEADER_SCENARIO1B);
+        BasePage.waitUntilElementClickable(jobPreferencesPage.continueButton, 30);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void selectSkillsWithBlockBookingAndNote() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<< Custom Job with Skills and Block Booking >>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_SLEEP_IN_SCENARIO1, YML_HEADER_SCENARIO1C);
+        selectPreferences(YML_FILE_SLEEP_IN_SCENARIO1, YML_HEADER_SCENARIO1C, true);
+        enableDisableBlockBooking(YML_FILE_SLEEP_IN_SCENARIO1, YML_HEADER_SCENARIO1C);
+        BasePage.waitUntilElementClickable(jobPreferencesPage.continueButton, 30);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
     }
 }
