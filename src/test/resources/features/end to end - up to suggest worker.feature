@@ -50,7 +50,7 @@ Feature: Test CareHires agreement's worker rates display in jobs
     And User closes worker rates popup
 #    creating a job
     And User navigates to Jobs page
-    And User moves to Post Job page
+    And User moves to Post New Job page
     And User enters Job Details for special holiday
     And User enters Job Preferences
     And User enters Job Summary

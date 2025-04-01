@@ -1,5 +1,6 @@
 package com.carehires.actions.providers;
 
+
 import com.carehires.pages.providers.ProviderNavigationMenuPage;
 import com.carehires.utils.BasePage;
 import org.apache.logging.log4j.LogManager;

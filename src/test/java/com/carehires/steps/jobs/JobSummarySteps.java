@@ -17,4 +17,14 @@ public class JobSummarySteps {
     public void clickOnEditButton() {
         jobSummaryActions.clickOnEditButton();
     }
+
+    @And("User verifies shift summary for job post template - scenario1")
+    public void verifyValuesForScenario1() {
+        jobSummaryActions.verifySummaryForScenario1();
+    }
+
+    @Then("User enters Job Summary from template")
+    public void enterJobSummaryFromTemplate() {
+        jobSummaryActions.enterJobSummaryFromTemplate();
+    }
 }

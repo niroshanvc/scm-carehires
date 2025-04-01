@@ -1,5 +1,6 @@
 package com.carehires.actions.jobs;
 
+
 import com.carehires.pages.jobs.JobsLandingPage;
 import com.carehires.utils.BasePage;
 import org.apache.logging.log4j.LogManager;

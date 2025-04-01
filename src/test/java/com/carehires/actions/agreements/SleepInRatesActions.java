@@ -19,6 +19,7 @@ public class SleepInRatesActions {
     SleepInRatesPage sleepInRatesPage;
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
+    private static final String SKILLS = "With Skills";
     private static final String YML_HEADER = "Sleep In Rates";
     private static final String NORMAL_RATE = "Normal Rate";
     private static final String SPECIAL_HOLIDAY_RATE = "Special Holiday Rate";
@@ -45,7 +46,7 @@ public class SleepInRatesActions {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<< Entering Sleep in Rates Info and Verifying Calculations >>>>>>>>>>>>>>>>>>");
 
-        workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Worker Type");
+        workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Worker Type");
         BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(sleepInRatesPage.workerTypeDropdown);
         By by = By.xpath(sleepInRatesPage.getDropdownOptionXpath(workerType));
@@ -54,16 +55,16 @@ public class SleepInRatesActions {
         BasePage.clickWithJavaScript(sleepInRatesPage.getDropdownOptionXpath(workerType));
 
         BasePage.scrollToWebElement(sleepInRatesPage.fridayNightRate);
-        hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+        hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, NORMAL_RATE,
                 "Hourly Rate");
         BasePage.waitUntilElementDisplayed(sleepInRatesPage.normalRateHourlyRateInput, 20);
         BasePage.clearAndEnterTexts(sleepInRatesPage.normalRateHourlyRateInput, hourlyRate);
 
-        agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+        agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, NORMAL_RATE,
                 "Agency Margin");
         BasePage.clearAndEnterTexts(sleepInRatesPage.normalRateAgencyMarginInput, agencyMargin);
 
-        chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+        chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, NORMAL_RATE,
                 "CH Hourly Margin");
         BasePage.clearAndEnterTexts(sleepInRatesPage.normalRateChHourlyMarginInput, chHourlyMargin);
         BasePage.clickTabKey(sleepInRatesPage.normalRateChHourlyMarginInput);
@@ -75,17 +76,17 @@ public class SleepInRatesActions {
         verifyNormalRateFinalRateWithVatAmount();
         verifyNormalRateFinalRateWithNoVatAmount();
 
-        String specialHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+        String specialHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
                 SPECIAL_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
         enableRate(SPECIAL_HOLIDAY_RATE);
         fillFinalRateVat(SPECIAL_HOLIDAY_RATE, specialHolidayVat);
 
-        String bankHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+        String bankHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
                 BANK_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
         enableRate(BANK_HOLIDAY_RATE);
         fillFinalRateVat(BANK_HOLIDAY_RATE, bankHolidayVat);
 
-        String fridayNightVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+        String fridayNightVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
                 FRIDAY_NIGHT_RATE, FINAL_RATE_WITH_VAT);
         enableRate(FRIDAY_NIGHT_RATE);
         fillFinalRateVat(FRIDAY_NIGHT_RATE, fridayNightVat);
@@ -269,7 +270,7 @@ public class SleepInRatesActions {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Entering Sleep in Rates Info >>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-        workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Worker Type");
+        workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Worker Type");
         BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(sleepInRatesPage.workerTypeDropdown);
         By by = By.xpath(sleepInRatesPage.getDropdownOptionXpath(workerType));
@@ -278,31 +279,31 @@ public class SleepInRatesActions {
         BasePage.clickWithJavaScript(sleepInRatesPage.getDropdownOptionXpath(workerType));
 
         BasePage.scrollToWebElement(sleepInRatesPage.fridayNightRate);
-        hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+        hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, NORMAL_RATE,
                 "Hourly Rate");
         BasePage.waitUntilElementDisplayed(sleepInRatesPage.normalRateHourlyRateInput, 20);
         BasePage.clearAndEnterTexts(sleepInRatesPage.normalRateHourlyRateInput, hourlyRate);
 
-        agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+        agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, NORMAL_RATE,
                 "Agency Margin");
         BasePage.clearAndEnterTexts(sleepInRatesPage.normalRateAgencyMarginInput, agencyMargin);
 
-        chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+        chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, NORMAL_RATE,
                 "CH Hourly Margin");
         BasePage.clearAndEnterTexts(sleepInRatesPage.normalRateChHourlyMarginInput, chHourlyMargin);
         BasePage.clickTabKey(sleepInRatesPage.normalRateChHourlyMarginInput);
 
-        String specialHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+        String specialHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
                 SPECIAL_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
         enableRate(SPECIAL_HOLIDAY_RATE);
         fillFinalRateVat(SPECIAL_HOLIDAY_RATE, specialHolidayVat);
 
-        String bankHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+        String bankHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
                 BANK_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
         enableRate(BANK_HOLIDAY_RATE);
         fillFinalRateVat(BANK_HOLIDAY_RATE, bankHolidayVat);
 
-        String fridayNightVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+        String fridayNightVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
                 FRIDAY_NIGHT_RATE, FINAL_RATE_WITH_VAT);
         enableRate(FRIDAY_NIGHT_RATE);
         fillFinalRateVat(FRIDAY_NIGHT_RATE, fridayNightVat);

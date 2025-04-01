@@ -10,7 +10,7 @@ public class JobDetailsPage {
     @FindBy(xpath = "//button[contains(@class, 'status-primary')]")
     public WebElement generalJobButton;
 
-    @FindBy(xpath = "//button[contains(@class, 'status-basic')]")
+    @FindBy(xpath = "//nb-button-group[@role='group']/button[2]")
     public WebElement sleepInButton;
 
     @FindBy(xpath = "//nb-select[@id='care-provider']/button")
@@ -106,4 +106,10 @@ public class JobDetailsPage {
 
     @FindBy(xpath = "//nb-card[@class='confirm-card']//button")
     public WebElement pendingActionPopupYesButton;
+
+    @FindBy(xpath = "//span[contains(text(), 'Post using Template')]/preceding-sibling::input")
+    public WebElement postUsingTemplateRadioButton;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='template']/button")
+    public WebElement templateDropdownButton;
 }

@@ -1,5 +1,6 @@
 package com.carehires.actions.agreements;
 
+
 import com.carehires.pages.agreements.ViewAgreementOverviewPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -18,14 +19,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static org.hamcrest.CoreMatchers.everyItem;
-import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.isIn;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.in;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.hamcrest.text.IsEmptyString.isEmptyOrNullString;
 
 public class ViewAgreementOverviewActions {
 
@@ -43,6 +45,7 @@ public class ViewAgreementOverviewActions {
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
     private static final String YML_FILE_EDIT = "agreement-edit";
+    private static final String SKILLS = "With Skills";
     private static final String YML_HEADER = "Mark As Signed";
     private static final String YML_HEADER_WORKER_RATES = "Worker Rates";
     private static final String YML_HEADER_NORMAL_RATE = "Normal Rate";
@@ -117,13 +120,13 @@ public class ViewAgreementOverviewActions {
     }
 
     private void enterDataForAttachAgreementPopup() {
-        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Agreement");
+        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Agreement");
         String absoluteFilePath = TEST_RESOURCE_FOLDER + File.separator + "Upload" + File.separator + "Agreement"
                 + File.separator + doc;
         BasePage.uploadFile(agreementOverviewPage.uploadFile, absoluteFilePath);
         waitUntilDocumentUploaded();
 
-        String note = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Note");
+        String note = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Note");
         BasePage.typeWithStringBuilder(agreementOverviewPage.attachAgreementNote, note);
         BasePage.clickWithJavaScript(agreementOverviewPage.providerTermsAndConditionsCheckbox);
         BasePage.clickWithJavaScript(agreementOverviewPage.agencyTermsAndConditionsCheckbox);
@@ -153,7 +156,7 @@ public class ViewAgreementOverviewActions {
         String providerFullText = BasePage.getText(agreementOverviewPage.providerTermsAndConditionsText).trim();
         String[] strArr = providerFullText.split("on behalf of");
         String actual = strArr[1].trim();
-        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SIGNATORIES,
+        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER_SIGNATORIES,
                 YML_HEADER_PROVIDER, "Name");
         assertThat("Provider name displays incorrectly!", actual, is(expected));
     }
@@ -163,7 +166,7 @@ public class ViewAgreementOverviewActions {
         String agencyFullText = BasePage.getText(agreementOverviewPage.agencyTermsAndConditionsText).trim();
         String[] strArr = agencyFullText.split("on behalf of");
         String actual = strArr[1].trim();
-        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SIGNATORIES,
+        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER_SIGNATORIES,
                 YML_HEADER_AGENCY, "Name");
         assertThat("Agency name displays incorrectly!", actual, is(expected));
     }
@@ -193,7 +196,7 @@ public class ViewAgreementOverviewActions {
         // Check that all expected skills are in the actual skills list
         assertThat(actualSkills, hasItems(expectedSkills.toArray(new String[0])));
         // Check that every item in the actual list is expected
-        assertThat(actualSkills, everyItem(isIn(expectedSkills)));
+        assertThat(actualSkills, everyItem(is(in(expectedSkills))));
 
         // verify agency hourly rate
         double expectedWorkerHourlyRate = Double.parseDouble(getWorkerHourlyRate());
@@ -795,9 +798,14 @@ public class ViewAgreementOverviewActions {
         if (downloadedFileName == null) {
             logger.error("Download failed! No file detected.");
         }
+
         // Ensure the fileName is not null or empty
         assertThat("File name should not be null", downloadedFileName, is(notNullValue()));
-        assertThat("File name should not be empty", downloadedFileName, not(isEmptyOrNullString()));
+
+        // Replace the deprecated isEmptyOrNullString() with either:
+        assertThat("File name should not be empty", downloadedFileName, not(emptyOrNullString()));
+        // OR
+        assertThat("File name should not be empty", downloadedFileName, not(emptyString()));
 
         // Delete the after verification
         boolean isDeleted = FileDownloadUtils.deleteLatestDownloadedFile();

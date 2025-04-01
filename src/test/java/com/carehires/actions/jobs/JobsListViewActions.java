@@ -1,5 +1,6 @@
 package com.carehires.actions.jobs;
 
+
 import com.carehires.pages.jobs.JobsListViewPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.ClipboardUtils;
@@ -93,9 +94,9 @@ public class JobsListViewActions {
         BasePage.waitUntilElementDisplayed(listViewPage.dateRangeInput, 30);
         BasePage.clickWithJavaScript(listViewPage.dateRangeInput);
         String startDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE,
-                YML_HEADER_JOB_DETAILS, YML_HEADER_JOB_DURATION, "Start Date");
+                YML_HEADER_JOB_DETAILS, YML_HEADER_JOB_DURATION, "Normal Day", "Start Date");
         String endDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE,
-                YML_HEADER_JOB_DETAILS, YML_HEADER_JOB_DURATION, "Ends On");
+                YML_HEADER_JOB_DETAILS, YML_HEADER_JOB_DURATION, "Normal Day", "Ends On");
         genericUtils.selectDateFromCalendarPopup(startDate);
         genericUtils.selectDateFromCalendarPopup(endDate);
         BasePage.clickTabKey(listViewPage.dateRangeInput);
@@ -283,7 +284,7 @@ public class JobsListViewActions {
 
     private void verifyingFunctionalityOfCopyJobDetails() {
         BasePage.genericWait(3000); // Wait for the text to be copied
-        String expectedJobId = "";
+        String expectedJobId = getFirstJobId();
         String expectedJobStatus = "";
         String expectedProvider = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE,
                 YML_HEADER_JOB_DETAILS, YML_SUB_HEADER_CARE_PROVIDER, "Care Provider");
@@ -718,7 +719,7 @@ public class JobsListViewActions {
         logger.info("<<<<<<<<<<<<<<<<<<<< Verifying Cancel Job functionality on Job Detail popup >>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementPresent(listViewPage.successMessage, 30);
         String actualInLowerCase = BasePage.getText(listViewPage.successMessage).toLowerCase().trim();
-        String expected = "Cancelled succesfully";
+        String expected = "Cancelled successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Job cancellation is not working!", actualInLowerCase, containsString(
                 expectedInLowerCase));
@@ -848,5 +849,39 @@ public class JobsListViewActions {
         }
         String[] texts = rateWithCurrency.split(" ");
         return texts[1];
+    }
+
+    public void clickOnConvertToOpen() {
+        jobId = getFirstJobId();
+        searchJobByJobId(jobId);
+        clickOnViewDetailedJobInfo();
+        doClickOnConvertToOpen();
+        verifyConvertToOpenSuccessMessage();
+    }
+
+    private void doClickOnConvertToOpen() {
+        logger.info("<<<<<<<<<<<<<< Move to three dots on Job Detail popup and Click on Convert to open >>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(JobsListViewPage.jobDetailsPopupThreeDots, 30);
+        BasePage.mouseHoverAndClick(JobsListViewPage.jobDetailsPopupThreeDots,
+                JobsListViewPage.jobDetailsPopupConvertToOpen);
+        BasePage.waitUntilElementClickable(listViewPage.convertToOpenOkButton, 30);
+        BasePage.clickWithJavaScript(listViewPage.convertToOpenOkButton);
+    }
+
+    private void verifyConvertToOpenSuccessMessage() {
+        BasePage.waitUntilElementPresent(listViewPage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(listViewPage.successMessage).toLowerCase().trim();
+        String expected = "Successfully converted";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Convert to open is not working!", actualInLowerCase, containsString(
+                expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(listViewPage.successMessage, 20);
+    }
+
+    public void checkAvailabilityOfNotAllocatedText() {
+        BasePage.waitUntilElementPresent(listViewPage.notAllocated, 30);
+        String actualText = BasePage.getText(listViewPage.notAllocated);
+        String expected = "NOT ALLOCATED";
+        assertThat("Not allocated text is not present!", actualText, is(expected));
     }
 }

@@ -16,4 +16,9 @@ public class WorkerRatesSteps {
     public void enterWorkerRates() {
         workerRates.enterWorkerRates();
     }
+
+    @And("User enters Worker Rates without skills")
+    public void enterWorkerRatesWithoutSkill() {
+        workerRates.withoutSkills();
+    }
 }

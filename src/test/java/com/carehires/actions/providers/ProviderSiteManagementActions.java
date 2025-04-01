@@ -1,5 +1,6 @@
 package com.carehires.actions.providers;
 
+
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.providers.ProvidersSiteManagementPage;
 import com.carehires.utils.BasePage;
@@ -18,7 +19,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class ProviderSiteManagementActions {
 
@@ -224,14 +225,15 @@ public class ProviderSiteManagementActions {
     }
 
     private void updateSiteSpecialism() {
-        Set<String> siteSpecialism = new HashSet<>(Arrays.asList(Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY,
+        Set<String> siteSpecialism = new HashSet<>(Arrays.asList(Objects.requireNonNull(DataConfigurationReader.
+                readDataFromYmlFile(ENTITY,
                 EDIT_YML_FILE, YML_HEADER, UPDATE, YML_HEADER_DATASET1, SITE_SPECIALISM)).split(",")));
+
         BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
-        // Get all currently selected skills, default to an empty list if null
+
+        // Get all currently selected skills
         List<String> selectedSiteSpecialism = getCurrentlySelectedSiteSpecialism();
-        if (selectedSiteSpecialism == null) {
-            selectedSiteSpecialism = new ArrayList<>();
-        }
+
         // Deselect site specialisms that are not in the desired list
         for (String option : selectedSiteSpecialism) {
             if (!siteSpecialism.contains(option)) {

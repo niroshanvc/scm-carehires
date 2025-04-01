@@ -1,0 +1,99 @@
+Job Details Scenario1A:
+  Job Type: General Job
+  Care Provider / Site and Service Preferences:
+    Care Provider: Automation Provider 413
+    Site: BioRevolution Care 413
+    Using: Post Custom Job
+    Worker Type: Rehabilitation Worker
+    Number of Vacancies: 1
+
+  Job Duration and Recurrence:
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "07:00"
+      End Time: "17:00"
+      Enable Recurrence: "No"
+      Breaks/ Intervals: "No"
+
+Job Preferences:
+  Gender: Male
+  Enable Block Booking: "No"
+  Agency: Automation Agency 385
+
+Job Details Scenario1B:
+  Job Type: General Job
+  Care Provider / Site and Service Preferences:
+    Care Provider: Automation Provider 415
+    Site: BioRevolution Care 415
+    Using: Post Custom Job
+    Worker Type: Rehabilitation Worker
+    Number of Vacancies: 1
+
+  Job Duration and Recurrence:
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "07:00"
+      End Time: "17:00"
+      Enable Recurrence: "Yes"
+      Repeat Type: Daily
+      Ends On: "today + 1"
+      Breaks/ Intervals: "Yes"
+      Paid Breaks Duration: "02:00"
+      Unpaid Breaks Duration: "03:00"
+      Paid Breaks Note: "General note added for the paid breaks."
+      Unpaid Breaks Note: "Unpaid breaks note added."
+
+Job Preferences Scenario1B:
+  Gender: Male
+  Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+  Enable Block Booking: "Yes"
+  Agency: Automation Agency 393
+  Job Notes: "Sample Job Post Note added."
+
+Job Details Scenario1C:
+  Job Type: General Job
+  Care Provider / Site and Service Preferences:
+    Care Provider: Automation Provider 413
+    Site: BioRevolution Care 413
+    Using: Post Custom Job
+    Worker Type: Rehabilitation Worker
+    Number of Vacancies: 1
+
+  Job Duration and Recurrence:
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "07:00"
+      End Time: "17:00"
+      Enable Recurrence: "Yes"
+      Repeat Type: Daily
+      Ends On: "today + 1"
+      Breaks/ Intervals: "No"
+
+Job Details Scenario1D:
+  Job Type: General Job
+  Care Provider / Site and Service Preferences:
+    Care Provider: Automation Provider 413
+    Site: BioRevolution Care 413
+    Using: Post Custom Job
+    Worker Type: Rehabilitation Worker
+    Number of Vacancies: 1
+
+  Job Duration and Recurrence:
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "07:00"
+      End Time: "17:00"
+      Enable Recurrence: "Yes"
+      Repeat Type: Daily
+      Ends On: "today + 1"
+      Breaks/ Intervals: "Yes"
+      Paid Breaks Duration: "02:00"
+      Unpaid Breaks Duration: "03:00"
+      Paid Breaks Note: "General note added for the paid breaks."
+      Unpaid Breaks Note: "Unpaid breaks note added."
+
+Job Preferences Scenario1E:
+  Gender: Male
+  Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+  Enable Block Booking: "No"
+  Agency: Automation Agency 393

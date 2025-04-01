@@ -1,6 +1,9 @@
 package com.carehires.actions.zoho;
 
+
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,6 +15,9 @@ import java.time.Duration;
 import java.util.List;
 
 public class ZohoMailAutomationWithASP {
+
+    private static final Logger logger = LogManager.getLogger(ZohoMailAutomationWithASP.class);
+
     public static void main(String[] args) {
         // Set the path for the ChromeDriver
         WebDriverManager.chromedriver().setup();
@@ -68,7 +74,7 @@ public class ZohoMailAutomationWithASP {
             // If you need to extract specific information (e.g., URL, username, and password), you can use regex or string operations here.
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while processing email: {}", e.getMessage(), e);
         } finally {
             // Close the browser
             driver.quit();

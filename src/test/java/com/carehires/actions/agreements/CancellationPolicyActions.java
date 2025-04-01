@@ -17,6 +17,7 @@ public class CancellationPolicyActions {
     CancellationPolicyPage cancellationPolicyPage;
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
+    private static final String SKILLS = "With Skills";
     private static final String YML_HEADER = "Cancellation Policy";
     private String beforeJobStart;
     private String cancellationFeePercentage;
@@ -37,16 +38,16 @@ public class CancellationPolicyActions {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Cancellation Policy Info and Verifying Calculations >>>>>>>>>>>>>>>>>>>>");
 
-        beforeJobStart = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Before Job Start");
+        beforeJobStart = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Before Job Start");
         BasePage.clickWithJavaScript(cancellationPolicyPage.beforeJobStartDropdown);
         By by = By.xpath(cancellationPolicyPage.getDropdownOptionXpath(beforeJobStart));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
         BasePage.clickWithJavaScript(cancellationPolicyPage.getDropdownOptionXpath(beforeJobStart));
 
-        cancellationFeePercentage = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Cancellation fee percentage");
+        cancellationFeePercentage = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Cancellation fee percentage");
         BasePage.clearAndEnterTexts(cancellationPolicyPage.cancellationFeePercentage, cancellationFeePercentage);
 
-        careHiresSplit = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "CareHires split");
+        careHiresSplit = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "CareHires split");
         BasePage.clearAndEnterTexts(cancellationPolicyPage.careHiresSplit, careHiresSplit);
         BasePage.clickTabKey(cancellationPolicyPage.careHiresSplit);
         BasePage.clickTabKey(cancellationPolicyPage.agencySplit);
@@ -109,16 +110,16 @@ public class CancellationPolicyActions {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Cancellation Policy Info >>>>>>>>>>>>>>>>>>>>");
 
-        beforeJobStart = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Before Job Start");
+        beforeJobStart = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Before Job Start");
         BasePage.clickWithJavaScript(cancellationPolicyPage.beforeJobStartDropdown);
         By by = By.xpath(cancellationPolicyPage.getDropdownOptionXpath(beforeJobStart));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
         BasePage.clickWithJavaScript(cancellationPolicyPage.getDropdownOptionXpath(beforeJobStart));
 
-        cancellationFeePercentage = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Cancellation fee percentage");
+        cancellationFeePercentage = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Cancellation fee percentage");
         BasePage.clearAndEnterTexts(cancellationPolicyPage.cancellationFeePercentage, cancellationFeePercentage);
 
-        careHiresSplit = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "CareHires split");
+        careHiresSplit = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "CareHires split");
         BasePage.clearAndEnterTexts(cancellationPolicyPage.careHiresSplit, careHiresSplit);
         BasePage.clickTabKey(cancellationPolicyPage.careHiresSplit);
         BasePage.clickTabKey(cancellationPolicyPage.agencySplit);

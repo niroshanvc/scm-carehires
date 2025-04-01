@@ -11,11 +11,11 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.io.File;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 public class SubContractingAgreementActions {
 
@@ -111,7 +111,7 @@ public class SubContractingAgreementActions {
         }
         // Ensure the fileName is not null or empty
         assertThat("File name should not be null", downloadedFileName, is(notNullValue()));
-        assertThat("File name should not be empty", downloadedFileName, not(isEmptyOrNullString()));
+        assertThat("File name should not be empty", downloadedFileName, not(emptyOrNullString()));
 
         // Delete the after verification
         boolean isDeleted = FileDownloadUtils.deleteLatestDownloadedFile();

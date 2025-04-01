@@ -9,7 +9,7 @@ public class JobDetailsSteps {
 
     @And("User enters Job Details")
     public void enterJobDetails() {
-        jobDetailsActions.enterJobDetails();
+        jobDetailsActions.enteringJobDetails();
     }
 
     @And("User enters Job Details with Breaks")
@@ -30,5 +30,76 @@ public class JobDetailsSteps {
     @And("User enters Job Details for special holiday")
     public void enterJobDetailsForSpecialHoliday() {
         jobDetailsActions.enterJobDetailsForSpecialHoliday();
+    }
+
+    @And("User enters Job Details without Recurrence and Breaks")
+    public void enterJobDetailsWithoutRecurrenceAndBreaks() {
+        jobDetailsActions.enterCareProviderDetailsWithPostCustomJob();
+        jobDetailsActions.enterJobDurationWithoutRecurrenceAndBreaks();
+    }
+
+    @And("User enters Job Details with Recurrence and Breaks")
+    public void enterJobDetailsWithRecurrenceAndBreaks() {
+        jobDetailsActions.enterJobDetailsWithRecurrenceBreaks();
+    }
+
+    @And("User enters Job Details with Recurrence and without Breaks")
+    public void enterJobDetailsWithRecurrenceButNoBreaks() {
+        jobDetailsActions.enterJobDetailsWithRecurrenceWithoutBreaks();
+    }
+
+    @And("User enters Job Details with Recurrence and with Breaks")
+    public void enterJobDetailsWithRecurrenceAndWithBreaks() {
+        jobDetailsActions.enterJobDurationWithProviderAndDuration();
+    }
+
+    @And("^User selects Post using Template and select the template as (.*)$")
+    public void selectSavedTemplate(String templateName) {
+        jobDetailsActions.selectTemplate(templateName);
+    }
+
+    @And("User enters Job Duration by disabling both recurrence and breaks")
+    public void enterJobDurationOnly() {
+        jobDetailsActions.enterJobDurationByDisablingRecurrenceAndBreaks();
+    }
+
+    @And("User enters Job Duration by enabling both recurrence and breaks")
+    public void enterJobDurationAndEnablingRecurrenceAndBreaks() {
+        jobDetailsActions.enterJobDurationOnlyWithRecurrenceAndWithBreaks();
+    }
+
+    @And("User enters Job Duration by enabling recurrence only")
+    public void enterJobDurationAndEnablingRecurrence() {
+        jobDetailsActions.enterJobDurationAndEnablingRecurrenceOnly();
+    }
+
+    @And("User selects job type as Sleep In and proceed with custom job")
+    public void userSelectsJobTypeAsSleepInAndProceedWithCustomJobForVacancy() {
+        jobDetailsActions.enterSleepInJobDetails();
+    }
+
+    @And("User selects job type as Sleep In and proceed with multiple vacancies")
+    public void selectJobTypeAsSleepInAndProceedWithMultipleVacancies() {
+        jobDetailsActions.sleepInJobWithMultipleVacancies();
+    }
+
+    @And("^User selects Post using Template and select the sleep in template as (.*)$")
+    public void selectSleepInTemplate(String templateName) {
+        jobDetailsActions.selectSleepInTemplate(templateName);
+    }
+
+    @And("User enters sleep in duration and recurrence")
+    public void enterSleepInDurationAndRecurrence() {
+        jobDetailsActions.enterSleepInDurationAndRecurrence();
+    }
+
+    @And("User selects more than one vacancy and enters sleep in duration and recurrence data")
+    public void enterMoreThanOneVacancyAndSleepInInfo() {
+        jobDetailsActions.enterSleepInDurationWithMoreThanOneVacancy();
+    }
+
+    @And("User enters Job Details without enabling Recurrence and Breaks")
+    public void disablingRecurrenceAndBreaks() {
+        jobDetailsActions.disablingRecurrenceAndBreaks();
     }
 }

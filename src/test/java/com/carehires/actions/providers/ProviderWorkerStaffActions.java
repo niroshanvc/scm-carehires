@@ -1,5 +1,6 @@
 package com.carehires.actions.providers;
 
+
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.providers.WorkerStaffPage;
 import com.carehires.utils.BasePage;
@@ -19,7 +20,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class ProviderWorkerStaffActions {
 
@@ -62,12 +63,20 @@ public class ProviderWorkerStaffActions {
         enterWorkerStaffManagementData(YML_FILE, ADD);
 
         //select skill(s)
-        String[] skills = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, SKILLS).split(",");
-        BasePage.waitUntilElementClickable(workerStaffPage.skills, 20);
-        BasePage.clickWithJavaScript(workerStaffPage.skills);
-        BasePage.genericWait(1500);
-        for (String skill : skills) {
-            BasePage.clickWithJavaScript(getDropdownXpath(skill));
+        // Add null check before calling split
+        String skillsValue = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, SKILLS);
+        if (skillsValue != null) {
+            String[] skills = skillsValue.split(",");
+            BasePage.waitUntilElementClickable(workerStaffPage.skills, 20);
+            BasePage.clickWithJavaScript(workerStaffPage.skills);
+            BasePage.genericWait(1500);
+            for (String skill : skills) {
+                BasePage.clickWithJavaScript(getDropdownXpath(skill));
+            }
+        } else {
+            logger.warn("No skills found in configuration file for worker staff");
+            // You might want to handle this case specifically,
+            // perhaps by skipping the skills section or setting a default
         }
 
         uploadProofOfDemandDocument(YML_FILE, ADD);
@@ -178,19 +187,20 @@ public class ProviderWorkerStaffActions {
         Set<String> desiredSkills = new HashSet<>(Arrays.asList(
                 Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, SKILLS)).split(",")
         ));
+
         // Click to open the worker skills dropdown
         BasePage.clickWithJavaScript(workerStaffPage.skills);
-        // Get all currently selected skills, default to an empty list if null
+
+        // Get all currently selected skills
         List<String> selectedSkills = getCurrentlySelectedSkills();
-        if (selectedSkills == null) {
-            selectedSkills = new ArrayList<>();
-        }
+
         // Deselect skills that are not in the desired list
         for (String skill : selectedSkills) {
             if (!desiredSkills.contains(skill)) {
                 BasePage.clickWithJavaScript(getDropdownXpath(skill));
             }
         }
+
         // Select skills that are in the desired list but not currently selected
         for (String skill : desiredSkills) {
             if (!selectedSkills.contains(skill)) {

@@ -1,5 +1,6 @@
 package com.carehires.actions.providers;
 
+
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.providers.ProviderProfilePage;
 import com.carehires.utils.BasePage;
@@ -9,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class ProviderProfileActions {
 

@@ -1,5 +1,6 @@
 package com.carehires.actions.agreements;
 
+
 import com.carehires.pages.agreements.WorkerRatesPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
@@ -26,6 +27,8 @@ public class WorkerRatesActions {
 
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
+    private static final String SKILLS = "With Skills";
+    private static final String NO_SKILLS = "No Skills";
     private static final String YML_HEADER = "Worker Rates";
     private static final String NORMAL_RATE = "Normal Rate";
     private static final String SPECIAL_HOLIDAY_RATE = "Special Holiday Rate";
@@ -49,24 +52,24 @@ public class WorkerRatesActions {
     }
 
     public void enterWorkerRatesVerifyCalculations() {
-        BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Worker Rates Info and Verifying Calculations >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
 
         enterWorkerType();
         enterSkills();
 
         expandSubSection(workerRatesPage.rateBreakdownTableHeader, workerRatesPage.rateBreakdownTableHeaderExpandIcon);
 
-        hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+        hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, NORMAL_RATE,
                 "Hourly Rate");
         BasePage.waitUntilElementDisplayed(workerRatesPage.hourlyRateInput, 20);
         BasePage.clearAndEnterTexts(workerRatesPage.hourlyRateInput, hourlyRate);
 
-        agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+        agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, NORMAL_RATE,
                 "Agency Margin");
         BasePage.clearAndEnterTexts(workerRatesPage.agencyMarginInput, agencyMargin);
 
-        chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+        chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, NORMAL_RATE,
                 "CH Hourly Margin");
         BasePage.clearAndEnterTexts(workerRatesPage.chHourlyMarginInput, chHourlyMargin);
         BasePage.clickTabKey(workerRatesPage.chHourlyMarginInput);
@@ -87,7 +90,7 @@ public class WorkerRatesActions {
     }
 
     private void enterSkills() {
-        String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Skills")).split(",");
+        String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Skills")).split(",");
         BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(workerRatesPage.skillsDropdown);
         By locator = By.xpath(workerRatesPage.getDropdownOptionXpath(skills[0]));
@@ -98,7 +101,7 @@ public class WorkerRatesActions {
     }
 
     private void enterWorkerType() {
-        workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Worker Type");
+        workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Worker Type");
         BasePage.waitUntilElementDisplayed(workerRatesPage.workerTypeDropdown, 30);
         BasePage.clickWithJavaScript(workerRatesPage.workerTypeDropdown);
         By by = By.xpath(workerRatesPage.getDropdownOptionXpath(workerType));
@@ -264,7 +267,7 @@ public class WorkerRatesActions {
 
     private void verifySavedSkills() {
         List<String> expected = Arrays.asList(Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(
-                ENTITY, YML_FILE, YML_HEADER, "Skills")).split(","));
+                ENTITY, YML_FILE, SKILLS, YML_HEADER, "Skills")).split(","));
         List<String> actual = workerRatesPage.skills.stream().map(WebElement::getText).map(String::trim).
                 collect(Collectors.toList());
 
@@ -297,31 +300,31 @@ public class WorkerRatesActions {
 
         expandSubSection(workerRatesPage.rateBreakdownTableHeader, workerRatesPage.rateBreakdownTableHeaderExpandIcon);
 
-        hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+        hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, NORMAL_RATE,
                 "Hourly Rate");
         BasePage.waitUntilElementDisplayed(workerRatesPage.hourlyRateInput, 20);
         BasePage.clearAndEnterTexts(workerRatesPage.hourlyRateInput, hourlyRate);
 
-        agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+        agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, NORMAL_RATE,
                 "Agency Margin");
         BasePage.clearAndEnterTexts(workerRatesPage.agencyMarginInput, agencyMargin);
 
-        chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, NORMAL_RATE,
+        chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, NORMAL_RATE,
                 "CH Hourly Margin");
         BasePage.clearAndEnterTexts(workerRatesPage.chHourlyMarginInput, chHourlyMargin);
         BasePage.clickTabKey(workerRatesPage.chHourlyMarginInput);
 
-        String specialHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+        String specialHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
                 SPECIAL_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
         enableRate(SPECIAL_HOLIDAY_RATE);
         fillFinalRateVat(SPECIAL_HOLIDAY_RATE, specialHolidayVat);
 
-        String bankHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+        String bankHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
                 BANK_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
         enableRate(BANK_HOLIDAY_RATE);
         fillFinalRateVat(BANK_HOLIDAY_RATE, bankHolidayVat);
 
-        String fridayNightVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+        String fridayNightVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
                 FRIDAY_NIGHT_RATE, FINAL_RATE_WITH_VAT);
         enableRate(FRIDAY_NIGHT_RATE);
         fillFinalRateVat(FRIDAY_NIGHT_RATE, fridayNightVat);
@@ -332,5 +335,11 @@ public class WorkerRatesActions {
         BasePage.scrollToWebElement(workerRatesPage.continueButton);
         verifyDataLoadedInCurrentWorkerRatesList();
         BasePage.clickWithJavaScript(workerRatesPage.continueButton);
+    }
+
+    public void withoutSkills() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Worker Rates without Skills >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+
     }
 }

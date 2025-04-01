@@ -1,5 +1,6 @@
 package com.carehires.actions.providers;
 
+
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.providers.ProviderCompanyInformationPage;
 import com.carehires.utils.BasePage;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class ProviderCompanyInformationActions {
     
@@ -235,7 +236,9 @@ public class ProviderCompanyInformationActions {
     private void enterAverageNumberOfEmployees(String ymlFile, String subHeader) {
         logger.info("Entering number of employees");
         String averageNumEmp = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "AverageNumberOfEmployees");
-        if (averageNumEmp.equalsIgnoreCase("Under 50")) {
+        if (averageNumEmp == null) {
+            logger.error("Average number of employees value is null");
+        } else if (averageNumEmp.equalsIgnoreCase("Under 50")) {
             BasePage.clickWithJavaScript(companyInformationPage.numberOfEmployeeUnderFifty);
         } else {
             BasePage.clickWithJavaScript(companyInformationPage.numberOfEmployeeOverFifty);

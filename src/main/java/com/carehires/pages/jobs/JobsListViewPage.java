@@ -290,4 +290,13 @@ public class JobsListViewPage {
 
     @FindBy(xpath = "(//h5[contains(@class,'worker-type-name')])[3]")
     public WebElement suggestedWorkerCareHiresVat;
+
+    public static final By jobDetailsPopupConvertToOpen = By.xpath("//div[contains(@class, 'side-menu')]" +
+            "//span[contains(text(), 'Convert To Open')]");
+
+    @FindBy(xpath = "//nb-card[@class='confirm-card']//button")
+    public WebElement convertToOpenOkButton;
+
+    @FindBy(xpath = "//span[starts-with(@class, 'jobType') and contains(@class, 'open ')]/..//p")
+    public WebElement notAllocated;
 }

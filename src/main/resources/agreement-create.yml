@@ -1,52 +1,110 @@
-Agreement Overview:
-  Agency: Automation Agency "<agencyIncrement>"
-  Agency Location: North London
-  Care Provider: Automation Provider "<providerIncrement>"
-  Site: BioRevolution Care "<providerIncrement>"
-Worker Rates:
-  Worker Type: Rehabilitation Worker
-  Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
-  Normal Rate:
-    Hourly Rate: "10.00"
-    Agency Margin: "1.85"
-    CH Hourly Margin: "1.15"
-  Special Holiday Rate:
-    Final Rate with Vat: "25.00"
-  Bank Holiday Rate:
-    Final Rate with Vat: "20.00"
-  Friday Night Rate:
-    Final Rate with Vat: "18.00"
-Cancellation Policy:
-  Before Job Start: 1 hour
-  Cancellation fee percentage: "75"
-  CareHires split: "25"
-  Agency split: "75"
-Sleep In Rates:
-  Worker Type: Rehabilitation Worker
-  Normal Rate:
-    Hourly Rate: "12.00"
-    Agency Margin: "1.85"
-    CH Hourly Margin: "1.15"
-  Special Holiday Rate:
-    Final Rate with Vat: "18.00"
-  Bank Holiday Rate:
-    Final Rate with Vat: "16.00"
-  Friday Night Rate:
-    Final Rate with Vat: "15.00"
-Policies for the Provisions of Service:
-  Billing Cycle: Weekly
-  Credit Period: 28
-Signatories:
-  Agency:
-    Name: Glenn Walter
-    Designation: Managing Executive
-    Email: carehires+agreementagency{{increment}}@zohomail.com
-  Provider:
-    Name: Ridley James
-    Designation: Finance Executive
-    Email: carehires+agreementprovider{{increment}}@zohomail.com
-Mark As Signed:
-  Agreement: Agreement.pdf
-  Note: Mark as signed not entered.
-  Provider accepts all the terms and conditions of the agreement: "Yes"
-  Agency accepts all the terms and conditions of the agreement: "Yes"
+With Skills:
+  Agreement Overview:
+    Agency: Automation Agency "<agencyIncrement>"
+#    Agency: Automation Agency 396
+    Agency Location: North London
+    Care Provider: Automation Provider "<providerIncrement>"
+#    Care Provider: Automation Provider 434
+    Site: BioRevolution Care "<providerIncrement>"
+#    Site: BioRevolution Care 434
+  Worker Rates:
+    Worker Type: Rehabilitation Worker
+    Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+    Normal Rate:
+      Hourly Rate: "10.00"
+      Agency Margin: "1.85"
+      CH Hourly Margin: "1.15"
+    Special Holiday Rate:
+      Final Rate with Vat: "25.00"
+    Bank Holiday Rate:
+      Final Rate with Vat: "20.00"
+    Friday Night Rate:
+      Final Rate with Vat: "18.00"
+  Cancellation Policy:
+    Before Job Start: 1 hour
+    Cancellation fee percentage: "75"
+    CareHires split: "25"
+    Agency split: "75"
+  Sleep In Rates:
+    Worker Type: Rehabilitation Worker
+    Normal Rate:
+      Hourly Rate: "12.00"
+      Agency Margin: "1.85"
+      CH Hourly Margin: "1.15"
+    Special Holiday Rate:
+      Final Rate with Vat: "18.00"
+    Bank Holiday Rate:
+      Final Rate with Vat: "16.00"
+    Friday Night Rate:
+      Final Rate with Vat: "15.00"
+  Policies for the Provisions of Service:
+    Billing Cycle: Weekly
+    Credit Period: 28
+  Signatories:
+    Agency:
+      Name: Glenn Walter
+      Designation: Managing Executive
+      Email: carehires+agreementagency{{increment}}@zohomail.com
+    Provider:
+      Name: Ridley James
+      Designation: Finance Executive
+      Email: carehires+agreementprovider{{increment}}@zohomail.com
+  Mark As Signed:
+    Agreement: Agreement.pdf
+    Note: Mark as signed not entered.
+    Provider accepts all the terms and conditions of the agreement: "Yes"
+    Agency accepts all the terms and conditions of the agreement: "Yes"
+
+No Skills:
+  Agreement Overview:
+    Agency: Automation Agency "<agencyIncrement>"
+    Agency Location: North London
+    Care Provider: Automation Provider "<providerIncrement>"
+    Site: BioRevolution Care "<providerIncrement>"
+  Worker Rates:
+    Worker Type: Rehabilitation Worker
+    Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+    Normal Rate:
+      Hourly Rate: "10.00"
+      Agency Margin: "1.85"
+      CH Hourly Margin: "1.15"
+    Special Holiday Rate:
+      Final Rate with Vat: "25.00"
+    Bank Holiday Rate:
+      Final Rate with Vat: "20.00"
+    Friday Night Rate:
+      Final Rate with Vat: "18.00"
+  Cancellation Policy:
+    Before Job Start: 1 hour
+    Cancellation fee percentage: "75"
+    CareHires split: "25"
+    Agency split: "75"
+  Sleep In Rates:
+    Worker Type: Rehabilitation Worker
+    Normal Rate:
+      Hourly Rate: "12.00"
+      Agency Margin: "1.85"
+      CH Hourly Margin: "1.15"
+    Special Holiday Rate:
+      Final Rate with Vat: "18.00"
+    Bank Holiday Rate:
+      Final Rate with Vat: "16.00"
+    Friday Night Rate:
+      Final Rate with Vat: "15.00"
+  Policies for the Provisions of Service:
+    Billing Cycle: Weekly
+    Credit Period: 28
+  Signatories:
+    Agency:
+      Name: Glenn Walter
+      Designation: Managing Executive
+      Email: carehires+agreementagency{{increment}}@zohomail.com
+    Provider:
+      Name: Ridley James
+      Designation: Finance Executive
+      Email: carehires+agreementprovider{{increment}}@zohomail.com
+  Mark As Signed:
+    Agreement: Agreement.pdf
+    Note: Mark as signed not entered.
+    Provider accepts all the terms and conditions of the agreement: "Yes"
+    Agency accepts all the terms and conditions of the agreement: "Yes"

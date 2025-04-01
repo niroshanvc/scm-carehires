@@ -1,5 +1,6 @@
 package com.carehires.actions.jobs;
 
+
 import com.carehires.pages.jobs.JobSummaryPage;
 import com.carehires.utils.BasePage;
 import org.apache.logging.log4j.LogManager;
@@ -7,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 
 public class JobSummaryActions {
 
@@ -50,5 +51,16 @@ public class JobSummaryActions {
         BasePage.waitUntilElementClickable(jobSummaryPage.editIcon, 30);
         BasePage.scrollToWebElement(jobSummaryPage.editIcon);
         BasePage.clickWithJavaScript(jobSummaryPage.editIcon);
+    }
+
+    public void verifySummaryForScenario1() {
+    }
+
+    public void enterJobSummaryFromTemplate() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<< Posting a Job without directs to Template saving  popup>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementClickable(jobSummaryPage.postJobButton, 60);
+        BasePage.clickWithJavaScript(jobSummaryPage.postJobButton);
+        verifyJobPostedSuccessfully();
     }
 }

@@ -2,56 +2,61 @@ Job Details:
   Job Type: General Job
   Care Provider / Site and Service Preferences:
     Care Provider: Automation Provider "<providerIncrement>"
+#    Care Provider: Automation Provider 425
     Site: BioRevolution Care "<providerIncrement>"
+#    Site: BioRevolution Care 425
     Using: Post Custom Job
     Worker Type: Rehabilitation Worker
     Number of Vacancies: 3
 
   Job Duration and Recurrence:
-    Start Date: "today - 1"
-    Start Time: "07:00"
-    End Time: "17:00"
-    Enable Recurrence: "Yes"
-    Repeat Type: Daily
-    Ends On: "today + 3"
-    Breaks/ Intervals: "Yes"
-    Paid Breaks Duration: "02:00"
-    Unpaid Breaks Duration: "03:00"
-    Paid Breaks Note: "General note added for the paid breaks."
-    Unpaid Breaks Note: "Unpaid breaks note added."
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "07:00"
+      End Time: "17:00"
+      Enable Recurrence: "Yes"
+      Repeat Type: Daily
+      Ends On: "today + 3"
+      Breaks/ Intervals: "Yes"
+      Paid Breaks Duration: "02:00"
+      Unpaid Breaks Duration: "03:00"
+      Paid Breaks Note: "General note added for the paid breaks."
+      Unpaid Breaks Note: "Unpaid breaks note added."
 
 Job Preferences:
   Gender: Male
   Preferred Skills: Dementia,Autism,NVQ L2,Leadership,Driving
   Enable Block Booking: "Yes"
-  Agency: Automation Agency 356
+  Agency: Automation Agency 400
   Job Notes: "Job notes will be visible to everyone, including agency users and workers."
 
 Edit Job Details:
   Job Type: General Job
   Care Provider / Site and Service Preferences:
-    Care Provider: Automation Provider 386
-    Site: Automation Master 386
+    Care Provider: Automation Provider 425
+    Site: Automation Master 425
     Using: Post Custom Job
     Worker Type: Rehabilitation Worker
     Number of Vacancies: 1
 
   Job Duration and Recurrence:
-    Start Date: "today + 0"
-    Start Time: "07:00"
-    End Time: "17:00"
-    Enable Recurrence: "No"
-    Repeat Type: Daily
-    Ends On: "today + 3"
-    Breaks/ Intervals: "No"
-    Paid Breaks Duration: "02:00"
-    Unpaid Breaks Duration: "03:00"
-    Paid Breaks Note: "General note added for the paid breaks."
-    Unpaid Breaks Note: "Unpaid breaks note added."
+    Normal Day:
+      Start Date: "today + 0"
+      Start Time: "07:00"
+      End Time: "17:00"
+      Enable Recurrence: "No"
+      Repeat Type: Daily
+      Ends On: "today + 3"
+      Breaks/ Intervals: "No"
+      Paid Breaks Duration: "02:00"
+      Unpaid Breaks Duration: "03:00"
+      Paid Breaks Note: "General note added for the paid breaks."
+      Unpaid Breaks Note: "Unpaid breaks note added."
 
 Edit Job Preferences:
   Gender: Female
-  Preferred Skills: NVQ L3,Autism
+  Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
   Enable Block Booking: "No"
   Agency: Automation Agency "<agencyIncrement>"
+#  Agency: Automation Agency 400
   Job Notes: "Edit job preferences note entered."

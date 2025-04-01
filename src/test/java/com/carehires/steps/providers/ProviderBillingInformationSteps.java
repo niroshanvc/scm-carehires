@@ -1,11 +1,20 @@
 package com.carehires.steps.providers;
 
 import com.carehires.actions.providers.ProviderBillingInformationActions;
+import com.carehires.utils.BasePage;
 import io.cucumber.java.en.And;
 
 public class ProviderBillingInformationSteps {
 
-    ProviderBillingInformationActions billingInformationActions = new ProviderBillingInformationActions();
+    ProviderBillingInformationActions billingInformationActions;
+
+    {
+        try {
+            billingInformationActions = new ProviderBillingInformationActions();
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @And("User enters General Billing Information")
     public void enterGeneralBillingInformation() {

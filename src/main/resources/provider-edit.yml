@@ -82,14 +82,14 @@ User:
     email: carehires+prouser{{increment}}@zohomail.com
     Name: Patrick Sams{{increment}}
     JobTitle: Assistant Executive
-    Phone: "07700123456"
+    Phone: "07874483293"
     MarkAsAnAuthoriser: "No"
     UserAccessLevel: Shift Admin (With rate),Site Admin
   Update:
     email: carehires+provuser{{increment}}@zohomail.com
     Name: Douglas Sams{{increment}}
     JobTitle: Assistant Engineer
-    Phone: "07874482517"
+    Phone: "07874483710"
     MarkAsAnAuthoriser: "Yes"
     UserAccessLevel: Org Admin
 
@@ -97,19 +97,17 @@ Billing Information:
   General Billing Information:
     Add:
       AddressBillsInAttentionTo: IBS Solutions
-      BillingAddress: "Uber9s Ltd, Gb697 6910 69, Unit 21 Silverstone Tech Park, Silverstone, Towcester, Northamptonshire"
       DigitalBillingAddress: carehires+pro-billing{{increment}}@zohomail.com
+      Postal Code: LE10 2AN
       PhoneNumber: "07432301046"
-      PaymentMethod: Pay on Invoice
       CreditLimitAmount: 600
       BillingCycle: Bi Weekly
       CreditTerm: 28 Days
     Update:
       AddressBillsInAttentionTo: IBS Solutions - updated
-      BillingAddress: "Uber9s Ltd, Gb697 6910 69, Unit 21 Silverstone Tech Park, Silverstone, Towcester, Northamptonshire"
       DigitalBillingAddress: carehires+pro-billing-edited{{increment}}@zohomail.com
+      Postal Code: LE10 3AN
       PhoneNumber: "07432351246"
-      PaymentMethod: Pay on Invoice
       CreditLimitAmount: 700
       BillingCycle: Monthly
       CreditTerm: 21 Days

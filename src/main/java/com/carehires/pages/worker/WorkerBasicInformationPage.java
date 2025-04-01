@@ -86,7 +86,7 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//p[contains(text(),'Employment Information')]/following-sibling::nb-icon")
     public WebElement employmentInformationHeaderExpandIcon;
 
-    @FindBy(xpath = "//nb-select[@formcontrolname='workerType']/button")
+    @FindBy(xpath = "//nb-select[@formcontrolname='workerTypes']//button")
     public WebElement workerTypeDropdown;
 
     @FindBy(xpath = "//nb-select[@formcontrolname='workerSkills']/button")

@@ -1,5 +1,6 @@
 package com.carehires.actions.jobs;
 
+
 import com.carehires.pages.jobs.JobsAgencyViewPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
