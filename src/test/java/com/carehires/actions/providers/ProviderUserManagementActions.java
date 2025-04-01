@@ -180,10 +180,9 @@ public class ProviderUserManagementActions {
 
         // edit already added user data
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating User Management Information - In Edit >>>>>>>>>>>>>>>>>>>>");
-        BasePage.waitUntilElementClickable(userManagement.editDetailsIcon, 60);
-        BasePage.clickWithJavaScript(userManagement.editDetailsIcon);
+        BasePage.mouseHoverAndClick(userManagement.actionsThreeDots, userManagement.editUser,
+                ProvidersUserManagementPage.editUserChilcElement);
         BasePage.genericWait(3000);
-        BasePage.clickWithJavaScript(userManagement.editDetailsIcon);
         enterUserManagementData(EDIT_YML_FILE, UPDATE);
         updateUserAccessLevel();
         BasePage.genericWait(10000);

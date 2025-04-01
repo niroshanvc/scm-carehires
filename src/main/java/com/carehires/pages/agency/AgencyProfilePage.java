@@ -27,7 +27,8 @@ public class AgencyProfilePage {
     @FindBy(xpath = "//div[contains(@class, 'side')]/ul[@class='expanded-nav']/li[1]")
     public WebElement updateProfileLink;
 
-    public static final By updateProfileLinkChildElement = By.xpath("//div[contains(@class, 'side')]/ul[@class='expanded-nav']/li[1]");
+    public static final By updateProfileLinkChildElement = By.xpath("//div[contains(@class, 'side')]/ul" +
+            "[@class='expanded-nav']/li[1]");
 
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     public WebElement saveButton;

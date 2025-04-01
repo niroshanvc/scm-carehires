@@ -1,5 +1,6 @@
 package com.carehires.pages.providers;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -48,6 +49,14 @@ public class ProvidersUserManagementPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    @FindBy(xpath = "//div[@class='right-actions']/button")
+    public WebElement actionsThreeDots;
+
+    @FindBy(xpath = "//nb-menu[@class='context-menu']/ul/li/a[@title='Edit User']")
+    public WebElement editUser;
+
+    public static final By editUserChilcElement = By.xpath("//nb-menu[@class='context-menu']/ul/li/a[@title='Edit User']");
 
     @FindBy(xpath = "//nb-icon[@icon='edit-2-outline']")
     public WebElement editDetailsIcon;

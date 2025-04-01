@@ -2,7 +2,7 @@
 @Job
 @SuperAdminUser
 @PostGeneralJobsTemplate2
-Feature: Test CareHires create job post with template
+Feature: Test CareHires create job post using template
 
   Background: login to carehires
     Given User logins to carehires

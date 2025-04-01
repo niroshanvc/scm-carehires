@@ -35,11 +35,14 @@ public class JobDetailsActions {
     private static final String YML_FILE_SLEEP_IN_SCENARIO1 = "sleep in scenario - job post";
     private static final String YML_FILE_EDIT = "job-post-edit";
     private static final String YML_FILE_WITH_BREAKS = "job-create-with-breaks";
+    private static final String YML_FILE_BLOCK_BOOKING = "job-create-block-booking";
     private static final String YML_HEADER = "Job Details";
     private static final String YML_HEADER_SCENARIO1A = "Job Details Scenario1A";
     private static final String YML_HEADER_SCENARIO1B = "Job Details Scenario1B";
     private static final String YML_HEADER_SCENARIO1C = "Job Details Scenario1C";
     private static final String YML_HEADER_SCENARIO1D = "Job Details Scenario1D";
+    private static final String YML_HEADER_SCENARIO1F = "Job Details Scenario1F";
+    private static final String YML_HEADER_SCENARIO1G = "Job Details Scenario1G";
     private static final String NORMAL_DAY = "Normal Day";
     private static final String ENABLE_RECURRENCE = "Enable Recurrence";
     private static final String BREAKS_INTERVALS = "Breaks/ Intervals";
@@ -59,12 +62,24 @@ public class JobDetailsActions {
     }
 
     public void enterJobDetails() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Enter Job Details >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderAndServicePreferences(YML_FILE, YML_HEADER);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE, YML_HEADER, NORMAL_DAY);
+
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void enteringJobDetails() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Details >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         closePendingActionPopup();
         enterCareProviderAndServicePreferences(YML_FILE, YML_HEADER);
         BasePage.scrollToWebElement(jobDetailsPage.continueButton);
-        enterJobDurationRecurrenceAndBreaks(YML_FILE, YML_HEADER, NORMAL_DAY);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE, YML_HEADER, NORMAL_DAY);
 
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
@@ -79,6 +94,19 @@ public class JobDetailsActions {
     private void enterJobDurationRecurrenceAndBreaks(String ymlFile, String header, String dayType) {
         enterJobDurationOnly(ymlFile, header, dayType);
         selectDateOnCalendar(dayType, ymlFile, header, jobDetailsPage.endsOn, "Ends On");
+        BasePage.scrollToWebElement(jobDetailsPage.enableRecurrence);
+        handleToggleOption(ymlFile, header, dayType, ENABLE_RECURRENCE, jobDetailsPage.enableRecurrence);
+        handleToggleOption(ymlFile, header, dayType, BREAKS_INTERVALS, jobDetailsPage.breaksOrIntervals);
+    }
+
+    /**
+     * Enter job duration, recurrence and breaks.
+     *
+     * @param ymlFile     YAML file name.
+     *
+     */
+    private void enterJobDurationRecurrenceAndBreaksWithoutEndsOn(String ymlFile, String header, String dayType) {
+        enterJobDurationOnly(ymlFile, header, dayType);
         BasePage.scrollToWebElement(jobDetailsPage.enableRecurrence);
         handleToggleOption(ymlFile, header, dayType, ENABLE_RECURRENCE, jobDetailsPage.enableRecurrence);
         handleToggleOption(ymlFile, header, dayType, BREAKS_INTERVALS, jobDetailsPage.breaksOrIntervals);
@@ -302,7 +330,7 @@ public class JobDetailsActions {
         closePendingActionPopup();
         enterCareProviderAndServicePreferences(YML_FILE_WITH_BREAKS, YML_HEADER);
         BasePage.scrollToWebElement(jobDetailsPage.continueButton);
-        enterJobDurationRecurrenceAndBreaks(YML_FILE_WITH_BREAKS, YML_HEADER, NORMAL_DAY);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_WITH_BREAKS, YML_HEADER, NORMAL_DAY);
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
@@ -322,7 +350,7 @@ public class JobDetailsActions {
         closePendingActionPopup();
         enterCareProviderAndServicePreferences(YML_FILE_EDIT, YML_HEADER);
         BasePage.scrollToWebElement(jobDetailsPage.continueButton);
-        enterJobDurationRecurrenceAndBreaks(YML_FILE_EDIT, YML_HEADER, NORMAL_DAY);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_EDIT, YML_HEADER, NORMAL_DAY);
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
@@ -415,7 +443,7 @@ public class JobDetailsActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<< Selecting template as {} >>>>>>>>>>>>>>>>>>", templateName);
         BasePage.waitUntilPageCompletelyLoaded();
         closePendingActionPopup();
-        selectPostUsingTemplate();
+        selectPostUsingTemplateRadioButton();
         BasePage.waitUntilElementClickable(jobDetailsPage.templateDropdownButton, 60);
         BasePage.clickWithJavaScript(jobDetailsPage.templateDropdownButton);
         BasePage.genericWait(3000);
@@ -447,7 +475,7 @@ public class JobDetailsActions {
     }
 
 
-    private void selectPostUsingTemplate() {
+    private void selectPostUsingTemplateRadioButton() {
         BasePage.waitUntilElementClickable(jobDetailsPage.postUsingTemplateRadioButton, 60);
         BasePage.clickWithJavaScript(jobDetailsPage.postUsingTemplateRadioButton);
     }
@@ -530,6 +558,71 @@ public class JobDetailsActions {
         enterCareProviderAndServicePreferences(YML_FILE_SLEEP_IN_SCENARIO1, YML_HEADER_SCENARIO1B);
         enterSleepInDurationAndRecurrence(YML_FILE_SLEEP_IN_SCENARIO1, YML_HEADER_SCENARIO1B);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void selectSleepInTemplate(String templateName) {
+        logger.info("<<<<<<<<<<<<<<<<<<<< Selecting sleep in template as {} >>>>>>>>>>>>>>>>>", templateName);
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        selectPostUsingTemplateRadioButton();
+        BasePage.waitUntilElementClickable(jobDetailsPage.templateDropdownButton, 60);
+        BasePage.clickWithJavaScript(jobDetailsPage.templateDropdownButton);
+        BasePage.genericWait(3000);
+        By by = By.xpath(jobDetailsPage.getDropdownOptionXpath(templateName));
+        BasePage.waitUntilVisibilityOfElementLocated(by, 30);
+        BasePage.scrollToWebElement(jobDetailsPage.getDropdownOptionXpath(templateName));
+        BasePage.clickWithJavaScript(jobDetailsPage.getDropdownOptionXpath(templateName));
+
+        String header = "";
+
+        if (templateName.contains("001")) {
+            header = YML_HEADER_SCENARIO1A;
+        } else if (templateName.contains("002")) {
+            header = YML_HEADER_SCENARIO1B;
+        } else if(templateName.contains("003")) {
+            header = YML_HEADER_SCENARIO1F;
+        } else if(templateName.contains("004")) {
+            header = YML_HEADER_SCENARIO1G;
+        }
+
+        waitUntilDesiredSiteLoadedInSleepIn(header);
+    }
+
+    // wait until desired site is selected
+    private void waitUntilDesiredSiteLoadedInSleepIn(String header) {
+        int providerIncrementValue = DataConfigurationReader.getCurrentIncrementValue("provider");
+        String siteTemplates = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SLEEP_IN_SCENARIO1,
+                header, YML_HEADER_PROVIDER, "Site");
+        assert siteTemplates != null;
+        String site = siteTemplates.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
+        site = site.replace("\"", "").trim();
+        BasePage.waitUntilValueLoadedInDropdown(jobDetailsPage.siteDropdown, site, 60);
+    }
+
+    public void enterSleepInDurationAndRecurrence() {
+        enterSleepInDurationAndRecurrence(YML_FILE_SLEEP_IN_SCENARIO1, YML_HEADER_SCENARIO1F);
+        BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void enterSleepInDurationWithMoreThanOneVacancy() {
+        logger.info("<<<<<<<<<<<<<<<<< Multiple Vacancies with Sleep In Duration and Recurrence >>>>>>>>>>>>>>");
+        selectDropdownOption(YML_FILE_SLEEP_IN_SCENARIO1, YML_HEADER_SCENARIO1G , "Number of Vacancies",
+                jobDetailsPage.numberOfVacanciesDropdown);
+        enterSleepInDurationAndRecurrence(YML_FILE_SLEEP_IN_SCENARIO1, YML_HEADER_SCENARIO1G);
+        BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void disablingRecurrenceAndBreaks() {
+        logger.info("<<<<<<<<<<<<<<<<< Enter job details by disabling recurrence and breaks >>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderAndServicePreferences(YML_FILE_BLOCK_BOOKING, YML_HEADER);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_BLOCK_BOOKING, YML_HEADER, NORMAL_DAY);
+        BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
 }

@@ -3,6 +3,7 @@ package com.carehires.steps.jobs;
 import com.carehires.actions.jobs.JobsListViewActions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class JobsListViewSteps {
 
@@ -91,5 +92,15 @@ public class JobsListViewSteps {
     @Then("User moves to suggested workers tab and verifies Special Holiday worker rates")
     public void verifySpecialHolidayWorkerRates() {
         jobsListViewActions.moveToSuggestedTabAndVerifySpecialHolidayWorkerRates();
+    }
+
+    @When("User clicks on Convert to Open")
+    public void clickOnConvertToOpen() {
+        jobsListViewActions.clickOnConvertToOpen();
+    }
+
+    @Then("User verifies the availability of not allocated text")
+    public void verifyAvailabilityOfNotAllocatedText() {
+        jobsListViewActions.checkAvailabilityOfNotAllocatedText();
     }
 }

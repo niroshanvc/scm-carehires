@@ -77,4 +77,34 @@ public class JobPreferencesSteps {
     public void selectSkillsWithoutJobNoteAndEnablingBlockBooking() {
         jobPreferencesActions.selectSkillsWithBlockBookingAndNote();
     }
+
+    @When("User selects gender and clicks on Continue button")
+    public void selectGenderAndClickContinue() {
+        jobPreferencesActions.selectGenderAndClickContinue();
+    }
+
+    @When("User clears Job note and disabling block booking")
+    public void clearJobNoteAndDisablingBlockBooking() {
+        jobPreferencesActions.clearJobNoteAndDisableBlockBooking();
+    }
+
+    @When("User clears Job note and enabling block booking")
+    public void clearJobNoteAndEnablingBlockBooking() {
+        jobPreferencesActions.clearJobNoteAndEnableBlockBooking();
+    }
+
+    @And("enters job note and click on continue button")
+    public void enterJobNoteAndClickOnContinueButton() {
+        jobPreferencesActions.continueWithJobNote();
+    }
+
+    @When("User selects skills with Job note and enabling block booking")
+    public void selectSkillsWithJobNoteAndEnablingBlockBooking() {
+        jobPreferencesActions.continueWithEveryOptions();
+    }
+
+    @And("User enters skills with block booking but no note")
+    public void enterSkillsWithBlockBookingButNoNote() {
+        jobPreferencesActions.blockBookingWithSkills();
+    }
 }

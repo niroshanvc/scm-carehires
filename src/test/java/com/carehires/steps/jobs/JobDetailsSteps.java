@@ -9,7 +9,7 @@ public class JobDetailsSteps {
 
     @And("User enters Job Details")
     public void enterJobDetails() {
-        jobDetailsActions.enterJobDetails();
+        jobDetailsActions.enteringJobDetails();
     }
 
     @And("User enters Job Details with Breaks")
@@ -81,5 +81,25 @@ public class JobDetailsSteps {
     @And("User selects job type as Sleep In and proceed with multiple vacancies")
     public void selectJobTypeAsSleepInAndProceedWithMultipleVacancies() {
         jobDetailsActions.sleepInJobWithMultipleVacancies();
+    }
+
+    @And("^User selects Post using Template and select the sleep in template as (.*)$")
+    public void selectSleepInTemplate(String templateName) {
+        jobDetailsActions.selectSleepInTemplate(templateName);
+    }
+
+    @And("User enters sleep in duration and recurrence")
+    public void enterSleepInDurationAndRecurrence() {
+        jobDetailsActions.enterSleepInDurationAndRecurrence();
+    }
+
+    @And("User selects more than one vacancy and enters sleep in duration and recurrence data")
+    public void enterMoreThanOneVacancyAndSleepInInfo() {
+        jobDetailsActions.enterSleepInDurationWithMoreThanOneVacancy();
+    }
+
+    @And("User enters Job Details without enabling Recurrence and Breaks")
+    public void disablingRecurrenceAndBreaks() {
+        jobDetailsActions.disablingRecurrenceAndBreaks();
     }
 }
