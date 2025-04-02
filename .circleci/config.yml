@@ -17,8 +17,8 @@ parameters:
     type: string
     default: "dev" # Default environment
   email:
-    type: list
-    default: ["niroshan.desilva@carehires.com"] # Default email
+    type: string
+    default: "niroshan.desilva@carehires.com" # Default email
 
 jobs:
   build:
@@ -31,7 +31,7 @@ jobs:
       environment:
         type: string
       email:
-        type: list
+        type: string
     steps:
       - checkout
       - run:
@@ -55,23 +55,21 @@ jobs:
       - run:
           name: Send Email
           command: |
-            for recipient in "<< parameters.email >>"; do
-              curl -X POST \
-                https://api.sendgrid.com/v3/mail/send \
-                -H "Authorization: Bearer $SENDGRID_API_KEY" \
-                -H "Content-Type: application/json" \
-                -d '{
-                  "personalizations": [{
-                    "to": [{"email": "'"$recipient"'"}],
-                    "subject": "Test Execution Report"
-                  }],
-                  "from": {"email": "no-reply@example.com"},
-                  "content": [{
-                    "type": "text/plain",
-                    "value": "The test execution report is attached."
-                  }]
-                }'
-            done
+            curl -X POST \
+              https://api.sendgrid.com/v3/mail/send \
+              -H "Authorization: Bearer $SENDGRID_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "personalizations": [{
+                  "to": [{"email": "<< parameters.email >>"}],
+                  "subject": "Test Execution Report"
+                }],
+                "from": {"email": "no-reply@example.com"},
+                "content": [{
+                  "type": "text/plain",
+                  "value": "The test execution report is attached."
+                }]
+              }'
 
 workflows:
   version: 2
