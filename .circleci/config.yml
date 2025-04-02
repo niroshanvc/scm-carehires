@@ -54,7 +54,8 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            mvn clean test -Dbrowser=<< parameters.browser >> -Dcucumber.options="--tags << parameters.feature_tag >>" -Denvironment=<< parameters.environment >>
+            mvn clean test -P${ENV} -Dbrowser=${BROWSER} -Dcucumber.filter.tags="${TAG}" \
+              -Demail=${EMAIL}
       - run:
           name: Send Email
           command: |
