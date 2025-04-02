@@ -20,6 +20,11 @@
         <maven.surefire.plugin.version>3.5.0</maven.surefire.plugin.version>
         <apache.log4j.version>2.24.2</apache.log4j.version>
         <hamcrest.version>2.2</hamcrest.version>
+
+        <!-- Default values for dynamic properties -->
+        <cucumber.filter.tags>@defaultTag</cucumber.filter.tags>
+        <browser>chrome</browser>
+        <env>dev</env>
     </properties>
     <dependencies>
         <dependency>
