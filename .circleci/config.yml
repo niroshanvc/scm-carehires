@@ -9,16 +9,16 @@ executors:
 parameters:
   browser:
     type: string
-    default: "chrome"
+    default: "chrome" # Default browser
   feature_tag:
     type: string
-    default: "@smoke"
+    default: "@smoke" # Default test case tag
   environment:
     type: string
-    default: "dev"
+    default: "dev" # Default environment
   email:
     type: string
-    default: "niroshan.desilva@carehires.com"
+    default: "niroshan.desilva@carehires.com" # Default email
 
 jobs:
   build:
@@ -26,16 +26,12 @@ jobs:
     parameters:
       browser:
         type: string
-        default: "<< parameters.browser >>"
       feature_tag:
         type: string
-        default: "<< parameters.feature_tag >>"
       environment:
         type: string
-        default: "<< parameters.environment >>"
       email:
         type: string
-        default: "<< parameters.email >>"
     steps:
       - checkout
       - run:
@@ -54,8 +50,8 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            mvn clean test -P${ENV} -Dbrowser=${BROWSER} -Dcucumber.filter.tags="${TAG}" \
-              -Demail=${EMAIL}
+            mvn clean test -Denv=<< parameters.environment >> -Dbrowser=<< parameters.browser >> -Dcucumber.filter.tags="<< parameters.feature_tag >>" \
+              -Demail=<< parameters.email >>
       - run:
           name: Send Email
           command: |
@@ -73,7 +69,7 @@ jobs:
                   "type": "text/plain",
                   "value": "The test execution report is attached."
                 }]
-                    }'
+              }'
 
 workflows:
   version: 2
