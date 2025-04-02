@@ -161,7 +161,7 @@
                 <version>${maven.surefire.plugin.version}</version>
                 <configuration>
                     <systemPropertyVariables>
-                        <cucmber.filter.tags>${cucumber.filter.tags}</cucmber.filter.tags>
+                        <cucumber.filter.tags>${cucumber.filter.tags}</cucumber.filter.tags>
                         <browser>${browser}</browser>
                         <env>${env}</env>
                     </systemPropertyVariables>
