@@ -9,7 +9,7 @@ executors:
 parameters:
   browser:
     type: string
-    default: "Chrome"
+    default: "chrome"
   feature_tag:
     type: string
     default: "@smoke"
