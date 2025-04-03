@@ -53,7 +53,15 @@ jobs:
             mvn clean test -Denv=<< parameters.environment >> -Dbrowser=<< parameters.browser >> -Dcucumber.filter.tags="<< parameters.feature_tag >>" \
               -Demail=<< parameters.email >>
       - run:
-          name: Send Email
+          name: Prepare Report for Email
+          command: |
+            #  This assumes Surefire reports are in target/surefire-reports
+            #  You might need to adjust this based on your report location and type
+            cd target/surefire-reports
+            zip -r test-report.zip .   # Zip the reports
+            cd ../..  # Go back to the repo root
+      - run:
+          name: Send Email with Report
           command: |
             curl -X POST \
               https://api.sendgrid.com/v3/mail/send \
@@ -62,7 +70,9 @@ jobs:
               -d '{
                 "personalizations": [{
                   "to": [{"email": "<< parameters.email >>"}],
-                  "subject": "Test Execution Report"
+                  "subject": "Test Execution Report",
+                  "text": "The test execution report is attached.",
+                  "files": "@target/surefire-reports/test-report.zip"
                 }],
                 "from": {"email": "niroshan.desilva@carehires.com"},
                 "content": [{
