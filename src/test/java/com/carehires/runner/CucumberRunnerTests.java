@@ -23,4 +23,8 @@ import io.cucumber.testng.CucumberOptions;
 
 public class CucumberRunnerTests extends AbstractTestNGCucumberTests {
 
+    static {
+        String tags = System.getProperty("cucumber.filter.tags", "@defaultTag");
+        System.setProperty("cucumber.filter.tags", tags);
+    }
 }

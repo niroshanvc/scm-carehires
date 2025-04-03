@@ -63,23 +63,14 @@ jobs:
       - run:
           name: Send Email with Report
           command: |
-            curl -X POST \
-              https://api.sendgrid.com/v3/mail/send \
+            curl \
+              -F "from=niroshan.desilva@carehires.com" \
+              -F "to=<< parameters.email >>" \
+              -F "subject=Test Execution Report" \
+              -F "text=The test execution report is attached." \
+              -F "files=@target/surefire-reports/test-report.zip" \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
-              -H "Content-Type: application/json" \
-              -d '{
-                "personalizations": [{
-                  "to": [{"email": "<< parameters.email >>"}],
-                  "subject": "Test Execution Report",
-                  "text": "The test execution report is attached.",
-                  "files": "@target/surefire-reports/test-report.zip"
-                }],
-                "from": {"email": "niroshan.desilva@carehires.com"},
-                "content": [{
-                  "type": "text/plain",
-                  "value": "The test execution report is attached."
-                }]
-              }'
+              https://api.sendgrid.com/v3/mail/send
 
 workflows:
   version: 2
