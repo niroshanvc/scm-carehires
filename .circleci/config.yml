@@ -64,7 +64,7 @@ jobs:
                   "to": [{"email": "<< parameters.email >>"}],
                   "subject": "Test Execution Report"
                 }],
-                "from": {"email": "no-reply@example.com"},
+                "from": {"email": "niroshan.desilva@carehires.com"},
                 "content": [{
                   "type": "text/plain",
                   "value": "The test execution report is attached."
