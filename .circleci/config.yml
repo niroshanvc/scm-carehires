@@ -9,33 +9,29 @@ executors:
 parameters:
   browser:
     type: string
-    default: "Chrome"
+    default: "chrome" # Default browser
   feature_tag:
     type: string
-    default: "@smoke"
+    default: "@smoke" # Default test case tag
   environment:
     type: string
-    default: "dev"
+    default: "dev" # Default environment
   email:
     type: string
-    default: "niroshan.desilva@carehires.com"
+    default: "niroshan.desilva@carehires.com" # Default email
 
 jobs:
-  test:
+  build:
     executor: java-executor
     parameters:
       browser:
         type: string
-        default: "<< parameters.browser >>"
       feature_tag:
         type: string
-        default: "<< parameters.feature_tag >>"
       environment:
         type: string
-        default: "<< parameters.environment >>"
       email:
         type: string
-        default: "<< parameters.email >>"
     steps:
       - checkout
       - run:
@@ -54,9 +50,18 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            mvn clean test -Dbrowser=<< parameters.browser >> -Dcucumber.options="--tags << parameters.feature_tag >>" -Denvironment=<< parameters.environment >>
+            mvn clean test -Denv=<< parameters.environment >> -Dbrowser=<< parameters.browser >> -Dcucumber.filter.tags="<< parameters.feature_tag >>" \
+              -Demail=<< parameters.email >>
       - run:
-          name: Send Email
+          name: Prepare Report for Email
+          command: |
+            #  This assumes Surefire reports are in target/surefire-reports
+            #  You might need to adjust this based on your report location and type
+            cd target/surefire-reports
+            zip -r test-report.zip .   # Zip the reports
+            cd ../..  # Go back to the repo root
+      - run:
+          name: Send Email with Report
           command: |
             curl -X POST \
               https://api.sendgrid.com/v3/mail/send \
@@ -65,21 +70,24 @@ jobs:
               -d '{
                 "personalizations": [{
                   "to": [{"email": "<< parameters.email >>"}],
-                  "subject": "Test Execution Report"
+                  "subject": "Test Execution Report",
+                  "text": "The test execution report is attached.",
+                  "files": "@target/surefire-reports/test-report.zip"
                 }],
-                "from": {"email": "no-reply@example.com"},
+                "from": {"email": "niroshan.desilva@carehires.com"},
                 "content": [{
                   "type": "text/plain",
                   "value": "The test execution report is attached."
                 }]
-                    }'
+              }'
 
 workflows:
   version: 2
-  test:
+  test-workflow:
     jobs:
-      - test:
+      - build:
           browser: << pipeline.parameters.browser >>
           feature_tag: << pipeline.parameters.feature_tag >>
           environment: << pipeline.parameters.environment >>
           email: << pipeline.parameters.email >>
+    
