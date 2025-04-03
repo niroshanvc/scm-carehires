@@ -58,11 +58,19 @@ jobs:
             #  This assumes Surefire reports are in target/surefire-reports
             #  You might need to adjust this based on your report location and type
             cd target/surefire-reports
+            for file in *.txt *.xml *.html; do  # Adjust file extensions as needed
+              if ! file -i "$file" | grep -q "charset=utf-8"; then
+                echo "Converting $file to UTF-8"
+                iconv -f AUTO -t UTF-8 "$file" -o "$file.utf8" && mv "$file.utf8" "$file"
+              fi
+            done
             zip -r test-report.zip .   # Zip the reports
             cd ../..  # Go back to the repo root
       - run:
           name: Send Email with Report
           command: |
+            export LC_ALL=en_US.UTF-8
+            export LANG=en_US.UTF-8
             curl \
               -F "from=niroshan.desilva@carehires.com" \
               -F "to=<< parameters.email >>" \
