@@ -77,20 +77,11 @@ public class ProviderCompanyInformationActions {
 
 
         enterDataForInputFields(YML_FILE, ADD);
-
+        BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(companyInformationPage.saveButton);
         verifySuccessMessage();
         BasePage.waitUntilElementClickable(companyInformationPage.updateButton, 120);
         isCompanyInfoSaved();
-
-        // Update the increment value for next use
-        int nextIncrementValue = incrementValue + 1;
-
-        // Store the updated value both in file and GlobalVariables
-        String filePath = DataConfigurationReader.getFilePathForEntity(ENTITY);
-        if (filePath != null) {
-            DataConfigurationReader.updateIncrementValueInFile(filePath, nextIncrementValue);
-        }
 
         // Store in GlobalVariables for use by subsequent methods
         GlobalVariables.setVariable(ENTITY + "_incrementValue", incrementValue);
@@ -283,8 +274,6 @@ public class ProviderCompanyInformationActions {
         BasePage.waitUntilElementClickable(companyInformationPage.updateButton, 120);
         isCompanyInfoSaved();
 
-        // After successfully entering the company information, update the increment value in the file
-        DataConfigurationReader.storeNewIncrementValue(ENTITY);
         // Store the increment value in GlobalVariables for reuse in other steps
         GlobalVariables.setVariable("provider_incrementValue", incrementValue);
     }

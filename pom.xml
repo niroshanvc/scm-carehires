@@ -22,9 +22,9 @@
         <hamcrest.version>2.2</hamcrest.version>
 
         <!-- Default values for dynamic properties -->
-        <cucumber.filter.tags>@defaultTag</cucumber.filter.tags>
+        <!--<cucumber.filter.tags>@SmokeTest</cucumber.filter.tags> &lt;!&ndash; Updated default tag &ndash;&gt;
         <browser>chrome</browser>
-        <env>dev</env>
+        <env>dev</env>-->
     </properties>
     <dependencies>
         <dependency>
@@ -120,6 +120,11 @@
             <artifactId>assertj-core</artifactId>
             <version>4.0.0-M1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.16</version>
         </dependency>
     </dependencies>
     <profiles>

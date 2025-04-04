@@ -5,15 +5,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -23,16 +17,11 @@ import java.util.regex.Pattern;
 public class DataConfigurationReader {
 
     private static final Logger logger = LogManager.getLogger(DataConfigurationReader.class);
-    private static int incrementValue = -1;
-    private static final String INCREMENT_FILE_PATH_AGENCY = "src/main/resources/agency_increment_value.txt";
-    private static final String INCREMENT_FILE_PATH_PROVIDER = "src/main/resources/provider_increment_value.txt";
-    private static final String INCREMENT_FILE_PATH_WORKER = "src/main/resources/worker_increment_value.txt";
-    private static final String INCREMENT_FILE_PATH_AGREEMENT = "src/main/resources/agreement_increment_value.txt";
-    private static final String INCREMENT_VALUE = "_incrementValue";
     private static final String INCREMENT_VARIABLE = "{{increment}}";
     private static final String AGENCY = "agency";
     private static final String PROVIDER = "provider";
     private static final String UNIQUE_NUMBER = "<uniqueNumber>";
+    private static final Map<String, Integer> incrementCache = new HashMap<>();
 
     // Private constructor to prevent instantiation
     private DataConfigurationReader() {
@@ -115,26 +104,16 @@ public class DataConfigurationReader {
 
         // Replace generic increment placeholder "{{increment}}"
         if (data.contains(INCREMENT_VARIABLE)) {
-            Integer cachedValue = getOrLoadIncrementValue(entityType);
-            if (cachedValue != null) {
-                data = data.replace(INCREMENT_VARIABLE, String.valueOf(cachedValue));
-                logger.info("Replaced {{increment}} with {} for entity type: {}", cachedValue, entityType);
-                // Update the increment value in the file
-                String filePath = getFilePathForEntity(entityType);
-                if (filePath != null) {
-                    updateIncrementValueInFile(filePath, cachedValue + 1);
-                    logger.info("Increment value updated to {} in file: {}", cachedValue + 1, filePath);
-                } else {
-                    logger.error("Unable to update increment value. File path not found for entity type: {}", entityType);
-                }
-            }
+            int uniqueValue = getCurrentIncrementValue(entityType);
+            data = data.replace(INCREMENT_VARIABLE, String.valueOf(uniqueValue));
+            logger.info("Replaced {{increment}} with {} for entity type: {}", uniqueValue, entityType);
         }
         return data;
     }
 
     private static String replaceSpecificIncrement(String data, String placeholder, String key) {
         if (data.contains(placeholder)) {
-            Integer value = (Integer) GlobalVariables.getVariable(key + INCREMENT_VALUE);
+            Integer value = (Integer) GlobalVariables.getVariable(key + "_incrementValue");
             if (value != null) {
                 data = data.replace(placeholder, String.valueOf(value));
             } else {
@@ -144,132 +123,22 @@ public class DataConfigurationReader {
         return data;
     }
 
-    private static Integer getOrLoadIncrementValue(String entityType) {
-        Integer cachedValue = (Integer) GlobalVariables.getVariable(entityType + INCREMENT_VALUE);
-        if (cachedValue == null) {
-            String filePath = getFilePathForEntity(entityType);
-            if (filePath == null) {
-                logger.error("No increment file path found for entity type: {}", entityType);
-                return null;
-            }
-            cachedValue = readIncrementValueFromFile(filePath);
-            if (cachedValue == -1) {
-                logger.error("Failed to read increment value from file for entity type: {}", entityType);
-                return null;
-            }
-            GlobalVariables.storeIncrementedValue(entityType, cachedValue);
-        }
-        return cachedValue;
+    private static int generateTimestampBasedIncrementValue() {
+        long currentTimeMillis = System.currentTimeMillis();
+        return (int) (currentTimeMillis % 1000000); // Limit to 6 digits
     }
 
-
-    public static void updateIncrementValueInFile(String filePath, int newValue) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            writer.write(String.valueOf(newValue));
-            logger.info("Updated increment value to {} in file: {}", newValue, filePath);
-        } catch (IOException e) {
-            logger.error("Error updating increment value in file: {}", e.getMessage(), e);
-        }
-    }
-
-    private static int readIncrementValueFromFile(String filePath) {
-        try (FileReader reader = new FileReader(filePath)) {
-            char[] buffer = new char[10];
-            int numCharsRead = reader.read(buffer);
-            String incrementValueStr = new String(buffer, 0, numCharsRead).trim();
-            return Integer.parseInt(incrementValueStr);
-        } catch (IOException | NumberFormatException e) {
-            logger.error("Error reading increment value from file: {}", e.getMessage(), e);
-            return -1;
-        }
-    }
-
-    // Change this method to public so it can be accessed from Hooks and other places
     public static synchronized int getCurrentIncrementValue(String entityType) {
-        // First check if we have it in GlobalVariables
-        Integer cachedValue = (Integer) GlobalVariables.getVariable(entityType + "_incrementValue");
-        if (cachedValue != null) {
-            logger.info("Retrieved {} increment value from GlobalVariables: {}", entityType, cachedValue);
-            return cachedValue;
+        // Check if the increment value for the entity type is already cached
+        if (incrementCache.containsKey(entityType)) {
+            return incrementCache.get(entityType);
         }
 
-        // If not in GlobalVariables, load from file
-        String filePath = getFilePathForEntity(entityType);
-        if (filePath == null || filePath.isEmpty()) {
-            logger.error("File path for entity {} is invalid or not found, defaulting to 1", entityType);
-            return 1;
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line = reader.readLine();
-            if (line != null) {
-                int value = Integer.parseInt(line.trim());
-                // Store in GlobalVariables for future use
-                GlobalVariables.setVariable(entityType + "_incrementValue", value);
-                logger.info("Loaded {} increment value from file and stored in GlobalVariables: {}", entityType, value);
-                return value;
-            }
-        } catch (IOException e) {
-            logger.error("Failed to load increment value for {}", entityType, e);
-        }
-        return 1;
-    }
-
-    // Private method to load the increment value from file
-    private static int loadIncrementValueFromFile(String entityType) {
-        String filePath = getFilePathForEntity(entityType);
-
-        // Check if the file path is null or empty
-        if (filePath == null || filePath.isEmpty()) {
-            logger.error("File path for entity {} is invalid or not found, defaulting to 1", entityType);
-            return 1; // Default value if the file path is invalid
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line = reader.readLine();
-            if (line != null) {
-                return Integer.parseInt(line.trim());
-            }
-        } catch (IOException e) {
-            logger.error("Failed to load increment value for {}", entityType + ", defaulting to 1", e);
-        }
-        return 1; // Default value if the file doesn't exist or couldn't be read
-    }
-
-    // Save the new increment value
-    public static synchronized void storeNewIncrementValue(String entityType) {
-        if (incrementValue != -1) {
-            saveIncrementValueToFile(entityType, incrementValue);
-        }
-    }
-
-    // Save the increment value to the file
-    private static void saveIncrementValueToFile(String entityType, int value) {
-        String filePath = getFilePathForEntity(entityType);
-        try {
-            assert filePath != null;
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                writer.write(String.valueOf(value));
-            }
-        } catch (IOException e) {
-            logger.error("Failed to save increment value for {}", entityType, e);
-        }
-    }
-
-    public static String getFilePathForEntity(String entityType) {
-        logger.info("********** Received entity type: {}", entityType);
-        String lowerCaseEntityType = entityType.toLowerCase();
-        if (!Arrays.asList(AGENCY, PROVIDER, "worker", "job", "agreement").contains(lowerCaseEntityType)) {
-            throw new IllegalArgumentException("Unknown entity type: " + entityType);
-        }
-        return switch (lowerCaseEntityType) {
-            case AGENCY -> INCREMENT_FILE_PATH_AGENCY;
-            case PROVIDER -> INCREMENT_FILE_PATH_PROVIDER;
-            case "worker" -> INCREMENT_FILE_PATH_WORKER;
-            case "agreement" -> INCREMENT_FILE_PATH_AGREEMENT;
-            case "job" -> null; // No increment file for Jobs and Agreements
-            default -> throw new IllegalArgumentException("Unknown entity type: " + entityType);
-        };
+        // Generate a unique value based on the timestamp
+        int uniqueValue = generateTimestampBasedIncrementValue();
+        incrementCache.put(entityType, uniqueValue); // Cache the value for the entity type
+        logger.info("Generated and cached unique increment value for {}: {}", entityType, uniqueValue);
+        return uniqueValue;
     }
 
     private static String generateUniqueNumber() {

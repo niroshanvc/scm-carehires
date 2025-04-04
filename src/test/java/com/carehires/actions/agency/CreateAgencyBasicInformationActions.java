@@ -65,7 +65,7 @@ public class CreateAgencyBasicInformationActions {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering basic information >>>>>>>>>>>>>>>>>>>>");
 
-        // Retrieve the current increment value for the agency (from the file)
+        // Retrieve the current increment value for the agency
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
         logger.info("Initial increment value retrieved for agency: {}", incrementValue);
 
@@ -76,15 +76,6 @@ public class CreateAgencyBasicInformationActions {
         BasePage.waitUntilElementClickable(createAgencyBasicInfoPage.skipButton, 90);
 
         isBasicInfoSaved();
-
-        // Update the increment value for next use
-        int nextIncrementValue = incrementValue + 1;
-
-        // Store the updated value both in file and GlobalVariables
-        String filePath = DataConfigurationReader.getFilePathForEntity(ENTITY);
-        if (filePath != null) {
-            DataConfigurationReader.updateIncrementValueInFile(filePath, nextIncrementValue);
-        }
 
         // Store in GlobalVariables for use by subsequent methods
         GlobalVariables.setVariable(ENTITY + "_incrementValue", incrementValue);
@@ -148,8 +139,6 @@ public class CreateAgencyBasicInformationActions {
         BasePage.waitUntilElementClickable(createAgencyBasicInfoPage.skipButton, 90);
         isBasicInfoSaved();
 
-        // After successfully entering the basic information, update the increment value in the file
-        DataConfigurationReader.storeNewIncrementValue(ENTITY);
         // Store the increment value in GlobalVariables for reuse in other steps
         GlobalVariables.setVariable("agency_incrementValue", incrementValue);
 
