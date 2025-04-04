@@ -24,7 +24,7 @@ import io.cucumber.testng.CucumberOptions;
 public class CucumberRunnerTests extends AbstractTestNGCucumberTests {
 
     static {
-        String tags = System.getProperty("cucumber.filter.tags", "@defaultTag");
+        String tags = System.getProperty("cucumber.filter.tags", "@VerifyJobPostForSpecialHoliday"); // Updated default tag
         System.setProperty("cucumber.filter.tags", tags);
     }
 }
