@@ -21,10 +21,6 @@
         <apache.log4j.version>2.24.2</apache.log4j.version>
         <hamcrest.version>2.2</hamcrest.version>
 
-        <!-- Default values for dynamic properties -->
-        <cucumber.filter.tags>@defaultTag</cucumber.filter.tags>
-        <browser>chrome</browser>
-        <env>dev</env>
     </properties>
     <dependencies>
         <dependency>
@@ -121,6 +117,11 @@
             <version>4.0.0-M1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.16</version>
+        </dependency>
     </dependencies>
     <profiles>
         <profile>
@@ -165,11 +166,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.plugin.version}</version>
                 <configuration>
-                    <systemPropertyVariables>
-                        <cucumber.filter.tags>${cucumber.filter.tags}</cucumber.filter.tags>
-                        <browser>${browser}</browser>
-                        <env>${env}</env>
-                    </systemPropertyVariables>
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                     <testFailureIgnore>true</testFailureIgnore>
                     <useFile>false</useFile> <!-- Add this line -->

@@ -8,8 +8,8 @@ import io.cucumber.testng.CucumberOptions;
         glue = {"com.carehires.steps", "com.carehires.hooks"},
         plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"},
         monochrome = true,
-        tags = "@VerifyJobPostForSpecialHoliday"
-//        tags = "CreateAgency, EditAgency
+        tags = "@VerifyJobPostForSpecialHoliday" // Default constant value
+        //        tags = "CreateAgency, EditAgency
 //        or CreateProvider, CreateProviderWithCustomBilling, EditProvider
 //        or CreateWorker, EditWorker"
 //        or CreateAgreement, CreateAgreementForDDProvider, ViewAgreement, EditAgreement, OverviewAgreement
@@ -23,8 +23,4 @@ import io.cucumber.testng.CucumberOptions;
 
 public class CucumberRunnerTests extends AbstractTestNGCucumberTests {
 
-    static {
-        String tags = System.getProperty("cucumber.filter.tags", "@VerifyJobPostForSpecialHoliday"); // Updated default tag
-        System.setProperty("cucumber.filter.tags", tags);
-    }
 }

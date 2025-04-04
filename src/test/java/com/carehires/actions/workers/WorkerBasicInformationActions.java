@@ -94,9 +94,6 @@ public class WorkerBasicInformationActions {
 
         BasePage.clickWithJavaScript(basicInfo.saveButton);
 
-        // After successfully entering the basic information, update the increment value in the file
-        DataConfigurationReader.storeNewIncrementValue(ENTITY);
-
         // Store the increment value in GlobalVariables for reuse in other steps
         GlobalVariables.setVariable("worker_incrementValue", incrementValue);
     }
@@ -533,8 +530,6 @@ public class WorkerBasicInformationActions {
         BasePage.genericWait(10000);
 
         BasePage.clickWithJavaScript(basicInfo.saveButton);
-        // After successfully entering the basic information, update the increment value in the file
-        DataConfigurationReader.storeNewIncrementValue(ENTITY);
         // Store the increment value in GlobalVariables for reuse in other steps
         GlobalVariables.setVariable("worker_incrementValue", incrementValue);
     }

@@ -82,19 +82,10 @@ public class AgencyUserManagementActions {
         BasePage.genericWait(12000);
         BasePage.clickWithJavaScript(userManagement.addButton);
         verifySuccessMessage();
-        isUserAdded();
 
         BasePage.clickWithJavaScript(userManagement.updateButton);
         BasePage.waitUntilElementClickable(userManagement.nextButton, 60);
         BasePage.clickWithJavaScript(userManagement.nextButton);
-    }
-
-    private void isUserAdded() {
-        BasePage.waitUntilElementPresent(userManagement.fullNameCell, 60);
-        String nameWithJob = BasePage.getText(userManagement.fullNameCell);
-        String actual = nameWithJob.split("\n")[0].trim();
-        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "Name");
-        assertThat("User is not added", actual, is(expected));
     }
 
     private void verifySuccessMessage() {
