@@ -86,43 +86,43 @@ jobs:
             echo "Environment: << parameters.environment >>"
             echo "Email: << parameters.email >>"
             
-            # Encode the attachment and save it to a variable
-            ATTACHMENT_CONTENT=$(base64 -w 0 target/surefire-reports/test-report.zip)
+            # Encode the attachment and save it to a file
+            base64 -w 0 target/surefire-reports/test-report.zip > encoded_attachment.txt
             
             # Construct the JSON payload
-            jq -n \
-              --arg from_email "niroshan.desilva@carehires.com" \
-              --arg to_email "<< parameters.email >>" \
-              --arg subject "Test Execution Report for << parameters.environment >>" \
-              --arg content "The test execution report is attached." \
-              --arg attachment "$ATTACHMENT_CONTENT" \
-              '{
-                from: { email: $from_email },
-                personalizations: [
-                  {
-                    to: [{ email: $to_email }],
-                    subject: $subject
-                  }
-                ],
-                content: [
-                  {
-                    type: "text/plain",
-                    value: $content
-                  }
-                ],
-                attachments: [
-                  {
-                    content: $attachment,
-                    filename: "test-report.zip",
-                    type: "application/zip",
-                    disposition: "attachment"
-                  }
-                ]
-              }' > email_payload.json
+            echo '{
+              "from": {
+                "email": "niroshan.desilva@carehires.com"
+              },
+              "personalizations": [
+                {
+                  "to": [
+                    {
+                      "email": "<< parameters.email >>"
+                    }
+                  ],
+                  "subject": "Test Execution Report for << parameters.environment >>"
+                }
+              ],
+              "content": [
+                {
+                  "type": "text/plain",
+                  "value": "The test execution report is attached."
+                }
+              ],
+              "attachments": [
+                {
+                  "content": "'$(cat encoded_attachment.txt)'",
+                  "filename": "test-report.zip",
+                  "type": "application/zip",
+                  "disposition": "attachment"
+                }
+              ]
+            }' > email_payload.json
 
             # Debug the JSON payload
             echo "Generated email payload:"
-            cat email_payload.json
+            head -c 1000 email_payload.json  # Print the first 1000 characters for debugging
 
             # Send the email using SendGrid API
             curl -X POST https://api.sendgrid.com/v3/mail/send \
