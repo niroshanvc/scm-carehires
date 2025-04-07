@@ -90,7 +90,7 @@ jobs:
                 {
                   "to": [
                     {
-                      "email": "'"<< parameters.email >>"'"
+                      "email": "'\<< parameters.email >>'"
                     }
                   ],
                   "subject": "Test Execution Report"
