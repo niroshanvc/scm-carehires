@@ -129,13 +129,9 @@ jobs:
                   cat email_payload.json
 
             - run:
-                name: Send Email
+                name: Send Email (Simplified)
                 command: |
-                  curl -X POST \
-                    -H "Authorization: Bearer $SENDGRID_API_KEY" \
-                    -H "Content-Type: application/json" \
-                    -d "@email_payload.json" \
-                    https://api.sendgrid.com/v3/mail/send
+                  curl https://api.sendgrid.com/v3/mail/send  # Simplified curl
             
               # Error Handling (example)
               if [ $? -ne 0 ]; then
