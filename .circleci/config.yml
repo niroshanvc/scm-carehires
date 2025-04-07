@@ -75,24 +75,47 @@ jobs:
           command: |
             export LC_ALL=en_US.UTF-8
             export LANG=en_US.UTF-8
-            curl \
-              -F "from=niroshan.desilva@carehires.com" \
-              -F "to=<< parameters.email >>" \
-              -F "subject=Test Execution Report" \
-              -F "text=The test execution report is attached." \
-              -F "files=@target/surefire-reports/test-report.zip;type=application/zip" \
+            
+            # Debugging (check encoding)
+            echo "Subject: Test Report for $(echo "<< parameters.environment >>" | hexdump -C)"
+            echo "Body: $(echo 'The test execution report is attached.' | hexdump -C)"
+            
+            curl -X POST \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "from": "niroshan.desilva@carehires.com",
+                "personalizations": [
+                  {
+                    "to": [
+                      {
+                        "email": "'"<< parameters.email >>"'"
+                      }
+                    ],
+                    "subject": "Test Execution Report"
+                  }
+                ],
+                "content": [
+                  {
+                    "type": "text/plain",
+                    "value": "The test execution report is attached."
+                  }
+                ],
+                "attachments": [
+                  {
+                    "content": "'$(base64 -w 0 target/surefire-reports/test-report.zip)'",
+                    "filename": "test-report.zip",
+                    "type": "application/zip",
+                    "disposition": "attachment"
+                  }
+                ]
+              }' \
               https://api.sendgrid.com/v3/mail/send
-      - run:
-          name: Send Email Without Attachment
-          command: |
-            curl \
-              -F "from=niroshan.desilva@carehires.com" \
-              -F "to=<< parameters.email >>" \
-              -F "subject=Test Execution Report" \
-              -F "text=The test execution report is attached." \
-              -H "Authorization: Bearer $SENDGRID_API_KEY" \
-              https://api.sendgrid.com/v3/mail/send
+            
+            # Error Handling (example)
+            if [ $? -ne 0 ]; then
+              echo "Error sending email!"
+            fi
       - run:
           name: Debug Email Request
           command: |
