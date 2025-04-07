@@ -115,9 +115,8 @@ jobs:
             # Read the encoded content into a variable
             ENCODED_CONTENT=$(cat encoded_attachment.txt)
             
-            # Create JSON payload with proper JSON escaping
-            cat > email_payload.json << EOF
-            {
+            # Create JSON payload using echo instead of here-document
+            echo '{
               "from": {
                 "email": "niroshan.desilva@carehires.com"
               },
@@ -139,14 +138,13 @@ jobs:
               ],
               "attachments": [
                 {
-                  "content": "${ENCODED_CONTENT}",
+                  "content": "'${ENCODED_CONTENT}'",
                   "filename": "test-report.zip",
                   "type": "application/zip",
                   "disposition": "attachment"
                 }
               ]
-            }
-            EOF
+            }' > email_payload.json
             
             # Debug the JSON payload
             echo "Generated email payload:"
