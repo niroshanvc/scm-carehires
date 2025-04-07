@@ -112,8 +112,12 @@ jobs:
             # Encode the attachment
             base64 -w 0 target/surefire-reports/test-report.zip > encoded_attachment.txt
             
-            # Construct the JSON payload
-            echo '{
+            # Read the encoded content into a variable
+            ENCODED_CONTENT=$(cat encoded_attachment.txt)
+            
+            # Create JSON payload with proper JSON escaping
+            cat > email_payload.json << EOF
+            {
               "from": {
                 "email": "niroshan.desilva@carehires.com"
               },
@@ -135,18 +139,19 @@ jobs:
               ],
               "attachments": [
                 {
-                  "content": "'$(cat encoded_attachment.txt)'",
+                  "content": "${ENCODED_CONTENT}",
                   "filename": "test-report.zip",
                   "type": "application/zip",
                   "disposition": "attachment"
                 }
               ]
-            }' > email_payload.json
-
+            }
+            EOF
+            
             # Debug the JSON payload
             echo "Generated email payload:"
             head -c 1000 email_payload.json  # Print the first 1000 characters for debugging
-
+            
             # Send the email using SendGrid API
             curl -X POST https://api.sendgrid.com/v3/mail/send \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
@@ -162,4 +167,3 @@ workflows:
           feature_tag: << pipeline.parameters.feature_tag >>
           environment: << pipeline.parameters.environment >>
           email: << pipeline.parameters.email >>
-    

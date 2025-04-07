@@ -1,7 +1,6 @@
 package com.carehires.actions;
 
 
-import com.carehires.actions.agency.AgencyProfileActions;
 import com.carehires.pages.OverviewPage;
 import com.carehires.utils.BasePage;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +14,7 @@ import static org.hamcrest.Matchers.is;
 public class OverviewActions {
     OverviewPage overview;
 
-    private static final Logger logger = LogManager.getFormatterLogger(AgencyProfileActions.class);
+    private static final Logger logger = LogManager.getFormatterLogger(OverviewActions.class);
 
     public OverviewActions() {
         overview = new OverviewPage();
