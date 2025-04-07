@@ -123,24 +123,18 @@ jobs:
             # Save the JSON payload to a file
             echo "$EMAIL_JSON_PAYLOAD" > email_payload.json
 
-            - run:
-                name: Debug email_payload.json
-                command: |
-                  cat email_payload.json
-
-            - run:
-                name: Send Email (Simplified)
-                command: |
-                  curl https://api.sendgrid.com/v3/mail/send  # Simplified curl
-            
-              # Error Handling (example)
-              if [ $? -ne 0 ]; then
-              echo "Error sending email!"
-              fi
       - run:
-          name: Debug CIRCLECI_ENV_PARAMS
+          name: Debug email_payload.json
           command: |
-            echo "CIRCLECI_ENV_PARAMS: ${CIRCLECI_ENV_PARAMS}"      
+            cat email_payload.json
+
+      - run:
+          name: Send Email
+          command: |
+            curl -X POST https://api.sendgrid.com/v3/mail/send \
+              -H "Authorization: Bearer $SENDGRID_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d @email_payload.json || echo "Error sending email!"     
 
 workflows:
   version: 2
