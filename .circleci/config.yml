@@ -75,21 +75,8 @@ jobs:
             zip -r test-report.zip .   # Zip the reports
             cd ../..  # Go back to the repo root
       - run:
-          name: Send Email with Report
+          name: Send Email Without Attachment
           command: |
-            export LC_ALL=en_US.UTF-8
-            export LANG=en_US.UTF-8
-            
-            # Debugging
-            echo "Browser: << parameters.browser >>"
-            echo "Feature Tag: << parameters.feature_tag >>"
-            echo "Environment: << parameters.environment >>"
-            echo "Email: << parameters.email >>"
-            
-            # Encode the attachment and save it to a file
-            base64 -w 0 target/surefire-reports/test-report.zip > encoded_attachment.txt
-            
-            # Construct the JSON payload
             echo '{
               "from": {
                 "email": "niroshan.desilva@carehires.com"
@@ -109,22 +96,9 @@ jobs:
                   "type": "text/plain",
                   "value": "The test execution report is attached."
                 }
-              ],
-              "attachments": [
-                {
-                  "content": "'$(cat encoded_attachment.txt)'",
-                  "filename": "test-report.zip",
-                  "type": "application/zip",
-                  "disposition": "attachment"
-                }
               ]
             }' > email_payload.json
 
-            # Debug the JSON payload
-            echo "Generated email payload:"
-            head -c 1000 email_payload.json  # Print the first 1000 characters for debugging
-
-            # Send the email using SendGrid API
             curl -X POST https://api.sendgrid.com/v3/mail/send \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               -H "Content-Type: application/json" \
