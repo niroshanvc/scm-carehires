@@ -86,16 +86,16 @@ jobs:
             echo "Environment: << parameters.environment >>"
             echo "Email: << parameters.email >>"
             
-            # Encode the attachment and save it to a file
-            base64 -w 0 target/surefire-reports/test-report.zip > encoded_attachment.txt
+            # Encode the attachment and save it to a variable
+            ATTACHMENT_CONTENT=$(base64 -w 0 target/surefire-reports/test-report.zip)
             
-            # Construct the JSON payload using jq
+            # Construct the JSON payload
             jq -n \
               --arg from_email "niroshan.desilva@carehires.com" \
               --arg to_email "<< parameters.email >>" \
               --arg subject "Test Execution Report for << parameters.environment >>" \
               --arg content "The test execution report is attached." \
-              --argfile attachment_content encoded_attachment.txt \
+              --arg attachment "$ATTACHMENT_CONTENT" \
               '{
                 from: { email: $from_email },
                 personalizations: [
@@ -112,7 +112,7 @@ jobs:
                 ],
                 attachments: [
                   {
-                    content: $attachment_content,
+                    content: $attachment,
                     filename: "test-report.zip",
                     type: "application/zip",
                     disposition: "attachment"
