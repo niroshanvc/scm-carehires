@@ -89,31 +89,31 @@ jobs:
             # Construct the JSON payload directly using parameter variables
             EMAIL_JSON_PAYLOAD="{
             \"from\": {
-            \"email\": \"niroshan.desilva@carehires.com\"
+              \"email\": \"niroshan.desilva@carehires.com\"
             },
             \"personalizations\": [
-            {
-            \"to\": [
-             {
-               \"email\": \"<< parameters.email >>\"
-             }
-            ],
-            \"subject\": \"Test Execution Report for << parameters.environment >>\"
-            }
+              {
+                \"to\": [
+                  {
+                    \"email\": \"<< parameters.email >>\"
+                  }
+                ],
+                \"subject\": \"Test Execution Report for << parameters.environment >>\"
+              }
             ],
             \"content\": [
-            {
-            \"type\": \"text/plain\",
-            \"value\": \"The test execution report is attached.\"
-            }
+              {
+                \"type\": \"text/plain\",
+                \"value\": \"The test execution report is attached.\"
+              }
             ],
             \"attachments\": [
-            {
-            \"content\": \"$(base64 -w 0 target/surefire-reports/test-report.zip)\",
-            \"filename\": \"test-report.zip\",
-            \"type\": \"application/zip\",
-            \"disposition\": \"attachment\"
-            }
+              {
+                \"content\": \"$(base64 -w 0 target/surefire-reports/test-report.zip)\",
+                \"filename\": \"test-report.zip\",
+                \"type\": \"application/zip\",
+                \"disposition\": \"attachment\"
+              }
             ]
             }"
             
@@ -123,18 +123,15 @@ jobs:
             # Save the JSON payload to a file
             echo "$EMAIL_JSON_PAYLOAD" > email_payload.json
 
-      - run:
-          name: Debug email_payload.json
-          command: |
+            # Debug the JSON payload
+            echo "Generated email payload:"
             cat email_payload.json
 
-      - run:
-          name: Send Email
-          command: |
+            # Send the email using SendGrid API
             curl -X POST https://api.sendgrid.com/v3/mail/send \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               -H "Content-Type: application/json" \
-              -d @email_payload.json || echo "Error sending email!"     
+              -d @email_payload.json || echo "Error sending email!"
 
 workflows:
   version: 2
