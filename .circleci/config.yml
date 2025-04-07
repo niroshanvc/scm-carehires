@@ -118,10 +118,13 @@ jobs:
             # Remove extra spaces and newlines from JSON (to minimize length)
             EMAIL_JSON_PAYLOAD=$(echo "$EMAIL_JSON_PAYLOAD" | tr -d '\n' | tr -d ' ')
             
+            # Save the JSON payload to a file
+            echo "$EMAIL_JSON_PAYLOAD" > email_payload.json
+            
             curl -X POST \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               -H "Content-Type: application/json" \
-              -d "$EMAIL_JSON_PAYLOAD" \
+              -d "@email_payload.json" \
               https://api.sendgrid.com/v3/mail/send
             
             # Error Handling (example)
