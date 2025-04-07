@@ -86,39 +86,39 @@ jobs:
             echo "Environment: << parameters.environment >>"
             echo "Email: << parameters.email >>"
             
-            # Construct the JSON payload directly using parameter variables
-            EMAIL_JSON_PAYLOAD="{
-            \"from\": {
-              \"email\": \"niroshan.desilva@carehires.com\"
-            },
-            \"personalizations\": [
-              {
-                \"to\": [
+            # Encode the attachment
+            ATTACHMENT_CONTENT=$(base64 -w 0 target/surefire-reports/test-report.zip)
+            
+            # Construct the JSON payload
+            EMAIL_JSON_PAYLOAD=$(jq -n \
+              --arg from_email "niroshan.desilva@carehires.com" \
+              --arg to_email "<< parameters.email >>" \
+              --arg subject "Test Execution Report for << parameters.environment >>" \
+              --arg content "The test execution report is attached." \
+              --arg attachment "$ATTACHMENT_CONTENT" \
+              '{
+                from: { email: $from_email },
+                personalizations: [
                   {
-                    \"email\": \"<< parameters.email >>\"
+                    to: [{ email: $to_email }],
+                    subject: $subject
                   }
                 ],
-                \"subject\": \"Test Execution Report for << parameters.environment >>\"
-              }
-            ],
-            \"content\": [
-              {
-                \"type\": \"text/plain\",
-                \"value\": \"The test execution report is attached.\"
-              }
-            ],
-            \"attachments\": [
-              {
-                \"content\": \"$(base64 -w 0 target/surefire-reports/test-report.zip)\",
-                \"filename\": \"test-report.zip\",
-                \"type\": \"application/zip\",
-                \"disposition\": \"attachment\"
-              }
-            ]
-            }"
-            
-            # Remove extra spaces and newlines from JSON (to minimize length)
-            EMAIL_JSON_PAYLOAD=$(echo "$EMAIL_JSON_PAYLOAD" | tr -d '\n' | tr -d ' ')
+                content: [
+                  {
+                    type: "text/plain",
+                    value: $content
+                  }
+                ],
+                attachments: [
+                  {
+                    content: $attachment,
+                    filename: "test-report.zip",
+                    type: "application/zip",
+                    disposition: "attachment"
+                  }
+                ]
+              }')
             
             # Save the JSON payload to a file
             echo "$EMAIL_JSON_PAYLOAD" > email_payload.json
