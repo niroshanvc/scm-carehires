@@ -79,49 +79,49 @@ jobs:
           command: |
             export LC_ALL=en_US.UTF-8
             export LANG=en_US.UTF-8
-            
+
             # Debugging (check encoding - install binutils first!)
             echo "Subject: Test Report for $(echo \"${CIRCLECI_ENV_PARAMS}\" | jq -r '.environment' | hexdump -C)"
             echo "Body: $(echo 'The test execution report is attached.' | hexdump -C)"
-            
-            # Create and export the JSON payload
-            EMAIL_JSON_PAYLOAD=$(cat <<EOF
+
+            # Create and export the JSON payload (escaped EOF)
+            EMAIL_JSON_PAYLOAD=$(eval echo \"$(cat <<'EOF'
             {
-              "from": "niroshan.desilva@carehires.com",
-              "personalizations": [
+              \"from\": \"niroshan.desilva@carehires.com\",
+              \"personalizations\": [
                 {
-                  "to": [
+                  \"to\": [
                     {
-                      "email": "$(echo \"${CIRCLECI_ENV_PARAMS}\" | jq -r '.email')"
+                      \"email\": \"$(echo \\\"${CIRCLECI_ENV_PARAMS}\\\" | jq -r '.email')\"
                     }
                   ],
-                  "subject": "Test Execution Report"
+                  \"subject\": \"Test Execution Report\"
                 }
               ],
-              "content": [
+              \"content\": [
                 {
-                  "type": "text/plain",
-                  "value": "The test execution report is attached."
+                  \"type\": \"text/plain\",
+                  \"value\": \"The test execution report is attached.\"
                 }
               ],
-              "attachments": [
+              \"attachments\": [
                 {
-                  "content": "$(base64 -w 0 target/surefire-reports/test-report.zip)",
-                  "filename": "test-report.zip",
-                  "type": "application/zip",
-                  "disposition": "attachment"
+                  \"content\": \"$(base64 -w 0 target/surefire-reports/test-report.zip)\",
+                  \"filename\": \"test-report.zip\",
+                  \"type\": \"application/zip\",
+                  \"disposition\": \"attachment\"
                 }
               ]
             }
             EOF
-            )
-            
+            )\")
+
             curl -X POST \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               -H "Content-Type: application/json" \
               -d "$EMAIL_JSON_PAYLOAD" \
               https://api.sendgrid.com/v3/mail/send
-            
+
             # Error Handling (example)
             if [ $? -ne 0 ]; then
               echo "Error sending email!"
