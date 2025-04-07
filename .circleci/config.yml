@@ -88,33 +88,33 @@ jobs:
             
             # Construct the JSON payload directly using parameter variables
             EMAIL_JSON_PAYLOAD="{
-              \"from\": {
-                \"email\": \"niroshan.desilva@carehires.com\"
-              },
-              \"personalizations\": [
-                {
-                  \"to\": [
-                    {
-                      \"email\": \"<< parameters.email >>\"
-                    }
-                  ],
-                  \"subject\": \"Test Execution Report for << parameters.environment >>\"
-                }
-              ],
-              \"content\": [
-                {
-                  \"type\": \"text/plain\",
-                  \"value\": \"The test execution report is attached.\"
-                }
-              ],
-              \"attachments\": [
-                {
-                  \"content\": \"$(base64 -w 0 target/surefire-reports/test-report.zip)\",
-                  \"filename\": \"test-report.zip\",
-                  \"type\": \"application/zip\",
-                  \"disposition\": \"attachment\"
-                }
-              ]
+            \"from\": {
+            \"email\": \"niroshan.desilva@carehires.com\"
+            },
+            \"personalizations\": [
+            {
+            \"to\": [
+             {
+               \"email\": \"<< parameters.email >>\"
+             }
+            ],
+            \"subject\": \"Test Execution Report for << parameters.environment >>\"
+            }
+            ],
+            \"content\": [
+            {
+            \"type\": \"text/plain\",
+            \"value\": \"The test execution report is attached.\"
+            }
+            ],
+            \"attachments\": [
+            {
+            \"content\": \"$(base64 -w 0 target/surefire-reports/test-report.zip)\",
+            \"filename\": \"test-report.zip\",
+            \"type\": \"application/zip\",
+            \"disposition\": \"attachment\"
+            }
+            ]
             }"
             
             # Remove extra spaces and newlines from JSON (to minimize length)
@@ -122,17 +122,25 @@ jobs:
             
             # Save the JSON payload to a file
             echo "$EMAIL_JSON_PAYLOAD" > email_payload.json
+
+            - run:
+                name: Debug email_payload.json
+                command: |
+                  cat email_payload.json
+
+            - run:
+                name: Send Email
+                command: |
+                  curl -X POST \
+                    -H "Authorization: Bearer $SENDGRID_API_KEY" \
+                    -H "Content-Type: application/json" \
+                    -d "@email_payload.json" \
+                    https://api.sendgrid.com/v3/mail/send
             
-            curl -X POST \
-              -H "Authorization: Bearer $SENDGRID_API_KEY" \
-              -H "Content-Type: application/json" \
-              -d "@email_payload.json" \
-              https://api.sendgrid.com/v3/mail/send
-            
-            # Error Handling (example)
-            if [ $? -ne 0 ]; then
+              # Error Handling (example)
+              if [ $? -ne 0 ]; then
               echo "Error sending email!"
-            fi
+              fi
       - run:
           name: Debug CIRCLECI_ENV_PARAMS
           command: |
