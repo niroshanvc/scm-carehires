@@ -75,6 +75,35 @@ jobs:
             zip -r test-report.zip .   # Zip the reports
             cd ../..  # Go back to the repo root
       - run:
+          name: Send Email Without Attachment
+          command: |
+            echo '{
+              "from": {
+                "email": "niroshan.desilva@carehires.com"
+              },
+              "personalizations": [
+                {
+                  "to": [
+                    {
+                      "email": "<< parameters.email >>"
+                    }
+                  ],
+                  "subject": "Test Execution Report for << parameters.environment >>"
+                }
+              ],
+              "content": [
+                {
+                  "type": "text/plain",
+                  "value": "The test execution report is attached."
+                }
+              ]
+            }' > email_payload.json
+
+            curl -X POST https://api.sendgrid.com/v3/mail/send \
+              -H "Authorization: Bearer $SENDGRID_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d @email_payload.json || echo "Error sending email!"
+      - run:
           name: Send Email with Attachment
           command: |
             export LC_ALL=en_US.UTF-8
