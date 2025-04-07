@@ -79,11 +79,12 @@ jobs:
           command: |
             export LC_ALL=en_US.UTF-8
             export LANG=en_US.UTF-8
-
-            # Debugging (check encoding - install binutils first!)
-            echo "Subject: Test Report for $(echo \"${CIRCLECI_ENV_PARAMS}\" | jq -r '.environment' | hexdump -C)"
-            echo "Body: $(echo 'The test execution report is attached.' | hexdump -C)"
-
+            
+            # Debugging (check CIRCLECI_ENV_PARAMS and encoding)
+            echo "CIRCLECI_ENV_PARAMS: ${CIRCLECI_ENV_PARAMS}"
+            echo "Subject: Test Report for $(printf '%q' \"${CIRCLECI_ENV_PARAMS}\" | jq -r '.environment')"
+            echo "Body: $(printf '%q' 'The test execution report is attached.')"
+            
             # Construct the JSON payload using shell variables
             FROM_EMAIL="niroshan.desilva@carehires.com"
             TO_EMAIL=$(echo "${CIRCLECI_ENV_PARAMS}" | jq -r '.email')
@@ -93,7 +94,7 @@ jobs:
             ATTACHMENT_FILENAME="test-report.zip"
             ATTACHMENT_TYPE="application/zip"
             ATTACHMENT_DISPOSITION="attachment"
-
+            
             EMAIL_JSON_PAYLOAD="{
               \"from\": \"${FROM_EMAIL}\",
               \"personalizations\": [
@@ -121,17 +122,21 @@ jobs:
                 }
               ]
             }"
-
+            
             curl -X POST \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               -H "Content-Type: application/json" \
               -d "${EMAIL_JSON_PAYLOAD}" \
               https://api.sendgrid.com/v3/mail/send
-
+            
             # Error Handling (example)
             if [ $? -ne 0 ]; then
               echo "Error sending email!"
             fi
+      - run:
+          name: Debug CIRCLECI_ENV_PARAMS
+          command: |
+            echo "CIRCLECI_ENV_PARAMS: ${CIRCLECI_ENV_PARAMS}"      
 
 workflows:
   version: 2
