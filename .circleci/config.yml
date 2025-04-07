@@ -59,9 +59,13 @@ jobs:
             #  You might need to adjust this based on your report location and type
             cd target/surefire-reports
             for file in *.txt *.xml *.html; do  # Adjust file extensions as needed
-              if ! file -i "$file" | grep -q "charset=utf-8"; then
-                echo "Converting $file to UTF-8"
-                iconv -f ISO-8859-1 -t UTF-8 "$file" -o "$file.utf8" && mv "$file.utf8" "$file"
+              if [ -f "$file" ]; then
+                if ! file -i "$file" | grep -q "charset=utf-8"; then
+                  echo "Converting $file to UTF-8"
+                  iconv -f ISO-8859-1 -t UTF-8 "$file" -o "$file.utf8" && mv "$file.utf8" "$file"
+                fi
+              else
+                echo "Skipping $file as it does not exist"
               fi
             done
             zip -r test-report.zip .   # Zip the reports
@@ -77,6 +81,16 @@ jobs:
               -F "subject=Test Execution Report" \
               -F "text=The test execution report is attached." \
               -F "files=@target/surefire-reports/test-report.zip;type=application/zip" \
+              -H "Authorization: Bearer $SENDGRID_API_KEY" \
+              https://api.sendgrid.com/v3/mail/send
+      - run:
+          name: Send Email Without Attachment
+          command: |
+            curl \
+              -F "from=niroshan.desilva@carehires.com" \
+              -F "to=<< parameters.email >>" \
+              -F "subject=Test Execution Report" \
+              -F "text=The test execution report is attached." \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               https://api.sendgrid.com/v3/mail/send
       - run:
