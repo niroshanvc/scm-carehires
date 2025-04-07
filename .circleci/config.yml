@@ -80,53 +80,48 @@ jobs:
             export LC_ALL=en_US.UTF-8
             export LANG=en_US.UTF-8
             
-            # Debugging (check CIRCLECI_ENV_PARAMS and encoding)
-            echo "CIRCLECI_ENV_PARAMS: ${CIRCLECI_ENV_PARAMS}"
-            echo "Subject: Test Report for $(printf '%q' \"${CIRCLECI_ENV_PARAMS}\" | jq -r '.environment')"
-            echo "Body: $(printf '%q' 'The test execution report is attached.')"
+            # Debugging
+            echo "Browser: << parameters.browser >>"
+            echo "Feature Tag: << parameters.feature_tag >>"
+            echo "Environment: << parameters.environment >>"
+            echo "Email: << parameters.email >>"
             
-            # Construct the JSON payload using shell variables
-            FROM_EMAIL="niroshan.desilva@carehires.com"
-            TO_EMAIL=$(echo "${CIRCLECI_ENV_PARAMS}" | jq -r '.email')
-            SUBJECT="Test Execution Report"
-            CONTENT="The test execution report is attached."
-            ATTACHMENT_CONTENT=$(base64 -w 0 target/surefire-reports/test-report.zip)
-            ATTACHMENT_FILENAME="test-report.zip"
-            ATTACHMENT_TYPE="application/zip"
-            ATTACHMENT_DISPOSITION="attachment"
-            
+            # Construct the JSON payload directly using parameter variables
             EMAIL_JSON_PAYLOAD="{
-              \"from\": \"${FROM_EMAIL}\",
+              \"from\": \"niroshan.desilva@carehires.com\",
               \"personalizations\": [
                 {
                   \"to\": [
                     {
-                      \"email\": \"${TO_EMAIL}\"
+                      \"email\": \"<< parameters.email >>\"
                     }
                   ],
-                  \"subject\": \"${SUBJECT}\"
+                  \"subject\": \"Test Execution Report for << parameters.environment >>\"
                 }
               ],
               \"content\": [
                 {
                   \"type\": \"text/plain\",
-                  \"value\": \"${CONTENT}\"
+                  \"value\": \"The test execution report is attached.\"
                 }
               ],
               \"attachments\": [
                 {
-                  \"content\": \"${ATTACHMENT_CONTENT}\",
-                  \"filename\": \"${ATTACHMENT_FILENAME}\",
-                  \"type\": \"${ATTACHMENT_TYPE}\",
-                  \"disposition\": \"${ATTACHMENT_DISPOSITION}\"
+                  \"content\": \"$(base64 -w 0 target/surefire-reports/test-report.zip)\",
+                  \"filename\": \"test-report.zip\",
+                  \"type\": \"application/zip\",
+                  \"disposition\": \"attachment\"
                 }
               ]
             }"
             
+            # Remove extra spaces and newlines from JSON (to minimize length)
+            EMAIL_JSON_PAYLOAD=$(echo "$EMAIL_JSON_PAYLOAD" | tr -d '\n' | tr -d ' ')
+            
             curl -X POST \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               -H "Content-Type: application/json" \
-              -d "${EMAIL_JSON_PAYLOAD}" \
+              -d "$EMAIL_JSON_PAYLOAD" \
               https://api.sendgrid.com/v3/mail/send
             
             # Error Handling (example)
