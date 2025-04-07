@@ -38,6 +38,8 @@ jobs:
           name: Install Dependencies
           command: |
             sudo apt-get update
+            sudo apt-get install -y xvfb unzip binutils jq  # Added jq
+            sudo apt-get update
             sudo apt-get install -y xvfb unzip binutils  # Added binutils
             sudo apt-get update
             sudo apt-get install -y xvfb
@@ -79,18 +81,18 @@ jobs:
             export LANG=en_US.UTF-8
             
             # Debugging (check encoding - install binutils first!)
-            echo "Subject: Test Report for $(echo "<< parameters.environment >>" | hexdump -C)"
+            echo "Subject: Test Report for $(echo \"${CIRCLECI_ENV_PARAMS}\" | jq -r '.environment' | hexdump -C)"
             echo "Body: $(echo 'The test execution report is attached.' | hexdump -C)"
             
             # Create and export the JSON payload
-            export EMAIL_JSON_PAYLOAD=$(cat <<EOF
+            EMAIL_JSON_PAYLOAD=$(cat <<EOF
             {
               "from": "niroshan.desilva@carehires.com",
               "personalizations": [
                 {
                   "to": [
                     {
-                      "email": "'\<< parameters.email >>'"
+                      "email": "$(echo \"${CIRCLECI_ENV_PARAMS}\" | jq -r '.email')"
                     }
                   ],
                   "subject": "Test Execution Report"
@@ -124,6 +126,7 @@ jobs:
             if [ $? -ne 0 ]; then
               echo "Error sending email!"
             fi
+
 workflows:
   version: 2
   test-workflow:
