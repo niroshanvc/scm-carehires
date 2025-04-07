@@ -84,42 +84,48 @@ jobs:
             echo "Subject: Test Report for $(echo \"${CIRCLECI_ENV_PARAMS}\" | jq -r '.environment' | hexdump -C)"
             echo "Body: $(echo 'The test execution report is attached.' | hexdump -C)"
 
-            # Create and export the JSON payload (escaped EOF)
-            EMAIL_JSON_PAYLOAD=$(eval echo \"$(cat <<'EOF'
-            {
-              \"from\": \"niroshan.desilva@carehires.com\",
+            # Construct the JSON payload using shell variables
+            FROM_EMAIL="niroshan.desilva@carehires.com"
+            TO_EMAIL=$(echo "${CIRCLECI_ENV_PARAMS}" | jq -r '.email')
+            SUBJECT="Test Execution Report"
+            CONTENT="The test execution report is attached."
+            ATTACHMENT_CONTENT=$(base64 -w 0 target/surefire-reports/test-report.zip)
+            ATTACHMENT_FILENAME="test-report.zip"
+            ATTACHMENT_TYPE="application/zip"
+            ATTACHMENT_DISPOSITION="attachment"
+
+            EMAIL_JSON_PAYLOAD="{
+              \"from\": \"${FROM_EMAIL}\",
               \"personalizations\": [
                 {
                   \"to\": [
                     {
-                      \"email\": \"$(echo \\\"${CIRCLECI_ENV_PARAMS}\\\" | jq -r '.email')\"
+                      \"email\": \"${TO_EMAIL}\"
                     }
                   ],
-                  \"subject\": \"Test Execution Report\"
+                  \"subject\": \"${SUBJECT}\"
                 }
               ],
               \"content\": [
                 {
                   \"type\": \"text/plain\",
-                  \"value\": \"The test execution report is attached.\"
+                  \"value\": \"${CONTENT}\"
                 }
               ],
               \"attachments\": [
                 {
-                  \"content\": \"$(base64 -w 0 target/surefire-reports/test-report.zip)\",
-                  \"filename\": \"test-report.zip\",
-                  \"type\": \"application/zip\",
-                  \"disposition\": \"attachment\"
+                  \"content\": \"${ATTACHMENT_CONTENT}\",
+                  \"filename\": \"${ATTACHMENT_FILENAME}\",
+                  \"type\": \"${ATTACHMENT_TYPE}\",
+                  \"disposition\": \"${ATTACHMENT_DISPOSITION}\"
                 }
               ]
-            }
-            EOF
-            )\")
+            }"
 
             curl -X POST \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               -H "Content-Type: application/json" \
-              -d "$EMAIL_JSON_PAYLOAD" \
+              -d "${EMAIL_JSON_PAYLOAD}" \
               https://api.sendgrid.com/v3/mail/send
 
             # Error Handling (example)
