@@ -38,6 +38,8 @@ jobs:
           name: Install Dependencies
           command: |
             sudo apt-get update
+            sudo apt-get install -y xvfb unzip binutils  # Added binutils
+            sudo apt-get update
             sudo apt-get install -y xvfb
             sudo apt-get install -y unzip
             wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
@@ -76,52 +78,52 @@ jobs:
             export LC_ALL=en_US.UTF-8
             export LANG=en_US.UTF-8
             
-            # Debugging (check encoding)
+            # Debugging (check encoding - install binutils first!)
             echo "Subject: Test Report for $(echo "<< parameters.environment >>" | hexdump -C)"
             echo "Body: $(echo 'The test execution report is attached.' | hexdump -C)"
+            
+            # Create and export the JSON payload
+            export EMAIL_JSON_PAYLOAD=$(cat <<EOF
+            {
+              "from": "niroshan.desilva@carehires.com",
+              "personalizations": [
+                {
+                  "to": [
+                    {
+                      "email": "'"<< parameters.email >>"'"
+                    }
+                  ],
+                  "subject": "Test Execution Report"
+                }
+              ],
+              "content": [
+                {
+                  "type": "text/plain",
+                  "value": "The test execution report is attached."
+                }
+              ],
+              "attachments": [
+                {
+                  "content": "$(base64 -w 0 target/surefire-reports/test-report.zip)",
+                  "filename": "test-report.zip",
+                  "type": "application/zip",
+                  "disposition": "attachment"
+                }
+              ]
+            }
+            EOF
+            )
             
             curl -X POST \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               -H "Content-Type: application/json" \
-              -d '{
-                "from": "niroshan.desilva@carehires.com",
-                "personalizations": [
-                  {
-                    "to": [
-                      {
-                        "email": "'"<< parameters.email >>"'"
-                      }
-                    ],
-                    "subject": "Test Execution Report"
-                  }
-                ],
-                "content": [
-                  {
-                    "type": "text/plain",
-                    "value": "The test execution report is attached."
-                  }
-                ],
-                "attachments": [
-                  {
-                    "content": "'$(base64 -w 0 target/surefire-reports/test-report.zip)'",
-                    "filename": "test-report.zip",
-                    "type": "application/zip",
-                    "disposition": "attachment"
-                  }
-                ]
-              }' \
+              -d "$EMAIL_JSON_PAYLOAD" \
               https://api.sendgrid.com/v3/mail/send
             
             # Error Handling (example)
             if [ $? -ne 0 ]; then
               echo "Error sending email!"
             fi
-      - run:
-          name: Debug Email Request
-          command: |
-            echo "Sending email to: << parameters.email >>"
-            echo "Attachment: target/surefire-reports/test-report.zip" 
-
 workflows:
   version: 2
   test-workflow:
