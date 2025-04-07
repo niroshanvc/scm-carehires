@@ -61,7 +61,7 @@ jobs:
             for file in *.txt *.xml *.html; do  # Adjust file extensions as needed
               if ! file -i "$file" | grep -q "charset=utf-8"; then
                 echo "Converting $file to UTF-8"
-                iconv -f AUTO -t UTF-8 "$file" -o "$file.utf8" && mv "$file.utf8" "$file"
+                iconv -f ISO-8859-1 -t UTF-8 "$file" -o "$file.utf8" && mv "$file.utf8" "$file"
               fi
             done
             zip -r test-report.zip .   # Zip the reports
@@ -76,9 +76,14 @@ jobs:
               -F "to=<< parameters.email >>" \
               -F "subject=Test Execution Report" \
               -F "text=The test execution report is attached." \
-              -F "files=@target/surefire-reports/test-report.zip" \
+              -F "files=@target/surefire-reports/test-report.zip;type=application/zip" \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               https://api.sendgrid.com/v3/mail/send
+      - run:
+          name: Debug Email Request
+          command: |
+            echo "Sending email to: << parameters.email >>"
+            echo "Attachment: target/surefire-reports/test-report.zip" 
 
 workflows:
   version: 2
