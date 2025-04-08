@@ -38,6 +38,8 @@ jobs:
           name: Install Dependencies
           command: |
             sudo apt-get update
+            sudo apt-get install -y xvfb unzip binutils jq  # Added jq
+            sudo apt-get update
             sudo apt-get install -y xvfb unzip binutils  # Added binutils
             sudo apt-get update
             sudo apt-get install -y xvfb
@@ -73,27 +75,59 @@ jobs:
             zip -r test-report.zip .   # Zip the reports
             cd ../..  # Go back to the repo root
       - run:
-          name: Send Email with Report
+          name: Send Email Without Attachment
           command: |
-            export LC_ALL=en_US.UTF-8
-            export LANG=en_US.UTF-8
-            
-            # Debugging (check encoding - install binutils first!)
-            echo "Subject: Test Report for $(echo "<< parameters.environment >>" | hexdump -C)"
-            echo "Body: $(echo 'The test execution report is attached.' | hexdump -C)"
-            
-            # Create and export the JSON payload
-            export EMAIL_JSON_PAYLOAD=$(cat <<EOF
-            {
-              "from": "niroshan.desilva@carehires.com",
+            echo '{
+              "from": {
+                "email": "niroshan.desilva@carehires.com"
+              },
               "personalizations": [
                 {
                   "to": [
                     {
-                      "email": "'\<< parameters.email >>'"
+                      "email": "<< parameters.email >>"
                     }
                   ],
-                  "subject": "Test Execution Report"
+                  "subject": "Test Execution Report for << parameters.environment >>"
+                }
+              ],
+              "content": [
+                {
+                  "type": "text/plain",
+                  "value": "The test execution report is attached."
+                }
+              ]
+            }' > email_payload.json
+
+            curl -X POST https://api.sendgrid.com/v3/mail/send \
+              -H "Authorization: Bearer $SENDGRID_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d @email_payload.json || echo "Error sending email!"
+      - run:
+          name: Send Email with Attachment
+          command: |
+            export LC_ALL=en_US.UTF-8
+            export LANG=en_US.UTF-8
+            
+            # Encode the attachment
+            base64 -w 0 target/surefire-reports/test-report.zip > encoded_attachment.txt
+            
+            # Read the encoded content into a variable
+            ENCODED_CONTENT=$(cat encoded_attachment.txt)
+            
+            # Create JSON payload using echo instead of here-document
+            echo '{
+              "from": {
+                "email": "niroshan.desilva@carehires.com"
+              },
+              "personalizations": [
+                {
+                  "to": [
+                    {
+                      "email": "<< parameters.email >>"
+                    }
+                  ],
+                  "subject": "Test Execution Report for << parameters.environment >>"
                 }
               ],
               "content": [
@@ -104,26 +138,24 @@ jobs:
               ],
               "attachments": [
                 {
-                  "content": "$(base64 -w 0 target/surefire-reports/test-report.zip)",
+                  "content": "'${ENCODED_CONTENT}'",
                   "filename": "test-report.zip",
                   "type": "application/zip",
                   "disposition": "attachment"
                 }
               ]
-            }
-            EOF
-            )
+            }' > email_payload.json
             
-            curl -X POST \
+            # Debug the JSON payload
+            echo "Generated email payload:"
+            head -c 1000 email_payload.json  # Print the first 1000 characters for debugging
+            
+            # Send the email using SendGrid API
+            curl -X POST https://api.sendgrid.com/v3/mail/send \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               -H "Content-Type: application/json" \
-              -d "$EMAIL_JSON_PAYLOAD" \
-              https://api.sendgrid.com/v3/mail/send
-            
-            # Error Handling (example)
-            if [ $? -ne 0 ]; then
-              echo "Error sending email!"
-            fi
+              -d @email_payload.json || echo "Error sending email!"
+
 workflows:
   version: 2
   test-workflow:
@@ -133,4 +165,3 @@ workflows:
           feature_tag: << pipeline.parameters.feature_tag >>
           environment: << pipeline.parameters.environment >>
           email: << pipeline.parameters.email >>
-    

@@ -102,4 +102,9 @@ public class JobDetailsSteps {
     public void disablingRecurrenceAndBreaks() {
         jobDetailsActions.disablingRecurrenceAndBreaks();
     }
+
+    @And("User enters general job details")
+    public void enterGeneralJobDetails() {
+        jobDetailsActions.enterGeneralJobDetails();
+    }
 }

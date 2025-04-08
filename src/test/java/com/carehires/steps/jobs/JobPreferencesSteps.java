@@ -107,4 +107,14 @@ public class JobPreferencesSteps {
     public void enterSkillsWithBlockBookingButNoNote() {
         jobPreferencesActions.blockBookingWithSkills();
     }
+
+    @When("User enters Job Preferences without reason and internal notes")
+    public void enterPreferencesWithoutReasonAndInternalNotes() {
+        jobPreferencesActions.noReasonNoInternalNotes();
+    }
+
+    @When("User enters Job Preferences with reason and internal notes")
+    public void enterJobPreferencesWithReasonAndInternalNotes() {
+        jobPreferencesActions.withReasonAndInternalNotes();
+    }
 }

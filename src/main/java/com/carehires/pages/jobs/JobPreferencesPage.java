@@ -43,4 +43,10 @@ public class JobPreferencesPage {
     public String getDropdownOptionXpath(String option) {
         return String.format("//nb-option[contains(text(),'%s')]", option);
     }
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='preApprovalReason']/button")
+    public WebElement jobPostingReasonDropdown;
+
+    @FindBy(xpath = "//textarea[@formcontrolname='preApprovalNote']")
+    public WebElement internalNotes;
 }
