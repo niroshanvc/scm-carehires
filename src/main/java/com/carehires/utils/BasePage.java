@@ -317,9 +317,22 @@ public class BasePage {
     }
 
     public static String getAttributeValue(WebElement element, String attribute) {
-        logger.info("******************  attribute value from %s and %s", element, attribute);
+        logger.info("******************  attribute value from element %s and %s", element, attribute);
         waitUntilElementPresent(element, 30);
         return element.getAttribute(attribute);
+    }
+
+    public static String getAttributeValue(String xpath, String attribute) {
+        logger.info("******************  attribute value from xpath %s and attribute %s", xpath, attribute);
+        By by = By.xpath(xpath);
+        WebElement ele;
+        try {
+            ele = getDriver().findElement(by);
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+        waitUntilElementPresent(ele, 30);
+        return ele.getAttribute(attribute);
     }
 
     public static void clickTabKey(WebElement element) {

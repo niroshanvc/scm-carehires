@@ -83,4 +83,16 @@ public class SearchProviderActions {
         BasePage.waitUntilElementPresent(searchPage.firstProviderId, 30);
         BasePage.clickWithJavaScript(searchPage.firstProviderId);
     }
+
+    public void searchByName(String providerName) {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Searching provider name %s >>>>>>>>>>>>>>>>>>>>", providerName);
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementDisplayed(searchPage.searchByText, 30);
+        BasePage.clearAndEnterTexts(searchPage.searchByText, providerName);
+        BasePage.clickOnEnterKey(searchPage.searchByText);
+
+        // Wait until search results are available (e.g. providerIds list is populated)
+        BasePage.waitUntilElementPresent(searchPage.firstProviderId, 30);
+        BasePage.clickWithJavaScript(searchPage.firstProviderId);
+    }
 }

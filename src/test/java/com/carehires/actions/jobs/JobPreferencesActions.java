@@ -28,6 +28,8 @@ public class JobPreferencesActions {
     private static final String YML_FILE_SLEEP_IN_SCENARIO1 = "sleep in scenario - job post";
     private static final String YML_FILE_BLOCK_BOOKING = "job-create-block-booking";
     private static final String YML_HEADER = "Job Preferences";
+    private static final String YML_HEADER1 = "Job Preferences A";
+    private static final String YML_HEADER2 = "Job Preferences B";
     private static final String YML_HEADER_SCENARIO1A = "Job Preferences Scenario1A";
     private static final String YML_HEADER_SCENARIO1B = "Job Preferences Scenario1B";
     private static final String YML_HEADER_SCENARIO1C = "Job Preferences Scenario1C";
@@ -88,7 +90,8 @@ public class JobPreferencesActions {
                 String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
                         "Agency");
                 assert agencyTemplate != null;
-                String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
+                String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(
+                        agencyIncrementValue));
                 agency = agency.replace("\"", "").trim();
 
                 BasePage.waitUntilElementPresent(jobPreferencesPage.agencyDropdown, 60);
@@ -194,7 +197,8 @@ public class JobPreferencesActions {
                                 .filter(skill -> BasePage.getText(skill).trim().toLowerCase().equals(
                                         skillToSelect))
                                 .findFirst()
-                                .orElseThrow(() -> new RuntimeException("Skill not found after retry: " + skillToSelect));
+                                .orElseThrow(() -> new RuntimeException("Skill not found after retry: " +
+                                        skillToSelect));
                         BasePage.clickWithJavaScript(availableSkill);
                         logger.info("Selected after retry: {}", skillText);
                         skillFound = true;
@@ -427,7 +431,8 @@ public class JobPreferencesActions {
                 String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
                         "Agency");
                 assert agencyTemplate != null;
-                String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
+                String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(
+                        agencyIncrementValue));
                 agency = agency.replace("\"", "").trim();
 
                 BasePage.waitUntilElementPresent(jobPreferencesPage.agencyDropdown, 60);
@@ -437,6 +442,50 @@ public class JobPreferencesActions {
                 BasePage.scrollToWebElement(jobPreferencesPage.getDropdownOptionXpath(agency));
                 BasePage.clickWithJavaScript(jobPreferencesPage.getDropdownOptionXpath(agency));
             }
+        }
+    }
+
+    public void noReasonNoInternalNotes() {
+        logger.info("<<<<<<<<<<<<<<< Enter preferences without posting reason and without internal note >>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE, YML_HEADER1);
+        selectPreferences(YML_FILE, YML_HEADER1, false);
+        enableDisableBlockBooking(YML_FILE, YML_HEADER1);
+        enterJobNotes(YML_FILE, YML_HEADER1);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void withReasonAndInternalNotes() {
+        logger.info("<<<<<<<<<<<<<<< Enter preferences with posting reason and with internal note >>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE, YML_HEADER2);
+        selectPreferences(YML_FILE, YML_HEADER2, false);
+        enableDisableBlockBooking(YML_FILE, YML_HEADER2);
+        enterJobNotes(YML_FILE, YML_HEADER1);
+        selectJobPostingReason(YML_FILE, YML_HEADER2);
+        enterInternalNotes(YML_FILE, YML_HEADER2);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    private void selectJobPostingReason(String ymlFile, String header) {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Enter job posting reason >>>>>>>>>>>>>>>>>>>>>>>>>");
+        String reason = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
+                "Job Posting Reason");
+        BasePage.clickWithJavaScript(jobPreferencesPage.jobPostingReasonDropdown);
+        By by = By.xpath(jobPreferencesPage.getDropdownOptionXpath(reason));
+        BasePage.waitUntilVisibilityOfElementLocated(by, 30);
+        BasePage.scrollToWebElement(jobPreferencesPage.getDropdownOptionXpath(reason));
+        BasePage.clickWithJavaScript(jobPreferencesPage.getDropdownOptionXpath(reason));
+    }
+
+    private void enterInternalNotes(String ymlFile, String header) {
+        String internalNotes = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
+                "Internal Notes");
+        BasePage.clearTexts(jobPreferencesPage.internalNotes);
+        for (int i = 0; i< Objects.requireNonNull(internalNotes).length(); i++) {
+            char c = internalNotes.charAt(i);
+            String s = String.valueOf(c);
+            BasePage.sendKeys(jobPreferencesPage.internalNotes, s);
         }
     }
 }
