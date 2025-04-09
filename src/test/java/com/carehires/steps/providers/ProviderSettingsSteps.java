@@ -11,4 +11,9 @@ public class ProviderSettingsSteps {
     public void enableVisibility(String siteName) {
         settings.enableVisibilityAndDisableMandatory(siteName);
     }
+
+    @And("^User enables both visibility and mandatory of (.*)$")
+    public void enableVisibilityAndMandatory(String  siteNName) {
+        settings.enableVisibilityAndMandatory(siteNName);
+    }
 }

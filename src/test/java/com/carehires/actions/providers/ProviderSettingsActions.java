@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.is;
 
 public class ProviderSettingsActions {
 
-    ProviderSettingsPage settingsPage = new ProviderSettingsPage();
+    private final ProviderSettingsPage settingsPage;
 
     private static final Logger logger = LogManager.getLogger(ProviderSettingsActions.class);
 
@@ -29,21 +29,34 @@ public class ProviderSettingsActions {
         BasePage.waitUntilElementClickable(settingsPage.imgSettings, 60);
         BasePage.clickWithJavaScript(settingsPage.imgSettings);
         BasePage.waitUntilPageCompletelyLoaded();
+        doOpenSiteNamePopup();
         doEnableVisibleCheckbox(siteName);
+        doDisableMandatoryCheckbox(siteName);
         BasePage.clickWithJavaScript(settingsPage.siteNamePopupSaveButton);
         verifySuccessMessage();
     }
 
     private void doEnableVisibleCheckbox(String siteName) {
+        String attr = BasePage.getAttributeValue(settingsPage.getSiteNameVisibleCheckboxSpan(siteName),
+                "class");
+        if (!attr.contains("checked")) {
+            BasePage.clickWithJavaScript(settingsPage.getSiteNameVisibleCheckboxXpath(siteName));
+        }
+    }
+
+    private void doOpenSiteNamePopup() {
         BasePage.waitUntilElementPresent(settingsPage.updateButton, 60);
         BasePage.clickWithJavaScript(settingsPage.updateButton);
         BasePage.waitUntilElementClickable(settingsPage.editSettingsButton, 30);
         BasePage.clickWithJavaScript(settingsPage.editSettingsButton);
         BasePage.genericWait(3000);
-        String attr = BasePage.getAttributeValue(settingsPage.getSiteNameVisibleCheckboxSpan(siteName),
+    }
+
+    private void doDisableMandatoryCheckbox(String siteName) {
+        String attr = BasePage.getAttributeValue(settingsPage.getSiteNameMandatoryCheckboxSpan(siteName),
                 "class");
-        if (!attr.contains("checked")) {
-            BasePage.clickWithJavaScript(settingsPage.getSiteNameVisibleCheckboxXpath(siteName));
+        if (attr.contains("checked")) {
+            BasePage.clickWithJavaScript(settingsPage.getSiteNameMandatoryCheckboxXpath(siteName));
         }
     }
 
@@ -62,5 +75,17 @@ public class ProviderSettingsActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Pr-approval was not saved!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(settingsPage.successMessage, 20);
+    }
+
+    public void enableVisibilityAndMandatory(String siteName) {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Enabling Visibility and Mandatory >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(settingsPage.imgSettings, 60);
+        BasePage.clickWithJavaScript(settingsPage.imgSettings);
+        BasePage.waitUntilPageCompletelyLoaded();
+        doOpenSiteNamePopup();
+        doEnableVisibleCheckbox(siteName);
+        doEnableMandatoryCheckbox(siteName);
+        BasePage.clickWithJavaScript(settingsPage.siteNamePopupSaveButton);
+        verifySuccessMessage();
     }
 }
