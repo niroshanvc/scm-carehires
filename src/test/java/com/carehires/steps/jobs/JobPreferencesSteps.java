@@ -117,4 +117,9 @@ public class JobPreferencesSteps {
     public void enterJobPreferencesWithReasonAndInternalNotes() {
         jobPreferencesActions.withReasonAndInternalNotes();
     }
+
+    @When("User enters Job Preferences with both reason and internal notes")
+    public void enterPreferencesWithBothReasonAndInternalNotes() {
+        jobPreferencesActions.withBothReasonAndInternalNotes();
+    }
 }

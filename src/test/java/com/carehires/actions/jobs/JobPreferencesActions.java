@@ -30,7 +30,7 @@ public class JobPreferencesActions {
     private static final String YML_HEADER = "Job Preferences";
     private static final String YML_HEADER1 = "Job Preferences A";
     private static final String YML_HEADER2 = "Job Preferences B";
-    private static final String YML_HEADER_SCENARIO1A = "Job Preferences Scenario1A";
+    private static final String YML_HEADER3 = "Job Preferences C";
     private static final String YML_HEADER_SCENARIO1B = "Job Preferences Scenario1B";
     private static final String YML_HEADER_SCENARIO1C = "Job Preferences Scenario1C";
     private static final String YML_HEADER_SCENARIO1E = "Job Preferences Scenario1E";
@@ -461,7 +461,7 @@ public class JobPreferencesActions {
         selectGender(YML_FILE, YML_HEADER2);
         selectPreferences(YML_FILE, YML_HEADER2, false);
         enableDisableBlockBooking(YML_FILE, YML_HEADER2);
-        enterJobNotes(YML_FILE, YML_HEADER1);
+        enterJobNotes(YML_FILE, YML_HEADER2);
         selectJobPostingReason(YML_FILE, YML_HEADER2);
         enterInternalNotes(YML_FILE, YML_HEADER2);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
@@ -482,10 +482,22 @@ public class JobPreferencesActions {
         String internalNotes = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
                 "Internal Notes");
         BasePage.clearTexts(jobPreferencesPage.internalNotes);
-        for (int i = 0; i< Objects.requireNonNull(internalNotes).length(); i++) {
+        for (int i = 0; i < Objects.requireNonNull(internalNotes).length(); i++) {
             char c = internalNotes.charAt(i);
             String s = String.valueOf(c);
             BasePage.sendKeys(jobPreferencesPage.internalNotes, s);
         }
+    }
+
+    public void withBothReasonAndInternalNotes() {
+        logger.info("<<<<<<<<<<<<<<< Enter preferences with both posting reason and internal note >>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE, YML_HEADER3);
+        selectPreferences(YML_FILE, YML_HEADER3, false);
+        enableDisableBlockBooking(YML_FILE, YML_HEADER3);
+        enterJobNotes(YML_FILE, YML_HEADER3);
+        selectJobPostingReason(YML_FILE, YML_HEADER3);
+        enterInternalNotes(YML_FILE, YML_HEADER3);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
     }
 }
