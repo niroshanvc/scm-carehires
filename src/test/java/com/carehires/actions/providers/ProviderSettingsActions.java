@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.is;
 
 public class ProviderSettingsActions {
 
-    ProviderSettingsPage settingsPage = new ProviderSettingsPage();
+    private final ProviderSettingsPage settingsPage;
 
     private static final Logger logger = LogManager.getLogger(ProviderSettingsActions.class);
 
