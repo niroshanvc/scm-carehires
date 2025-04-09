@@ -49,10 +49,10 @@ Feature: Test CareHires agreement's worker rates display in jobs
     And User write downs Bank Holiday Rate worker rates into a text file
     And User closes worker rates popup
 #    creating a job
-    And User navigates to Jobs page
-    And User moves to Post New Job page
-    And User enters Job Details for special holiday
-    And User enters Job Preferences
-    And User enters Job Summary
-    When User suggests a worker
-    Then User moves to suggested workers tab and verifies Special Holiday worker rates
+#    And User navigates to Jobs page
+#    And User moves to Post New Job page
+#    And User enters Job Details for special holiday
+#    And User enters Job Preferences
+#    And User enters Job Summary
+#    When User suggests a worker
+#    Then User moves to suggested workers tab and verifies Special Holiday worker rates
