@@ -112,4 +112,9 @@ public class JobDetailsSteps {
     public void proceedWithSleepInAndCustomJob() {
         jobDetailsActions.jobTypeSleepInAndCustomJob();
     }
+
+    @And("User selects job type as Sleep In and Custom Job")
+    public void selectJobTypeAsSleepInAndCustomJob() {
+        jobDetailsActions.sleepInAndCustomJob();
+    }
 }
