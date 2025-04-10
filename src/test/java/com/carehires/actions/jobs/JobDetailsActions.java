@@ -33,6 +33,7 @@ public class JobDetailsActions {
     private static final String YML_FILE = "job-create";
     private static final String YML_FILE_SCENARIO1 = "scenario - job post";
     private static final String YML_FILE_SLEEP_IN_SCENARIO1 = "sleep in scenario - job post";
+    private static final String YML_FILE_MANAGE_TIMESHEET = "manage-timesheet";
     private static final String YML_FILE_EDIT = "job-post-edit";
     private static final String YML_FILE_WITH_BREAKS = "job-create-with-breaks";
     private static final String YML_FILE_BLOCK_BOOKING = "job-create-block-booking";
@@ -635,6 +636,16 @@ public class JobDetailsActions {
         BasePage.scrollToWebElement(jobDetailsPage.continueButton);
         enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE, YML_HEADER1, NORMAL_DAY);
         BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void jobTypeSleepInAndCustomJob() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<< Entering Job Details for Sleep In and Custom Job >>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderAndServicePreferences(YML_FILE_MANAGE_TIMESHEET, YML_HEADER);
+        enterSleepInDurationAndRecurrence(YML_FILE_MANAGE_TIMESHEET, YML_HEADER);
+        BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
 }

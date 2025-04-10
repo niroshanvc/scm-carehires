@@ -10,6 +10,7 @@ Feature: Test CareHires create job post
 
   @CreateJobPost
   Scenario: Sleep in job - manage timesheet
-    And User selects job type as Sleep In and proceed with custom job
-    And User enters Job Preferences without Job note and disabling block booking
+    And User selects job type as Sleep In and proceed with Custom Job
+    And User enters Job Preferences for sleep in job
     And User enters Job Summary
+    And User suggests a worker

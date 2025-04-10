@@ -27,6 +27,7 @@ public class JobPreferencesActions {
     private static final String YML_FILE_SCENARIO1 = "scenario - job post";
     private static final String YML_FILE_SLEEP_IN_SCENARIO1 = "sleep in scenario - job post";
     private static final String YML_FILE_BLOCK_BOOKING = "job-create-block-booking";
+    private static final String YML_FILE_MANAGE_TIMESHEET = "manage-timesheet";
     private static final String YML_HEADER = "Job Preferences";
     private static final String YML_HEADER1 = "Job Preferences A";
     private static final String YML_HEADER2 = "Job Preferences B";
@@ -498,6 +499,16 @@ public class JobPreferencesActions {
         enterJobNotes(YML_FILE, YML_HEADER3);
         selectJobPostingReason(YML_FILE, YML_HEADER3);
         enterInternalNotes(YML_FILE, YML_HEADER3);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void enterJobPreferencesForSleepIn() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Enter preferences for sleep in job >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_MANAGE_TIMESHEET, YML_HEADER);
+        selectPreferences(YML_FILE_MANAGE_TIMESHEET, YML_HEADER, false);
+        enableDisableBlockBooking(YML_FILE_MANAGE_TIMESHEET, YML_HEADER);
+        enterJobNotes(YML_FILE_MANAGE_TIMESHEET, YML_HEADER);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
     }
 }
