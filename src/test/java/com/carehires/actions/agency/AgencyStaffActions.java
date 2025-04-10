@@ -62,37 +62,44 @@ public class AgencyStaffActions {
         BasePage.clickWithJavaScript(staffPage.addNewButton);
 
         //select a location
-        String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, LOCATION_YML_HEADER, ADD, BUSINESS_LOCATION);
+        String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, LOCATION_YML_HEADER, ADD,
+                BUSINESS_LOCATION);
         BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(staffPage.locationDropdown);
         BasePage.genericWait(1000);
         BasePage.clickWithJavaScript(staffPage.getDropdownOptionXpath(location));
 
         //select a worker type
-        String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "WorkerType");
+        String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD,
+                "WorkerType");
         BasePage.clickWithJavaScript(staffPage.workerTypeDropdown);
         BasePage.genericWait(1000);
         BasePage.clickWithJavaScript(staffPage.getDropdownOptionXpath(workerType));
 
-        String noOfWorkers = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "NoOfWorkers");
+        String noOfWorkers = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD,
+                "NoOfWorkers");
         BasePage.typeWithStringBuilder(staffPage.numberOfWorkers, noOfWorkers);
 
         //select worker skills
-        String[] workerSkills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, WORKER_SKILLS)).split(",");
+        String[] workerSkills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,
+                YML_HEADER, ADD, WORKER_SKILLS)).split(",");
         BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(staffPage.workerSkills);
         for (String skill : workerSkills) {
             BasePage.clickWithJavaScript(staffPage.getWorkerSkillXpath(skill));
         }
 
-        String monthlyHoursAvailable = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "MonthlyHoursAvailable");
+        String monthlyHoursAvailable = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                ADD, "MonthlyHoursAvailable");
         BasePage.clickWithJavaScript(staffPage.monthlyHoursAvailable);
         BasePage.typeWithStringBuilder(staffPage.monthlyHoursAvailable, monthlyHoursAvailable);
 
-        String minChargeHourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "MinChargeHourlyRate");
+        String minChargeHourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                ADD, "MinChargeHourlyRate");
         BasePage.typeWithStringBuilder(staffPage.minChargeHourlyRate, minChargeHourlyRate);
 
-        String employeeType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "EmployeeType");
+        String employeeType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD,
+                "EmployeeType");
         assert employeeType != null;
         if (employeeType.equalsIgnoreCase("Paye")) {
             BasePage.clickWithJavaScript((staffPage.employeeType.get(0)));
@@ -116,7 +123,8 @@ public class AgencyStaffActions {
     private void isStaffAdded() {
         BasePage.waitUntilElementPresent(staffPage.locationName, 60);
         String actual = BasePage.getText(staffPage.locationName);
-        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, LOCATION_YML_HEADER, ADD, BUSINESS_LOCATION);
+        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, LOCATION_YML_HEADER, ADD,
+                BUSINESS_LOCATION);
         assertThat("Staff is not added", actual, is(expected));
     }
 
@@ -125,7 +133,8 @@ public class AgencyStaffActions {
         String actualInLowerCase = BasePage.getText(staffPage.successMessage).toLowerCase().trim();
         String expected = "Record created successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
-        assertThat("Staff information saved success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        assertThat("Staff information saved success message is wrong!", actualInLowerCase, is(
+                expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(staffPage.successMessage, 20);
     }
 
@@ -139,7 +148,8 @@ public class AgencyStaffActions {
         BasePage.clickWithJavaScript(staffPage.addNewButton);
         enterStaffData(ADD);
         //select worker skills
-        String[] workerSkills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, WORKER_SKILLS)).split(",");
+        String[] workerSkills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY,
+                EDIT_YML_FILE, YML_HEADER, ADD, WORKER_SKILLS)).split(",");
         BasePage.clickWithJavaScript(staffPage.workerSkills);
         BasePage.genericWait(1000);
         for (String skill : workerSkills) {
@@ -180,33 +190,40 @@ public class AgencyStaffActions {
         String actualInLowerCase = BasePage.getText(staffPage.successMessage).toLowerCase().trim();
         String expected = "Record updated successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
-        assertThat("Staff information update success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        assertThat("Staff information update success message is wrong!", actualInLowerCase, is(
+                expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(staffPage.successMessage, 20);
     }
 
     private void enterStaffData(String headers) {
         //select a location
         BasePage.waitUntilElementDisplayed(staffPage.locationDropdown, 30);
-        String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, LOCATION_YML_HEADER, UPDATE, BUSINESS_LOCATION);
+        String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, LOCATION_YML_HEADER,
+                UPDATE, BUSINESS_LOCATION);
         BasePage.clickWithJavaScript(staffPage.locationDropdown);
         BasePage.clickWithJavaScript(staffPage.getDropdownOptionXpath(location));
 
         //select a worker type
-        String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers, "WorkerType");
+        String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
+                headers, "WorkerType");
         BasePage.clickWithJavaScript(staffPage.workerTypeDropdown);
         BasePage.clickWithJavaScript(staffPage.getDropdownOptionXpath(workerType));
 
-        String noOfWorkers = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers, "NoOfWorkers");
+        String noOfWorkers = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
+                headers, "NoOfWorkers");
         BasePage.clearAndEnterTexts(staffPage.numberOfWorkers, noOfWorkers);
 
-        String monthlyHoursAvailable = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers, "MonthlyHoursAvailable");
+        String monthlyHoursAvailable = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE,
+                YML_HEADER, headers, "MonthlyHoursAvailable");
         BasePage.clickWithJavaScript(staffPage.monthlyHoursAvailable);
         BasePage.clearAndEnterTexts(staffPage.monthlyHoursAvailable, monthlyHoursAvailable);
 
-        String minChargeHourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers, "MinChargeHourlyRate");
+        String minChargeHourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE,
+                YML_HEADER, headers, "MinChargeHourlyRate");
         BasePage.clearAndEnterTexts(staffPage.minChargeHourlyRate, minChargeHourlyRate);
 
-        String employeeType = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers, "EmployeeType");
+        String employeeType = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
+                headers, "EmployeeType");
         assert employeeType != null;
         if (employeeType.equalsIgnoreCase("Paye")) {
             BasePage.clickWithJavaScript((staffPage.employeeType.get(0)));
@@ -218,7 +235,8 @@ public class AgencyStaffActions {
     private void updateWorkerSkills() {
         // Read skills from the YAML file and convert them to a Set for easy comparison
         Set<String> desiredSkills = new HashSet<>(Arrays.asList(
-                DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, WORKER_SKILLS).split(",")
+                DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, WORKER_SKILLS).
+                        split(",")
         ));
         // Click to open the worker skills dropdown
         BasePage.clickWithJavaScript(staffPage.workerSkills);

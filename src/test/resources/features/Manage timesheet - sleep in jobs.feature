@@ -14,3 +14,6 @@ Feature: Test CareHires create job post
     And User enters Job Preferences for sleep in job
     And User enters Job Summary
     And User suggests a worker
+    And User selects suggested worker
+    And User enters timesheets data
+

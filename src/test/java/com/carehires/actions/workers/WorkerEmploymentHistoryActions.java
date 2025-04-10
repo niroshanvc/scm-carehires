@@ -104,6 +104,7 @@ public class WorkerEmploymentHistoryActions {
         verifySuccessMessage();
 
         // add dataset2 - Reference section
+        BasePage.clickWithJavaScript(employmentHistoryPage.referenceAddNewButton);
         enterReferenceInfo(YML_FILE, YML_SUB_HEADER_DATASET2);
 
         // click on the Add button
