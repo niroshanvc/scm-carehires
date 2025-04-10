@@ -41,11 +41,13 @@ public class JobsListViewActions {
     private static final String ENTITY = "job";
     private static final String YML_FILE = "job-view";
     private static final String YML_FILE_CREATE = "job-create";
+    private static final String YML_FILE_MANAGE_TIMESHEET = "manage-timesheet";
     private static final String YML_FILE_CREATE_BREAKS = "job-create-with-breaks";
     private static final String YML_HEADER_JOB_PREFERENCES = "Job Preferences";
     private static final String YML_HEADER_JOB_DETAILS = "Job Details";
     private static final String YML_HEADER_JOB_CANCEL = "Cancel Job";
     private static final String YML_HEADER_JOB_DURATION = "Job Duration and Recurrence";
+    private static final String YML_HEADER_NORMAL_DAY = "Normal Day";
     private static final String YML_HEADER_SUBMIT_TIMESHEET = "Submit Timesheet";
     private static final String YML_SUB_HEADER_CARE_PROVIDER = "Care Provider / Site and Service Preferences";
     private static final String YML_HEADER_SUGGESTED_WORKER = "Suggested Worker";
@@ -535,22 +537,22 @@ public class JobsListViewActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Filling timesheet for the selected job >>>>>>>>>>>>>>>>>>>>");
         clickOnTimesheetsButton();
         clickOnSubmitTimesheetButton();
-        enterDataOnEditTimesheet();
+        enterDataOnEditTimesheet(YML_FILE);
     }
 
-    private void enterDataOnEditTimesheet() {
-        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SUBMIT_TIMESHEET,
+    private void enterDataOnEditTimesheet(String ymlFile) {
+        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SUBMIT_TIMESHEET,
                 "Proof Document");
         String docPath = TEST_RESOURCE_FOLDER + File.separator + "Upload" + File.separator + "Job" + File.separator +
                 "Timesheet"+ File.separator + doc;
         BasePage.uploadFile(listViewPage.proofDocument, docPath);
 
-        String startDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE_BREAKS,
-                YML_HEADER_JOB_DETAILS, YML_HEADER_JOB_DURATION, "Start Date");
+        String startDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
+                YML_HEADER_JOB_DETAILS, YML_HEADER_JOB_DURATION, YML_HEADER_NORMAL_DAY, "Start Date");
         BasePage.clickWithJavaScript(listViewPage.startDateInput);
         genericUtils.selectDateFromCalendarPopup(startDate);
 
-        selectTime("Start Time", listViewPage.startTimeInput, listViewPage.startTimeAreaList, listViewPage.
+        selectTime(ymlFile, "Start Time", listViewPage.startTimeInput, listViewPage.startTimeAreaList, listViewPage.
                 availableStartTimes, listViewPage.startTimeSelectionOkButton);
 
         String endDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,
@@ -558,18 +560,18 @@ public class JobsListViewActions {
         BasePage.clickWithJavaScript(listViewPage.endDateInput);
         genericUtils.selectDateFromCalendarPopup(endDate);
 
-        selectTime("Ends Time", listViewPage.endTimeInput, listViewPage.endTimeAreaList, listViewPage.
+        selectTime(ymlFile, "Ends Time", listViewPage.endTimeInput, listViewPage.endTimeAreaList, listViewPage.
                 availableEndTimes, listViewPage.endTimeSelectionOkButton);
 
         String reason = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER_SUBMIT_TIMESHEET,
                 "Reason to Amend Timesheet");
         BasePage.typeWithStringBuilder(listViewPage.reasonToAmendTimesheetTextarea, reason);
 
-        selectTime("Paid Breaks Duration", listViewPage.paidBreakDurationInput, listViewPage.
+        selectTime(ymlFile, "Paid Breaks Duration", listViewPage.paidBreakDurationInput, listViewPage.
                 paidBreakDurationAreaList, listViewPage.availablePaidBreakDuration,
                 listViewPage.paidBreakDurationSelectionOkButton);
 
-        selectTime("Unpaid Breaks Duration", listViewPage.unpaidBreakDurationInput, listViewPage.
+        selectTime(ymlFile, "Unpaid Breaks Duration", listViewPage.unpaidBreakDurationInput, listViewPage.
                         unpaidBreakDurationAreaList, listViewPage.availableUnpaidBreakDuration,
                 listViewPage.unpaidBreakDurationSelectionOkButton);
 
@@ -605,9 +607,9 @@ public class JobsListViewActions {
      * @param availableTimes  available time in the list
      * @param okButton    Ok button web element
      */
-    private void selectTime(String timeKey, WebElement timeField, WebElement timeAreaList,
+    private void selectTime(String ymlFile, String timeKey, WebElement timeField, WebElement timeAreaList,
                             List<WebElement> availableTimes, WebElement okButton) {
-        String timeValue = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE_BREAKS,
+        String timeValue = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
                 YML_HEADER_JOB_DETAILS, YML_HEADER_JOB_DURATION, timeKey);
         BasePage.clickWithJavaScript(timeField);
         BasePage.waitUntilElementPresent(timeAreaList, 60);
@@ -883,5 +885,20 @@ public class JobsListViewActions {
         String actualText = BasePage.getText(listViewPage.notAllocated);
         String expected = "NOT ALLOCATED";
         assertThat("Not allocated text is not present!", actualText, is(expected));
+    }
+
+    public void selectingSuggestedWorkerOnJobDetailsPopup() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Selecting suggested worker >>>>>>>>>>>>>>>>>>>>");
+        gotoSuggestedWorkersTabOnJobDetailPopup();
+        workersFilterByAgencyOnJobDetailsPopup();
+        clickOnSelectButtonOnSuggestedTabJobDetailsPopup();
+        verifyWorkerSelectSuccessMessage();
+    }
+
+    public void enterTimesheet() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Filling timesheet for the sleep in job >>>>>>>>>>>>>>>>>>>>");
+        clickOnTimesheetsButton();
+        clickOnSubmitTimesheetButton();
+        enterDataOnEditTimesheet(YML_FILE_MANAGE_TIMESHEET);
     }
 }

@@ -24,3 +24,15 @@ Ch Admin Note: Here is the sample text for admin note.
 Manage Allocation:
   Select Worker:
     Note: Here is the note for the selected worker.
+Job Details:
+  Job Duration and Recurrence:
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "07:00"
+      End Time: "17:00"
+      Ends On: "today + 3"
+      Breaks/ Intervals: "Yes"
+      Paid Breaks Duration: "02:00"
+      Unpaid Breaks Duration: "03:00"
+      Paid Breaks Note: "General note added for the paid breaks."
+      Unpaid Breaks Note: "Unpaid breaks note added."

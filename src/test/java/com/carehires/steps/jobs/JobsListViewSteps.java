@@ -103,4 +103,14 @@ public class JobsListViewSteps {
     public void verifyAvailabilityOfNotAllocatedText() {
         jobsListViewActions.checkAvailabilityOfNotAllocatedText();
     }
+
+    @And("User selects suggested worker")
+    public void selectSuggestedWorker() {
+        jobsListViewActions.selectingSuggestedWorkerOnJobDetailsPopup();
+    }
+
+    @And("User enters timesheets data")
+    public void enterTimesheetsData() {
+        jobsListViewActions.enterTimesheet();
+    }
 }
