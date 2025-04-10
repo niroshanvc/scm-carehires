@@ -8,9 +8,10 @@ Job Details Scenario1A:
     Number of Vacancies: 1
 
   Sleep In duration and Recurrence:
-    Start Date: "today - 1"
-    Start Time: "07:00"
-    End Time: "17:00"
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "07:00"
+      End Time: "17:00"
 
 Job Preferences:
   Gender: Male
@@ -27,9 +28,10 @@ Job Details Scenario1B:
     Number of Vacancies: 3
 
   Sleep In duration and Recurrence:
-    Start Date: "today - 1"
-    Start Time: "07:00"
-    End Time: "17:00"
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "07:00"
+      End Time: "17:00"
 
 Job Preferences Scenario1B:
   Gender: Male
@@ -47,9 +49,10 @@ Job Details Scenario1C:
     Number of Vacancies: 1
 
   Sleep In duration and Recurrence:
-    Start Date: "today - 1"
-    Start Time: "07:00"
-    End Time: "17:00"
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "07:00"
+      End Time: "17:00"
 
 Job Preferences Scenario1C:
   Gender: Male
@@ -68,9 +71,10 @@ Job Details Scenario1D:
     Number of Vacancies: 1
 
   Sleep In duration and Recurrence:
-    Start Date: "today - 1"
-    Start Time: "07:00"
-    End Time: "17:00"
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "07:00"
+      End Time: "17:00"
 
 Job Preferences Scenario1E:
   Gender: Male
@@ -89,9 +93,10 @@ Job Details Scenario1F:
     Number of Vacancies: 1
 
   Sleep In duration and Recurrence:
-    Start Date: "today - 1"
-    Start Time: "07:00"
-    End Time: "17:00"
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "07:00"
+      End Time: "17:00"
 
 Job Preferences Scenario1F:
   Gender: Male
@@ -107,9 +112,10 @@ Job Details Scenario1G:
     Number of Vacancies: 3
 
   Sleep In duration and Recurrence:
-    Start Date: "today - 1"
-    Start Time: "07:00"
-    End Time: "17:00"
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "07:00"
+      End Time: "17:00"
 
 Job Preferences Scenario1G:
   Gender: Male

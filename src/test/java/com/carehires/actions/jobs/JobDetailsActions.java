@@ -240,7 +240,7 @@ public class JobDetailsActions {
      */
     private void selectDateOnCalendarForSleepIn(String ymlFile, String header) {
         String startDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
-                YML_HEADER_SLEEP_IN, "Start Date");
+                YML_HEADER_SLEEP_IN, NORMAL_DAY, "Start Date");
         BasePage.clickWithJavaScript(jobDetailsPage.startDate);
         genericUtils.selectDateFromCalendarPopup(startDate);
     }
@@ -537,7 +537,7 @@ public class JobDetailsActions {
     private void selectTimeForSleepIn(String ymlFile, String header, String timeKey, WebElement timeField, WebElement
                                               timeAreaList, List<WebElement> availableTimes, WebElement okButton) {
         String timeValue = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, YML_HEADER_SLEEP_IN,
-                timeKey);
+                NORMAL_DAY, timeKey);
         BasePage.clickWithJavaScript(timeField);
         BasePage.waitUntilElementPresent(timeAreaList, 60);
         BasePage.waitUntil(() -> !availableTimes.isEmpty(), 60);
@@ -640,11 +640,21 @@ public class JobDetailsActions {
     }
 
     public void jobTypeSleepInAndCustomJob() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<< Entering Job Details for Sleep In and Custom Job >>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<< Entering Job Details for Sleep In - Manage Timesheet - Approve >>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         closePendingActionPopup();
         enterCareProviderAndServicePreferences(YML_FILE_MANAGE_TIMESHEET, YML_HEADER);
         enterSleepInDurationAndRecurrence(YML_FILE_MANAGE_TIMESHEET, YML_HEADER);
+        BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void sleepInAndCustomJob() {
+        logger.info("<<<<<<<<<<<<<<<<< Entering Job Details for Sleep In - Manage Timesheet - Dispute >>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderAndServicePreferences(YML_FILE_MANAGE_TIMESHEET, YML_HEADER1);
+        enterSleepInDurationAndRecurrence(YML_FILE_MANAGE_TIMESHEET, YML_HEADER1);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }

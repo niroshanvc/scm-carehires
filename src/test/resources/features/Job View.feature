@@ -22,7 +22,7 @@ Feature: Test CareHires view job
     And User selects rejected worker
     And User rejects selected worker
     And User selects rejected worker
-    And User fills out the timesheets
+    When User fills out the timesheets
     Then User Approves the timesheet
 
   @CancelJobFromJobDetail

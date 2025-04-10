@@ -113,4 +113,19 @@ public class JobsListViewSteps {
     public void enterTimesheetsData() {
         jobsListViewActions.enterTimesheet();
     }
+
+    @And("User suggests a worker for sleep in job")
+    public void suggestingWorker() {
+        jobsListViewActions.suggestWorkerOnJobDetailsPopup();
+    }
+
+    @Then("^User (.*) the timesheet entered$")
+    public void approveDisputeTimesheet(String action) {
+        jobsListViewActions.approvingOrDisputingTimesheet(action);
+    }
+
+    @When("User enters timesheets data for dispute")
+    public void enterTimesheetsDataForDispute() {
+        jobsListViewActions.enterTimesheetForDispute();
+    }
 }
