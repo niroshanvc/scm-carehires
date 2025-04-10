@@ -122,4 +122,9 @@ public class JobPreferencesSteps {
     public void enterPreferencesWithBothReasonAndInternalNotes() {
         jobPreferencesActions.withBothReasonAndInternalNotes();
     }
+
+    @And("User enters Job Preferences for sleep in job")
+    public void enterJobPreferencesForSleepInJob() {
+        jobPreferencesActions.enterJobPreferencesForSleepIn();
+    }
 }
