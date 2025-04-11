@@ -124,8 +124,33 @@ public class JobsListViewSteps {
         jobsListViewActions.approvingOrDisputingTimesheet(action);
     }
 
-    @When("User enters timesheets data for dispute")
-    public void enterTimesheetsDataForDispute() {
-        jobsListViewActions.enterTimesheetForDispute();
+    @And("User enters timesheets data for resubmit")
+    public void enterTimesheetsDataForResubmit() {
+        jobsListViewActions.enterTimesheetForResubmit();
+    }
+
+    @When("User proceeds with submit timesheet again")
+    public void proceedWithSubmitTimesheetAgain() {
+        jobsListViewActions.completeResubmission();
+    }
+
+    @And("User suggests a worker for general job")
+    public void suggestWorkerForGeneralJob() {
+        jobsListViewActions.suggestWorkerOnJobDetailsPopup();
+    }
+
+    @When("User enters timesheets data for general job")
+    public void enterTimesheetsForGeneralJob() {
+        jobsListViewActions.enterTimesheetForGeneralJob();
+    }
+
+    @And("User completes timesheets entry for general job")
+    public void completeTimesheetsEntryForGeneralJob() {
+        jobsListViewActions.completeTimesheetEntry();
+    }
+
+    @When("User proceeds with submit timesheet for general job")
+    public void submitTimesheetForGeneralJob() {
+        jobsListViewActions.submitTimesheet();
     }
 }

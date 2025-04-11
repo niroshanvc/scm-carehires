@@ -39,6 +39,8 @@ public class JobDetailsActions {
     private static final String YML_FILE_BLOCK_BOOKING = "job-create-block-booking";
     private static final String YML_HEADER = "Job Details";
     private static final String YML_HEADER1 = "Job Details A";
+    private static final String YML_HEADER2 = "Job Details B";
+    private static final String YML_HEADER3 = "Job Details C";
     private static final String YML_HEADER_SCENARIO1A = "Job Details Scenario1A";
     private static final String YML_HEADER_SCENARIO1B = "Job Details Scenario1B";
     private static final String YML_HEADER_SCENARIO1C = "Job Details Scenario1C";
@@ -656,6 +658,40 @@ public class JobDetailsActions {
         enterCareProviderAndServicePreferences(YML_FILE_MANAGE_TIMESHEET, YML_HEADER1);
         enterSleepInDurationAndRecurrence(YML_FILE_MANAGE_TIMESHEET, YML_HEADER1);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void enterJobDetailsForReSubmit() {
+        logger.info("<<<<<<<<<<<<<<<<< Entering Job Details for Sleep In - Manage Timesheet - ReSubmit >>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderAndServicePreferences(YML_FILE_MANAGE_TIMESHEET, YML_HEADER1);
+        enterSleepInDurationAndRecurrence(YML_FILE_MANAGE_TIMESHEET, YML_HEADER1);
+        BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void generalJobAndCustomJob() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Entering Job Details for General Job >>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderAndServicePreferences(YML_FILE_MANAGE_TIMESHEET, YML_HEADER2);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_MANAGE_TIMESHEET, YML_HEADER2, NORMAL_DAY);
+
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void enterJobDetailsForManageTimesheet() {
+        logger.info("<<<<<<<<<<<<<<<<<<< Entering Job Details for General Job - Manage Timesheet >>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderAndServicePreferences(YML_FILE_MANAGE_TIMESHEET, YML_HEADER3);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_MANAGE_TIMESHEET, YML_HEADER3, NORMAL_DAY);
+
+        BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
 }

@@ -299,4 +299,10 @@ public class JobsListViewPage {
 
     @FindBy(xpath = "//span[starts-with(@class, 'jobType') and contains(@class, 'open ')]/..//p")
     public WebElement notAllocated;
+
+    @FindBy(xpath = "//div[@class='proof-preview']")
+    public WebElement proofDocumentArea;
+
+    @FindBy(xpath = "//div[@class='proof-preview']//button[@status='danger']")
+    public WebElement removeAttachmentButton;
 }

@@ -8,7 +8,7 @@ import io.cucumber.testng.CucumberOptions;
         glue = {"com.carehires.steps", "com.carehires.hooks"},
         plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"},
         monochrome = true,
-        tags = "@DisputeSleepIn" // Default constant value
+        tags = "@ResubmitGeneral" // Default constant value
         //        tags = "CreateAgency, EditAgency
 //        or CreateProvider, CreateProviderWithCustomBilling, EditProvider
 //        or CreateWorker, EditWorker"

@@ -8,9 +8,9 @@ Job Details:
     Number of Vacancies: 1
   Sleep In duration and Recurrence:
     Normal Day:
-      Start Date: "today - 7"
+      Start Date: "today - 12"
       Start Time: "07:00"
-      End Time: "17:00"
+      End Time: "12:00"
 Job Preferences:
   Gender: Male
   Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
@@ -18,10 +18,11 @@ Job Preferences:
   Agency: Automation Agency 792684
   Job Notes: "Sleep in - Sample Job Post Note added."
 Submit Timesheet:
-  Start Date: "today - 7"
-  Ends On: "today - 7"
+  Start Date: "today - 12"
+  Ends On: "today - 12"
   Proof Document: proof of document.pdf
   Reason to Amend Timesheet: Here is the reason to amend the timesheet.
+
 
 Job Details A:
   Job Type: Sleep In
@@ -33,13 +34,85 @@ Job Details A:
     Number of Vacancies: 1
   Sleep In duration and Recurrence:
     Normal Day:
-      Start Date: "today - 4"
-      Start Time: "07:00"
+      Start Date: "today - 10"
+      Start Time: "13:00"
       End Time: "17:00"
 Submit Timesheet A:
-  Start Date: "today - 4"
-  Ends On: "today - 4"
+  Start Date: "today - 10"
+  Ends On: "today - 10"
   Proof Document: proof of document.pdf
-  Reason to Amend Timesheet: Here is the reason to amend the timesheet.
-Dispute Timesheet:
+  Reason to Amend Timesheet: Here is the reason to enter timesheet.
+Dispute Timesheet A:
   Reason to Dispute: Here is the note to dispute the timesheet.
+Resubmit Timesheet A:
+  Start Date: "today - 10"
+  Ends On: "today - 10"
+  Proof Document: resubmission timesheet doc.pdf
+  Reason to Amend Timesheet: Here is the reason to amend the timesheet.
+
+
+Job Details B:
+  Job Type: General Job
+  Care Provider / Site and Service Preferences:
+    Care Provider: Automation Provider 148428
+    Site: BioRevolution Care 148428
+    Using: Post Custom Job
+    Worker Type: Rehabilitation Worker
+    Number of Vacancies: 1
+  Job Duration and Recurrence:
+    Normal Day:
+      Start Date: "today - 16"
+      Start Time: "18:00"
+      End Time: "22:00"
+      Enable Recurrence: "No"
+      Repeat Type: Daily
+      Ends On: "today - 16"
+      Breaks/ Intervals: "No"
+      Paid Breaks Duration: "02:00"
+      Unpaid Breaks Duration: "03:00"
+      Paid Breaks Note: "General note added for the paid breaks."
+      Unpaid Breaks Note: "Unpaid breaks note added."
+Job Preferences B:
+  Gender: Male
+  Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+  Enable Block Booking: "No"
+  Agency: Automation Agency 792684
+  Job Notes: "General - Sample Job Post Note added."
+Submit Timesheet B:
+  Start Date: "today - 16"
+  Ends On: "today - 16"
+  Proof Document: proof of document.pdf
+  Reason to Amend Timesheet: Here is the reason to entering a timesheet.
+
+
+Job Details C:
+  Job Type: General Job
+  Care Provider / Site and Service Preferences:
+    Care Provider: Automation Provider 148428
+    Site: BioRevolution Care 148428
+    Using: Post Custom Job
+    Worker Type: Rehabilitation Worker
+    Number of Vacancies: 1
+  Job Duration and Recurrence:
+    Normal Day:
+      Start Date: "today - 20"
+      Start Time: "02:00"
+      End Time: "06:00"
+      Enable Recurrence: "No"
+      Repeat Type: Daily
+      Ends On: "today - 20"
+      Breaks/ Intervals: "No"
+      Paid Breaks Duration: "02:00"
+      Unpaid Breaks Duration: "03:00"
+      Paid Breaks Note: "General note added for the paid breaks."
+      Unpaid Breaks Note: "Unpaid breaks note added."
+Submit Timesheet C:
+  Start Date: "today - 20"
+  Ends On: "today - 20"
+  Proof Document: proof of document.pdf
+  Reason to Amend Timesheet: Here is the reason to entering a timesheet.
+Resubmit Timesheet C:
+  Start Date: "today - 20"
+  Ends On: "today - 20"
+  Proof Document: resubmission timesheet doc.pdf
+  Reason to Amend Timesheet: Here is the reason to amend the timesheet.

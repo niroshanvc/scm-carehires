@@ -127,4 +127,9 @@ public class JobPreferencesSteps {
     public void enterJobPreferencesForSleepInJob() {
         jobPreferencesActions.enterJobPreferencesForSleepIn();
     }
+
+    @And("User enters Job Preferences for general job")
+    public void generalJobPreferences() {
+        jobPreferencesActions.generalJobPreferences();
+    }
 }
