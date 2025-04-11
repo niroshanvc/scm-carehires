@@ -18,7 +18,7 @@ Feature: Test CareHires manage timesheet - general jobs
     When User enters timesheets data for general job
     Then User Approves the timesheet entered
 
-  @ResubmitGene
+  @ResubmitGeneral
   Scenario: General job - resubmit timesheet
     And User enters job type as General and Custom Job
     And User enters Job Preferences for general job
@@ -27,5 +27,5 @@ Feature: Test CareHires manage timesheet - general jobs
     And User selects suggested worker
     And User completes timesheets entry for general job
     And User Disputes the timesheet entered
-#    When User proceeds with submit timesheet again
-#    Then User Approves the timesheet entered
+    When User proceeds with submit timesheet for general job
+    Then User Approves the timesheet entered

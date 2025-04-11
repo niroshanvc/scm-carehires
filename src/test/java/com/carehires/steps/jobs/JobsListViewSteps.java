@@ -148,4 +148,9 @@ public class JobsListViewSteps {
     public void completeTimesheetsEntryForGeneralJob() {
         jobsListViewActions.completeTimesheetEntry();
     }
+
+    @When("User proceeds with submit timesheet for general job")
+    public void submitTimesheetForGeneralJob() {
+        jobsListViewActions.submitTimesheet();
+    }
 }

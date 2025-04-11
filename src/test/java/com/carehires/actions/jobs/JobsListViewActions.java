@@ -54,6 +54,7 @@ public class JobsListViewActions {
     private static final String YML_HEADER_SUBMIT_TIMESHEET2 = "Submit Timesheet B";
     private static final String YML_HEADER_SUBMIT_TIMESHEET3 = "Submit Timesheet C";
     private static final String YML_HEADER_RESUBMIT_TIMESHEET1 = "Resubmit Timesheet A";
+    private static final String YML_HEADER_RESUBMIT_TIMESHEET3 = "Resubmit Timesheet C";
     private static final String YML_SUB_HEADER_CARE_PROVIDER = "Care Provider / Site and Service Preferences";
     private static final String YML_HEADER_SUGGESTED_WORKER = "Suggested Worker";
     private static final String YML_HEADER_SELECTED_WORKER = "Selected Worker";
@@ -992,7 +993,7 @@ public class JobsListViewActions {
         BasePage.clickWithJavaScript(listViewPage.startDateInput);
         genericUtils.selectDateFromCalendarPopup(startDate);
 
-        selectTime(YML_FILE_MANAGE_TIMESHEET, YML_HEADER_JOB_DETAILS, YML_HEADER_SLEEP_IN_DURATION,
+        selectTime(YML_FILE_MANAGE_TIMESHEET, header, YML_HEADER_SLEEP_IN_DURATION,
                 YML_HEADER_NORMAL_DAY,"Start Time", listViewPage.startTimeInput, listViewPage.startTimeAreaList
                 , listViewPage. availableStartTimes, listViewPage.startTimeSelectionOkButton);
 
@@ -1001,7 +1002,7 @@ public class JobsListViewActions {
         BasePage.clickWithJavaScript(listViewPage.endDateInput);
         genericUtils.selectDateFromCalendarPopup(endDate);
 
-        selectTime(YML_FILE_MANAGE_TIMESHEET, YML_HEADER_JOB_DETAILS, YML_HEADER_SLEEP_IN_DURATION,
+        selectTime(YML_FILE_MANAGE_TIMESHEET, header, YML_HEADER_SLEEP_IN_DURATION,
                 YML_HEADER_NORMAL_DAY, "End Time", listViewPage.endTimeInput, listViewPage.endTimeAreaList,
                 listViewPage.availableEndTimes, listViewPage.endTimeSelectionOkButton);
 
@@ -1033,5 +1034,11 @@ public class JobsListViewActions {
         clickOnTimesheetsButton();
         clickOnSubmitTimesheetButton();
         enterTimesheetWithoutBreak(YML_HEADER_SUBMIT_TIMESHEET3);
+    }
+
+    public void submitTimesheet() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<< Filling timesheet for the general job - Resubmission >>>>>>>>>>>>>>>>>>");
+        clickOnSubmitTimesheetButton();
+        resubmitTimesheet(YML_HEADER_RESUBMIT_TIMESHEET3);
     }
 }
