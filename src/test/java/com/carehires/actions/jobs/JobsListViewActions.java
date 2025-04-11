@@ -51,6 +51,7 @@ public class JobsListViewActions {
     private static final String YML_HEADER_NORMAL_DAY = "Normal Day";
     private static final String YML_HEADER_SUBMIT_TIMESHEET = "Submit Timesheet";
     private static final String YML_HEADER_SUBMIT_TIMESHEET1 = "Submit Timesheet A";
+    private static final String YML_HEADER_SUBMIT_TIMESHEET2 = "Submit Timesheet B";
     private static final String YML_HEADER_RESUBMIT_TIMESHEET1 = "Resubmit Timesheet A";
     private static final String YML_SUB_HEADER_CARE_PROVIDER = "Care Provider / Site and Service Preferences";
     private static final String YML_HEADER_SUGGESTED_WORKER = "Suggested Worker";
@@ -1017,5 +1018,12 @@ public class JobsListViewActions {
         BasePage.mouseHoverOverElement(listViewPage.proofDocumentArea);
         BasePage.waitUntilElementClickable(listViewPage.removeAttachmentButton, 30);
         BasePage.clickWithJavaScript(listViewPage.removeAttachmentButton);
+    }
+
+    public void enterTimesheetForGeneralJob() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Filling timesheet for general job >>>>>>>>>>>>>>>>>>>>");
+        clickOnTimesheetsButton();
+        clickOnSubmitTimesheetButton();
+        enterTimesheetWithoutBreak(YML_HEADER_SUBMIT_TIMESHEET2);
     }
 }

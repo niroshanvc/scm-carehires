@@ -511,4 +511,14 @@ public class JobPreferencesActions {
         enterJobNotes(YML_FILE_MANAGE_TIMESHEET, YML_HEADER);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
     }
+
+    public void generalJobPreferences() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Preferences - General Job >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_MANAGE_TIMESHEET, YML_HEADER2);
+        selectPreferences(YML_FILE_MANAGE_TIMESHEET, YML_HEADER2, false);
+        enableDisableBlockBooking(YML_FILE_MANAGE_TIMESHEET, YML_HEADER2);
+        enterJobNotes(YML_FILE_MANAGE_TIMESHEET, YML_HEADER2);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
 }

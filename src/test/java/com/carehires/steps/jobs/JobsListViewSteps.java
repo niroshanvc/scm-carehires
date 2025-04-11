@@ -133,4 +133,14 @@ public class JobsListViewSteps {
     public void proceedWithSubmitTimesheetAgain() {
         jobsListViewActions.completeResubmission();
     }
+
+    @And("User suggests a worker for general job")
+    public void suggestWorkerForGeneralJob() {
+        jobsListViewActions.suggestWorkerOnJobDetailsPopup();
+    }
+
+    @When("User enters timesheets data for general job")
+    public void enterTimesheetsForGeneralJob() {
+        jobsListViewActions.enterTimesheetForGeneralJob();
+    }
 }

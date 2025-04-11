@@ -117,4 +117,13 @@ public class JobDetailsSteps {
     public void enterJobTypeAsSleepInAndCustomJob() {
         jobDetailsActions.enterJobDetailsForReSubmit();
     }
+
+    @And("User selects job type as General and proceed with Custom Job")
+    public void selectGeneralAndProceedWithCustomJob() {
+        jobDetailsActions.generalJobAndCustomJob();
+    }
+
+    @And("User enters job type as General and Custom Job")
+    public void userEntersJobTypeAsGeneralAndCustomJob() {
+    }
 }
