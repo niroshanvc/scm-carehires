@@ -8,7 +8,7 @@ Job Details:
     Number of Vacancies: 1
   Sleep In duration and Recurrence:
     Normal Day:
-      Start Date: "today - 7"
+      Start Date: "today - 12"
       Start Time: "07:00"
       End Time: "17:00"
 Job Preferences:
@@ -18,10 +18,11 @@ Job Preferences:
   Agency: Automation Agency 792684
   Job Notes: "Sleep in - Sample Job Post Note added."
 Submit Timesheet:
-  Start Date: "today - 7"
-  Ends On: "today - 7"
+  Start Date: "today - 12"
+  Ends On: "today - 12"
   Proof Document: proof of document.pdf
   Reason to Amend Timesheet: Here is the reason to amend the timesheet.
+
 
 Job Details A:
   Job Type: Sleep In
@@ -33,13 +34,18 @@ Job Details A:
     Number of Vacancies: 1
   Sleep In duration and Recurrence:
     Normal Day:
-      Start Date: "today - 4"
+      Start Date: "today - 10"
       Start Time: "07:00"
       End Time: "17:00"
 Submit Timesheet A:
-  Start Date: "today - 4"
-  Ends On: "today - 4"
+  Start Date: "today - 10"
+  Ends On: "today - 10"
   Proof Document: proof of document.pdf
-  Reason to Amend Timesheet: Here is the reason to amend the timesheet.
-Dispute Timesheet:
+  Reason to Amend Timesheet: Here is the reason to enter timesheet.
+Dispute Timesheet A:
   Reason to Dispute: Here is the note to dispute the timesheet.
+Resubmit Timesheet A:
+  Start Date: "today - 10"
+  Ends On: "today - 10"
+  Proof Document: resubmission timesheet doc.pdf
+  Reason to Amend Timesheet: Here is the reason to amend the timesheet.

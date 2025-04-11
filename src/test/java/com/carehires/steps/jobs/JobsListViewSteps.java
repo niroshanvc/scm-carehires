@@ -124,8 +124,13 @@ public class JobsListViewSteps {
         jobsListViewActions.approvingOrDisputingTimesheet(action);
     }
 
-    @When("User enters timesheets data for dispute")
-    public void enterTimesheetsDataForDispute() {
-        jobsListViewActions.enterTimesheetForDispute();
+    @And("User enters timesheets data for resubmit")
+    public void enterTimesheetsDataForResubmit() {
+        jobsListViewActions.enterTimesheetForResubmit();
+    }
+
+    @When("User proceeds with submit timesheet again")
+    public void proceedWithSubmitTimesheetAgain() {
+        jobsListViewActions.completeResubmission();
     }
 }
