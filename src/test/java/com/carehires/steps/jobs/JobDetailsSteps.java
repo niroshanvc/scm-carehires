@@ -125,5 +125,6 @@ public class JobDetailsSteps {
 
     @And("User enters job type as General and Custom Job")
     public void userEntersJobTypeAsGeneralAndCustomJob() {
+        jobDetailsActions.enterJobDetailsForManageTimesheet();
     }
 }

@@ -143,4 +143,9 @@ public class JobsListViewSteps {
     public void enterTimesheetsForGeneralJob() {
         jobsListViewActions.enterTimesheetForGeneralJob();
     }
+
+    @And("User completes timesheets entry for general job")
+    public void completeTimesheetsEntryForGeneralJob() {
+        jobsListViewActions.completeTimesheetEntry();
+    }
 }

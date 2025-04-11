@@ -52,6 +52,7 @@ public class JobsListViewActions {
     private static final String YML_HEADER_SUBMIT_TIMESHEET = "Submit Timesheet";
     private static final String YML_HEADER_SUBMIT_TIMESHEET1 = "Submit Timesheet A";
     private static final String YML_HEADER_SUBMIT_TIMESHEET2 = "Submit Timesheet B";
+    private static final String YML_HEADER_SUBMIT_TIMESHEET3 = "Submit Timesheet C";
     private static final String YML_HEADER_RESUBMIT_TIMESHEET1 = "Resubmit Timesheet A";
     private static final String YML_SUB_HEADER_CARE_PROVIDER = "Care Provider / Site and Service Preferences";
     private static final String YML_HEADER_SUGGESTED_WORKER = "Suggested Worker";
@@ -1025,5 +1026,12 @@ public class JobsListViewActions {
         clickOnTimesheetsButton();
         clickOnSubmitTimesheetButton();
         enterTimesheetWithoutBreak(YML_HEADER_SUBMIT_TIMESHEET2);
+    }
+
+    public void completeTimesheetEntry() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Filling timesheet for the general job - Resubmit >>>>>>>>>>>>>>>>>>>>");
+        clickOnTimesheetsButton();
+        clickOnSubmitTimesheetButton();
+        enterTimesheetWithoutBreak(YML_HEADER_SUBMIT_TIMESHEET3);
     }
 }

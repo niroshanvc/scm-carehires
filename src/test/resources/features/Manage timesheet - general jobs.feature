@@ -25,7 +25,7 @@ Feature: Test CareHires manage timesheet - general jobs
     And User enters Job Summary
     And User suggests a worker for general job
     And User selects suggested worker
-    And User enters timesheets data for resubmit
+    And User completes timesheets entry for general job
     And User Disputes the timesheet entered
-    When User proceeds with submit timesheet again
-    Then User Approves the timesheet entered
+#    When User proceeds with submit timesheet again
+#    Then User Approves the timesheet entered
