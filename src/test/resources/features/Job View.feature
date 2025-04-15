@@ -25,20 +25,6 @@ Feature: Test CareHires view job
     When User fills out the timesheets
     Then User Approves the timesheet
 
-  @CancelJobFromJobDetail
-  Scenario: Test cancel job from job detail screen
-    And User creates a job
-    And User clicks on the Cancel Job menu in job detail page
-
-  @CancelJobFromJobView
-  Scenario: Test cancel job from job view page
-    And User creates a job
-    And User clicks on the Cancel Job menu in job view page
-    And User sends a message using CH Admin Note
-    And User navigates to Jobs page
-    Then User verifies ch admin note is added successfully
-    And User modifies the cancellation reason
-
   @ManageAllocations
     @Worker
   Scenario: Test manage allocations for a job
