@@ -12,3 +12,8 @@ Feature: Test CareHires manage timesheet - general jobs
   Scenario: Test cancel job from job detail screen
     When User creates a job for cancellation
     Then User clicks on the Cancel Job menu in job detail page
+
+  @ListViewCancelJobOpenShift
+  Scenario: Test cancel job from job view page
+    When User creates a job for cancellation
+    Then User clicks on the Cancel Job menu in job view page
