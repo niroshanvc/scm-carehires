@@ -153,4 +153,9 @@ public class JobsListViewSteps {
     public void submitTimesheetForGeneralJob() {
         jobsListViewActions.submitTimesheet();
     }
+
+    @And("User suggests a worker for job cancellation")
+    public void suggestWorkerForJobCancellation() {
+        jobsListViewActions.suggestWorkerForJobCancellation();
+    }
 }

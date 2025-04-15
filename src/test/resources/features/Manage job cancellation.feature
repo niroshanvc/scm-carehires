@@ -1,0 +1,14 @@
+@Regression-Create
+@Job
+@SuperAdminUser
+Feature: Test CareHires manage timesheet - general jobs
+
+  Background: login to carehires
+    Given User logins to carehires
+    And User navigates to Jobs page
+    And User moves to Post New Job page
+
+  @DetailViewCancelJobOpenShift
+  Scenario: Test cancel job from job detail screen
+    When User creates a job for cancellation
+    Then User clicks on the Cancel Job menu in job detail page

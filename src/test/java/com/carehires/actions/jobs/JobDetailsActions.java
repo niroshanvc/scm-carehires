@@ -37,6 +37,7 @@ public class JobDetailsActions {
     private static final String YML_FILE_EDIT = "job-post-edit";
     private static final String YML_FILE_WITH_BREAKS = "job-create-with-breaks";
     private static final String YML_FILE_BLOCK_BOOKING = "job-create-block-booking";
+    private static final String YML_FILE_CANCELLATION = "job-cancellation";
     private static final String YML_HEADER = "Job Details";
     private static final String YML_HEADER1 = "Job Details A";
     private static final String YML_HEADER2 = "Job Details B";
@@ -691,6 +692,28 @@ public class JobDetailsActions {
         BasePage.scrollToWebElement(jobDetailsPage.continueButton);
         enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_MANAGE_TIMESHEET, YML_HEADER3, NORMAL_DAY);
 
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void enterJobDetailsForCancellation() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Enter Job Details for Cancellation >>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderAndServicePreferences(YML_FILE_CANCELLATION, YML_HEADER);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_CANCELLATION, YML_HEADER, NORMAL_DAY);
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void enterOverDueJobDetailsForCancellation() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Enter OverDue Job Details for Cancellation >>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderAndServicePreferences(YML_FILE_CANCELLATION, YML_HEADER1);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_CANCELLATION, YML_HEADER1, NORMAL_DAY);
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }

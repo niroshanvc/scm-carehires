@@ -43,6 +43,7 @@ public class JobsListViewActions {
     private static final String YML_FILE_CREATE = "job-create";
     private static final String YML_FILE_MANAGE_TIMESHEET = "manage-timesheet";
     private static final String YML_FILE_CREATE_BREAKS = "job-create-with-breaks";
+    private static final String YML_FILE_CANCELLATION = "job-cancellation";
     private static final String YML_HEADER_JOB_PREFERENCES = "Job Preferences";
     private static final String YML_HEADER_JOB_DETAILS = "Job Details";
     private static final String YML_HEADER_JOB_CANCEL = "Cancel Job";
@@ -1040,5 +1041,15 @@ public class JobsListViewActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<< Filling timesheet for the general job - Resubmission >>>>>>>>>>>>>>>>>>");
         clickOnSubmitTimesheetButton();
         resubmitTimesheet(YML_HEADER_RESUBMIT_TIMESHEET3);
+    }
+
+    public void suggestWorkerForJobCancellation() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Suggesting a worker for job cancellation >>>>>>>>>>>>>>>>>>>>");
+        BasePage.refreshPage();
+        clickOnViewDetailedJobInfo();
+        gotoEligibleWorkersTabOnJobDetailPopup();
+        workersFilterByAgencyOnJobDetailsPopup(YML_FILE_CANCELLATION);
+        clickOnSuggestButtonOnJobDetails();
+        verifyWorkerSuggestSuccessMessage();
     }
 }

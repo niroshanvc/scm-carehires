@@ -41,4 +41,11 @@ public class JobsLandingActions {
         BasePage.waitUntilElementClickable(jobsLandingPage.postJobButton, 60);
         BasePage.clickWithJavaScript(jobsLandingPage.postJobButton);
     }
+
+    public void createNewJobForCancellation() {
+        logger.info(" --------------------------- Creating New Job For Cancellation ---------------------------");
+        detailsActions.enterJobDetailsForCancellation();
+        preferencesActions.enterJobPreferencesForCancellation();
+        summaryActions.enterJobSummary();
+    }
 }
