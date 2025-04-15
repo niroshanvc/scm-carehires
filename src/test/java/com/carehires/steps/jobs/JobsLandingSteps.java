@@ -21,4 +21,9 @@ public class JobsLandingSteps {
     public void createForCancellation() {
         jobsLanding.createNewJobForCancellation();
     }
+
+    @When("User creates an over-due job for cancellation")
+    public void createAnOverDueJobForCancellation() {
+        jobsLanding.createNewOverDueJobForCancellation();
+    }
 }

@@ -48,4 +48,11 @@ public class JobsLandingActions {
         preferencesActions.enterJobPreferencesForCancellation();
         summaryActions.enterJobSummary();
     }
+
+    public void createNewOverDueJobForCancellation() {
+        logger.info(" --------------------------- Creating New Over Due Job For Cancellation ---------------------------");
+        detailsActions.enterOverDueJobDetailsForCancellation();
+        preferencesActions.enterJobPreferencesForCancellation();
+        summaryActions.enterJobSummary();
+    }
 }
