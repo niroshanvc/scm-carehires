@@ -19,3 +19,8 @@ Feature: Test CareHires manage timesheet - general jobs
     Then User clicks on the Cancel Job menu in job view page
     And User navigates to Jobs page
     And User modifies the cancellation reason
+
+  @CancelOpenOverDueShift
+  Scenario: Test cancel job from job detail screen
+    When User creates an over-due job for cancellation
+    Then User clicks on the Cancel Job menu in job view page
