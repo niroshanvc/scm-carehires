@@ -104,6 +104,13 @@ jobs:
               -H "Content-Type: application/json" \
               -d @email_payload.json || echo "Error sending email!"
       - run:
+          name: Generate Allure Report
+          command: |
+            mvn test
+            allure generate target/allure-results -o target/allure-report
+      - store_artifacts:
+          path: target/allure-report
+      - run:
           name: Send Email with Attachment
           command: |
             export LC_ALL=en_US.UTF-8
