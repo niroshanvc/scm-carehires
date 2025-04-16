@@ -8,12 +8,14 @@ import com.carehires.utils.CsvReaderUtils;
 import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.FileWriterUtils;
 import com.carehires.utils.GenericUtils;
+import io.qameta.allure.Description;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import java.io.File;
@@ -291,6 +293,8 @@ public class JobsListViewActions {
         BasePage.clickWithJavaScript(listViewPage.cancelJobButton);
     }
 
+    @Test
+    @Description("Verifying functionality of Copy Job Details")
     private void verifyingFunctionalityOfCopyJobDetails() {
         BasePage.genericWait(3000); // Wait for the text to be copied
         String expectedJobId = getFirstJobId();
@@ -701,6 +705,8 @@ public class JobsListViewActions {
         BasePage.waitUntilElementDisappeared(listViewPage.successMessage, 20);
     }
 
+    @Test
+    @Description("Verify the job cancellation functionality on Job Details popup")
     public void cancelJobFromDetailPage() {
         String text = getFirstJobId();
         searchJobByJobId(text);

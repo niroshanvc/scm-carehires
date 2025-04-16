@@ -3,9 +3,11 @@ package com.carehires.actions.jobs;
 
 import com.carehires.pages.jobs.JobSummaryPage;
 import com.carehires.utils.BasePage;
+import io.qameta.allure.Description;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -36,6 +38,8 @@ public class JobSummaryActions {
         verifyJobPostedSuccessfully();
     }
 
+    @Test
+    @Description("Verify Job Posted Successfully")
     private void verifyJobPostedSuccessfully() {
         BasePage.waitUntilElementPresent(jobSummaryPage.successMessage, 60);
         String actualInLowerCase = BasePage.getText(jobSummaryPage.successMessage).toLowerCase().trim();
@@ -51,9 +55,6 @@ public class JobSummaryActions {
         BasePage.waitUntilElementClickable(jobSummaryPage.editIcon, 30);
         BasePage.scrollToWebElement(jobSummaryPage.editIcon);
         BasePage.clickWithJavaScript(jobSummaryPage.editIcon);
-    }
-
-    public void verifySummaryForScenario1() {
     }
 
     public void enterJobSummaryFromTemplate() {
