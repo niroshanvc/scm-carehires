@@ -52,20 +52,8 @@ Job Details A:
       Unpaid Breaks Note: "Unpaid breaks note added."
 
 
-Job Preferences B:
-  Gender: Male
-  Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
-  Enable Block Booking: "No"
-  Agency: Automation Agency 84777
-  Job Notes: "Sample Job Post Note added."
-  Job Posting Reason: Annual leave
-  Internal Notes: "Internal Note added."
-
-Job Preferences C:
-  Gender: Male
-  Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
-  Enable Block Booking: "No"
-  Agency: Automation Agency 84777
-  Job Notes: "Sample Job Post Note added."
-  Job Posting Reason: Annual leave
-  Internal Notes: "Internal Note added - mandatory field"
+Submit Timesheet:
+  Start Date: "today - 2"
+  Ends On: "today - 2"
+  Proof Document: proof of document.pdf
+  Reason to Amend Timesheet: Here is the reason to entering a timesheet.

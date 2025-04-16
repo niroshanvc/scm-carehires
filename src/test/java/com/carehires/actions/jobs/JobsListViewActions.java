@@ -931,35 +931,35 @@ public class JobsListViewActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Filling timesheet for the sleep in job >>>>>>>>>>>>>>>>>>>>");
         clickOnTimesheetsButton();
         clickOnSubmitTimesheetButton();
-        enterTimesheetWithoutBreak(YML_HEADER_SUBMIT_TIMESHEET);
+        enterTimesheetWithoutBreak(YML_FILE_MANAGE_TIMESHEET, YML_HEADER_SUBMIT_TIMESHEET);
     }
 
-    private void enterTimesheetWithoutBreak(String header) {
-        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_MANAGE_TIMESHEET,
+    private void enterTimesheetWithoutBreak(String ymlFile, String header) {
+        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
                 header, "Proof Document");
         String docPath = TEST_RESOURCE_FOLDER + File.separator + "Upload" + File.separator + "Job" + File.separator +
                 "Timesheet"+ File.separator + doc;
         BasePage.uploadFile(listViewPage.proofDocument, docPath);
 
-        String startDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_MANAGE_TIMESHEET,
+        String startDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
                 header, "Start Date");
         BasePage.clickWithJavaScript(listViewPage.startDateInput);
         genericUtils.selectDateFromCalendarPopup(startDate);
 
-        selectTime(YML_FILE_MANAGE_TIMESHEET, header, YML_HEADER_SLEEP_IN_DURATION,
+        selectTime(ymlFile, header, YML_HEADER_SLEEP_IN_DURATION,
                 YML_HEADER_NORMAL_DAY,"Start Time", listViewPage.startTimeInput, listViewPage.startTimeAreaList
                 , listViewPage. availableStartTimes, listViewPage.startTimeSelectionOkButton);
 
-        String endDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_MANAGE_TIMESHEET,
+        String endDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
                 header, "Ends On");
         BasePage.clickWithJavaScript(listViewPage.endDateInput);
         genericUtils.selectDateFromCalendarPopup(endDate);
 
-        selectTime(YML_FILE_MANAGE_TIMESHEET, header, YML_HEADER_SLEEP_IN_DURATION,
+        selectTime(ymlFile, header, YML_HEADER_SLEEP_IN_DURATION,
                 YML_HEADER_NORMAL_DAY, "End Time", listViewPage.endTimeInput, listViewPage.endTimeAreaList,
                 listViewPage.availableEndTimes, listViewPage.endTimeSelectionOkButton);
 
-        String reason = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_MANAGE_TIMESHEET,
+        String reason = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
                 header, "Reason to Amend Timesheet");
         BasePage.typeWithStringBuilder(listViewPage.reasonToAmendTimesheetTextarea, reason);
 
@@ -982,7 +982,7 @@ public class JobsListViewActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Filling timesheet for the sleep in job - Resubmit >>>>>>>>>>>>>>>>>>>>");
         clickOnTimesheetsButton();
         clickOnSubmitTimesheetButton();
-        enterTimesheetWithoutBreak(YML_HEADER_SUBMIT_TIMESHEET1);
+        enterTimesheetWithoutBreak(YML_FILE_MANAGE_TIMESHEET, YML_HEADER_SUBMIT_TIMESHEET1);
     }
 
     public void completeResubmission() {
@@ -1037,14 +1037,14 @@ public class JobsListViewActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Filling timesheet for general job >>>>>>>>>>>>>>>>>>>>");
         clickOnTimesheetsButton();
         clickOnSubmitTimesheetButton();
-        enterTimesheetWithoutBreak(YML_HEADER_SUBMIT_TIMESHEET2);
+        enterTimesheetWithoutBreak(YML_FILE_MANAGE_TIMESHEET, YML_HEADER_SUBMIT_TIMESHEET2);
     }
 
     public void completeTimesheetEntry() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Filling timesheet for the general job - Resubmit >>>>>>>>>>>>>>>>>>>>");
         clickOnTimesheetsButton();
         clickOnSubmitTimesheetButton();
-        enterTimesheetWithoutBreak(YML_HEADER_SUBMIT_TIMESHEET3);
+        enterTimesheetWithoutBreak(YML_FILE_MANAGE_TIMESHEET, YML_HEADER_SUBMIT_TIMESHEET3);
     }
 
     public void submitTimesheet() {
@@ -1067,5 +1067,14 @@ public class JobsListViewActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Closing job detail popup >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementClickable(listViewPage.jobDetailsPopupCloseIcon, 30);
         BasePage.clickWithJavaScript(listViewPage.jobDetailsPopupCloseIcon);
+    }
+
+    @Test
+    @Description("Submit timesheet for job cancellation")
+    public void enterTimesheetForJobCancellation() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Filling timesheet for job cancellation >>>>>>>>>>>>>>>>>>>>");
+        clickOnTimesheetsButton();
+        clickOnSubmitTimesheetButton();
+        enterTimesheetWithoutBreak(YML_FILE_CANCELLATION, YML_HEADER_SUBMIT_TIMESHEET);
     }
 }

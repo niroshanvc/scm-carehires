@@ -163,4 +163,9 @@ public class JobsListViewSteps {
     public void closeJobDetailPopup() {
         jobsListViewActions.clickOnJobDetailCloseIcon();
     }
+
+    @And("User enters timesheets data for job cancellation")
+    public void entersTimesheetsDataForJobCancellation() {
+        jobsListViewActions.enterTimesheetForJobCancellation();
+    }
 }
