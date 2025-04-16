@@ -158,4 +158,9 @@ public class JobsListViewSteps {
     public void suggestWorkerForJobCancellation() {
         jobsListViewActions.suggestWorkerForJobCancellation();
     }
+
+    @And("User clicks on job detail close icon")
+    public void closeJobDetailPopup() {
+        jobsListViewActions.clickOnJobDetailCloseIcon();
+    }
 }

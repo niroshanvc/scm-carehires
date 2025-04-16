@@ -305,4 +305,7 @@ public class JobsListViewPage {
 
     @FindBy(xpath = "//div[@class='proof-preview']//button[@status='danger']")
     public WebElement removeAttachmentButton;
+
+    @FindBy(xpath = "//ch-job-detail-view//div[@class='close']/img")
+    public WebElement jobDetailsPopupCloseIcon;
 }

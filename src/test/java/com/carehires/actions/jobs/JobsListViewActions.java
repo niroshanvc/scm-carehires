@@ -756,6 +756,8 @@ public class JobsListViewActions {
         BasePage.waitUntilElementDisappeared(listViewPage.successMessage, 20);
     }
 
+    @Test
+    @Description("Successfully cancelled the job")
     public void cancelJobFromViewPage() {
         jobId = getFirstJobId();
         searchJobByJobId(jobId);
@@ -916,6 +918,8 @@ public class JobsListViewActions {
         assertThat("Not allocated text is not present!", actualText, is(expected));
     }
 
+    @Test
+    @Description("Successfully selected suggested worker for the shift")
     public void selectingSuggestedWorkerOnJobDetailsPopup() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Selecting suggested worker >>>>>>>>>>>>>>>>>>>>");
         gotoSuggestedWorkersTabOnJobDetailPopup();
@@ -1057,5 +1061,11 @@ public class JobsListViewActions {
         workersFilterByAgencyOnJobDetailsPopup(YML_FILE_CANCELLATION);
         clickOnSuggestButtonOnJobDetails();
         verifyWorkerSuggestSuccessMessage();
+    }
+
+    public void clickOnJobDetailCloseIcon() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Closing job detail popup >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(listViewPage.jobDetailsPopupCloseIcon, 30);
+        BasePage.clickWithJavaScript(listViewPage.jobDetailsPopupCloseIcon);
     }
 }
