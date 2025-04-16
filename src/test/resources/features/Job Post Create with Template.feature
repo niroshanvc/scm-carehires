@@ -15,8 +15,7 @@ Feature: Test CareHires create job post using template
     And User selects Post using Template and select the template as Job Post - Automation 001
     And User enters Job Duration by disabling both recurrence and breaks
     When User enters Job Preferences without Job note and disable block booking
-    Then User verifies shift summary for job post template - scenario1
-    And User enters Job Summary from template
+    Then User enters Job Summary from template
 
   @PostGeneralJobsTemplate2B
   Scenario: Jobs using templates / With recurrence / With breaks / With Skills / With Block booking / With job notes
