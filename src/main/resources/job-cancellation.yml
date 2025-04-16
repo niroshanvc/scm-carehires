@@ -57,3 +57,6 @@ Submit Timesheet:
   Ends On: "today - 2"
   Proof Document: proof of document.pdf
   Reason to Amend Timesheet: Here is the reason to entering a timesheet.
+
+Dispute Timesheet:
+  Reason to Dispute: Here is the note to dispute the timesheet.

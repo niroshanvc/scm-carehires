@@ -168,4 +168,9 @@ public class JobsListViewSteps {
     public void entersTimesheetsDataForJobCancellation() {
         jobsListViewActions.enterTimesheetForJobCancellation();
     }
+
+    @And("^User (.*) the timesheet entered for job cancellation$")
+    public void clickOnDisputeButton(String action) {
+        jobsListViewActions.approveOrDisputeTimesheetForJobCancellation(action);
+    }
 }
