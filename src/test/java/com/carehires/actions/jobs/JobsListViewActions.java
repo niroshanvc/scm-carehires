@@ -1077,4 +1077,8 @@ public class JobsListViewActions {
         clickOnSubmitTimesheetButton();
         enterTimesheetWithoutBreak(YML_FILE_CANCELLATION, YML_HEADER_SUBMIT_TIMESHEET);
     }
+
+    public void approveOrDisputeTimesheetForJobCancellation(String action) {
+        approveOrDisputingTimesheet(action, YML_FILE_CANCELLATION, "Dispute Timesheet");
+    }
 }

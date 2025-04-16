@@ -42,7 +42,12 @@ Submit Timesheet A:
   Ends On: "today - 10"
   Proof Document: proof of document.pdf
   Reason to Amend Timesheet: Here is the reason to enter timesheet.
-
+Dispute Timesheet A:
+  Reason to Dispute: Here is the note to dispute the timesheet.
+Resubmit Timesheet A:
+  Start Date: "today - 10"
+  Ends On: "today - 10"
+  Proof Document: resubmission timesheet doc.pdf
 
 
 Job Details B:
