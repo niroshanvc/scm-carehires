@@ -3,6 +3,7 @@ package com.carehires.actions.jobs;
 
 import com.carehires.pages.jobs.JobSummaryPage;
 import com.carehires.utils.BasePage;
+import com.carehires.utils.DataConfigurationReader;
 import io.qameta.allure.Description;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +18,11 @@ public class JobSummaryActions {
     private final JobSummaryPage jobSummaryPage;
 
     private static final Logger logger = LogManager.getLogger(JobSummaryActions.class);
+
+    private static final String ENTITY = "job";
+    private static final String YML_FILE = "manage-job-template";
+    private static final String YML_HEADER = "Job Preferences";
+
 
     public JobSummaryActions() {
         jobSummaryPage = new JobSummaryPage();
@@ -63,5 +69,30 @@ public class JobSummaryActions {
         BasePage.waitUntilElementClickable(jobSummaryPage.postJobButton, 60);
         BasePage.clickWithJavaScript(jobSummaryPage.postJobButton);
         verifyJobPostedSuccessfully();
+    }
+
+    @Test
+    @Description("Verify job template created successfully")
+    public void createTemplateWithNewJobPost() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Create new template with new job post >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementClickable(jobSummaryPage.postJobButton, 60);
+        BasePage.clickWithJavaScript(jobSummaryPage.postJobButton);
+        BasePage.waitUntilElementClickable(jobSummaryPage.savePopupYesButton, 60);
+        BasePage.clickWithJavaScript(jobSummaryPage.savePopupYesButton);
+        createNewTemplate();
+        BasePage.waitUntilElementDisappeared(jobSummaryPage.successMessageTwo, 60);
+        BasePage.genericWait(10000);
+    }
+
+    private void createNewTemplate() {
+        BasePage.waitUntilElementClickable(jobSummaryPage.templateNameInput, 60);
+        String name = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, "Template Name");
+        String description = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                "Template Description");
+        BasePage.clearAndEnterTexts(jobSummaryPage.templateNameInput, name);
+        BasePage.clearAndEnterTexts(jobSummaryPage.templateDescriptionTextarea, description);
+        BasePage.waitUntilElementClickable(jobSummaryPage.templateDetailsPopupSaveButton, 60);
+        BasePage.clickWithJavaScript(jobSummaryPage.templateDetailsPopupSaveButton);
     }
 }

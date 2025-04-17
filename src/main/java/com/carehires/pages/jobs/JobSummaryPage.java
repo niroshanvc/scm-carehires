@@ -16,4 +16,22 @@ public class JobSummaryPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Edit')]")
     public WebElement editIcon;
+
+    @FindBy(xpath = "//nb-dialog-container//nb-card-footer/button")
+    public WebElement savePopupYesButton;
+
+    @FindBy(xpath = "//nb-dialog-container//nb-card-footer/button")
+    public String createNewTemplateButton;
+
+    @FindBy(xpath = "//input[@id='business-name']")
+    public WebElement templateNameInput;
+
+    @FindBy(xpath = "//textarea[@id='business-name']")
+    public WebElement templateDescriptionTextarea;
+
+    @FindBy(xpath = "//nb-card-footer/button")
+    public WebElement templateDetailsPopupSaveButton;
+
+    @FindBy(xpath = "(//nb-toast//span)[2]")
+    public WebElement successMessageTwo;
 }

@@ -836,8 +836,8 @@ public class BasePage {
         wait.until(driver -> {
             try {
                 try {
-                    return Objects.requireNonNull(((JavascriptExecutor) getDriver())
-                            .executeScript("return arguments[0].getAttribute('disabled') == null;", element));
+                    return Objects.requireNonNull(((JavascriptExecutor) getDriver()).executeScript(
+                            "return arguments[0].getAttribute('disabled') == null;", element));
                 } catch (WebDriverInitializationException e) {
                     throw new RuntimeException(e);
                 }
@@ -879,7 +879,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            logger.error("Error while waiting for dropdown value: %s", e.getMessage());
         }
 
         wait.until(new ExpectedCondition<Boolean>() {
@@ -909,5 +909,15 @@ public class BasePage {
         });
 
         logger.info("Dropdown now contains the expected value: %s", expectedValue);
+    }
+
+    // navigate to method
+    public static void navigateTo(String url) {
+        logger.info("****************** Navigate to: %s", url);
+        try {
+            getDriver().navigate().to(url);
+        } catch (WebDriverInitializationException e) {
+            logger.error("Error while navigating to %s: %s", url, e.getMessage());
+        }
     }
 }

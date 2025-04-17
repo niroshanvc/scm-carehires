@@ -1,7 +1,7 @@
 @Regression-Create
 @Job
 @SuperAdminUser
-Feature: Test CareHires create job post
+Feature: Test CareHires create job post without template
 
   Background: login to carehires
     Given User logins to carehires

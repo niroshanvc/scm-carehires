@@ -99,4 +99,11 @@ public class LeftSideMenuActions {
         BasePage.clickWithJavaScript(leftSideMenu.jobsIcon);
         logger.info(" --------------------------- Moves to Jobs Page ---------------------------");
     }
+
+    public void gotoSettingsPage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.navigateTo("https://portal.dev.v4.carehires.co.uk/dashboard/settings");
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info(" --------------------------- Moves to Settings Page ---------------------------");
+    }
 }
