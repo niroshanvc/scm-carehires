@@ -836,8 +836,8 @@ public class BasePage {
         wait.until(driver -> {
             try {
                 try {
-                    return Objects.requireNonNull(((JavascriptExecutor) getDriver())
-                            .executeScript("return arguments[0].getAttribute('disabled') == null;", element));
+                    return Objects.requireNonNull(((JavascriptExecutor) getDriver()).executeScript(
+                            "return arguments[0].getAttribute('disabled') == null;", element));
                 } catch (WebDriverInitializationException e) {
                     throw new RuntimeException(e);
                 }
@@ -879,7 +879,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            logger.error("Error while waiting for dropdown value: %s", e.getMessage());
         }
 
         wait.until(new ExpectedCondition<Boolean>() {
@@ -909,26 +909,6 @@ public class BasePage {
         });
 
         logger.info("Dropdown now contains the expected value: %s", expectedValue);
-    }
-
-    // zoom out to 80%
-    public static void zoomOutByEightyPercent() {
-        try {
-            JavascriptExecutor js = (JavascriptExecutor) getDriver();
-            js.executeScript("document.body.style.zoom = '80%'");
-        } catch (WebDriverInitializationException e) {
-            logger.error("Error while zooming out: %s", e.getMessage());
-        }
-    }
-
-    // reset to 100%
-    public static void resetZoom() {
-        try {
-            JavascriptExecutor js = (JavascriptExecutor) getDriver();
-            js.executeScript("document.body.style.zoom = '100%'");
-        } catch (WebDriverInitializationException e) {
-            logger.error("Error while resetting zoom: %s", e.getMessage());
-        }
     }
 
     // navigate to method
