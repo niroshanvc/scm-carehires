@@ -42,7 +42,8 @@ public class ProviderCompanyInformationPage {
     @FindBy(id = "vat-no")
     public WebElement vatNumber;
 
-    @FindBy(xpath = "//input[@name='undefined' and @value='true']//ancestor::nb-radio-group//ancestor::div[@class='row'][1]//div[3]//div[contains(@class, 'table')]//input[@type='file']")
+    @FindBy(xpath = "//input[@name='undefined' and @value='true']//ancestor::nb-radio-group//ancestor::div[@class=" +
+            "'row'][1]//div[3]//div[contains(@class, 'table')]//input[@type='file']")
     public WebElement vatRegisteredDocument;
 
     @FindBy(xpath = "//nb-radio-group[@formcontrolname='isVatExcempt']//input[@value='true']")
@@ -94,7 +95,8 @@ public class ProviderCompanyInformationPage {
     @FindBy(xpath = "//div[contains(@class, 'side')]/ul[@class='expanded-nav']/li[1]")
     public WebElement updateProfileLink;
 
-    public By updateProfileLinkChildElement = By.xpath("//div[contains(@class, 'side')]/ul[@class='expanded-nav']/li[1]");
+    public By updateProfileLinkChildElement = By.xpath("//div[contains(@class, 'side')]/ul[@class=" +
+            "'expanded-nav']/li[1]");
 
     public String getDropdownOptionXpath(String option) {
         return String.format("//nb-option[contains(text(),'%s')]", option);

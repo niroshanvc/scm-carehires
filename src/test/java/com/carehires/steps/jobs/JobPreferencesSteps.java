@@ -132,4 +132,9 @@ public class JobPreferencesSteps {
     public void generalJobPreferences() {
         jobPreferencesActions.generalJobPreferences();
     }
+
+    @And("User enters Job Preferences to manage job template")
+    public void enterJobPreferencesToManageTemplate() {
+        jobPreferencesActions.enterJobPreferencesToManageTemplate();
+    }
 }

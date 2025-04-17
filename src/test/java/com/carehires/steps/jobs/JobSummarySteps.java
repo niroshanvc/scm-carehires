@@ -22,4 +22,9 @@ public class JobSummarySteps {
     public void enterJobSummaryFromTemplate() {
         jobSummaryActions.enterJobSummaryFromTemplate();
     }
+
+    @And("User create a new template by creating a new job post")
+    public void createTemplateWithNewJobPost() {
+        jobSummaryActions.createTemplateWithNewJobPost();
+    }
 }

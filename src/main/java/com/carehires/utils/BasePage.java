@@ -910,4 +910,34 @@ public class BasePage {
 
         logger.info("Dropdown now contains the expected value: %s", expectedValue);
     }
+
+    // zoom out to 80%
+    public static void zoomOutByEightyPercent() {
+        try {
+            JavascriptExecutor js = (JavascriptExecutor) getDriver();
+            js.executeScript("document.body.style.zoom = '80%'");
+        } catch (WebDriverInitializationException e) {
+            logger.error("Error while zooming out: %s", e.getMessage());
+        }
+    }
+
+    // reset to 100%
+    public static void resetZoom() {
+        try {
+            JavascriptExecutor js = (JavascriptExecutor) getDriver();
+            js.executeScript("document.body.style.zoom = '100%'");
+        } catch (WebDriverInitializationException e) {
+            logger.error("Error while resetting zoom: %s", e.getMessage());
+        }
+    }
+
+    // navigate to method
+    public static void navigateTo(String url) {
+        logger.info("****************** Navigate to: %s", url);
+        try {
+            getDriver().navigate().to(url);
+        } catch (WebDriverInitializationException e) {
+            logger.error("Error while navigating to %s: %s", url, e.getMessage());
+        }
+    }
 }

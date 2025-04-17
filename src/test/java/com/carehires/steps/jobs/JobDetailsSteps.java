@@ -127,4 +127,9 @@ public class JobDetailsSteps {
     public void userEntersJobTypeAsGeneralAndCustomJob() {
         jobDetailsActions.enterJobDetailsForManageTimesheet();
     }
+
+    @And("User enters Job Details to manage job template")
+    public void enterJobDetailsToManageTemplate() {
+        jobDetailsActions.enterJobDetailsToManageTemplate();
+    }
 }

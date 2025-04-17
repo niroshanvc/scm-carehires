@@ -38,6 +38,7 @@ public class JobDetailsActions {
     private static final String YML_FILE_WITH_BREAKS = "job-create-with-breaks";
     private static final String YML_FILE_BLOCK_BOOKING = "job-create-block-booking";
     private static final String YML_FILE_CANCELLATION = "job-cancellation";
+    private static final String YML_FILE_MANAGE_TEMPLATE = "manage-job-template";
     private static final String YML_HEADER = "Job Details";
     private static final String YML_HEADER1 = "Job Details A";
     private static final String YML_HEADER2 = "Job Details B";
@@ -714,6 +715,17 @@ public class JobDetailsActions {
         enterCareProviderAndServicePreferences(YML_FILE_CANCELLATION, YML_HEADER1);
         BasePage.scrollToWebElement(jobDetailsPage.continueButton);
         enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_CANCELLATION, YML_HEADER1, NORMAL_DAY);
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void enterJobDetailsToManageTemplate() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Details to manage job template >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderAndServicePreferences(YML_FILE_MANAGE_TEMPLATE, YML_HEADER);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_MANAGE_TEMPLATE, YML_HEADER, NORMAL_DAY);
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }

@@ -169,7 +169,6 @@ public class JobsListViewActions {
                     text = "OPEN OVER-DUE";
                 }
 
-
             assertThat("Filter by status is not working.", text, is(status));
         }
     }

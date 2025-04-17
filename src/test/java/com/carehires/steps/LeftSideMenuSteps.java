@@ -56,4 +56,9 @@ public class LeftSideMenuSteps {
     public void moveToJobsPage() {
         leftSideMenuActions.gotoJobsPage();
     }
+
+    @And("User navigates to Settings page")
+    public void moveToSettingsPage() {
+        leftSideMenuActions.gotoSettingsPage();
+    }
 }
