@@ -54,22 +54,33 @@ public class JobTemplateActions {
         BasePage.clickWithJavaScript(jobTemplatePage.firstResult);
     }
 
-    public void doInactiveTemplate() {
+    public void doInactiveTemplate(String status) {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on the inactive menu link >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
-        BasePage.waitUntilElementPresent(jobTemplatePage.topThreeDots, 30);
-        BasePage.mouseHoverAndClick(jobTemplatePage.topThreeDots, jobTemplatePage.inactiveMenuLink,
-                JobTemplatePage.INACTIVE_MENU_LINK_CHILD_ELEMENT);
+        if (status.equalsIgnoreCase("inactive")) {
+            BasePage.waitUntilElementPresent(jobTemplatePage.topThreeDots, 30);
+            BasePage.mouseHoverAndClick(jobTemplatePage.topThreeDots, jobTemplatePage.inactiveMenuLink,
+                    JobTemplatePage.INACTIVE_OR_ACTIVE_MENU_LINK);
 
-        BasePage.waitUntilElementClickable(jobTemplatePage.confirmActionPopupYesButton, 30);
-        BasePage.clickWithJavaScript(jobTemplatePage.confirmActionPopupYesButton);
-        BasePage.genericWait(3000);
-        verifyTemplateIsInactive();
+            BasePage.waitUntilElementClickable(jobTemplatePage.confirmActionPopupYesButton, 30);
+            BasePage.clickWithJavaScript(jobTemplatePage.confirmActionPopupYesButton);
+            BasePage.genericWait(3000);
+            verifyTemplateStatusIsUpdated(status);
+        } else if (status.equalsIgnoreCase("active")) {
+            BasePage.clickWithJavaScript(jobTemplatePage.templateStatusDropdown);
+            BasePage.clickWithJavaScript(jobTemplatePage.getDropdownOptionXpath("Inactive Templates"));
+            waitUntilSearchResultsAreLoaded();
+            BasePage.waitUntilElementPresent(jobTemplatePage.topThreeDots, 30);
+            BasePage.mouseHoverAndClick(jobTemplatePage.topThreeDots, jobTemplatePage.inactiveMenuLink,
+                    JobTemplatePage.INACTIVE_OR_ACTIVE_MENU_LINK);
+            BasePage.genericWait(3000);
+            verifyTemplateStatusIsUpdated(status);
+        }
     }
 
-    private void verifyTemplateIsInactive() {
+    private void verifyTemplateStatusIsUpdated(String status) {
         BasePage.waitUntilElementPresent(jobTemplatePage.templateStatus, 60);
         String actualStatus = BasePage.getText(jobTemplatePage.templateStatus).toLowerCase().trim();
-        assertThat("Template status is not inactive", actualStatus, is("inactive"));
+        assertThat("Template status is not inactive", actualStatus, is(status));
     }
 }

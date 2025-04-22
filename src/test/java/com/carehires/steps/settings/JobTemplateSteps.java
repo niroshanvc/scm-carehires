@@ -18,8 +18,8 @@ public class JobTemplateSteps {
         jobTemplate.searchTemplateByName();
     }
 
-    @Then("User makes job template inactive")
-    public void inactiveJobTemplate() {
-        jobTemplate.doInactiveTemplate();
+    @Then("^User makes job template (.*)$")
+    public void inactiveJobTemplate(String status) {
+        jobTemplate.doInactiveTemplate(status);
     }
 }
