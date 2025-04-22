@@ -21,12 +21,19 @@ public class JobTemplatePage {
     @FindBy(xpath = "//div[contains(@class, 'side')]/ul[@class='expanded-nav']/li[1]")
     public WebElement inactiveMenuLink;
 
-    public static final By INACTIVE_MENU_LINK_CHILD_ELEMENT = By.xpath("//div[contains(@class, 'side')]" +
-            "/ul[@class='expanded-nav']/li[1]");
+    public static final By INACTIVE_OR_ACTIVE_MENU_LINK = By.xpath("//div[contains(@class," +
+            " 'side')]/ul[@class='expanded-nav']/li[1]");
 
     @FindBy(xpath = "//nb-card-footer//button")
     public WebElement confirmActionPopupYesButton;
 
     @FindBy(xpath = "//div[contains(@class, 'basic-profile-container')]//div[@class='text']")
     public WebElement templateStatus;
+
+    @FindBy(xpath = "//nb-select[not(@id)]/button")
+    public WebElement templateStatusDropdown;
+
+    public String getDropdownOptionXpath(String templateStatus) {
+        return String.format("//nb-option[contains(text(),'%s')]", templateStatus);
+    }
 }
