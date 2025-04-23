@@ -146,7 +146,7 @@ public class GenericUtils {
 
     // Helper method to select the month
     private void selectMonth(String targetMonth) {
-        WebElement monthElement = null;
+        WebElement monthElement;
         try {
             monthElement = BasePage.getDriver().findElement(genericElementsPage.getMonthLocator(targetMonth));
         } catch (BasePage.WebDriverInitializationException e) {
