@@ -1,0 +1,104 @@
+Company Information:
+  Update:
+    Provider Logo: Provider200.png
+    Company Name: Automation Provider 148428
+    BusinessRegistrationNumber: LP003389
+    CompanyType: Limited Company
+    Website: https://www.automationproviders001.com
+    ProviderPostCode: BL0 9YY
+    PhoneNumberType: Office2
+    PhoneNumber: "07462001246"
+    AreYouVatRegistered: "Yes"
+    VatNo: "1025200012"
+    VatRegisteredDocumentName: VAT-Reg-doc.pdf
+    AreYouVatExempt: "No"
+    VatExemptDocumentName: vat-exemption-certificate.pdf
+    AnnualCompanyTurnOverIs: Equal or Over 10.2M
+    CompanyBalanceSheetTotalIs: Under 5.2M
+    AverageNumberOfEmployees: Under 50
+
+Site Management:
+  Add:
+    Dataset1:
+      SiteName: BioRevolution - Care {{increment}}
+      SiteType: Learning Disabilities
+      SiteSpecialism: Adult,Autism,Childrens,Learning Disabilities
+      AlsoKnownAs: BioRevolution{{increment}}
+      SiteEmail: carehires+site1pr{{increment}}@zohomail.com
+      PostalCode: BL0 9YX
+      NoOfBeds: 25
+      SiteCode: AC-01
+      PhoneNumberType: "Office2"
+      PhoneNumber: "07412001246"
+      JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
+      ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
+  Update:
+    Dataset1:
+      SiteName: BioRevolution Care {{increment}}
+      SiteType: Nursing
+      SiteSpecialism: Adult,Autism,Elderly,Nursing
+      AlsoKnownAs: BioRevolution{{increment}}
+      SiteEmail: carehires+site1pr{{increment}}@zohomail.com
+      PostalCode: BL0 9YX
+      NoOfBeds: 25
+      SiteCode: AC-01
+      PhoneNumberType: "Mobile"
+      PhoneNumber: "07412001246"
+      JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
+      ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
+
+Worker Staff Management:
+  Add:
+    WorkerType: Care Assistant
+    Skills: Elderly,Home Care,End of Life Care,Mandatory Training
+    HourlyRate: 10
+    MonthlyAgencyHours: 350
+    ProofOfDemandDocument: Proof of demand document.pdf
+  Update:
+    WorkerType: Rehabilitation Worker
+    Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+    HourlyRate: 10.5
+    MonthlyAgencyHours: 300
+    ProofOfDemandDocument: Proof of demand document - updated.pdf
+
+User:
+  Add:
+    email: carehires+prouser{{increment}}@zohomail.com
+    Name: Patrick Sams{{increment}}
+    JobTitle: Assistant Executive
+    Phone: "07874483293"
+    MarkAsAnAuthoriser: "No"
+    UserAccessLevel: Shift Admin (With rate),Site Admin
+  Update:
+    email: carehires+provuser{{increment}}@zohomail.com
+    Name: Douglas Sams{{increment}}
+    JobTitle: Assistant Engineer
+    Phone: "07874483710"
+    MarkAsAnAuthoriser: "Yes"
+    UserAccessLevel: Org Admin
+
+Billing Information:
+  General Billing Information:
+    Add:
+      AddressBillsInAttentionTo: IBS Solutions
+      DigitalBillingAddress: carehires+pro-billing{{increment}}@zohomail.com
+      Postal Code: LE10 2AN
+      PhoneNumber: "07432301046"
+      CreditLimitAmount: 600
+      BillingCycle: Bi Weekly
+      CreditTerm: 28 Days
+    Update:
+      AddressBillsInAttentionTo: IBS Solutions - updated
+      DigitalBillingAddress: carehires+pro-billing-edited{{increment}}@zohomail.com
+      Postal Code: LE10 3AN
+      PhoneNumber: "07432351246"
+      CreditLimitAmount: 700
+      BillingCycle: Monthly
+      CreditTerm: 21 Days
+      FirstName: Geoffrey
+      LastName: Joseph
+      EmailAddress: carehires+billingpro{{increment}}@zohomail.com
+      PhoneNumberContact: "07435301246"
+
+SubContract:
+  Note: Sub contract agreement note is entered.

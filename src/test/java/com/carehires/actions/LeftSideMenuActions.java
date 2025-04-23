@@ -106,4 +106,11 @@ public class LeftSideMenuActions {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info(" --------------------------- Moves to Settings Page ---------------------------");
     }
+
+    public void gotoOrganisationPage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.clickWithJavaScript(leftSideMenu.organisationMainLink);
+        logger.info(" --------------------------- Moves to Organisation Page ---------------------------");
+    }
 }

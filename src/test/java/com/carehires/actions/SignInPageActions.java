@@ -35,9 +35,11 @@ public class SignInPageActions {
     public void loginToCareHires() throws Exception {
         String username = DataConfigurationReader.getUserCredentials("SuperAdmin").get("username");
         String encryptedPassword = DataConfigurationReader.getUserCredentials("SuperAdmin").get("password");
-
         String decryptedPassword = EncryptAndDecrypt.decrypt(encryptedPassword);
+        signInToCareHires(username, decryptedPassword);
+    }
 
+    private void signInToCareHires(String username, String decryptedPassword) {
         BasePage.clearAndEnterTexts(signin.email, username);
         BasePage.clearAndEnterTexts(signin.password, decryptedPassword);
         BasePage.clickWithJavaScript(signin.signinButton);
@@ -51,5 +53,14 @@ public class SignInPageActions {
         BasePage.clickWithJavaScript(signin.expandUserDropdown);
         BasePage.waitUntilElementDisplayed(signin.logoutLink, 20);
         BasePage.clickWithJavaScript(signin.logoutLink);
+    }
+
+    @Test
+    @Description("Successfully login to Carehires as a provider user")
+    public void loginAsProviderUser() throws Exception {
+        String username = DataConfigurationReader.getUserCredentials("ProviderUser").get("username");
+        String encryptedPassword = DataConfigurationReader.getUserCredentials("ProviderUser").get("password");
+        String decryptedPassword = EncryptAndDecrypt.decrypt(encryptedPassword);
+        signInToCareHires(username, decryptedPassword);
     }
 }

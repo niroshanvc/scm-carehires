@@ -36,7 +36,7 @@ public class GenericUtils {
         BasePage.clearTexts(postcodeInput);
         BasePage.typeWithStringBuilderAndDelay(postcodeInput, postcode, delayInMilliseconds);
         BasePage.waitUntilElementPresent(genericElementsPage.autoSuggestAddresses, 60);
-        List<WebElement> addresses = null;
+        List<WebElement> addresses;
         try {
             addresses = getDriverInstance().findElements(By.xpath("//nb-option[contains(@id, 'nb-option')]"));
         } catch (BasePage.WebDriverInitializationException e) {
@@ -92,7 +92,7 @@ public class GenericUtils {
         }
     }
 
-    private String getPhoneNumberTypeXpath(String option) {
+    private static String getPhoneNumberTypeXpath(String option) {
         return String.format("//nb-option[contains(text(),'%s')]", option);
     }
 
@@ -125,7 +125,7 @@ public class GenericUtils {
     // Helper method to select the year
     private void selectYear(int targetYear) {
         while (true) {
-            List<WebElement> yearsDisplayed = genericElementsPage.yearOptions; // Update locator as per dropdown structure
+            List<WebElement> yearsDisplayed = genericElementsPage.yearOptions; // Update locator as per dropdown
             int firstYearDisplayed = Integer.parseInt(yearsDisplayed.get(0).getText().trim());
             int lastYearDisplayed = Integer.parseInt(yearsDisplayed.get(yearsDisplayed.size() - 1).getText().trim());
 
