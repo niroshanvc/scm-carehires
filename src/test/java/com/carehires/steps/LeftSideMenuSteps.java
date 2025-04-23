@@ -61,4 +61,9 @@ public class LeftSideMenuSteps {
     public void moveToSettingsPage() {
         leftSideMenuActions.gotoSettingsPage();
     }
+
+    @And("User navigates to Organisation page")
+    public void moveToOrganisationPage() {
+        leftSideMenuActions.gotoOrganisationPage();
+    }
 }

@@ -61,7 +61,7 @@ public class EncryptAndDecrypt {
     }
 
     public static void main(String[] args) throws Exception {
-        String text = "XXXXXXXXXXXXXX";
+        String text = "MyNvk^8v7A";
         String encryptedPassword = encrypt(text);
         System.out.println(encryptedPassword);
     }

@@ -48,4 +48,11 @@ public class LoginSteps {
         signInPageActions.navigateToSignInPage();
         signInPageActions.loginToCareHires();
     }
+
+    @Given("User logins to carehires as a provider user")
+    public void loginAsAProviderUser() throws Exception {
+        signInPageActions.navigateToSignInPage();
+        signInPageActions.loginAsProviderUser();
+        overviewActions.waitAndAcceptCookies();
+    }
 }
