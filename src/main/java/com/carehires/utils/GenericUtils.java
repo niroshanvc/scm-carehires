@@ -36,7 +36,7 @@ public class GenericUtils {
         BasePage.clearTexts(postcodeInput);
         BasePage.typeWithStringBuilderAndDelay(postcodeInput, postcode, delayInMilliseconds);
         BasePage.waitUntilElementPresent(genericElementsPage.autoSuggestAddresses, 60);
-        List<WebElement> addresses = null;
+        List<WebElement> addresses;
         try {
             addresses = getDriverInstance().findElements(By.xpath("//nb-option[contains(@id, 'nb-option')]"));
         } catch (BasePage.WebDriverInitializationException e) {
@@ -146,7 +146,7 @@ public class GenericUtils {
 
     // Helper method to select the month
     private void selectMonth(String targetMonth) {
-        WebElement monthElement = null;
+        WebElement monthElement;
         try {
             monthElement = BasePage.getDriver().findElement(genericElementsPage.getMonthLocator(targetMonth));
         } catch (BasePage.WebDriverInitializationException e) {
