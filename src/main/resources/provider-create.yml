@@ -27,7 +27,7 @@ Site Management:
       SiteEmail: carehires+site1pr{{increment}}@zohomail.com
       PostalCode: BL0 9YX
       NoOfBeds: 25
-      SiteCode: AC-01
+      SiteCode: "<siteCode>"
       PhoneNumberType: "Other"
       PhoneNumber: "07412001246"
       JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
@@ -40,7 +40,7 @@ Site Management:
       SiteEmail: carehires+site2pr{{increment}}@zohomail.com
       PostalCode: BL0 0AY
       NoOfBeds: 20
-      SiteCode: AC-02
+      SiteCode: "<siteCode>"
       PhoneNumberType: "Other"
       PhoneNumber: "07412001346"
       JobNotificationAddress: carehires+prjobnot2-{{increment}}@zohomail.com

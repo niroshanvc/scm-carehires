@@ -16,4 +16,9 @@ public class ProviderSiteManagementSteps {
     public void moveToSiteAndEditData() {
         siteManagementActions.updateSiteInfo();
     }
+
+    @And("Provider user moves to Site and edit data")
+    public void moveToSiteAndAmendData() {
+        siteManagementActions.addEditSiteData();
+    }
 }

@@ -34,4 +34,9 @@ public class ProviderWorkerStaffSteps {
     public void moveToWorkerStaffAndEditData() {
         providerWorkerStaffActions.updateStaffData();
     }
+
+    @And("Provider user moves to staff and edit data")
+    public void moveToStaffAndEditData() {
+        providerWorkerStaffActions.updateProviderStaffData();
+    }
 }
