@@ -23,6 +23,7 @@ public class ProviderBillingInformationActions {
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
     private static final String EDIT_YML_FILE = "provider-edit";
+    private static final String YML_FILE_PROVIDER = "provider-user-update-organization";
     private static final String YML_HEADER = "Billing Information";
     private static final String YML_HEADER_SUB = "General Billing Information";
     private static final String YML_HEADER_SUB2 = "Custom Billing Information";
@@ -240,5 +241,41 @@ public class ProviderBillingInformationActions {
             String sortCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_HEADER_SUB2, subHeader, "Sort Code");
             BasePage.clearAndEnterTexts(billingInformationPage.sortCode, sortCode);
         }
+    }
+
+    public void updatingBillingInformation() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Updating General Billing Information - In Edit >>>>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable(PROVIDER_INCREMENT, Integer.class);
+        navigationMenu.gotoBillingPage();
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementDisplayed(billingInformationPage.addressBillsInAttentionTo, 60);
+        enterGeneralBillingData(YML_FILE_PROVIDER, UPDATE);
+
+        // enter Billing Contact Details
+        String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_PROVIDER, YML_HEADER, YML_HEADER_SUB, UPDATE, "FirstName");
+        BasePage.clearAndEnterTexts(billingInformationPage.firstName, firstName);
+
+        String lastName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_PROVIDER, YML_HEADER, YML_HEADER_SUB, UPDATE, "LastName");
+        BasePage.clearAndEnterTexts(billingInformationPage.lastName, lastName);
+
+        String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_PROVIDER, YML_HEADER, YML_HEADER_SUB, UPDATE, "EmailAddress");
+        BasePage.clearAndEnterTexts(billingInformationPage.emailAddress, email);
+
+        String contactPhone = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_PROVIDER, YML_HEADER, YML_HEADER_SUB, UPDATE, "PhoneNumberContact");
+        BasePage.clearAndEnterTexts(billingInformationPage.phoneNumberBillingContact, contactPhone);
+
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(billingInformationPage.saveButton);
+        verifyUpdateSuccessMessage();
+    }
+
+    private void verifyUpdateSuccessMessage() {
+        BasePage.waitUntilElementPresent(billingInformationPage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(billingInformationPage.successMessage).toLowerCase().trim();
+        String expected = "Billing information updated successfully.";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Billing information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(billingInformationPage.successMessage, 20);
     }
 }

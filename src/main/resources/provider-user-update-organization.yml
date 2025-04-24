@@ -80,14 +80,6 @@ User:
 
 Billing Information:
   General Billing Information:
-    Add:
-      AddressBillsInAttentionTo: IBS Solutions
-      DigitalBillingAddress: carehires+pro-billing{{increment}}@zohomail.com
-      Postal Code: LE10 2AN
-      PhoneNumber: "07432301046"
-      CreditLimitAmount: 600
-      BillingCycle: Bi Weekly
-      CreditTerm: 28 Days
     Update:
       AddressBillsInAttentionTo: IBS Solutions - updated
       DigitalBillingAddress: carehires+pro-billing-edited{{increment}}@zohomail.com

@@ -11,11 +11,11 @@ Feature: Login as a provider user and update organisation data
 #    And Provider user updates provider profile data
 #    And Provider user moves to Site and edit data
 #    And Provider user moves to staff and edit data
-    And Provider user moves to User Management and edit data
+#    And Provider user moves to User Management and edit data
+    And Provider user moves to Billing Information and edit data
 
 
 
-    And User moves to Billing Information and edit data
     And User clicks on the Complete Profile button on the Contract Agreement page
     And User navigates to Provider View page
     When User finds recently created provider
