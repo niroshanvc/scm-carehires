@@ -30,8 +30,9 @@ public class ProviderWorkerStaffActions {
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
     private static final String EDIT_YML_FILE = "provider-edit";
+    private static final String YML_FILE_PROVIDER = "provider-user-update-organization";
     private static final String YML_HEADER = "Worker Staff Management";
-    private static final String YML_HEADER_SITE_MANAGEMENT_HEADER = "Site Management";
+    private static final String YML_HEADER_SITE_MANAGEMENT = "Site Management";
     private static final String ADD = "Add";
     private static final String UPDATE = "Update";
     private static final String SKILLS = "Skills";
@@ -100,22 +101,26 @@ public class ProviderWorkerStaffActions {
     }
 
     private void uploadProofOfDemandDocument(String ymlFile, String subHeader) {
-        String proofOfDemandDocument = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,  YML_HEADER, subHeader, "ProofOfDemandDocument");
+        String proofOfDemandDocument = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
+                YML_HEADER, subHeader, "ProofOfDemandDocument");
         String absoluteFile = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
-                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Provider" + File.separator + proofOfDemandDocument;
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Provider" +
+                File.separator + proofOfDemandDocument;
         BasePage.uploadFile(workerStaffPage.proofOfDemandDocument, absoluteFile);
     }
 
     public void verifyMonthlySpendDisplayInTableGrid() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Monthly Agency Spend Value displaying in the table grid >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<< Verifying Monthly Agency Spend Value displaying in the table grid >>>>>>>>>>>>");
         String expectedValue = getExpectedMonthlySpendValue(YML_FILE, ADD);
         String actual = BasePage.getText(workerStaffPage.monthlySpendInTableGrid).trim();
         assertThat("Monthly agency spend is not correctly displaying.", actual, is(expectedValue));
     }
 
     private String getExpectedMonthlySpendValue(String ymFile, String subHeader) {
-        String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymFile, YML_HEADER, subHeader, "HourlyRate");
-        String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymFile, YML_HEADER, subHeader, "MonthlyAgencyHours");
+        String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymFile, YML_HEADER, subHeader,
+                "HourlyRate");
+        String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymFile, YML_HEADER,
+                subHeader, "MonthlyAgencyHours");
         assert hourlyRate != null;
         double hourlyRateInt = Double.parseDouble(hourlyRate);
         assert monthlyAgencyHours != null;
@@ -138,7 +143,8 @@ public class ProviderWorkerStaffActions {
         String actualInLowerCase = BasePage.getText(workerStaffPage.successMessage).toLowerCase().trim();
         String expected = "Record created successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
-        assertThat("Worker staff information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        assertThat("Worker staff information success message is wrong!", actualInLowerCase, is(
+                expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(workerStaffPage.successMessage, 20);
     }
 
@@ -155,7 +161,8 @@ public class ProviderWorkerStaffActions {
 
         //select skill(s)
         BasePage.scrollToWebElement(workerStaffPage.siteDropdown);
-        String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD, SKILLS)).split(",");
+        String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE,
+                YML_HEADER, ADD, SKILLS)).split(",");
         BasePage.waitUntilElementClickable(workerStaffPage.skills, 20);
         BasePage.clickWithJavaScript(workerStaffPage.skills);
         BasePage.genericWait(1500);
@@ -169,7 +176,7 @@ public class ProviderWorkerStaffActions {
         BasePage.waitUntilElementClickable(workerStaffPage.nextButton, 60);
 
         // edit already added worker staff
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating Worker Staff Management Information - In Edit >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<<< Updating Worker Staff Management Information - In Edit >>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementDisplayed(workerStaffPage.editDetailsIcon, 30);
         BasePage.clickWithJavaScript(workerStaffPage.editDetailsIcon);
         enterWorkerStaffManagementData(EDIT_YML_FILE, UPDATE);
@@ -185,7 +192,8 @@ public class ProviderWorkerStaffActions {
     private void updateStaffSkills() {
         // Read skills from the YAML file and convert them to a Set for easy comparison
         Set<String> desiredSkills = new HashSet<>(Arrays.asList(
-                Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, UPDATE, SKILLS)).split(",")
+                Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
+                        UPDATE, SKILLS)).split(",")
         ));
 
         // Click to open the worker skills dropdown
@@ -224,9 +232,13 @@ public class ProviderWorkerStaffActions {
         //select site
         String site;
         if (ymlFile.equalsIgnoreCase(YML_FILE)) {
-            site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT_HEADER, ADD, "Dataset1", "SiteName");
+            site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT,
+                    ADD, "Dataset1", "SiteName");
+        } else if (ymlFile.equalsIgnoreCase(YML_FILE_PROVIDER)) {
+            site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, "Site");
         } else {
-            site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT_HEADER, UPDATE, "Dataset1", "SiteName");
+            site = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER_SITE_MANAGEMENT,
+                    UPDATE, "Dataset1", "SiteName");
         }
         BasePage.waitUntilElementClickable(workerStaffPage.siteDropdown, 20);
         BasePage.genericWait(2000);
@@ -236,17 +248,20 @@ public class ProviderWorkerStaffActions {
 
         //select worker type
         BasePage.clickWithJavaScript(workerStaffPage.workerTypeDropdown);
-        String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "WorkerType");
+        String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                subHeader, "WorkerType");
         BasePage.genericWait(500);
         BasePage.clickWithJavaScript(getDropdownXpath(workerType));
 
         //enter hourly rate
-        String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "HourlyRate");
+        String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                subHeader, "HourlyRate");
         BasePage.clickWithJavaScript(workerStaffPage.hourlyRate);
         BasePage.clearAndEnterTexts(workerStaffPage.hourlyRate, hourlyRate);
 
         //enter monthly agency hours
-        String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "MonthlyAgencyHours");
+        String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                subHeader, "MonthlyAgencyHours");
         BasePage.clearAndEnterTexts(workerStaffPage.monthlyAgencyHours, monthlyAgencyHours);
         BasePage.clickTabKey(workerStaffPage.monthlyAgencyHours);
     }
@@ -261,7 +276,38 @@ public class ProviderWorkerStaffActions {
     }
 
     public void updateProviderStaffData() {
+        BasePage.waitUntilPageCompletelyLoaded();
         navigationMenu.gotoStaffPage();
+        BasePage.waitUntilPageCompletelyLoaded();
+        // add new worker staff
+        BasePage.clickWithJavaScript(workerStaffPage.addNewButton);
+        enterWorkerStaffManagementData(YML_FILE_PROVIDER, ADD);
 
+        //select skill(s)
+        BasePage.scrollToWebElement(workerStaffPage.siteDropdown);
+        String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_PROVIDER,
+                YML_HEADER, ADD, SKILLS)).split(",");
+        BasePage.waitUntilElementClickable(workerStaffPage.skills, 20);
+        BasePage.clickWithJavaScript(workerStaffPage.skills);
+        BasePage.genericWait(1500);
+        for (String skill : skills) {
+            BasePage.clickWithJavaScript(getDropdownXpath(skill));
+        }
+
+        uploadProofOfDemandDocument(YML_FILE_PROVIDER, ADD);
+        clickingOnAddButton();
+        BasePage.clickWithJavaScript(workerStaffPage.updateButton);
+        BasePage.waitUntilElementClickable(workerStaffPage.nextButton, 60);
+
+        // edit already added worker staff
+        logger.info("<<<<<<<<<<<<<<<<<<<<< Updating Worker Staff Management Information - In Edit >>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementDisplayed(workerStaffPage.editDetailsIcon, 30);
+        BasePage.clickWithJavaScript(workerStaffPage.editDetailsIcon);
+        enterWorkerStaffManagementData(YML_FILE_PROVIDER, UPDATE);
+        BasePage.scrollToWebElement(workerStaffPage.siteDropdown);
+        updateStaffSkills();
+        uploadProofOfDemandDocument(YML_FILE_PROVIDER, UPDATE);
+        BasePage.clickWithJavaScript(workerStaffPage.updateButton);
+        verifyUpdateSuccessMessage();
     }
 }
