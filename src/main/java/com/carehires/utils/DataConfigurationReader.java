@@ -161,7 +161,7 @@ public class DataConfigurationReader {
             credentials.put("username", userCredentials.get("username"));
             credentials.put("password", userCredentials.get("password"));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error("Error reading user credentials from YAML file: {}", ex.getMessage(), ex);
         }
         return credentials;
     }
