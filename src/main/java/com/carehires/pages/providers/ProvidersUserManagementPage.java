@@ -14,9 +14,6 @@ public class ProvidersUserManagementPage {
     @FindBy(id = "user-email")
     public WebElement emailAddress;
 
-    @FindBy(xpath = "//p[text()='Validate Email']")
-    public WebElement validateEmail;
-
     @FindBy(id = "user-name")
     public WebElement name;
 
@@ -70,4 +67,7 @@ public class ProvidersUserManagementPage {
     public String getDropdownOptionXpath(String city) {
         return String.format("//nb-option[contains(text(),'%s')]", city);
     }
+
+    @FindBy(xpath = "//button[contains(@class, 'provider-user-menu-btn')]")
+    public List<WebElement> threeDots;
 }

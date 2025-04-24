@@ -34,9 +34,6 @@ public class WorkerStaffPage {
     @FindBy(xpath = "//button[contains(text(),'Add')]")
     public WebElement addButton;
 
-    @FindBy(xpath = "//div[contains(@class, 'document-table-body')]/div[1]")
-    public WebElement addedWorkerType;
-
     @FindBy(xpath = "//button[contains(text(), 'Update')]")
     public WebElement updateButton;
 
@@ -54,4 +51,11 @@ public class WorkerStaffPage {
 
     @FindBy(xpath = "//nb-option[contains(@class,'multiple') and (contains(@class, 'selected'))]")
     public List<WebElement> alreadySelectedWorkerSkills;
+
+    public static String getDropdownXpath(String text) {
+        return String.format("//nb-option[contains(text(),'%s')]", text);
+    }
+
+    @FindBy(xpath = "//nb-option-list/ul/nb-option[1]")
+    public WebElement firstOptionInSiteDropdown;
 }

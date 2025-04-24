@@ -16,4 +16,9 @@ public class ProviderUserManagementSteps {
     public void moveToUserManagementAndEditData() {
         userManagementActions.updateUserData();
     }
+
+    @And("Provider user moves to User Management and edit data")
+    public void moveToUserAndEditData() {
+        userManagementActions.updateUserManagementData();
+    }
 }
