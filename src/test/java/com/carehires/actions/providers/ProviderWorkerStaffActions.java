@@ -89,7 +89,7 @@ public class ProviderWorkerStaffActions {
 
     public void verifyMonthlyAgencySpendValue() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Monthly Agency Spend Value >>>>>>>>>>>>>>>>>>>>");
-        String expectMonthlyAgencySpendValue = getExpectedMonthlySpendValue(YML_FILE, ADD);
+        String expectMonthlyAgencySpendValue = getExpectedMonthlySpendValue();
         String actual = BasePage.getAttributeValue(workerStaffPage.monthlyAgencySpend, "value").trim();
         assertThat("Monthly agency spend is not correctly calculate", actual, is(expectMonthlyAgencySpendValue));
     }
@@ -111,16 +111,16 @@ public class ProviderWorkerStaffActions {
 
     public void verifyMonthlySpendDisplayInTableGrid() {
         logger.info("<<<<<<<<<<<<<<< Verifying Monthly Agency Spend Value displaying in the table grid >>>>>>>>>>>>");
-        String expectedValue = getExpectedMonthlySpendValue(YML_FILE, ADD);
+        String expectedValue = getExpectedMonthlySpendValue();
         String actual = BasePage.getText(workerStaffPage.monthlySpendInTableGrid).trim();
         assertThat("Monthly agency spend is not correctly displaying.", actual, is(expectedValue));
     }
 
-    private String getExpectedMonthlySpendValue(String ymFile, String subHeader) {
-        String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymFile, YML_HEADER, subHeader,
+    private String getExpectedMonthlySpendValue() {
+        String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD,
                 "HourlyRate");
-        String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymFile, YML_HEADER,
-                subHeader, "MonthlyAgencyHours");
+        String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                ADD, "MonthlyAgencyHours");
         assert hourlyRate != null;
         double hourlyRateInt = Double.parseDouble(hourlyRate);
         assert monthlyAgencyHours != null;
