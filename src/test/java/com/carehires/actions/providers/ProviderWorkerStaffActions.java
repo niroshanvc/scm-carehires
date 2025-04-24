@@ -72,7 +72,7 @@ public class ProviderWorkerStaffActions {
             BasePage.clickWithJavaScript(workerStaffPage.skills);
             BasePage.genericWait(1500);
             for (String skill : skills) {
-                BasePage.clickWithJavaScript(getDropdownXpath(skill));
+                BasePage.clickWithJavaScript(WorkerStaffPage.getDropdownXpath(skill));
             }
         } else {
             logger.warn("No skills found in configuration file for worker staff");
@@ -83,15 +83,12 @@ public class ProviderWorkerStaffActions {
         uploadProofOfDemandDocument(YML_FILE, ADD);
     }
 
-    private String getDropdownXpath(String text) {
-        return String.format("//nb-option[contains(text(),'%s')]", text);
-    }
-
     public void verifyMonthlyAgencySpendValue() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Monthly Agency Spend Value >>>>>>>>>>>>>>>>>>>>");
         String expectMonthlyAgencySpendValue = getExpectedMonthlySpendValue();
         String actual = BasePage.getAttributeValue(workerStaffPage.monthlyAgencySpend, "value").trim();
-        assertThat("Monthly agency spend is not correctly calculate", actual, is(expectMonthlyAgencySpendValue));
+        assertThat("Monthly agency spend is not correctly calculate", actual, is(
+                expectMonthlyAgencySpendValue));
     }
 
     public void clickingOnAddButton() {
@@ -167,7 +164,7 @@ public class ProviderWorkerStaffActions {
         BasePage.clickWithJavaScript(workerStaffPage.skills);
         BasePage.genericWait(1500);
         for (String skill : skills) {
-            BasePage.clickWithJavaScript(getDropdownXpath(skill));
+            BasePage.clickWithJavaScript(WorkerStaffPage.getDropdownXpath(skill));
         }
 
         uploadProofOfDemandDocument(EDIT_YML_FILE, ADD);
@@ -205,14 +202,14 @@ public class ProviderWorkerStaffActions {
         // Deselect skills that are not in the desired list
         for (String skill : selectedSkills) {
             if (!desiredSkills.contains(skill)) {
-                BasePage.clickWithJavaScript(getDropdownXpath(skill));
+                BasePage.clickWithJavaScript(WorkerStaffPage.getDropdownXpath(skill));
             }
         }
 
         // Select skills that are in the desired list but not currently selected
         for (String skill : desiredSkills) {
             if (!selectedSkills.contains(skill)) {
-                BasePage.clickWithJavaScript(getDropdownXpath(skill));
+                BasePage.clickWithJavaScript(WorkerStaffPage.getDropdownXpath(skill));
             }
         }
     }
@@ -244,14 +241,19 @@ public class ProviderWorkerStaffActions {
         BasePage.genericWait(2000);
         BasePage.clickWithJavaScript(workerStaffPage.siteDropdown);
         BasePage.genericWait(2000);
-        BasePage.clickWithJavaScript(getDropdownXpath(site));
+        assert site != null;
+        if (site.contains("AAAA")) {
+            BasePage.clickWithJavaScript(workerStaffPage.firstOptionInSiteDropdown);
+        } else {
+            BasePage.clickWithJavaScript(WorkerStaffPage.getDropdownXpath(site));
+        }
 
         //select worker type
         BasePage.clickWithJavaScript(workerStaffPage.workerTypeDropdown);
         String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
                 subHeader, "WorkerType");
         BasePage.genericWait(500);
-        BasePage.clickWithJavaScript(getDropdownXpath(workerType));
+        BasePage.clickWithJavaScript(WorkerStaffPage.getDropdownXpath(workerType));
 
         //enter hourly rate
         String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
@@ -271,7 +273,8 @@ public class ProviderWorkerStaffActions {
         String actualInLowerCase = BasePage.getText(workerStaffPage.successMessage).toLowerCase().trim();
         String expected = "Record updated successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
-        assertThat("Worker staff update success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        assertThat("Worker staff update success message is wrong!", actualInLowerCase, is(
+                expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(workerStaffPage.successMessage, 20);
     }
 
@@ -285,13 +288,13 @@ public class ProviderWorkerStaffActions {
 
         //select skill(s)
         BasePage.scrollToWebElement(workerStaffPage.siteDropdown);
-        String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_PROVIDER,
-                YML_HEADER, ADD, SKILLS)).split(",");
+        String[] skills = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY,
+                YML_FILE_PROVIDER, YML_HEADER, ADD, SKILLS)).split(",");
         BasePage.waitUntilElementClickable(workerStaffPage.skills, 20);
         BasePage.clickWithJavaScript(workerStaffPage.skills);
         BasePage.genericWait(1500);
         for (String skill : skills) {
-            BasePage.clickWithJavaScript(getDropdownXpath(skill));
+            BasePage.clickWithJavaScript(WorkerStaffPage.getDropdownXpath(skill));
         }
 
         uploadProofOfDemandDocument(YML_FILE_PROVIDER, ADD);

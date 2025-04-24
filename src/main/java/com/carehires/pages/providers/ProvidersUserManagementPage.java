@@ -70,4 +70,7 @@ public class ProvidersUserManagementPage {
     public String getDropdownOptionXpath(String city) {
         return String.format("//nb-option[contains(text(),'%s')]", city);
     }
+
+    @FindBy(xpath = "//button[contains(@class, 'provider-user-menu-btn')]")
+    public List<WebElement> threeDots;
 }

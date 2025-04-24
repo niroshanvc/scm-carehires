@@ -54,4 +54,11 @@ public class WorkerStaffPage {
 
     @FindBy(xpath = "//nb-option[contains(@class,'multiple') and (contains(@class, 'selected'))]")
     public List<WebElement> alreadySelectedWorkerSkills;
+
+    public static String getDropdownXpath(String text) {
+        return String.format("//nb-option[contains(text(),'%s')]", text);
+    }
+
+    @FindBy(xpath = "//nb-option-list/ul/nb-option[1]")
+    public WebElement firstOptionInSiteDropdown;
 }

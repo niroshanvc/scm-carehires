@@ -39,6 +39,7 @@ public class ProviderUserManagementActions {
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
     private static final String EDIT_YML_FILE = "provider-edit";
+    private static final String YML_FILE_PROVIDER = "provider-user-update-organization";
     private static final String YML_HEADER = "User";
     private static final String ADD = "Add";
     private static final String UPDATE = "Update";
@@ -76,7 +77,8 @@ public class ProviderUserManagementActions {
         BasePage.genericWait(2000);
 
         //wait until email get validated
-        genericUtils.waitUntilEmailAddressValidatedForUniqueness(email, userManagement.emailAddress, userManagement.name);
+        genericUtils.waitUntilEmailAddressValidatedForUniqueness(email, userManagement.emailAddress,
+                userManagement.name);
         enterUserManagementData(YML_FILE, ADD);
 
         BasePage.clickWithJavaScript(userManagement.assignToSiteDropdown);
@@ -94,8 +96,8 @@ public class ProviderUserManagementActions {
             BasePage.clickWithJavaScript(userManagement.markAsAnAuthoriserToggle);
         }
 
-        String[] userAccessLevel  = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,
-                YML_HEADER, ADD, USER_ACCESS_LEVEL)).split(",");
+        String[] userAccessLevel  = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY,
+                YML_FILE, YML_HEADER, ADD, USER_ACCESS_LEVEL)).split(",");
         BasePage.clickWithJavaScript(userManagement.userAccessLevel);
         BasePage.genericWait(1000);
         for (String accessLevel : userAccessLevel) {
@@ -118,7 +120,8 @@ public class ProviderUserManagementActions {
         BasePage.waitUntilElementPresent(userManagement.fullNameCell, 60);
         String nameWithJob = BasePage.getText(userManagement.fullNameCell);
         String actual = nameWithJob.split("\n")[0].trim();
-        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "Name");
+        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD,
+                "Name");
         assertThat("User is not added", actual, is(expected));
     }
 
@@ -158,8 +161,8 @@ public class ProviderUserManagementActions {
         // close the assign to site dropdown
         BasePage.clickWithJavaScript(userManagement.phone);
 
-        String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD,
-                "MarkAsAnAuthoriser");
+        String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
+                ADD, "MarkAsAnAuthoriser");
         assert authoriser != null;
         BasePage.scrollToWebElement(userManagement.addButton);
         if(authoriser.equalsIgnoreCase("yes")) {
@@ -235,7 +238,9 @@ public class ProviderUserManagementActions {
     }
 
     private void enterUserManagementData(String ymlFile, String subHeader) {
-        String name = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Name");
+        String name = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
+                "Name");
+        BasePage.waitUntilElementDisplayed(userManagement.name, 30);
         BasePage.clearAndEnterTexts(userManagement.name, name);
 
         String jobTitle = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
@@ -258,5 +263,67 @@ public class ProviderUserManagementActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Worker user update success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(userManagement.successMessage, 20);
+    }
+
+    public void updateUserManagementData() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        navigationMenu.gotoUsersPage();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Entering User Management - In Edit >>>>>>>>>>>>>>>>>>>>>>");
+
+        // add new user
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.genericWait(3000);
+        BasePage.clickWithJavaScript(userManagement.addNewButton);
+        String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, ADD,
+                "email");
+        BasePage.genericWait(2000);
+
+        //wait until email get validated
+        genericUtils.waitUntilEmailAddressValidatedForUniqueness(email, userManagement.emailAddress, userManagement.
+                name);
+        enterUserManagementData(YML_FILE_PROVIDER, ADD);
+
+        BasePage.clickWithJavaScript(userManagement.assignToSiteDropdown);
+        BasePage.waitUntilElementClickable(userManagement.allAvailableOptions.get(0), 20);
+        // select all sites
+        BasePage.clickWithJavaScript(userManagement.allAvailableOptions.get(0));
+        // close the assign to site dropdown
+        BasePage.clickWithJavaScript(userManagement.phone);
+
+        String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_PROVIDER,
+                YML_HEADER, ADD, "MarkAsAnAuthoriser");
+        assert authoriser != null;
+        BasePage.scrollToWebElement(userManagement.addButton);
+        if(authoriser.equalsIgnoreCase("yes")) {
+            BasePage.clickWithJavaScript(userManagement.markAsAnAuthoriserToggle);
+        }
+
+        String[] userAccessLevel  = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY,
+                YML_FILE_PROVIDER, YML_HEADER, ADD, USER_ACCESS_LEVEL)).split(",");
+        BasePage.clickWithJavaScript(userManagement.userAccessLevel);
+        BasePage.genericWait(1000);
+        for (String accessLevel : userAccessLevel) {
+            BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(accessLevel));
+        }
+
+        BasePage.genericWait(10000);
+        BasePage.clickWithJavaScript(userManagement.addButton);
+        BasePage.clickWithJavaScript(userManagement.updateButton);
+
+        // edit already added user data
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Updating User Management Information - In Edit >>>>>>>>>>>>>>>>>>>>>>");
+        moveToLastThreeDots();
+        BasePage.clickWithJavaScript(userManagement.editUser);
+        BasePage.genericWait(3000);
+        enterUserManagementData(YML_FILE_PROVIDER, UPDATE);
+        updateUserAccessLevel();
+        BasePage.genericWait(10000);
+        BasePage.clickWithJavaScript(userManagement.updateButton);
+        verifyUpdateSuccessMessage();
+    }
+
+    private void moveToLastThreeDots() {
+        List<WebElement> list = userManagement.threeDots;
+        BasePage.mouseHoverOverElement(list.get(list.size() - 1));
     }
 }
