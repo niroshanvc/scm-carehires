@@ -48,17 +48,18 @@ Site Management:
       ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
 
 Worker Staff Management:
+  Site:  BioRevolution Care 148428
   Add:
     WorkerType: Care Assistant
     Skills: Elderly,Home Care,End of Life Care,Mandatory Training
-    HourlyRate: 10
-    MonthlyAgencyHours: 350
+    HourlyRate: 8
+    MonthlyAgencyHours: 300
     ProofOfDemandDocument: Proof of demand document.pdf
   Update:
     WorkerType: Rehabilitation Worker
     Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
-    HourlyRate: 10.5
-    MonthlyAgencyHours: 300
+    HourlyRate: 6
+    MonthlyAgencyHours: 250
     ProofOfDemandDocument: Proof of demand document - updated.pdf
 
 User:
