@@ -14,9 +14,6 @@ public class ProvidersUserManagementPage {
     @FindBy(id = "user-email")
     public WebElement emailAddress;
 
-    @FindBy(xpath = "//p[text()='Validate Email']")
-    public WebElement validateEmail;
-
     @FindBy(id = "user-name")
     public WebElement name;
 
