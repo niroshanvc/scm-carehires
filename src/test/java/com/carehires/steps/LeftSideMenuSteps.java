@@ -62,7 +62,7 @@ public class LeftSideMenuSteps {
         leftSideMenuActions.gotoSettingsPage();
     }
 
-    @And("User navigates to Organisation page")
+    @And("Provider user navigates to Organisation page")
     public void moveToOrganisationPage() {
         leftSideMenuActions.gotoOrganisationPage();
     }

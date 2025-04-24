@@ -94,6 +94,10 @@ public class DataConfigurationReader {
             data = processDynamicDate(data);
         }
 
+        if (data.contains("<siteCode>")) {
+            data = data.replace("<siteCode>", generateSiteCode());
+        }
+
         return data;
     }
 
@@ -157,7 +161,7 @@ public class DataConfigurationReader {
             credentials.put("username", userCredentials.get("username"));
             credentials.put("password", userCredentials.get("password"));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error("Error reading user credentials from YAML file: {}", ex.getMessage(), ex);
         }
         return credentials;
     }
@@ -262,5 +266,27 @@ public class DataConfigurationReader {
         }
 
         return data;
+    }
+
+    /**
+     * Generates a random siteCode in the format XX-XXXX.
+     * The first two characters are uppercase letters, and the last four are numeric.
+     *
+     * @return A randomly generated siteCode (e.g., AB-1234).
+     */
+    public static String generateSiteCode() {
+        // Generate the first two random uppercase letters
+        StringBuilder siteCode = new StringBuilder();
+        siteCode.append(generateRandomLetter()); // First letter
+        siteCode.append(generateRandomLetter()); // Second letter
+
+        // Add the hyphen
+        siteCode.append("-");
+
+        // Generate the last four random digits
+        String numericPart = String.format("%04d", random.nextInt(10000));
+        siteCode.append(numericPart);
+
+        return siteCode.toString();
     }
 }

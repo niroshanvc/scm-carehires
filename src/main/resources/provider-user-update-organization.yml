@@ -25,10 +25,10 @@ Site Management:
       SiteSpecialism: Adult,Autism,Childrens,Learning Disabilities
       AlsoKnownAs: BioRevolution{{increment}}
       SiteEmail: carehires+site1pr{{increment}}@zohomail.com
-      PostalCode: BL0 9YX
+      PostalCode: BL0 9YP
       NoOfBeds: 25
-      SiteCode: AC-01
-      PhoneNumberType: "Office2"
+      SiteCode: "<siteCode>"
+      PhoneNumberType: "Other"
       PhoneNumber: "07412001246"
       JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
       ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
@@ -39,9 +39,9 @@ Site Management:
       SiteSpecialism: Adult,Autism,Elderly,Nursing
       AlsoKnownAs: BioRevolution{{increment}}
       SiteEmail: carehires+site1pr{{increment}}@zohomail.com
-      PostalCode: BL0 9YX
+      PostalCode: BL0 9YU
       NoOfBeds: 25
-      SiteCode: AC-01
+      SiteCode: "<siteCode>"
       PhoneNumberType: "Mobile"
       PhoneNumber: "07412001246"
       JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com

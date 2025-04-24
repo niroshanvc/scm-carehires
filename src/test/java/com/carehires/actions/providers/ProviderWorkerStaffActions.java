@@ -259,4 +259,9 @@ public class ProviderWorkerStaffActions {
         assertThat("Worker staff update success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(workerStaffPage.successMessage, 20);
     }
+
+    public void updateProviderStaffData() {
+        navigationMenu.gotoStaffPage();
+
+    }
 }

@@ -36,7 +36,7 @@ public class ProviderCompanyInformationSteps {
         companyInformationActions.completeProviderCreationSteps();
     }
 
-    @And("User updates provider profile data")
+    @And("Provider user updates provider profile data")
     public void updateProviderProfileData() {
         companyInformationActions.updateProviderProfileData();
     }
