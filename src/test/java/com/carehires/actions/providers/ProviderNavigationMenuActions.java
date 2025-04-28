@@ -69,4 +69,10 @@ public class ProviderNavigationMenuActions {
         BasePage.mouseHoverOverElement(navigationMenuPage.settings);
         BasePage.clickWithJavaScript(navigationMenuPage.settingsImage);
     }
+
+    public void gotoRestrictionsPage() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Moving to Restrictions page >>>>>>>>>>>>>>>>>>>>");
+        BasePage.mouseHoverOverElement(navigationMenuPage.restrictions);
+        BasePage.clickWithJavaScript(navigationMenuPage.restrictionsImage);
+    }
 }

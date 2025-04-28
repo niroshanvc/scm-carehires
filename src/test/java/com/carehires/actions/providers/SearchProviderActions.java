@@ -93,6 +93,8 @@ public class SearchProviderActions {
 
         // Wait until search results are available (e.g. providerIds list is populated)
         BasePage.waitUntilElementPresent(searchPage.firstProviderId, 30);
+        BasePage.genericWait(2000);
         BasePage.clickWithJavaScript(searchPage.firstProviderId);
+        BasePage.genericWait(2000);
     }
 }

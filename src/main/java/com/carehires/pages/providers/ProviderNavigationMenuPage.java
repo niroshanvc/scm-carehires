@@ -52,4 +52,10 @@ public class ProviderNavigationMenuPage {
 
     @FindBy(xpath = "//div[contains(text(), 'Settings')]/..//img")
     public WebElement settingsImage;
+
+    @FindBy(xpath = "//div[contains(text(), 'Restrictions')]/..")
+    public WebElement restrictions;
+
+    @FindBy(xpath = "//div[contains(text(), 'Restrictions')]/..//img")
+    public WebElement restrictionsImage;
 }
