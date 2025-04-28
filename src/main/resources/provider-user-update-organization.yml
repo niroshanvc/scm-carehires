@@ -93,5 +93,5 @@ Billing Information:
       EmailAddress: carehires+billingpro{{increment}}@zohomail.com
       PhoneNumberContact: "07435301246"
 
-SubContract:
-  Note: Sub contract agreement note is entered.
+Restrictions:
+  Reason: Worker restriction note is entered.
