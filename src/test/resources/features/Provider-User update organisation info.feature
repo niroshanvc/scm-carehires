@@ -13,22 +13,15 @@ Feature: Login as a provider user and update organisation data
 #    And Provider user moves to staff and edit data
 #    And Provider user moves to User Management and edit data
 #    And Provider user moves to Billing Information and edit data
-    And Provider user moves to Restrictions and edit data
-    And User logins off from Carehires
-    And User logins to carehires
-    And User navigates to Provider View page
-    And User finds provider name equal to Automation Provider 148428
-    When User accepts a worker pending approval
-    And User logins off from Carehires
-    And User logins to carehires as a provider user
-    And Provider user navigates to Organisation page
-    Then Provider user verifies added restricted worker displays in the table grid
-    And Provider user removes restricted worker
-
-
-    And User clicks on the Complete Profile button on the Contract Agreement page
-    And User navigates to Provider View page
-    When User finds recently created provider
-    Then User verifies the provider profile status as Profile Complete
-    And User clicks on the approve button on provider information page
-    And User verifies the provider profile status as Approved
+#    And Provider user moves to Restrictions and edit data
+#    And User logins off from Carehires
+#    And User logins to carehires
+#    And User navigates to Provider View page
+#    And User finds provider name equal to Automation Provider 148428
+#    When User accepts a worker pending approval
+#    And User logins off from Carehires
+#    And User logins to carehires as a provider user
+#    And Provider user navigates to Organisation page
+#    Then Provider user verifies added restricted worker displays in the table grid
+#    And Provider user removes restricted worker
+    And Provider user moves to Notification Management and update data

@@ -1,7 +1,6 @@
 package com.carehires.actions.providers;
 
 import com.carehires.pages.providers.ProviderWorkerRestrictionManagementPage;
-import com.carehires.pages.providers.WorkerStaffPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +18,6 @@ public class ProviderWorkerRestrictionManagementActions {
 
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-user-update-organization";
-    private static final String YML_HEADER = "User";
 
     private static final Logger logger = LogManager.getFormatterLogger(ProviderWorkerRestrictionManagementActions.class);
 
@@ -49,7 +47,7 @@ public class ProviderWorkerRestrictionManagementActions {
         if (site.contains("AAAA")) {
             BasePage.clickWithJavaScript(workerRestriction.firstOptionInSiteDropdown);
         } else {
-            BasePage.clickWithJavaScript(WorkerStaffPage.getDropdownXpath(site));
+            BasePage.clickWithJavaScript(ProviderWorkerRestrictionManagementPage.getDropdownOptionXpath(site));
         }
 
         BasePage.genericWait(500);
@@ -80,7 +78,7 @@ public class ProviderWorkerRestrictionManagementActions {
         BasePage.genericWait(1000);
         navigationMenu.gotoRestrictionsPage();
         BasePage.waitUntilPageCompletelyLoaded();
-       BasePage.waitUntilElementDisplayed(workerRestriction.pendingApprovalTab, 60);
+        BasePage.waitUntilElementDisplayed(workerRestriction.pendingApprovalTab, 60);
         BasePage.clickWithJavaScript(workerRestriction.pendingApprovalTab);
         BasePage.waitUntilElementClickable(workerRestriction.firstApproveButton, 20);
         BasePage.clickWithJavaScript(workerRestriction.firstApproveButton);
@@ -91,7 +89,7 @@ public class ProviderWorkerRestrictionManagementActions {
         BasePage.genericWait(3000);
         navigationMenu.gotoRestrictionsPage();
         BasePage.waitUntilPageCompletelyLoaded();
-        WebElement ele =  BasePage.getElement(workerRestriction.firstRowInTable);
+        WebElement ele =  BasePage.getElement(ProviderWorkerRestrictionManagementPage.FIRST_ROW_IN_TABLE);
         assertThat("Restricted worker is not displayed in the table grid", ele.isDisplayed(), is(true));
     }
 
