@@ -5,7 +5,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class ProviderWorkerRestrictionManagementPage {
 
-    public String getDropdownOptionXpath(String city) {
+    public static String getDropdownOptionXpath(String city) {
         return String.format("//nb-option[contains(text(),'%s')]", city);
     }
 
@@ -20,9 +20,6 @@ public class ProviderWorkerRestrictionManagementPage {
 
     @FindBy(xpath = "//button[contains(text(), 'Add')]")
     public WebElement addButton;
-
-    @FindBy(xpath = "//div[@class='right-actions']/button")
-    public WebElement actionsThreeDots;
 
     @FindBy(xpath = "//button[contains(text(), 'Add New')]")
     public WebElement addNewButton;
@@ -51,7 +48,7 @@ public class ProviderWorkerRestrictionManagementPage {
     @FindBy(xpath = "(//nb-tab//div[@class='action-panel']/button[contains(@class, 'success')])[1]")
     public WebElement firstApproveButton;
 
-    public String firstRowInTable = "//div[contains(@class, 'ch-table-new-content') and not(contains(" +
+    public static final String FIRST_ROW_IN_TABLE = "//div[contains(@class, 'ch-table-new-content') and not(contains(" +
             "@class, 'header'))]";
 
     @FindBy(xpath = "//div[contains(@class, 'ch-table-new-content')]//nb-icon[@status='danger']")
