@@ -16,4 +16,9 @@ public class ProviderSettingsSteps {
     public void enableVisibilityAndMandatory(String  siteNName) {
         settings.enableVisibilityAndMandatory(siteNName);
     }
+
+    @And("Provider user updates organisation settings")
+    public void updateOrganisationSettings() {
+        settings.updateOrganisationSettings();
+    }
 }

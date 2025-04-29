@@ -2,6 +2,7 @@ package com.carehires.actions.providers;
 
 import com.carehires.pages.providers.ProviderSettingsPage;
 import com.carehires.utils.BasePage;
+import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
@@ -12,8 +13,13 @@ import static org.hamcrest.Matchers.is;
 public class ProviderSettingsActions {
 
     private final ProviderSettingsPage settingsPage;
+    private static final ProviderNavigationMenuActions navigationMenu = new ProviderNavigationMenuActions();
 
     private static final Logger logger = LogManager.getLogger(ProviderSettingsActions.class);
+
+    private static final String ENTITY = "provider";
+    private static final String YML_FILE = "provider-user-update-organization";
+
 
     public ProviderSettingsActions() {
         settingsPage = new ProviderSettingsPage();
@@ -87,5 +93,32 @@ public class ProviderSettingsActions {
         doEnableMandatoryCheckbox(siteName);
         BasePage.clickWithJavaScript(settingsPage.siteNamePopupSaveButton);
         verifySuccessMessage();
+    }
+
+    public void updateOrganisationSettings() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Update organisational settings >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.genericWait(2000);
+        navigationMenu.gotoSettingsPage();
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(settingsPage.updateButton, 60);
+        BasePage.clickWithJavaScript(settingsPage.updateButton);
+
+        String timeFormat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE,
+                "Organisational Settings", "Time Format");
+        BasePage.waitUntilElementClickable(settingsPage.timeFormat, 30);
+        BasePage.clickWithJavaScript(settingsPage.timeFormat);
+        BasePage.clickWithJavaScript(settingsPage.getDropdownOptionXpath(timeFormat));
+        BasePage.clickWithJavaScript(settingsPage.settingsSaveButton);
+        verifySettingsUpdatedSuccessMessage();
+    }
+
+    private void verifySettingsUpdatedSuccessMessage() {
+        BasePage.waitUntilElementPresent(settingsPage.successMessage, 30);
+        String actualInLowerCase = BasePage.getText(settingsPage.successMessage).toLowerCase().trim();
+        String expected = "Successfully updated settings!";
+        String expectedInLowerCase = expected.toLowerCase().trim();
+        assertThat("Pr-approval was not saved!", actualInLowerCase, is(expectedInLowerCase));
+        BasePage.waitUntilElementDisappeared(settingsPage.successMessage, 20);
     }
 }

@@ -38,4 +38,11 @@ public class ProviderSettingsPage {
 
     @FindBy(xpath = "//div[contains(@class, 'footer')]//button[contains(text(), 'Save')]")
     public WebElement settingsSaveButton;
+
+    @FindBy(xpath = "//nb-select[@id='timeFormat']/button")
+    public WebElement timeFormat;
+
+    public String getDropdownOptionXpath(String option) {
+        return String.format("//nb-option[contains(text(),'%s')]", option);
+    }
 }
