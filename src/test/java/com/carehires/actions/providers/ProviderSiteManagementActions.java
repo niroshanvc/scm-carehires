@@ -92,7 +92,7 @@ public class ProviderSiteManagementActions {
         BasePage.genericWait(10000);
         BasePage.clickWithJavaScript(siteManagementPage.addButton);
         verifySuccessMessage();
-        isSiteSaved(YML_FILE, ADD, YML_HEADER_DATASET1);
+        isSiteSaved();
 
         // add second site
         BasePage.clickWithJavaScript(siteManagementPage.addNewButton);
@@ -162,11 +162,11 @@ public class ProviderSiteManagementActions {
                 dataset, "PhoneNumber");
     }
 
-    private void isSiteSaved(String ymlFile, String subHeader, String dataset) {
+    private void isSiteSaved() {
         BasePage.waitUntilElementPresent(siteManagementPage.siteNameAddress, 90);
         String actualSiteName = BasePage.getText(siteManagementPage.siteNameAddress).trim();
-        String expectedSiteName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                subHeader, dataset, "SiteName");
+        String expectedSiteName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                ADD, YML_HEADER_DATASET1, "SiteName");
         assertThat("Site is not saved", actualSiteName, is(expectedSiteName));
     }
 
