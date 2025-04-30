@@ -184,7 +184,7 @@ public class ProviderUserManagementActions {
         // edit already added user data
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating User Management Information - In Edit >>>>>>>>>>>>>>>>>>>>");
         BasePage.mouseHoverAndClick(userManagement.actionsThreeDots, userManagement.editUser,
-                ProvidersUserManagementPage.editUserChilcElement);
+                ProvidersUserManagementPage.editUserChildElement);
         BasePage.genericWait(3000);
         enterUserManagementData(EDIT_YML_FILE, UPDATE);
         updateUserAccessLevel();

@@ -7,7 +7,6 @@ import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -122,16 +121,10 @@ public class AgencyUserManagementActions {
         verifySuccessMessage();
 
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating user details - Edit a User >>>>>>>>>>>>>>>>>>>>");
-        BasePage.waitUntilElementClickable(userManagement.editDetailsIcon, 30);
-        BasePage.clickWithJavaScript(userManagement.editDetailsIcon);
+        BasePage.mouseHoverAndClick(userManagement.actionsThreeDots, userManagement.editUser,
+                AgencyUserManagementPage.editUserChildElement);
+
         BasePage.genericWait(1000);
-        try {
-            if (!BasePage.isElementDisplayed(userManagement.emailAddress)) {
-                BasePage.clickWithJavaScript(userManagement.editDetailsIcon);
-            }
-        } catch (NoSuchElementException e) {
-            logger.info(e.getMessage());
-        }
         enterData(EDIT_YML_FILE, UPDATE);
         BasePage.scrollToWebElement(userManagement.updateButton);
         // select access levels in edit mode

@@ -53,10 +53,8 @@ public class ProvidersUserManagementPage {
     @FindBy(xpath = "//nb-menu[@class='context-menu']/ul/li/a[@title='Edit User']")
     public WebElement editUser;
 
-    public static final By editUserChilcElement = By.xpath("//nb-menu[@class='context-menu']/ul/li/a[@title='Edit User']");
-
-    @FindBy(xpath = "//nb-icon[@icon='edit-2-outline']")
-    public WebElement editDetailsIcon;
+    public static final By editUserChildElement = By.xpath("//nb-menu[@class='context-menu']/ul/li/a[" +
+            "@title='Edit User']");
 
     @FindBy(xpath = "//nb-option[contains(@class,'multiple') and (contains(@class, 'selected'))]")
     public List<WebElement> alreadySelectedOptions;
