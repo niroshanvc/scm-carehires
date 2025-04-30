@@ -52,22 +52,18 @@ public class AgencyBusinessLocationsActions {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.clickWithJavaScript(locationsPage.addNewButton);
 
-        String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, BUSINESS_LOCATION);
+        String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD,
+                BUSINESS_LOCATION);
         BasePage.clearAndEnterTexts(locationsPage.businessLocation, location);
 
-        String emailAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "BusinessEmailAddress");
+        String emailAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                ADD, "BusinessEmailAddress");
         BasePage.clearAndEnterTexts(locationsPage.businessEmailAddress, emailAddress);
 
         String city = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "City");
         BasePage.clickWithJavaScript(locationsPage.selectCity);
         BasePage.clickWithJavaScript(getCityXpath(city));
-        BasePage.genericWait(1000);
 
-        String jobNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "JobNotificationAddress");
-        BasePage.clearAndEnterTexts(locationsPage.jobNotificationAddress, jobNotification );
-
-        String approvalNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "ApprovalNotificationAddress");
-        BasePage.clearAndEnterTexts(locationsPage.approvalNotificationAddress, approvalNotification);
         BasePage.genericWait(15000);
 
         BasePage.clickWithJavaScript(locationsPage.addButton);
@@ -87,7 +83,8 @@ public class AgencyBusinessLocationsActions {
     private void isBusinessLocationSaved() {
         BasePage.waitUntilElementPresent(locationsPage.locationName, 60);
         String actualLocationName = BasePage.getText(locationsPage.locationName);
-        String expectedLocationName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, BUSINESS_LOCATION);
+        String expectedLocationName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                ADD, BUSINESS_LOCATION);
         assertThat("Business Location is not saved", actualLocationName, is(expectedLocationName));
     }
 
@@ -96,28 +93,26 @@ public class AgencyBusinessLocationsActions {
         String actualInLowerCase = BasePage.getText(locationsPage.successMessage).toLowerCase().trim();
         String expected = "Record created successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
-        assertThat("Location information saved success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        assertThat("Location information saved success message is wrong!", actualInLowerCase, is(
+                expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(locationsPage.successMessage, 20);
     }
 
     private void enterLocationsData(String headers) {
         BasePage.waitUntilElementDisplayed(locationsPage.businessLocation, 30);
-        String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers, BUSINESS_LOCATION);
+        String location = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers,
+                BUSINESS_LOCATION);
         BasePage.clearAndEnterTexts(locationsPage.businessLocation, location);
 
-        String emailAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers, "BusinessEmailAddress");
+        String emailAddress = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE,
+                YML_HEADER, headers, "BusinessEmailAddress");
         BasePage.clearAndEnterTexts(locationsPage.businessEmailAddress, emailAddress);
 
-        String city = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers, "City");
+        String city = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers,
+                "City");
         BasePage.clickWithJavaScript(locationsPage.selectCity);
         BasePage.clickWithJavaScript(getCityXpath(city));
-        BasePage.genericWait(1000);
 
-        String jobNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers, "JobNotificationAddress");
-        BasePage.clearAndEnterTexts(locationsPage.jobNotificationAddress, jobNotification );
-
-        String approvalNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers, "ApprovalNotificationAddress");
-        BasePage.clearAndEnterTexts(locationsPage.approvalNotificationAddress, approvalNotification);
         BasePage.genericWait(10000);
     }
 
@@ -158,7 +153,8 @@ public class AgencyBusinessLocationsActions {
         String actualInLowerCase = BasePage.getText(locationsPage.successMessage).toLowerCase().trim();
         String expected = "Record updated successfully.";
         String expectedInLowerCase = expected.toLowerCase().trim();
-        assertThat("Location information update success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
+        assertThat("Location information update success message is wrong!", actualInLowerCase, is(
+                expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(locationsPage.successMessage, 20);
     }
 }
