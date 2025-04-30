@@ -167,8 +167,6 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     public WebElement saveButton;
 
-    public static final By saveButtonBy = By.xpath("//button[contains(text(), 'Save')]");
-
     @FindBy(xpath = "//p[contains(text(), 'Document is added')]")
     public WebElement documentUploadedSuccessMessage;
 
@@ -195,9 +193,6 @@ public class WorkerBasicInformationPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
-
-    @FindBy(xpath = "//div[contains(@class, 'profile-steps')]/div[1]//span/nb-icon")
-    public WebElement basicInformationStep;
 
     public String getDropdownOptionXpath(String option) {
         return String.format("//nb-option[contains(text(),'%s')]", option);
