@@ -97,20 +97,6 @@ public class JobDetailsActions {
      * @param ymlFile     YAML file name.
      *
      */
-    private void enterJobDurationRecurrenceAndBreaks(String ymlFile, String header, String dayType) {
-        enterJobDurationOnly(ymlFile, header, dayType);
-        selectDateOnCalendar(dayType, ymlFile, header, jobDetailsPage.endsOn, "Ends On");
-        BasePage.scrollToWebElement(jobDetailsPage.enableRecurrence);
-        handleToggleOption(ymlFile, header, dayType, ENABLE_RECURRENCE, jobDetailsPage.enableRecurrence);
-        handleToggleOption(ymlFile, header, dayType, BREAKS_INTERVALS, jobDetailsPage.breaksOrIntervals);
-    }
-
-    /**
-     * Enter job duration, recurrence and breaks.
-     *
-     * @param ymlFile     YAML file name.
-     *
-     */
     private void enterJobDurationRecurrenceAndBreaksWithoutEndsOn(String ymlFile, String header, String dayType) {
         enterJobDurationOnly(ymlFile, header, dayType);
         BasePage.scrollToWebElement(jobDetailsPage.enableRecurrence);
@@ -366,7 +352,7 @@ public class JobDetailsActions {
         BasePage.waitUntilPageCompletelyLoaded();
         enterCareProviderAndServicePreferences(YML_FILE_EDIT, YML_HEADER_EDIT);
         BasePage.scrollToWebElement(jobDetailsPage.continueButton);
-        enterJobDurationRecurrenceAndBreaks(YML_FILE_EDIT, YML_HEADER_EDIT, NORMAL_DAY);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_EDIT, YML_HEADER_EDIT, NORMAL_DAY);
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
@@ -410,7 +396,7 @@ public class JobDetailsActions {
     }
 
     private void enterJobDurationRecurrenceAndClickContinue(String header) {
-        enterJobDurationRecurrenceAndBreaks(YML_FILE_SCENARIO1, header, NORMAL_DAY);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_SCENARIO1, header, NORMAL_DAY);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
@@ -420,7 +406,7 @@ public class JobDetailsActions {
         BasePage.waitUntilPageCompletelyLoaded();
         closePendingActionPopup();
         enterCareProviderAndServicePreferences(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B);
-        enterJobDurationRecurrenceAndBreaks(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B, NORMAL_DAY);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B, NORMAL_DAY);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
@@ -430,7 +416,7 @@ public class JobDetailsActions {
         BasePage.waitUntilPageCompletelyLoaded();
         closePendingActionPopup();
         enterCareProviderAndServicePreferences(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1C);
-        enterJobDurationRecurrenceAndBreaks(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1C, NORMAL_DAY);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1C, NORMAL_DAY);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
@@ -440,7 +426,7 @@ public class JobDetailsActions {
         BasePage.waitUntilPageCompletelyLoaded();
         closePendingActionPopup();
         enterCareProviderAndServicePreferences(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1D);
-        enterJobDurationRecurrenceAndBreaks(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1D, NORMAL_DAY);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1D, NORMAL_DAY);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
@@ -497,14 +483,14 @@ public class JobDetailsActions {
 
     public void enterJobDurationOnlyWithRecurrenceAndWithBreaks() {
         logger.info("<<<<<<<<<<<<<<<<<<<<< Entering Job Details Only with Recurrence and Breaks >>>>>>>>>>>>>>>>>>");
-        enterJobDurationRecurrenceAndBreaks(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B, NORMAL_DAY);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B, NORMAL_DAY);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
 
     public void enterJobDurationAndEnablingRecurrenceOnly() {
         logger.info("<<<<<<<<<<<<<<<< Entering Job Details by enabling Recurrence and disabling Breaks >>>>>>>>>>>>>");
-        enterJobDurationRecurrenceAndBreaks(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1C, NORMAL_DAY);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1C, NORMAL_DAY);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
