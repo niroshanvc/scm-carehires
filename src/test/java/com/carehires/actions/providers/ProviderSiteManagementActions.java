@@ -160,17 +160,6 @@ public class ProviderSiteManagementActions {
                 dataset, "PhoneNumberType");
         genericUtils.fillPhoneNumber(ENTITY, ymlFile, siteManagementPage.phoneNumber, YML_HEADER, subHeader,
                 dataset, "PhoneNumber");
-
-        logger.info("Entering Site job notification email address");
-        BasePage.scrollToWebElement(siteManagementPage.approvalNotificationAddress);
-        String jobNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                subHeader, dataset, "JobNotificationAddress");
-        BasePage.clearAndEnterTexts(siteManagementPage.jobNotificationAddress, jobNotification);
-
-        logger.info("Entering site approval notification email address");
-        String approvalNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                subHeader, dataset, "ApprovalNotificationAddress");
-        BasePage.clearAndEnterTexts(siteManagementPage.approvalNotificationAddress, approvalNotification);
     }
 
     private void isSiteSaved(String ymlFile, String subHeader, String dataset) {
