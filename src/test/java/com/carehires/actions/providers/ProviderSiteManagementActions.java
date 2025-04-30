@@ -298,7 +298,7 @@ public class ProviderSiteManagementActions {
         // edit already added site data
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating Site Management Information - In Edit >>>>>>>>>>>>>>>>>>>>");
         BasePage.clickWithJavaScript(siteManagementPage.updateButton);
-        BasePage.waitUntilElementDisplayed(siteManagementPage.editDetailsIcon, 30);
+        BasePage.waitUntilElementClickable(siteManagementPage.editDetailsIcon, 30);
         BasePage.clickWithJavaScript(siteManagementPage.editDetailsIcon);
         enterSiteManagementData(YML_FILE_PROVIDER, UPDATE, YML_HEADER_DATASET1);
 
