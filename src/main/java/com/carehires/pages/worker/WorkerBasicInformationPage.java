@@ -125,6 +125,15 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//nb-select[@formcontrolname='visaType']/button")
     public WebElement visaTypeDropdown;
 
+    @FindBy(xpath = "//nb-select[@formcontrolname='sponsorType']/button")
+    public WebElement sponsorTypeDropdown;
+
+    @FindBy(xpath = "//nb-option-list/ul/nb-option")
+    public WebElement firstOptionInDropdown;
+
+    @FindBy(xpath = "//nb-select[@formcontrolname='assignedProvider']/button")
+    public WebElement assignedProviderDropdown;
+
     @FindBy(xpath = "//input[@formcontrolname='nationalInsuranceNumber']")
     public WebElement nationalInsuranceNumber;
 
@@ -163,7 +172,8 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//p[contains(text(), 'Document is added')]")
     public WebElement documentUploadedSuccessMessage;
 
-    public static final String AGENCY_LOCATION_CHECKBOXES = "//div[contains(@id,'cdk-overlay')]//nb-option/nb-checkbox";
+    public static final String AGENCY_LOCATION_CHECKBOXES = "//div[contains(@id,'cdk-overlay')]//nb-option/" +
+            "nb-checkbox";
 
     @FindBy(xpath = "//p[contains(@class, 'text-icon') and contains(text(), '…')]")
     public WebElement topThreeDots;
@@ -171,9 +181,10 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//div[contains(@class, 'side')]/ul[@class='expanded-nav']/li[1]")
     public WebElement updateProfileLink;
 
-    public static final By updateProfileLinkChildElement = By.xpath("//li/span[contains(text(), 'Update Profile')]");
+    public static final By updateProfileLinkChildElement = By.xpath("//li/span[contains(text(), " +
+            "'Update Profile')]");
 
-    @FindBy(xpath = "//div[not(contains(@class, 'provider'))]//p/strong")
+    @FindBy(xpath = "//div[not(contains(@class, 'provider'))]//p//img/..")
     public WebElement workerId;
 
     @FindBy(xpath = "(//div[contains(@id,'cdk-overlay')]//nb-option)[1]")

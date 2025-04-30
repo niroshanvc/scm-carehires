@@ -154,6 +154,26 @@ public class WorkerBasicInformationActions {
                 BasePage.clearAndEnterTexts(basicInfo.companyNameCosDocument, companyName);
             }
 
+            String sponsorType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_SUB_HEADER_5, subHeader, "Sponsor Type");
+            if (visaType.equalsIgnoreCase("Health and care worker visa") || visaType.
+                    equalsIgnoreCase("Skilled Worker")) {
+
+                BasePage.clickWithJavaScript(basicInfo.sponsorTypeDropdown);
+                BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(sponsorType), 30);
+                BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(sponsorType));
+            }
+
+            if (visaType.equalsIgnoreCase("Health and care worker visa") || visaType.equalsIgnoreCase(
+                    "Skilled Worker")) {
+                assert sponsorType != null;
+                if (sponsorType.equalsIgnoreCase("Externally Sponsored")) {
+                    BasePage.clickWithJavaScript(basicInfo.assignedProviderDropdown);
+                    BasePage.waitUntilElementClickable(basicInfo.firstOptionInDropdown, 30);
+                    BasePage.clickWithJavaScript(basicInfo.firstOptionInDropdown);
+                }
+            }
+
             String shareCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
                     YML_SUB_HEADER_5, subHeader, "ShareCode");
             assert shareCode != null;
@@ -571,7 +591,7 @@ public class WorkerBasicInformationActions {
     // get auto generated worker id and save it on the memory
     private void getWorkerId() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Reading auto generated worker id >>>>>>>>>>>>>>>>>>>>");
-        BasePage.genericWait(6000);
+        BasePage.genericWait(10000);
         BasePage.waitUntilElementPresent(basicInfo.workerId, 90);
         String headerText = BasePage.getText(basicInfo.workerId).trim();
         String workerId = headerText.split("\n")[0];
