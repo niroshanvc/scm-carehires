@@ -56,7 +56,7 @@ jobs:
       - run:
           name: Generate Cucumber Report
           command: |
-            mvn test-compile exec:java -Dexec.mainClass="net.masterthought.cucumber.Main" \
+            mvn test-compile exec:java -Dexec.mainClass="net.masterthought.cucumber.ReportBuilder" \
               -Dexec.args="--plugin json:target/cucumber.json --plugin html:target/cucumber-html-reports"
 
       - store_artifacts:
