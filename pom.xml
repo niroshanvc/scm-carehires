@@ -20,6 +20,7 @@
         <maven.surefire.plugin.version>3.5.0</maven.surefire.plugin.version>
         <apache.log4j.version>2.24.2</apache.log4j.version>
         <hamcrest.version>2.2</hamcrest.version>
+        <cucumber.report.version>5.8.4</cucumber.report.version>
         <project.build.directory>target</project.build.directory>
 
     </properties>
@@ -126,7 +127,12 @@
         <dependency>
             <groupId>net.masterthought</groupId>
             <artifactId>maven-cucumber-reporting</artifactId>
-            <version>5.8.5</version>
+            <version>${cucumber.report.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.masterthought</groupId>
+            <artifactId>cucumber-reporting</artifactId>
+            <version>${cucumber.report.version}</version>
         </dependency>
     </dependencies>
     <profiles>
