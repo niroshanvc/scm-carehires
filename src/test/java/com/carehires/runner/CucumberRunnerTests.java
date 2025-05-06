@@ -6,7 +6,9 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = {"com.carehires.steps", "com.carehires.hooks"},
-        plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"},
+        plugin = { "json:target/cucumber.json", // Generates the JSON report
+                "pretty",
+                "html:target/cucumber-html-reports"},
         monochrome = true,
         tags = "@ApproveGeneral" // Default constant value
         //        tags = "CreateAgency, EditAgency
