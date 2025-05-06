@@ -132,4 +132,8 @@ public class JobDetailsSteps {
     public void enterJobDetailsToManageTemplate() {
         jobDetailsActions.enterJobDetailsToManageTemplate();
     }
+
+    @And("Provider User enters Job Details")
+    public void providerUserEntersJobDetails() {
+    }
 }

@@ -123,12 +123,10 @@
             <artifactId>slf4j-simple</artifactId>
             <version>2.0.16</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-testng -->
         <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-testng</artifactId>
-            <version>2.29.1</version>
-            <scope>test</scope>
+            <groupId>net.masterthought</groupId>
+            <artifactId>maven-cucumber-reporting</artifactId>
+            <version>5.8.5</version>
         </dependency>
     </dependencies>
     <profiles>
@@ -177,19 +175,6 @@
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                     <testFailureIgnore>true</testFailureIgnore>
                     <useFile>false</useFile> <!-- Add this line -->
-                </configuration>
-            </plugin>
-            <!-- allure-report-plugin for generating reports -->
-            <plugin>
-                <groupId>io.qameta.allure</groupId>
-                <artifactId>allure-maven</artifactId>
-                <version>2.12.0</version>
-                <configuration>
-                    <reportVersion>2.24.1</reportVersion>
-                    <allureDownloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.24.1/
-                        allure-commandline-2.24.1.zip</allureDownloadUrl>
-                    <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
-                    <reportDirectory>${project.build.directory}/allure-report</reportDirectory>
                 </configuration>
             </plugin>
             <!-- maven-surefire-report-plugin for generating reports -->

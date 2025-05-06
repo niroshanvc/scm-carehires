@@ -39,11 +39,6 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install -y xvfb unzip binutils jq
-            sudo apt-get update
-            sudo apt-get install -y xvfb unzip binutils
-            sudo apt-get update
-            sudo apt-get install -y xvfb
-            sudo apt-get install -y unzip
             wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
             sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
             sudo apt-get update
@@ -51,12 +46,6 @@ jobs:
             curl -sS -o chromedriver.zip https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
             sudo unzip chromedriver.zip -d /usr/local/bin/
             rm chromedriver.zip
-      - run:
-          name: Install Allure
-          command: |
-            curl -o allure-2.24.1.tgz -OLs https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.24.1/allure-commandline-2.24.1.tgz
-            sudo tar -zxvf allure-2.24.1.tgz -C /opt/
-            sudo ln -s /opt/allure-2.24.1/bin/allure /usr/bin/allure
 
       - run:
           name: Run Tests
@@ -65,13 +54,14 @@ jobs:
               -Demail=<< parameters.email >>
 
       - run:
-          name: Generate Allure Report
+          name: Generate Cucumber Report
           command: |
-            allure generate target/allure-results --clean -o target/allure-report
+            mvn test-compile exec:java -Dexec.mainClass="net.masterthought.cucumber.Main" \
+              -Dexec.args="--plugin json:target/cucumber.json --plugin html:target/cucumber-html-reports"
 
       - store_artifacts:
-          path: target/allure-report
-          destination: allure-report
+          path: target/cucumber-html-reports
+          destination: cucumber-html-reports
 
       - run:
           name: Prepare Report for Email
