@@ -48,6 +48,10 @@ jobs:
             rm chromedriver.zip
 
       - run:
+          name: Clean Target Directory
+          command: mvn clean
+
+      - run:
           name: Run Tests
           command: |
             mvn clean test -Denv=<< parameters.environment >> -Dbrowser=<< parameters.browser >> -Dcucumber.filter.tags="<< parameters.feature_tag >>" \
