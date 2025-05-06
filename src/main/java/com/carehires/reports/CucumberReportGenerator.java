@@ -12,7 +12,7 @@ public class CucumberReportGenerator {
         File reportOutputDirectory = new File("target/cucumber-html-reports");
         String jsonFile = "target/cucumber.json";
 
-        Configuration configuration = new Configuration(reportOutputDirectory, "CareHires SCM");
+        Configuration configuration = new Configuration(reportOutputDirectory, "CareHires");
         ReportBuilder reportBuilder = new ReportBuilder(Collections.singletonList(jsonFile), configuration);
         reportBuilder.generateReports();
     }
