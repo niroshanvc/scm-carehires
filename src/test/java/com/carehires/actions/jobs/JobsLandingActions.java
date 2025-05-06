@@ -3,11 +3,9 @@ package com.carehires.actions.jobs;
 
 import com.carehires.pages.jobs.JobsLandingPage;
 import com.carehires.utils.BasePage;
-import io.qameta.allure.Description;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.annotations.Test;
 
 public class JobsLandingActions {
     private final JobsLandingPage jobsLandingPage;
@@ -44,8 +42,6 @@ public class JobsLandingActions {
         BasePage.clickWithJavaScript(jobsLandingPage.postJobButton);
     }
 
-    @Test
-    @Description("Successfully create new job for Cancellation")
     public void createNewJobForCancellation() {
         logger.info(" --------------------------- Creating New Job For Cancellation ---------------------------");
         detailsActions.enterJobDetailsForCancellation();
@@ -53,8 +49,6 @@ public class JobsLandingActions {
         summaryActions.enterJobSummary();
     }
 
-    @Test
-    @Description("Create New Over Due Job For Cancellation")
     public void createNewOverDueJobForCancellation() {
         logger.info(" --------------------------- Creating New Over Due Job For Cancellation ---------------------------");
         detailsActions.enterOverDueJobDetailsForCancellation();
