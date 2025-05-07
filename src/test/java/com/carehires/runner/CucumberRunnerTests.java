@@ -8,8 +8,8 @@ import io.cucumber.testng.CucumberOptions;
         glue = {"com.carehires.steps", "com.carehires.hooks"},
         plugin = {
                 "json:target/cucumber-reports/cucumber.json", // JSON report in a separate directory
-                "pretty",
-                "html:target/cucumber-reports/html-report" // HTML report in a separate directory
+                "pretty", // Prints Gherkin source with additional colors and stack traces for errors
+                "html:target/cucumber-reports/cucumber-html-report.html" // HTML report in a separate directory
         },
         monochrome = true,
         tags = "@ProviderUserPostGeneralJob" // Default constant value

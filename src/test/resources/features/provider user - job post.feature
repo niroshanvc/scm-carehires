@@ -14,3 +14,9 @@ Feature: Login as a provider user and post a job
     And Provider User enters Job Details
     When Provider User enters Job Preferences
     Then User enters Job Summary
+
+  @ProviderUserPostGeneralJob
+  Scenario: Login as a provider user and post a general job
+    And Provider User enters Job Details
+    When Provider User enters Job Preferences
+    Then User enters Job Summary

@@ -38,7 +38,12 @@ jobs:
           name: Install Dependencies
           command: |
             sudo apt-get update
-            sudo apt-get install -y xvfb unzip binutils jq
+            sudo apt-get install -y xvfb unzip binutils jq  # Added jq
+            sudo apt-get update
+            sudo apt-get install -y xvfb unzip binutils  # Added binutils
+            sudo apt-get update
+            sudo apt-get install -y xvfb
+            sudo apt-get install -y unzip
             wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
             sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
             sudo apt-get update
@@ -46,10 +51,6 @@ jobs:
             curl -sS -o chromedriver.zip https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
             sudo unzip chromedriver.zip -d /usr/local/bin/
             rm chromedriver.zip
-
-      - run:
-          name: Clean Target Directory
-          command: mvn clean
 
       - run:
           name: Run Tests
@@ -63,80 +64,12 @@ jobs:
             mvn compile exec:java -Dexec.mainClass="com.carehires.reports.CucumberReportGenerator"
 
       - store_artifacts:
-          path: target
-          destination: cucumber-html-reports
+          path: target/cucumber-reports  # Path to cucumber reports
+          destination: cucumber-reports
 
-      - run:
-          name: Prepare Report for Email
-          command: |
-            #  This assumes Surefire reports are in target/surefire-reports
-            #  You might need to adjust this based on your report location and type
-            cd target/surefire-reports
-            for file in *.txt *.xml *.html; do  # Adjust file extensions as needed
-              if [ -f "$file" ]; then
-                if ! file -i "$file" | grep -q "charset=utf-8"; then
-                  echo "Converting $file to UTF-8"
-                  iconv -f ISO-8859-1 -t UTF-8 "$file" -o "$file.utf8" && mv "$file.utf8" "$file"
-                fi
-              else
-                echo "Skipping $file as it does not exist"
-              fi
-            done
-            zip -r test-report.zip .   # Zip the reports
-            cd ../..  # Go back to the repo root
-
-      - run:
-          name: Send Email with Attachment
-          command: |
-            export LC_ALL=en_US.UTF-8
-            export LANG=en_US.UTF-8
-            
-            # Encode the attachment
-            base64 -w 0 target/surefire-reports/test-report.zip > encoded_attachment.txt
-            
-            # Read the encoded content into a variable
-            ENCODED_CONTENT=$(cat encoded_attachment.txt)
-            
-            # Create JSON payload using echo instead of here-document
-            echo '{
-              "from": {
-                "email": "niroshan.desilva@carehires.com"
-              },
-              "personalizations": [
-                {
-                  "to": [
-                    {
-                      "email": "<< parameters.email >>"
-                    }
-                  ],
-                  "subject": "Test Execution Report for << parameters.environment >>"
-                }
-              ],
-              "content": [
-                {
-                  "type": "text/plain",
-                  "value": "The test execution report is attached."
-                }
-              ],
-              "attachments": [
-                {
-                  "content": "'${ENCODED_CONTENT}'",
-                  "filename": "test-report.zip",
-                  "type": "application/zip",
-                  "disposition": "attachment"
-                }
-              ]
-            }' > email_payload.json
-            
-            # Debug the JSON payload
-            echo "Generated email payload:"
-            head -c 1000 email_payload.json  # Print the first 1000 characters for debugging
-            
-            # Send the email using SendGrid API
-            curl -X POST https://api.sendgrid.com/v3/mail/send \
-              -H "Authorization: Bearer $SENDGRID_API_KEY" \
-              -H "Content-Type: application/json" \
-              -d @email_payload.json || echo "Error sending email!"
+      - store_artifacts:
+          path: target/surefire-reports/test-report.zip
+          destination: test-report.zip
 
 workflows:
   version: 2

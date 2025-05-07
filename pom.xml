@@ -124,16 +124,6 @@
             <artifactId>slf4j-simple</artifactId>
             <version>2.0.16</version>
         </dependency>
-        <dependency>
-            <groupId>net.masterthought</groupId>
-            <artifactId>maven-cucumber-reporting</artifactId>
-            <version>${cucumber.report.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.masterthought</groupId>
-            <artifactId>cucumber-reporting</artifactId>
-            <version>${cucumber.report.version}</version>
-        </dependency>
     </dependencies>
     <profiles>
         <profile>
@@ -163,6 +153,33 @@
     </profiles>
     <build>
         <plugins>
+            <!-- Maven Cucumber Reporting -->
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>5.8.5</version>
+                <executions>
+                    <execution>
+                        <id>generate-cucumber-report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <projectName>SCM CareHires Automation</projectName>
+                            <skip>false</skip>
+                            <outputDirectory>${project.build.directory}/cucumber-reports</outputDirectory>
+                            <inputDirectory>${project.build.directory}/cucumber-reports</inputDirectory>
+                            <jsonFiles>
+                                <param>**/*.json</param>
+                            </jsonFiles>
+                            <mergeFeaturesById>false</mergeFeaturesById>
+                            <mergeFeaturesWithRetest>false</mergeFeaturesWithRetest>
+                            <checkBuildResult>false</checkBuildResult>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Existing maven-compiler-plugin configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -199,27 +216,6 @@
                 </executions>
                 <configuration>
                     <outputDirectory>${project.build.directory}/surefire-reports</outputDirectory>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.5.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <mainClass>com.carehires.reports.CucumberReportGenerator</mainClass>
-                    <arguments>
-                        <argument>--plugin</argument>
-                        <argument>json:target/cucumber.json</argument>
-                        <argument>--plugin</argument>
-                        <argument>html:target/cucumber-html-reports</argument>
-                    </arguments>
                 </configuration>
             </plugin>
             <plugin>
