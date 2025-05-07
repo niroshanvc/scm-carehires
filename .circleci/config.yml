@@ -61,7 +61,7 @@ jobs:
       - run:
           name: Generate Cucumber Report
           command: |
-            mvn compile exec:java -Dexec.mainClass="com.carehires.reports.CucumberReportGenerator"
+            mvn clean verify -Denv=<< parameters.environment >> -Dbrowser=<< parameters.browser >> -Dcucumber.filter.tags="<< parameters.feature_tag >>"
 
       - store_artifacts:
           path: target/cucumber-reports  # Path to cucumber reports
