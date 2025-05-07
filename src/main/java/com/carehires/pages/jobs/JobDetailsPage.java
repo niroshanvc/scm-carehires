@@ -8,9 +8,6 @@ import java.util.List;
 
 public class JobDetailsPage {
 
-    @FindBy(xpath = "//button[contains(@class, 'status-primary')]")
-    public WebElement generalJobButton;
-
     @FindBy(xpath = "//nb-button-group[@role='group']/button[2]")
     public WebElement sleepInButton;
 

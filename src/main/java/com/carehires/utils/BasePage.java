@@ -174,14 +174,14 @@ public class BasePage {
         try (FileInputStream fis = new FileInputStream(RESOURCES_DIR + File.separator + "properties" + File.separator + "project.properties")) {
             prop.load(fis);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("An error occurred: ", e);
             throw new RuntimeException("Failed to load properties file", e);
         } finally {
             if (fis != null) {
                 try {
                     fis.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error("An error occurred: ", e);
                 }
             }
         }

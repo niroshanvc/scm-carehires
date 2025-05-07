@@ -640,16 +640,6 @@ public class JobDetailsActions {
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
 
-    public void sleepInAndCustomJob() {
-        logger.info("<<<<<<<<<<<<<<<<< Entering Job Details for Sleep In - Manage Timesheet - Dispute >>>>>>>>>>>>>>");
-        BasePage.waitUntilPageCompletelyLoaded();
-        closePendingActionPopup();
-        enterCareProviderAndServicePreferences(YML_FILE_MANAGE_TIMESHEET, YML_HEADER1);
-        enterSleepInDurationAndRecurrence(YML_FILE_MANAGE_TIMESHEET, YML_HEADER1);
-        BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
-        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
-    }
-
     public void enterJobDetailsForReSubmit() {
         logger.info("<<<<<<<<<<<<<<<<< Entering Job Details for Sleep In - Manage Timesheet - ReSubmit >>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
