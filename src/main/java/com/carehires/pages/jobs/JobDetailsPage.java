@@ -1,5 +1,6 @@
 package com.carehires.pages.jobs;
 
+import com.carehires.utils.BasePage;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -112,4 +113,8 @@ public class JobDetailsPage {
 
     @FindBy(xpath = "//nb-select[@formcontrolname='template']/button")
     public WebElement templateDropdownButton;
+
+    public List<WebElement> availableOptionsList() {
+        return BasePage.listOfWebElements("//ul/nb-option");
+    }
 }

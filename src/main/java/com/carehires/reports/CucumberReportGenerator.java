@@ -20,9 +20,9 @@ public class CucumberReportGenerator {
             }
         }
 
-        String jsonFile = "target/cucumber.json";
+        String jsonFile = "target/cucumber-reports/cucumber.json"; // Updated JSON file path
 
-        Configuration configuration = new Configuration(reportOutputDirectory, "CareHires CSM");
+        Configuration configuration = new Configuration(reportOutputDirectory, "CareHires");
         configuration.addClassifications("Environment", "Dev");
         configuration.addClassifications("Browser", "Chrome");
 

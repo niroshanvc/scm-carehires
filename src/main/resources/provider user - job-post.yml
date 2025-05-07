@@ -1,10 +1,7 @@
 Job Details:
   Job Type: General Job
   Care Provider / Site and Service Preferences:
-#    Care Provider: Automation Provider "<providerIncrement>"
-    Care Provider: Automation Provider 132068
-#    Site: BioRevolution Care "<providerIncrement>"
-    Site: BioRevolution Care 132068
+    Post Custom Job: "Yes"
     Using: Post Custom Job
     Worker Type: Rehabilitation Worker
     Number of Vacancies: 1
@@ -13,7 +10,7 @@ Job Details:
     Normal Day:
       Start Date: "today + 0"
       Start Time: "07:00"
-      End Time: "17:00"
+      End Time: "11:00"
       Enable Recurrence: "No"
       Repeat Type: Daily
       Ends On: "today + 0"
@@ -37,8 +34,7 @@ Job Preferences:
   Gender: Male
   Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
   Enable Block Booking: "No"
-#  Agency: Automation Agency "<agencyIncrement>"
-  Agency: Automation Agency 769227
+  Agency: Automation Agency 792684
   Job Notes: "Sample Job Post Note added."
 
 Job Details A:

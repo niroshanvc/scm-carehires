@@ -602,6 +602,16 @@ public class BasePage {
         return els;
     }
 
+    public static List<WebElement> listOfWebElements(String xpath) {
+        List<WebElement> els = null;
+        try {
+            els = getDriver().findElements(By.xpath(xpath));
+        } catch (Exception ex) {
+            logger.error("******************* Object not found at the locator: %s", xpath);
+        }
+        return els;
+    }
+
     public static void mouseHoverOverElement(WebElement element) {
         waitUntilElementClickable(element, 30);
         Actions actions;

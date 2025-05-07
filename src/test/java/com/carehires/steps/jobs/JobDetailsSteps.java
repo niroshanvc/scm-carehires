@@ -135,6 +135,6 @@ public class JobDetailsSteps {
 
     @And("Provider User enters Job Details")
     public void providerUserEntersJobDetails() {
-
+        jobDetailsActions.providerUserEntersJobDetails();
     }
 }

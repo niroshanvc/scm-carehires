@@ -63,7 +63,7 @@ jobs:
             mvn compile exec:java -Dexec.mainClass="com.carehires.reports.CucumberReportGenerator"
 
       - store_artifacts:
-          path: target/cucumber-html-reports
+          path: target
           destination: cucumber-html-reports
 
       - run:

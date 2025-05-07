@@ -6,11 +6,13 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = {"com.carehires.steps", "com.carehires.hooks"},
-        plugin = { "json:target/cucumber.json", // Generates the JSON report
+        plugin = {
+                "json:target/cucumber-reports/cucumber.json", // JSON report in a separate directory
                 "pretty",
-                "html:target/cucumber-html-reports"},
+                "html:target/cucumber-reports/html-report" // HTML report in a separate directory
+        },
         monochrome = true,
-        tags = "@ApproveGeneral" // Default constant value
+        tags = "@ProviderUserPostGeneralJob" // Default constant value
         //        tags = "CreateAgency, EditAgency
 //        or CreateProvider, CreateProviderWithCustomBilling, EditProvider
 //        or CreateWorker, EditWorker"

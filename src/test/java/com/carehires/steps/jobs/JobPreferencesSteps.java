@@ -137,4 +137,9 @@ public class JobPreferencesSteps {
     public void enterJobPreferencesToManageTemplate() {
         jobPreferencesActions.enterJobPreferencesToManageTemplate();
     }
+
+    @And("Provider User enters Job Preferences")
+    public void providerUserEntersJobPreferences() {
+        jobPreferencesActions.providerUserEntersJobPreferences();
+    }
 }

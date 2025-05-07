@@ -12,6 +12,5 @@ Feature: Login as a provider user and post a job
   @ProviderUserPostGeneralJob
   Scenario: Login as a provider user and post a general job
     And Provider User enters Job Details
-    And User enters Job Preferences
-    When User enters Job Summary
-    And User writes the job id into a text file
+    When Provider User enters Job Preferences
+    Then User enters Job Summary

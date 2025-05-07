@@ -39,6 +39,7 @@ public class JobDetailsActions {
     private static final String YML_FILE_BLOCK_BOOKING = "job-create-block-booking";
     private static final String YML_FILE_CANCELLATION = "job-cancellation";
     private static final String YML_FILE_MANAGE_TEMPLATE = "manage-job-template";
+    private static final String YML_FILE_PROVIDER_USER = "provider user - job-post";
     private static final String YML_HEADER = "Job Details";
     private static final String YML_HEADER1 = "Job Details A";
     private static final String YML_HEADER2 = "Job Details B";
@@ -714,5 +715,47 @@ public class JobDetailsActions {
         enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_MANAGE_TEMPLATE, YML_HEADER);
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void providerUserEntersJobDetails() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Enter Job Details by Provider User >>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderDetailsByProviderUser(YML_FILE_PROVIDER_USER, YML_HEADER);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+
+        // enter job duration and recurrence
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_PROVIDER_USER, YML_HEADER);
+
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    private void enterCareProviderDetailsByProviderUser(String ymlFile, String header) {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<< Entering Care provider info >>>>>>>>>>>>>>>>>>>>>>>>>>");
+        selectJobType(ymlFile, header);
+        BasePage.genericWait(5000);
+
+        // select site
+        selectFirstOptionFromDropdown(jobDetailsPage.siteDropdown);
+
+        // select post custom job or post using template
+        selectRadioButton(ymlFile, header, jobDetailsPage.usingRadioButtons);
+        BasePage.genericWait(2000);
+
+        // select worker type
+        selectDropdownOption(ymlFile, header, "Worker Type", jobDetailsPage.workerTypeDropdown);
+
+        // select number of vacancies
+        selectDropdownOption(ymlFile, header, "Number of Vacancies", jobDetailsPage.numberOfVacanciesDropdown);
+    }
+
+    private void selectFirstOptionFromDropdown(WebElement dropdown) {
+        BasePage.clickWithJavaScript(dropdown);
+        BasePage.genericWait(5000);
+        List<WebElement> options = jobDetailsPage.availableOptionsList();
+        BasePage.waitUntilElementPresent(options.get(0), 30);
+        BasePage.scrollToWebElement(options.get(0));
+        BasePage.clickWithJavaScript(options.get(0));
     }
 }
