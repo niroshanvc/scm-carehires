@@ -137,4 +137,9 @@ public class JobDetailsSteps {
     public void providerUserEntersJobDetails() {
         jobDetailsActions.providerUserEntersJobDetails();
     }
+
+    @And("Provider User enters Job Details with Breaks")
+    public void providerUserEntersJobDetailsWithBreaks() {
+        jobDetailsActions.providerUserEntersJobDetailsWithBreaks();
+    }
 }

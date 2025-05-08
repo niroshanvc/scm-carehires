@@ -19,16 +19,6 @@ Job Details:
       Unpaid Breaks Duration: "03:00"
       Paid Breaks Note: "General note added for the paid breaks."
       Unpaid Breaks Note: "Unpaid breaks note added."
-    Special Holiday:
-      Start Date: 25 Dec 2025
-      Enable Recurrence: "No"
-      Ends On: 25 Dec 2025
-      Breaks/ Intervals: "No"
-    Bank Holiday:
-      Start Date: 01 Jan 2025
-      Enable Recurrence: "No"
-      Ends On: 01 Jan 2025
-      Breaks/ Intervals: "No"
 
 Job Preferences:
   Gender: Male
@@ -37,11 +27,12 @@ Job Preferences:
   Agency: Automation Agency 792684
   Job Notes: "Sample Job Post Note added."
 
+
+
 Job Details A:
   Job Type: General Job
   Care Provider / Site and Service Preferences:
-    Care Provider: Automation Provider 709333
-    Site: BioRevolution Care 709333
+    Post Custom Job: "Yes"
     Using: Post Custom Job
     Worker Type: Rehabilitation Worker
     Number of Vacancies: 1
@@ -50,13 +41,13 @@ Job Details A:
     Normal Day:
       Start Date: "today + 0"
       Start Time: "07:00"
-      End Time: "17:00"
+      End Time: "11:00"
       Enable Recurrence: "No"
       Repeat Type: Daily
       Ends On: "today + 0"
-      Breaks/ Intervals: "No"
-      Paid Breaks Duration: "02:00"
-      Unpaid Breaks Duration: "03:00"
+      Breaks/ Intervals: "Yes"
+      Paid Breaks Duration: "00:15"
+      Unpaid Breaks Duration: "00:30"
       Paid Breaks Note: "General note added for the paid breaks."
       Unpaid Breaks Note: "Unpaid breaks note added."
 
@@ -64,23 +55,5 @@ Job Preferences A:
   Gender: Male
   Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
   Enable Block Booking: "No"
-  Agency: Automation Agency 222435
+  Agency: Automation Agency 792684
   Job Notes: "Sample Job Post Note added."
-
-Job Preferences B:
-  Gender: Male
-  Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
-  Enable Block Booking: "No"
-  Agency: Automation Agency 222435
-  Job Notes: "Sample Job Post Note added."
-  Job Posting Reason: Annual leave
-  Internal Notes: "Internal Note added."
-
-Job Preferences C:
-  Gender: Male
-  Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
-  Enable Block Booking: "No"
-  Agency: Automation Agency 222435
-  Job Notes: "Sample Job Post Note added."
-  Job Posting Reason: Annual leave
-  Internal Notes: "Internal Note added - mandatory field"

@@ -748,4 +748,18 @@ public class JobDetailsActions {
         BasePage.scrollToWebElement(options.get(0));
         BasePage.clickWithJavaScript(options.get(0));
     }
+
+    public void providerUserEntersJobDetailsWithBreaks() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Enter Job Details by Provider User >>>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderDetailsByProviderUser(YML_FILE_PROVIDER_USER, YML_HEADER1);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+
+        // enter job duration and recurrence
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_PROVIDER_USER, YML_HEADER1);
+
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
 }

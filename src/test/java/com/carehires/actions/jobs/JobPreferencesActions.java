@@ -232,6 +232,7 @@ public class JobPreferencesActions {
 
     private void selectGender(String ymlFile, String header) {
         String gender = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Gender");
+        BasePage.waitUntilElementPresent(jobPreferencesPage.genderDropdown, 60);
         BasePage.clickWithJavaScript(jobPreferencesPage.genderDropdown);
         By by = By.xpath(jobPreferencesPage.getDropdownOptionXpath(gender));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
