@@ -157,4 +157,9 @@ public class JobDetailsSteps {
     public void providerUserSelectsJobTypeAsSleepInAndProceedWithCustomJob() {
         jobDetailsActions.providerUserSelectJobTypeAsSleepInAndProceedWithCustomJob();
     }
+
+    @And("Provider User enters sleep in duration and recurrence")
+    public void providerUserEntersSleepInDurationAndRecurrence() {
+        jobDetailsActions.providerUserEntersSleepInDurationAndRecurrence();
+    }
 }

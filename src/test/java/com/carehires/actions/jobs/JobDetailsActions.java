@@ -44,6 +44,7 @@ public class JobDetailsActions {
     private static final String YML_HEADER1 = "Job Details A";
     private static final String YML_HEADER2 = "Job Details B";
     private static final String YML_HEADER3 = "Job Details C";
+    private static final String YML_HEADER4 = "Job Details D";
     private static final String YML_HEADER_SCENARIO1A = "Job Details Scenario1A";
     private static final String YML_HEADER_SCENARIO1B = "Job Details Scenario1B";
     private static final String YML_HEADER_SCENARIO1C = "Job Details Scenario1C";
@@ -800,6 +801,12 @@ public class JobDetailsActions {
         enterCareProviderDetailsByProviderUser(YML_FILE_PROVIDER_USER, YML_HEADER3);
         BasePage.scrollToWebElement(jobDetailsPage.continueButton);
         enterSleepInDurationAndRecurrence(YML_FILE_PROVIDER_USER, YML_HEADER3);
+        BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void providerUserEntersSleepInDurationAndRecurrence() {
+        enterSleepInDurationAndRecurrence(YML_FILE_PROVIDER_USER, YML_HEADER4);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }

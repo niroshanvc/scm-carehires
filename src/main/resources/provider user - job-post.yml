@@ -100,3 +100,16 @@ Job Preferences C:
   Enable Block Booking: "No"
   Agency: Automation Agency 792684
   Job Notes: "Sample Job Post Note added."
+
+
+
+Job Details D:
+  Job Type: Sleep In
+  Care Provider / Site and Service Preferences:
+    Using: Post using Template
+
+  Sleep In duration and Recurrence:
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "08:00"
+      End Time: "12:00"
