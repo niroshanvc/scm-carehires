@@ -6,9 +6,13 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = {"com.carehires.steps", "com.carehires.hooks"},
-        plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"},
+        plugin = {
+                "json:target/cucumber-reports/cucumber.json", // JSON report in a separate directory
+                "pretty", // Prints Gherkin source with additional colors and stack traces for errors
+                "html:target/cucumber-reports/cucumber-html-report.html" // HTML report in a separate directory
+        },
         monochrome = true,
-        tags = "@UpdateOrganization" // Default constant value
+        tags = "@ProviderUserPostGeneralJobFromTemplate" // Default constant value
         //        tags = "CreateAgency, EditAgency
 //        or CreateProvider, CreateProviderWithCustomBilling, EditProvider
 //        or CreateWorker, EditWorker"

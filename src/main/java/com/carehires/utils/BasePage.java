@@ -174,14 +174,14 @@ public class BasePage {
         try (FileInputStream fis = new FileInputStream(RESOURCES_DIR + File.separator + "properties" + File.separator + "project.properties")) {
             prop.load(fis);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("An error occurred: ", e);
             throw new RuntimeException("Failed to load properties file", e);
         } finally {
             if (fis != null) {
                 try {
                     fis.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error("An error occurred: ", e);
                 }
             }
         }
@@ -328,10 +328,10 @@ public class BasePage {
         WebElement ele;
         try {
             ele = getDriver().findElement(by);
+            waitUntilElementPresent(ele, 30);
         } catch (WebDriverInitializationException e) {
             throw new RuntimeException(e);
         }
-        waitUntilElementPresent(ele, 30);
         return ele.getAttribute(attribute);
     }
 
@@ -598,6 +598,16 @@ public class BasePage {
             els = getDriver().findElements(locator);
         } catch (Exception ex) {
             logger.error("****************** Object not found at the locator: %s", locator);
+        }
+        return els;
+    }
+
+    public static List<WebElement> listOfWebElements(String xpath) {
+        List<WebElement> els = null;
+        try {
+            els = getDriver().findElements(By.xpath(xpath));
+        } catch (Exception ex) {
+            logger.error("******************* Object not found at the locator: %s", xpath);
         }
         return els;
     }
@@ -918,6 +928,17 @@ public class BasePage {
             getDriver().navigate().to(url);
         } catch (WebDriverInitializationException e) {
             logger.error("Error while navigating to %s: %s", url, e.getMessage());
+        }
+    }
+
+    public static void waitForDropdownTextChange(By dropdownLocator, int timeoutInSeconds){
+        WebDriverWait wait = null;
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
+            wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementLocated(dropdownLocator,
+                    "Select Site")));
+        } catch (WebDriverInitializationException e) {
+            logger.error("** Error while waiting for dropdown value: %s", e.getMessage());
         }
     }
 }

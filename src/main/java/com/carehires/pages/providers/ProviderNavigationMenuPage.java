@@ -47,10 +47,10 @@ public class ProviderNavigationMenuPage {
     @FindBy(xpath = "//h6contains(text(), 'Agreement')]/..//nb-icon")
     public WebElement agreementImage;
 
-    @FindBy(xpath = "//div[contains(text(), 'Settings')]/..")
+    @FindBy(xpath = "//div[@class]/div[contains(text(), 'Settings')]/..")
     public WebElement settings;
 
-    @FindBy(xpath = "//div[contains(text(), 'Settings')]/..//img")
+    @FindBy(xpath = "//div[@class]/div[contains(text(), 'Settings')]/..//img")
     public WebElement settingsImage;
 
     @FindBy(xpath = "//div[contains(text(), 'Restrictions')]/..")

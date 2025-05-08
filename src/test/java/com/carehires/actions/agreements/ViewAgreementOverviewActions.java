@@ -94,7 +94,8 @@ public class ViewAgreementOverviewActions {
             || expected.equalsIgnoreCase("Inactive")) {
                 BasePage.waitUntilElementPresent(agreementOverviewPage.signatureStatusSigned.get(0), 60);
                 int size = agreementOverviewPage.signatureStatusSigned.size();
-                actual = BasePage.getText(agreementOverviewPage.signatureStatusSigned.get(size-1)).trim().toUpperCase();
+                actual = BasePage.getText(agreementOverviewPage.signatureStatusSigned.get(size-1)).trim().
+                        toUpperCase();
         }
         assertThat("Agreement signature status is not correct!", actual, is(expected));
     }
@@ -120,7 +121,8 @@ public class ViewAgreementOverviewActions {
     }
 
     private void enterDataForAttachAgreementPopup() {
-        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Agreement");
+        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
+                "Agreement");
         String absoluteFilePath = TEST_RESOURCE_FOLDER + File.separator + "Upload" + File.separator + "Agreement"
                 + File.separator + doc;
         BasePage.uploadFile(agreementOverviewPage.uploadFile, absoluteFilePath);
@@ -156,7 +158,8 @@ public class ViewAgreementOverviewActions {
         String providerFullText = BasePage.getText(agreementOverviewPage.providerTermsAndConditionsText).trim();
         String[] strArr = providerFullText.split("on behalf of");
         String actual = strArr[1].trim();
-        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER_SIGNATORIES,
+        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS,
+                YML_HEADER_SIGNATORIES,
                 YML_HEADER_PROVIDER, "Name");
         assertThat("Provider name displays incorrectly!", actual, is(expected));
     }
@@ -166,7 +169,8 @@ public class ViewAgreementOverviewActions {
         String agencyFullText = BasePage.getText(agreementOverviewPage.agencyTermsAndConditionsText).trim();
         String[] strArr = agencyFullText.split("on behalf of");
         String actual = strArr[1].trim();
-        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER_SIGNATORIES,
+        String expected = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS,
+                YML_HEADER_SIGNATORIES,
                 YML_HEADER_AGENCY, "Name");
         assertThat("Agency name displays incorrectly!", actual, is(expected));
     }
@@ -471,7 +475,8 @@ public class ViewAgreementOverviewActions {
     }
 
     private String getChHourlyMarginFromSleepInRatesPopup() {
-        return BasePage.getAttributeValue(agreementOverviewPage.sleepInRatesPopupChHourlyMargin, VALUE_ATTRIBUTE).trim();
+        return BasePage.getAttributeValue(agreementOverviewPage.sleepInRatesPopupChHourlyMargin, VALUE_ATTRIBUTE).
+                trim();
     }
 
     private String getChHourlyVatFromSleepInRatesPopup() {
@@ -490,7 +495,8 @@ public class ViewAgreementOverviewActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Agreement - Marking as Inactive >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementClickable(agreementOverviewPage.deactivateButton, 60);
         BasePage.clickWithJavaScript(agreementOverviewPage.deactivateButton);
-        BasePage.waitUntilElementClickable(agreementOverviewPage.deactivateButtonInDeactivateConfirmPopup, 30);
+        BasePage.waitUntilElementClickable(agreementOverviewPage.deactivateButtonInDeactivateConfirmPopup,
+                30);
         BasePage.clickWithJavaScript(agreementOverviewPage.deactivateButtonInDeactivateConfirmPopup);
         verifyInactiveSuccessMessage();
     }
@@ -568,6 +574,7 @@ public class ViewAgreementOverviewActions {
     public void removeWorkerRates() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Removing already existing Worker Rates >>>>>>>>>>>>>>>>>>>>");
         // delete existing worker rate
+        BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(agreementOverviewPage.editAgreementButton);
         BasePage.waitUntilElementClickable(agreementOverviewPage.workerRatesThreeDots, 60);
         BasePage.clickWithJavaScript(agreementOverviewPage.workerRatesThreeDots);

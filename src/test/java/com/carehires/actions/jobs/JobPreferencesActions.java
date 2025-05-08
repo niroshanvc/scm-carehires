@@ -4,14 +4,12 @@ package com.carehires.actions.jobs;
 import com.carehires.pages.jobs.JobPreferencesPage;
 import com.carehires.utils.BasePage;
 import com.carehires.utils.DataConfigurationReader;
-import io.qameta.allure.Description;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -32,6 +30,7 @@ public class JobPreferencesActions {
     private static final String YML_FILE_MANAGE_TIMESHEET = "manage-timesheet";
     private static final String YML_FILE_CANCELLATION = "job-cancellation";
     private static final String YML_FILE_MANAGE_TEMPLATE = "manage-job-template";
+    private static final String YML_FILE_PROVIDER_USER = "provider user - job-post";
     private static final String YML_HEADER = "Job Preferences";
     private static final String YML_HEADER1 = "Job Preferences A";
     private static final String YML_HEADER2 = "Job Preferences B";
@@ -66,6 +65,7 @@ public class JobPreferencesActions {
 
     private void enterJobNotes(String ymlFile, String header) {
         String jobNotes = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Job Notes");
+        BasePage.clearTexts(jobPreferencesPage.notes);
         for (int i = 0; i< Objects.requireNonNull(jobNotes).length(); i++) {
             char c = jobNotes.charAt(i);
             String s = String.valueOf(c);
@@ -122,8 +122,6 @@ public class JobPreferencesActions {
         }
     }
 
-    @Test
-    @Description("Select preferences")
     private void selectPreferences(String ymlFile, String header, boolean isEditMode) {
         Set<String> newPreferredSkills = getPreferredSkillsFromYml(ymlFile, header);
         Set<String> currentlySelectedSkills = getCurrentlySelectedSkills();
@@ -235,6 +233,7 @@ public class JobPreferencesActions {
 
     private void selectGender(String ymlFile, String header) {
         String gender = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Gender");
+        BasePage.waitUntilElementPresent(jobPreferencesPage.genderDropdown, 60);
         BasePage.clickWithJavaScript(jobPreferencesPage.genderDropdown);
         By by = By.xpath(jobPreferencesPage.getDropdownOptionXpath(gender));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
@@ -539,12 +538,30 @@ public class JobPreferencesActions {
     }
 
     public void enterJobPreferencesToManageTemplate() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Preferences to manage job template>>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Preferences to manage job template >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         selectGender(YML_FILE_MANAGE_TEMPLATE, YML_HEADER);
         selectPreferences(YML_FILE_MANAGE_TEMPLATE, YML_HEADER, false);
         enableDisableBlockBooking(YML_FILE_MANAGE_TEMPLATE, YML_HEADER);
         enterJobNotes(YML_FILE_MANAGE_TEMPLATE, YML_HEADER);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void providerUserEntersJobPreferences() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Provider user entering job preferences >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_PROVIDER_USER, YML_HEADER);
+        selectPreferences(YML_FILE_PROVIDER_USER, YML_HEADER, false);
+        enableDisableBlockBooking(YML_FILE_PROVIDER_USER, YML_HEADER);
+        enterJobNotes(YML_FILE_PROVIDER_USER, YML_HEADER);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void providerUserEntersJobPreferencesWithBlockBooking() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Provider user entering job preferences >>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        enableDisableBlockBooking(YML_FILE_PROVIDER_USER, YML_HEADER2);
+        enterJobNotes(YML_FILE_PROVIDER_USER, YML_HEADER2);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
     }
 }

@@ -1,11 +1,9 @@
 Basic Information:
   Agency Information:
     Add:
-      Agency: Automation Agency "<agencyIncrement>"
-#      Agency: Automation Agency 396
+      Agency: Automation Agency 769227
     Update:
-      Agency: Automation Agency "<agencyIncrement>"
-#      Agency: Automation Agency 396
+      Agency: Automation Agency 769227
 
   Personal Information:
     Add:
@@ -71,6 +69,7 @@ Basic Information:
       CompanyName: "BH111256M"
       NationalInsuranceNumber: "<insuranceNumber>"
       ShareCode: "<shareCode>"
+      Sponsor Type: Externally Sponsored
       DbsCertificateNumber: "00153552"
       IsThereAnyConviction: "No"
     Update:
@@ -81,6 +80,7 @@ Basic Information:
       CompanyName: "BH141256M"
       NationalInsuranceNumber: same
       ShareCode: same
+      Sponsor Type: Externally Sponsored
       DbsCertificateNumber: "00153557"
       IsThereAnyConviction: "No"
 

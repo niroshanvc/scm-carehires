@@ -92,7 +92,7 @@ public class ProviderSiteManagementActions {
         BasePage.genericWait(10000);
         BasePage.clickWithJavaScript(siteManagementPage.addButton);
         verifySuccessMessage();
-        isSiteSaved(YML_FILE, ADD, YML_HEADER_DATASET1);
+        isSiteSaved();
 
         // add second site
         BasePage.clickWithJavaScript(siteManagementPage.addNewButton);
@@ -160,24 +160,13 @@ public class ProviderSiteManagementActions {
                 dataset, "PhoneNumberType");
         genericUtils.fillPhoneNumber(ENTITY, ymlFile, siteManagementPage.phoneNumber, YML_HEADER, subHeader,
                 dataset, "PhoneNumber");
-
-        logger.info("Entering Site job notification email address");
-        BasePage.scrollToWebElement(siteManagementPage.approvalNotificationAddress);
-        String jobNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                subHeader, dataset, "JobNotificationAddress");
-        BasePage.clearAndEnterTexts(siteManagementPage.jobNotificationAddress, jobNotification);
-
-        logger.info("Entering site approval notification email address");
-        String approvalNotification = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                subHeader, dataset, "ApprovalNotificationAddress");
-        BasePage.clearAndEnterTexts(siteManagementPage.approvalNotificationAddress, approvalNotification);
     }
 
-    private void isSiteSaved(String ymlFile, String subHeader, String dataset) {
+    private void isSiteSaved() {
         BasePage.waitUntilElementPresent(siteManagementPage.siteNameAddress, 90);
         String actualSiteName = BasePage.getText(siteManagementPage.siteNameAddress).trim();
-        String expectedSiteName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                subHeader, dataset, "SiteName");
+        String expectedSiteName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER,
+                ADD, YML_HEADER_DATASET1, "SiteName");
         assertThat("Site is not saved", actualSiteName, is(expectedSiteName));
     }
 
@@ -309,7 +298,7 @@ public class ProviderSiteManagementActions {
         // edit already added site data
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Updating Site Management Information - In Edit >>>>>>>>>>>>>>>>>>>>");
         BasePage.clickWithJavaScript(siteManagementPage.updateButton);
-        BasePage.waitUntilElementDisplayed(siteManagementPage.editDetailsIcon, 30);
+        BasePage.waitUntilElementClickable(siteManagementPage.editDetailsIcon, 30);
         BasePage.clickWithJavaScript(siteManagementPage.editDetailsIcon);
         enterSiteManagementData(YML_FILE_PROVIDER, UPDATE, YML_HEADER_DATASET1);
 

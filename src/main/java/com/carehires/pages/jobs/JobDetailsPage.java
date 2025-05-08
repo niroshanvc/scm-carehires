@@ -1,14 +1,12 @@
 package com.carehires.pages.jobs;
 
+import com.carehires.utils.BasePage;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
 public class JobDetailsPage {
-
-    @FindBy(xpath = "//button[contains(@class, 'status-primary')]")
-    public WebElement generalJobButton;
 
     @FindBy(xpath = "//nb-button-group[@role='group']/button[2]")
     public WebElement sleepInButton;
@@ -112,4 +110,12 @@ public class JobDetailsPage {
 
     @FindBy(xpath = "//nb-select[@formcontrolname='template']/button")
     public WebElement templateDropdownButton;
+
+    public List<WebElement> availableOptionsList() {
+        return BasePage.listOfWebElements("//ul/nb-option");
+    }
+
+    public String siteXpath() {
+        return "//nb-select[@id='care-home']/button";
+    }
 }

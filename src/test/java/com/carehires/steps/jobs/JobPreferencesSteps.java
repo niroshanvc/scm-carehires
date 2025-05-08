@@ -137,4 +137,14 @@ public class JobPreferencesSteps {
     public void enterJobPreferencesToManageTemplate() {
         jobPreferencesActions.enterJobPreferencesToManageTemplate();
     }
+
+    @And("Provider User enters Job Preferences")
+    public void providerUserEntersJobPreferences() {
+        jobPreferencesActions.providerUserEntersJobPreferences();
+    }
+
+    @When("Provider User enters Job Preferences with block booking")
+    public void providerUserEntersJobPreferencesWithBlockBooking() {
+        jobPreferencesActions.providerUserEntersJobPreferencesWithBlockBooking();
+    }
 }

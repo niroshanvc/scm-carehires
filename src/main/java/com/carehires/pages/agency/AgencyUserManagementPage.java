@@ -1,5 +1,6 @@
 package com.carehires.pages.agency;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -37,9 +38,6 @@ public class AgencyUserManagementPage {
     @FindBy(xpath = "//button[contains(text(), 'Add')]")
     public WebElement addButton;
 
-    @FindBy(xpath = "(//div[contains(@class, 'new-content')]//div[contains(@class, 'document')]/div)[1]")
-    public WebElement fullNameCell;
-
     @FindBy(xpath = "//button[contains(text(),'Update')]")
     public WebElement updateButton;
 
@@ -49,13 +47,19 @@ public class AgencyUserManagementPage {
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
 
-    @FindBy(xpath = "//nb-icon[@icon='edit-2-outline']")
-    public WebElement editDetailsIcon;
-
     @FindBy(xpath = "//nb-option[contains(@class,'multiple') and (contains(@class, 'selected'))]")
     public List<WebElement> alreadySelectedAccessLevels;
 
     public String getDropdownOptionXpath(String city) {
         return String.format("//nb-option[contains(text(),'%s')]", city);
     }
+
+    @FindBy(xpath = "//div[@class='right-actions']/button")
+    public WebElement actionsThreeDots;
+
+    @FindBy(xpath = "//nb-menu[@class='context-menu']/ul/li/a[@title='Edit User']")
+    public WebElement editUser;
+
+    public static final By editUserChildElement = By.xpath("//nb-menu[@class='context-menu']/ul/li/a[" +
+            "@title='Edit User']");
 }

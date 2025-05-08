@@ -214,6 +214,8 @@ public class WorkerEmploymentHistoryActions {
         verifyUpdateSuccessMessage();
 
         // add Dataset3 - worker history
+        BasePage.clickWithJavaScript(employmentHistoryPage.workerHistoryAddNewButton);
+        BasePage.waitUntilElementPresent(employmentHistoryPage.employmentTypeDropdown, 20);
         enterWorkerHistoryInfo(EDIT_YML_FILE, ADD, YML_SUB_HEADER_DATASET3);
         BasePage.clickWithJavaScript(employmentHistoryPage.addWorkHistoryButton);
         verifySuccessMessage();
@@ -230,11 +232,13 @@ public class WorkerEmploymentHistoryActions {
         verifySuccessMessage();
 
         // add dataset2 - Reference section
+        BasePage.clickWithJavaScript(employmentHistoryPage.referenceAddNewButton);
         enterReferenceInfo(EDIT_YML_FILE, YML_SUB_HEADER_DATASET2);
         BasePage.clickWithJavaScript(employmentHistoryPage.addReferenceButton);
         verifySuccessMessage();
 
         // add dataset3 - Reference section
+        BasePage.clickWithJavaScript(employmentHistoryPage.referenceAddNewButton);
         enterReferenceInfo(EDIT_YML_FILE, YML_SUB_HEADER_DATASET3);
         BasePage.clickWithJavaScript(employmentHistoryPage.addReferenceButton);
         verifySuccessMessage();
