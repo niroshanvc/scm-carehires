@@ -328,10 +328,10 @@ public class BasePage {
         WebElement ele;
         try {
             ele = getDriver().findElement(by);
+            waitUntilElementPresent(ele, 30);
         } catch (WebDriverInitializationException e) {
             throw new RuntimeException(e);
         }
-        waitUntilElementPresent(ele, 30);
         return ele.getAttribute(attribute);
     }
 
@@ -928,6 +928,17 @@ public class BasePage {
             getDriver().navigate().to(url);
         } catch (WebDriverInitializationException e) {
             logger.error("Error while navigating to %s: %s", url, e.getMessage());
+        }
+    }
+
+    public static void waitForDropdownTextChange(By dropdownLocator, int timeoutInSeconds){
+        WebDriverWait wait = null;
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
+            wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementLocated(dropdownLocator,
+                    "Select Site")));
+        } catch (WebDriverInitializationException e) {
+            logger.error("** Error while waiting for dropdown value: %s", e.getMessage());
         }
     }
 }

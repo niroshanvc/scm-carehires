@@ -114,4 +114,8 @@ public class JobDetailsPage {
     public List<WebElement> availableOptionsList() {
         return BasePage.listOfWebElements("//ul/nb-option");
     }
+
+    public String siteXpath() {
+        return "//nb-select[@id='care-home']/button";
+    }
 }

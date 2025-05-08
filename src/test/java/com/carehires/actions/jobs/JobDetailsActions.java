@@ -762,4 +762,34 @@ public class JobDetailsActions {
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
+
+    public void providerEnterJobDetailsWithoutRecurrenceAndBreaks() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<< Enter Job Details by Provider User >>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+
+        // enter job duration and recurrence
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_PROVIDER_USER, YML_HEADER2);
+
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void providerUserSelectTemplate(String templateName) {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<< Selecting template as {} >>>>>>>>>>>>>>>>>>>", templateName);
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        selectPostUsingTemplateRadioButton();
+        BasePage.waitUntilElementClickable(jobDetailsPage.templateDropdownButton, 60);
+        BasePage.clickWithJavaScript(jobDetailsPage.templateDropdownButton);
+        BasePage.genericWait(3000);
+        By by = By.xpath(jobDetailsPage.getDropdownOptionXpath(templateName));
+        BasePage.waitUntilVisibilityOfElementLocated(by, 30);
+        BasePage.scrollToWebElement(jobDetailsPage.getDropdownOptionXpath(templateName));
+        BasePage.clickWithJavaScript(jobDetailsPage.getDropdownOptionXpath(templateName));
+
+        // wait until desired site is selected
+        By siteLocator = By.xpath(jobDetailsPage.siteXpath());
+        BasePage.waitForDropdownTextChange(siteLocator, 30);
+    }
 }

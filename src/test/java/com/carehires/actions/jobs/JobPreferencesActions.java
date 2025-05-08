@@ -65,6 +65,7 @@ public class JobPreferencesActions {
 
     private void enterJobNotes(String ymlFile, String header) {
         String jobNotes = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header, "Job Notes");
+        BasePage.clearTexts(jobPreferencesPage.notes);
         for (int i = 0; i< Objects.requireNonNull(jobNotes).length(); i++) {
             char c = jobNotes.charAt(i);
             String s = String.valueOf(c);
@@ -553,6 +554,14 @@ public class JobPreferencesActions {
         selectPreferences(YML_FILE_PROVIDER_USER, YML_HEADER, false);
         enableDisableBlockBooking(YML_FILE_PROVIDER_USER, YML_HEADER);
         enterJobNotes(YML_FILE_PROVIDER_USER, YML_HEADER);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void providerUserEntersJobPreferencesWithBlockBooking() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Provider user entering job preferences >>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        enableDisableBlockBooking(YML_FILE_PROVIDER_USER, YML_HEADER2);
+        enterJobNotes(YML_FILE_PROVIDER_USER, YML_HEADER2);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
     }
 }

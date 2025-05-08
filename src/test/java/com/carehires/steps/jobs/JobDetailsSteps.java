@@ -142,4 +142,14 @@ public class JobDetailsSteps {
     public void providerUserEntersJobDetailsWithBreaks() {
         jobDetailsActions.providerUserEntersJobDetailsWithBreaks();
     }
+
+    @And("Provider User enters Job Details without Recurrence and Breaks")
+    public void providerUserEntersJobDetailsWithoutRecurrenceAndBreaks() {
+        jobDetailsActions.providerEnterJobDetailsWithoutRecurrenceAndBreaks();
+    }
+
+    @And("^Provider User selects Post using Template and select the template as (.*)$")
+    public void selectTemplateByProviderUser(String templateName) {
+        jobDetailsActions.providerUserSelectTemplate(templateName);
+    }
 }
