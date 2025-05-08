@@ -77,3 +77,26 @@ Job Preferences B:
   Enable Block Booking: "No"
   Agency: Automation Agency 792684
   Job Notes: "Sample Job Post Note added."
+
+
+
+Job Details C:
+  Job Type: Sleep In
+  Care Provider / Site and Service Preferences:
+    Using: Post Custom Job
+    Worker Type: Rehabilitation Worker
+    Number of Vacancies: 1
+
+  Sleep In duration and Recurrence:
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "08:00"
+      End Time: "12:00"
+
+
+Job Preferences C:
+  Gender: Male
+  Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+  Enable Block Booking: "No"
+  Agency: Automation Agency 792684
+  Job Notes: "Sample Job Post Note added."

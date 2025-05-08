@@ -28,3 +28,9 @@ Feature: Login as a provider user and post a job
     When Provider User enters Job Preferences with block booking
     Then User enters Job Summary from template
 
+  @ProviderUserPostSleepInJob
+  Scenario: Login as a provider user and post a general job with break
+    And Provider User selects job type as Sleep In and proceed with custom job
+    When Provider User enters Job Preferences
+    Then User enters Job Summary
+

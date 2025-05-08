@@ -792,4 +792,15 @@ public class JobDetailsActions {
         By siteLocator = By.xpath(jobDetailsPage.siteXpath());
         BasePage.waitForDropdownTextChange(siteLocator, 30);
     }
+
+    public void providerUserSelectJobTypeAsSleepInAndProceedWithCustomJob() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Details for Sleep In jobs >>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderDetailsByProviderUser(YML_FILE_PROVIDER_USER, YML_HEADER3);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+        enterSleepInDurationAndRecurrence(YML_FILE_PROVIDER_USER, YML_HEADER3);
+        BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
 }

@@ -152,4 +152,9 @@ public class JobDetailsSteps {
     public void selectTemplateByProviderUser(String templateName) {
         jobDetailsActions.providerUserSelectTemplate(templateName);
     }
+
+    @And("Provider User selects job type as Sleep In and proceed with custom job")
+    public void providerUserSelectsJobTypeAsSleepInAndProceedWithCustomJob() {
+        jobDetailsActions.providerUserSelectJobTypeAsSleepInAndProceedWithCustomJob();
+    }
 }
