@@ -13,7 +13,7 @@
         <testng.version>7.11.0</testng.version>
         <cucumber.version>7.22.1</cucumber.version>
         <maven.compiler.source>17</maven.compiler.source>
-        <extentreports-cucumber7-adapter.version>1.14.0</extentreports-cucumber7-adapter.version>
+        <extentreports-cucumber7-adapter.version>1.13.0</extentreports-cucumber7-adapter.version>
         <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <extentreports.version>5.1.2</extentreports.version>
