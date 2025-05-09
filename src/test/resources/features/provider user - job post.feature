@@ -1,4 +1,4 @@
-@Regression-Edit
+@Regression
 @Job
 @ProviderUser
 Feature: Login as a provider user and post a job
