@@ -547,7 +547,7 @@ public class WorkerBasicInformationActions {
         enterEmploymentInformation(EDIT_YML_FILE, ADD);
         enterPassportAndOtherInformation(EDIT_YML_FILE, ADD);
         enterTravelInformation(EDIT_YML_FILE, ADD);
-        BasePage.genericWait(10000);
+        BasePage.genericWait(13000);
 
         BasePage.clickWithJavaScript(basicInfo.saveButton);
         // Store the increment value in GlobalVariables for reuse in other steps

@@ -12,7 +12,7 @@ import io.cucumber.testng.CucumberOptions;
                 "html:target/cucumber-reports/cucumber-html-report.html" // HTML report in a separate directory
         },
         monochrome = true,
-        tags = "@ProviderUserPostSleepInJobFromTemplate" // Default constant value
+        tags = "@EditWorker" // Default constant value
         //        tags = "CreateAgency, EditAgency
 //        or CreateProvider, CreateProviderWithCustomBilling, EditProvider
 //        or CreateWorker, EditWorker"
