@@ -1,4 +1,4 @@
-@Regression-Edit
+@Regression
 @Job
 @ProviderUser
 Feature: Login as a provider user and post a job
@@ -28,3 +28,15 @@ Feature: Login as a provider user and post a job
     When Provider User enters Job Preferences with block booking
     Then User enters Job Summary from template
 
+  @ProviderUserPostSleepInJob
+  Scenario: Login as a provider user and post a general job with break
+    And Provider User selects job type as Sleep In and proceed with custom job
+    When Provider User enters Job Preferences
+    Then User enters Job Summary
+
+  @ProviderUserPostSleepInJobFromTemplate
+  Scenario: Login as a provider user and post a general job from a template
+    And Provider User selects Post using Template and select the template as Job Post - Automation 011
+    And Provider User enters sleep in duration and recurrence
+    When Provider User enters Job Preferences
+    Then User enters Job Summary from template

@@ -337,8 +337,9 @@ public class WorkerDocumentsAndProofActions {
     }
 
     public void moveToBasicInformationStep() {
-        BasePage.waitUntilElementClickable(documentsAndProofPage.basicInformationStep, 60);
+        BasePage.genericWait(5000);
+        BasePage.waitUntilElementPresent(documentsAndProofPage.basicInformationStep, 60);
         BasePage.clickWithJavaScript(documentsAndProofPage.basicInformationStep);
-        BasePage.genericWait(3000);
+        BasePage.genericWait(5000);
     }
 }

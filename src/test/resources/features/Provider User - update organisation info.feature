@@ -1,4 +1,4 @@
-@Regression-Edit
+@Regression
 @ProviderUser
 Feature: Login as a provider user and update organisation data
 

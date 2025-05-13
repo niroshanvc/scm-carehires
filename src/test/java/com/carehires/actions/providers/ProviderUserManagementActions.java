@@ -188,7 +188,7 @@ public class ProviderUserManagementActions {
         BasePage.genericWait(3000);
         enterUserManagementData(EDIT_YML_FILE, UPDATE);
         updateUserAccessLevel();
-        BasePage.genericWait(10000);
+        BasePage.genericWait(15000);
         BasePage.clickWithJavaScript(userManagement.updateButton);
         verifyUpdateSuccessMessage();
         BasePage.waitUntilElementClickable(userManagement.nextButton, 20);

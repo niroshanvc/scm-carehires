@@ -257,82 +257,118 @@ public class WorkerEmploymentHistoryActions {
     private void enterWorkerHistoryInfo(String ymlFile, String subHeader, String dataset) {
         BasePage.waitUntilElementPresent(employmentHistoryPage.employmentTypeDropdown, 20);
 
-        String employmentType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "EmploymentType");
+        String employmentType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER1, subHeader, dataset, "EmploymentType");
         BasePage.genericWait(3000);
         BasePage.clickWithJavaScript(employmentHistoryPage.employmentTypeDropdown);
-        BasePage.waitUntilElementClickable(employmentHistoryPage.getDropdownOptionXpath(employmentType), 20);
+        BasePage.waitUntilElementClickable(employmentHistoryPage.getDropdownOptionXpath(employmentType),
+                20);
         BasePage.clickWithJavaScript(employmentHistoryPage.getDropdownOptionXpath(employmentType));
 
-        String currentlyWorkHere = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "IsCurrentlyWorkHere");
+        String currentlyWorkHere = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER1, subHeader, dataset, "IsCurrentlyWorkHere");
         assert currentlyWorkHere != null;
         if (currentlyWorkHere.equalsIgnoreCase("Yes")) {
             BasePage.clickWithJavaScript(employmentHistoryPage.isCurrentlyWorkingHere);
         } else {
-            String toDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "To");
+            String toDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_SUB_HEADER1, subHeader, dataset, "To");
             BasePage.clickWithJavaScript(employmentHistoryPage.to);
             genericUtils.selectDateFromCalendarPopup(toDate);
 
-            String reasonForLeaving = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "ReasonForLeaving");
+            String reasonForLeaving = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_SUB_HEADER1, subHeader, dataset, "ReasonForLeaving");
             BasePage.clickWithJavaScript(employmentHistoryPage.reasonForLeavingDropdown);
             BasePage.genericWait(1000);
-            BasePage.waitUntilElementClickable(employmentHistoryPage.getDropdownOptionXpath(reasonForLeaving), 20);
+            BasePage.waitUntilElementClickable(employmentHistoryPage.getDropdownOptionXpath(reasonForLeaving),
+                    20);
             BasePage.clickWithJavaScript(employmentHistoryPage.getDropdownOptionXpath(reasonForLeaving));
         }
 
-        String fromDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "From");
+        String fromDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER1, subHeader, dataset, "From");
         BasePage.clickWithJavaScript(employmentHistoryPage.from);
         genericUtils.selectDateFromCalendarPopup(fromDate);
 
-        String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, COMPANY_NAME);
+        String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER1, subHeader, dataset, COMPANY_NAME);
         BasePage.clearAndEnterTexts(employmentHistoryPage.companyName, companyName);
 
-        String designation = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "Designation");
+        String designation = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER1, subHeader, dataset, "Designation");
         BasePage.clearAndEnterTexts(employmentHistoryPage.designation, designation);
 
-        String isCareSectorRelatedExperience = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "IsCareSectorRelatedExperience");
+        String isCareSectorRelatedExperience = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
+                YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "IsCareSectorRelatedExperience");
         assert isCareSectorRelatedExperience != null;
         if (isCareSectorRelatedExperience.equalsIgnoreCase("Yes")) {
             BasePage.clickWithJavaScript(employmentHistoryPage.isCareRelatedWorkExperience);
         }
 
-        String additionalNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, subHeader, dataset, "AdditionalNote");
+        String additionalNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER1, subHeader, dataset, "AdditionalNote");
         BasePage.clearTexts(employmentHistoryPage.additionalNote);
         BasePage.typeWithStringBuilder(employmentHistoryPage.additionalNote, additionalNote);
     }
 
     private void enterReferenceInfo(String ymlFile, String dataset) {
         BasePage.waitUntilElementDisplayed(employmentHistoryPage.referenceTypeDropdown, 30);
-        String referenceType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER2, ADD, dataset, "ReferenceType");
+        String referenceType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER2, ADD, dataset, "ReferenceType");
         BasePage.clickWithJavaScript(employmentHistoryPage.referenceTypeDropdown);
         BasePage.genericWait(1000);
-        BasePage.waitUntilElementClickable(employmentHistoryPage.getDropdownOptionXpath(referenceType), 20);
+        BasePage.waitUntilElementClickable(employmentHistoryPage.getDropdownOptionXpath(referenceType),
+                20);
         BasePage.clickWithJavaScript(employmentHistoryPage.getDropdownOptionXpath(referenceType));
 
         BasePage.clickWithJavaScript(employmentHistoryPage.selectWorkplaceDropdown);
         String companyName;
         if (dataset.equalsIgnoreCase(YML_SUB_HEADER_DATASET2)) {
-            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, UPDATE, YML_SUB_HEADER_DATASET1, COMPANY_NAME);
+            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1,
+                    UPDATE, YML_SUB_HEADER_DATASET1, COMPANY_NAME);
         } else if (dataset.equalsIgnoreCase(YML_SUB_HEADER_DATASET3)) {
-            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, UPDATE, YML_SUB_HEADER_DATASET2, COMPANY_NAME);
+            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1,
+                    UPDATE, YML_SUB_HEADER_DATASET2, COMPANY_NAME);
         } else {
-            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1, UPDATE, YML_SUB_HEADER_DATASET1, COMPANY_NAME);
+            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER1,
+                    UPDATE, YML_SUB_HEADER_DATASET1, COMPANY_NAME);
         }
 
         if (ymlFile.equalsIgnoreCase(YML_FILE) && dataset.equalsIgnoreCase(YML_SUB_HEADER_DATASET1)) {
-            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, ADD, YML_SUB_HEADER_DATASET1, COMPANY_NAME);
+            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1,
+                    ADD, YML_SUB_HEADER_DATASET1, COMPANY_NAME);
         } else if (ymlFile.equalsIgnoreCase(YML_FILE) && dataset.equalsIgnoreCase(YML_SUB_HEADER_DATASET2)) {
-            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1, ADD, YML_SUB_HEADER_DATASET2, COMPANY_NAME);
+            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, YML_SUB_HEADER1,
+                    ADD, YML_SUB_HEADER_DATASET2, COMPANY_NAME);
         }
         BasePage.waitUntilElementClickable(employmentHistoryPage.getDropdownOptionXpath(companyName), 20);
         BasePage.clickWithJavaScript(employmentHistoryPage.getDropdownOptionXpath(companyName));
 
-        String uploadFile = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER2, ADD, dataset, "UploadFile");
+        String uploadFile = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER2, ADD, dataset, "UploadFile");
         String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
                 + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
                 + uploadFile;
-        BasePage.uploadFile(employmentHistoryPage.uploadFile, absoluteFilePath);
 
-        String referenceNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER2, ADD, dataset, "ReferenceNote");
+        BasePage.waitUntilElementPresent(employmentHistoryPage.uploadFile, 20); // Wait for the element to be present
+        BasePage.scrollToWebElement(employmentHistoryPage.uploadFile); // Scroll to make the element visible
+
+        try {
+            BasePage.waitUntilElementClickable(employmentHistoryPage.uploadFile, 20); // Wait until clickable
+            if (employmentHistoryPage.uploadFile.isDisplayed() && employmentHistoryPage.uploadFile.isEnabled()) {
+                BasePage.uploadFile(employmentHistoryPage.uploadFile, absoluteFilePath); // Upload the file
+            } else {
+                logger.error("Upload file element is not interactable. Check visibility and state.");
+            }
+        } catch (org.openqa.selenium.TimeoutException e) {
+            logger.error("Timeout waiting for upload file element to become clickable. Attempting JavaScript click.");
+            BasePage.clickWithJavaScript(employmentHistoryPage.uploadFile); // Fallback to JavaScript click
+            BasePage.uploadFile(employmentHistoryPage.uploadFile, absoluteFilePath); // Upload the file
+        }
+
+
+        String referenceNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                YML_SUB_HEADER2, ADD, dataset, "ReferenceNote");
         BasePage.typeWithStringBuilder(employmentHistoryPage.referenceNote, referenceNote);
     }
 
