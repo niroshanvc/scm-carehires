@@ -237,7 +237,7 @@ public class JobsListViewActions {
 
     private void clickOnViewDetailedJobInfo() {
         logger.info("<<<<<<<<<<<<<<<<<<< Move to a three dots and click on View Detailed Job Info >>>>>>>>>>>>>>>>");
-        BasePage.genericWait(2000);
+        BasePage.waitUntilElementPresent(listViewPage.firstThreeDotsElement, 30);
         BasePage.mouseHoverAndClick(JobsListViewPage.firstThreeDots, JobsListViewPage.viewDetailedJobInfo);
     }
 

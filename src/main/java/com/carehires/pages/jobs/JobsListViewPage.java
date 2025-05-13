@@ -11,6 +11,9 @@ public class JobsListViewPage {
     @FindBy(xpath = "(//ch-job-list-item)[1]/div[2]")
     public WebElement firstJobId;
 
+    @FindBy(xpath = "(//ch-job-list-item)[1]//button")
+    public WebElement firstThreeDotsElement;
+
     public static final By firstThreeDots = By.xpath("(//ch-job-list-item)[1]//button");
 
     public static final By jobDetailsPopupThreeDots = By.xpath("//span[contains(@class, 'menu-wrapper')]//" +

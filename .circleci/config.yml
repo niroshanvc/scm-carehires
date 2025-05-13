@@ -65,7 +65,7 @@ jobs:
 
       - store_artifacts:
           path: target/cucumber-reports  # Path to cucumber reports
-          destination: cucumber-reports
+          destination: cucumber-html-report
 
       - store_artifacts:
           path: target/surefire-reports/test-report.zip
