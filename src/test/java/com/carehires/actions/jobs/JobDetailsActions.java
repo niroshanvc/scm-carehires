@@ -17,17 +17,9 @@ import java.util.List;
 public class JobDetailsActions {
 
     private final JobDetailsPage jobDetailsPage;
-    private static GenericUtils genericUtils = null;
+    private final GenericUtils genericUtils;
 
     private static final Logger logger = LogManager.getLogger(JobDetailsActions.class);
-
-    static {
-        try {
-            genericUtils = new GenericUtils();
-        } catch (BasePage.WebDriverInitializationException e) {
-            logger.error("Error while initializing GenericUtils: {}", e.toString());
-        }
-    }
 
     private static final String ENTITY = "job";
     private static final String YML_FILE = "job-create";
@@ -67,6 +59,7 @@ public class JobDetailsActions {
         } catch (BasePage.WebDriverInitializationException e) {
             logger.error("Error while initializing Job Details Page elements: {}", e.getMessage());
         }
+        this.genericUtils = GenericUtils.getInstance();
     }
 
     public void enterJobDetails() {

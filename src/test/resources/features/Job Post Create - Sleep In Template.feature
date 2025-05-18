@@ -1,5 +1,6 @@
 @Regression-Create
 @Job
+@PostSleepInJobUsingTemplate
 @SuperAdminUser
 Feature: Test CareHires create sleep in job post using template
 
@@ -15,7 +16,7 @@ Feature: Test CareHires create sleep in job post using template
     When User selects gender and clicks on Continue button
     And User enters Job Summary from template
 
-  @PostSleepInJobUsingTemplate1B
+  @PostSleepInJobUsingTemplate1A
   Scenario: Custom jobs / Post more than 1 vacancy / With Skills / No Block booking / No job notes
     And User selects Post using Template and select the sleep in template as Sleep in - Automation 004
     And User selects more than one vacancy and enters sleep in duration and recurrence data
