@@ -17,13 +17,6 @@ Feature: Test CareHires view job
     And User filters jobs by status as Allocated
     And User filters jobs by status as Completed
     And User filters jobs by status as Cancelled
-    And User suggests a worker
-    And User rejects suggested worker
-    And User selects rejected worker
-    And User rejects selected worker
-    And User selects rejected worker
-    When User fills out the timesheets
-    Then User Approves the timesheet
 
   @ManageAllocations
     @Worker

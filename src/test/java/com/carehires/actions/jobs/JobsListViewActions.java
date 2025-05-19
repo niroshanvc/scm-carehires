@@ -44,6 +44,7 @@ public class JobsListViewActions {
     private static final String YML_FILE_MANAGE_TIMESHEET = "manage-timesheet";
     private static final String YML_FILE_CREATE_BREAKS = "job-create-with-breaks";
     private static final String YML_FILE_CANCELLATION = "job-cancellation";
+    private static final String YML_FILE_SCENARIO1 = "scenario - job post";
     private static final String YML_HEADER_JOB_PREFERENCES = "Job Preferences";
     private static final String YML_HEADER_JOB_DETAILS = "Job Details";
     private static final String YML_HEADER_JOB_CANCEL = "Cancel Job";
@@ -56,6 +57,7 @@ public class JobsListViewActions {
     private static final String YML_HEADER_SUBMIT_TIMESHEET3 = "Submit Timesheet C";
     private static final String YML_HEADER_RESUBMIT_TIMESHEET1 = "Resubmit Timesheet A";
     private static final String YML_HEADER_RESUBMIT_TIMESHEET3 = "Resubmit Timesheet C";
+    private static final String YML_HEADER_SCENARIO1A = "Job Preferences";
     private static final String YML_SUB_HEADER_CARE_PROVIDER = "Care Provider / Site and Service Preferences";
     private static final String YML_HEADER_SUGGESTED_WORKER = "Suggested Worker";
     private static final String YML_HEADER_SELECTED_WORKER = "Selected Worker";
@@ -364,7 +366,7 @@ public class JobsListViewActions {
         BasePage.refreshPage();
         clickOnViewDetailedJobInfo();
         gotoEligibleWorkersTabOnJobDetailPopup();
-        workersFilterByAgencyOnJobDetailsPopup(YML_FILE_CREATE_BREAKS);
+        workerFilterByAgencyOnJobDetailsPopup();
         clickOnSuggestButtonOnJobDetails();
         verifyWorkerSuggestSuccessMessage();
     }
@@ -402,6 +404,22 @@ public class JobsListViewActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Move to Rejected Workers tab on Job Detail Popup >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementClickable(listViewPage.detailViewRejectedWorkersTab,30);
         BasePage.clickWithJavaScript(listViewPage.detailViewRejectedWorkersTab);
+    }
+
+    private void workerFilterByAgencyOnJobDetailsPopup() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Searching eligible workers >>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.genericWait(2000);
+        BasePage.waitUntilElementClickable(listViewPage.detailViewWorkersFilterByAgencyDropdown,30);
+        BasePage.clickWithJavaScript(listViewPage.detailViewWorkersFilterByAgencyDropdown);
+
+        // Read agency name from YAML and replace <agencyIncrement> placeholder
+        String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SCENARIO1,
+                YML_HEADER_SCENARIO1A, "Agency");
+        By by = By.xpath(listViewPage.getDropdownOptionXpath(agency));
+        BasePage.waitUntilVisibilityOfElementLocated(by,90);
+        BasePage.scrollToWebElement(listViewPage.getDropdownOptionXpath(agency));
+        BasePage.clickWithJavaScript(listViewPage.getDropdownOptionXpath(agency));
+        BasePage.clickTabKey(listViewPage.detailViewWorkersFilterByAgencyDropdown);
     }
 
     private void workersFilterByAgencyOnJobDetailsPopup(String ymlFile) {
@@ -465,7 +483,7 @@ public class JobsListViewActions {
     public void rejectSuggestedWorkerOnJobDetailsPopup() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Rejecting a suggested worker >>>>>>>>>>>>>>>>>>>>");
         gotoSuggestedWorkersTabOnJobDetailPopup();
-        workersFilterByAgencyOnJobDetailsPopup(YML_FILE_CREATE_BREAKS);
+        workerFilterByAgencyOnJobDetailsPopup();
         clickOnRejectButtonOnSelectedTabJobDetailsPopup(YML_HEADER_SUGGESTED_WORKER);
         verifyWorkerRejectSuccessMessage();
     }
@@ -511,7 +529,7 @@ public class JobsListViewActions {
     public void selectRejectedWorkerOnJobDetailsPopup() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Selecting a Rejected worker >>>>>>>>>>>>>>>>>>>>");
         gotoRejectedWorkersTabOnJobDetailPopup();
-        workersFilterByAgencyOnJobDetailsPopup(YML_FILE_CREATE_BREAKS);
+        workerFilterByAgencyOnJobDetailsPopup();
         clickOnSelectButtonOnJobDetails();
         verifyWorkerSelectSuccessMessage();
     }
@@ -535,7 +553,7 @@ public class JobsListViewActions {
     public void rejectSelectedWorkerOnJobDetailsPopup() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Reject a selected worker >>>>>>>>>>>>>>>>>>>>");
         gotoSelectedWorkersTabOnJobDetailPopup();
-        workersFilterByAgencyOnJobDetailsPopup(YML_FILE_CREATE_BREAKS);
+        workerFilterByAgencyOnJobDetailsPopup();
         clickOnRejectButtonOnSelectedTabJobDetailsPopup(YML_HEADER_SELECTED_WORKER);
         verifyWorkerRejectSuccessMessage();
     }

@@ -414,7 +414,7 @@ public class JobDetailsActions {
     }
 
     private void enterJobDurationRecurrenceAndClickContinue() {
-        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1A);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
