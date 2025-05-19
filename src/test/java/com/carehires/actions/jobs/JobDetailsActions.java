@@ -94,7 +94,7 @@ public class JobDetailsActions {
      */
     private void enterJobDurationRecurrenceAndBreaksWithoutEndsOn(String ymlFile, String header) {
         enterJobDurationOnly(ymlFile, header, NORMAL_DAY);
-        BasePage.scrollToWebElement(jobDetailsPage.enableRecurrence);
+        BasePage.scrollToBottomOfPage();
         handleToggleOption(ymlFile, header, NORMAL_DAY, ENABLE_RECURRENCE, jobDetailsPage.enableRecurrence);
         handleToggleOption(ymlFile, header, NORMAL_DAY, BREAKS_INTERVALS, jobDetailsPage.breaksOrIntervals);
     }
