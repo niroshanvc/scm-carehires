@@ -1,10 +1,8 @@
 Job Details:
   Job Type: General Job
   Care Provider / Site and Service Preferences:
-    Care Provider: Automation Provider "<providerIncrement>"
-#    Care Provider: Automation Provider 425
-    Site: BioRevolution Care "<providerIncrement>"
-#    Site: BioRevolution Care 425
+    Care Provider: Automation Provider 425
+    Site: BioRevolution Care 425
     Using: Post Custom Job
     Worker Type: Rehabilitation Worker
     Number of Vacancies: 3
