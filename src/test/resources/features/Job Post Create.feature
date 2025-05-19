@@ -27,6 +27,11 @@ Feature: Test CareHires create job post without template
     And User enters Job Details without Recurrence and Breaks
     When User enters Job Preferences without Job note and disabling block booking
     Then User enters Job Summary
+    And User suggests a worker
+    And User rejects suggested worker
+    And User selects rejected worker
+    And User rejects selected worker
+    And User selects rejected worker
 
   @PostGeneralJobsCustomJobs1B
   Scenario: Custom jobs / With recurrence / With breaks / With Skills / With Block booking / With job notes
@@ -62,4 +67,4 @@ Feature: Test CareHires create job post without template
   Scenario: Custom jobs / With recurrence / With breaks / With Skills / With Block booking / With job notes
     And User enters Job Details with Recurrence and Breaks
     When User enters Job Preferences with skills and enabling block booking but no job notes
-    Then User enters Job Summary
+    And User enters Job Summary

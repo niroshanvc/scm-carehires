@@ -9,7 +9,7 @@ Job Details Scenario1A:
 
   Job Duration and Recurrence:
     Normal Day:
-      Start Date: "today - 1"
+      Start Date: "today - 2"
       Start Time: "07:00"
       End Time: "17:00"
       Enable Recurrence: "No"
@@ -18,7 +18,7 @@ Job Details Scenario1A:
 Job Preferences:
   Gender: Male
   Enable Block Booking: "No"
-  Agency: Automation Agency 385
+  Agency: Automation Agency 387
 
 Job Details Scenario1B:
   Job Type: General Job

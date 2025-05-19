@@ -1,5 +1,6 @@
 @Regression-Create
 @Job
+@ManageJobCancellation
 @SuperAdminUser
 Feature: Test CareHires manage timesheet - general jobs
 
