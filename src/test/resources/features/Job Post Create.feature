@@ -1,5 +1,6 @@
 @Regression-Create
 @Job
+@GeneralJobPosting
 @SuperAdminUser
 Feature: Test CareHires create job post without template
 

@@ -18,11 +18,30 @@ import java.util.Objects;
 
 public class GenericUtils {
 
-    GenericElementsPage genericElementsPage;
+    // ThreadLocal instance for parallel execution
+    private static final ThreadLocal<GenericUtils> threadLocalInstance = ThreadLocal.withInitial(() -> {
+        try {
+            return new GenericUtils();
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new GenericUtilsInitializationException("Failed to initialize GenericUtils", e);
+        }
+    });
+
+    private final GenericElementsPage genericElementsPage;
 
     public GenericUtils() throws BasePage.WebDriverInitializationException {
         genericElementsPage = new GenericElementsPage();
         PageFactory.initElements(BasePage.getDriver(), genericElementsPage);
+    }
+
+    // Public method to get the thread-local instance
+    public static GenericUtils getInstance() {
+        return threadLocalInstance.get();
+    }
+
+    // Method to clean up the ThreadLocal instance
+    public static void removeInstance() {
+        threadLocalInstance.remove();
     }
 
     private static final Logger logger = LogManager.getLogger(GenericUtils.class);
@@ -40,13 +59,13 @@ public class GenericUtils {
         try {
             addresses = getDriverInstance().findElements(By.xpath("//nb-option[contains(@id, 'nb-option')]"));
         } catch (BasePage.WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverOperationException("Failed to retrieve WebDriver instance", e);
         }
 
         if (!addresses.isEmpty()) {
             addresses.get(1).click();
         } else {
-            throw new RuntimeException("Address not found");
+            throw new AddressNotFoundException("Address not found");
         }
     }
 
@@ -85,13 +104,6 @@ public class GenericUtils {
         }
     }
 
-    // Define a dedicated exception for email address uniqueness issue
-    public static class EmailAddressNotUniqueException extends RuntimeException {
-        public EmailAddressNotUniqueException(String message) {
-            super(message);
-        }
-    }
-
     private static String getPhoneNumberTypeXpath(String option) {
         return String.format("//nb-option[contains(text(),'%s')]", option);
     }
@@ -105,6 +117,8 @@ public class GenericUtils {
             int targetYear = target.getYear();
 
             // Step 1: Open the month/year dropdown
+            PageFactory.initElements(BasePage.getDriver(), genericElementsPage);
+            BasePage.waitUntilElementClickable(genericElementsPage.monthAndYearDropdown, 60);
             BasePage.clickWithJavaScript(genericElementsPage.monthAndYearDropdown);
 
             // Step 2: Select the year
@@ -118,8 +132,9 @@ public class GenericUtils {
         } catch (DateTimeParseException e) {
             logger.error("Invalid date format: {}. Expected format is 'dd MMM yyyy'", targetDate, e);
             throw e;
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new WebDriverOperationException("WebDriver operation failed", e);
         }
-
     }
 
     // Helper method to select the year
@@ -150,7 +165,7 @@ public class GenericUtils {
         try {
             monthElement = BasePage.getDriver().findElement(genericElementsPage.getMonthLocator(targetMonth));
         } catch (BasePage.WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverOperationException("WebDriver operation failed", e);
         }
         BasePage.clickWithJavaScript(monthElement);
     }
@@ -174,5 +189,29 @@ public class GenericUtils {
         }
 
         return selectedValues;
+    }
+
+    public static class GenericUtilsInitializationException extends RuntimeException {
+        public GenericUtilsInitializationException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
+    public static class AddressNotFoundException extends RuntimeException {
+        public AddressNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    public static class WebDriverOperationException extends RuntimeException {
+        public WebDriverOperationException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
+    public static class EmailAddressNotUniqueException extends RuntimeException {
+        public EmailAddressNotUniqueException(String message) {
+            super(message);
+        }
     }
 }
