@@ -277,38 +277,61 @@ public class JobDetailsActions {
         boolean isCurrentlyEnabled = currentAttr.equalsIgnoreCase("true");
 
         // If the current state does not match the expected state, click the toggle
-        if (shouldEnable != isCurrentlyEnabled) {
-            BasePage.clickWithJavaScript(toggleElement);
+        if (shouldEnable) {
+            if (!isCurrentlyEnabled) {
+                // enabling the toggle
+                BasePage.clickWithJavaScript(toggleElement);
 
-            if (toggleKey.equalsIgnoreCase(ENABLE_RECURRENCE)) {
-                if (shouldEnable) { // If enabling recurrence
-                    BasePage.waitUntilElementPresent(jobDetailsPage.repeatTypeDropdown, 60);
-                    BasePage.clickWithJavaScript(jobDetailsPage.repeatTypeDropdown);
-                    String repeatType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
-                            YML_HEADER_JOB_DURATION, subHeader, "Repeat Type");
-                    BasePage.clickWithJavaScript(jobDetailsPage.getDropdownOptionXpath(repeatType));
-                    selectDateOnCalendar(subHeader ,ymlFile, header, jobDetailsPage.endsOn, "Ends On");
+                if (toggleKey.equalsIgnoreCase(ENABLE_RECURRENCE)) {
+                    // entering recurrence details
+                    enteringRecurrenceDetails(ymlFile, header, subHeader);
+                } else if (toggleKey.equalsIgnoreCase(BREAKS_INTERVALS)) {
+                    // entering breaks details
+                    enteringBreaksIntervalsDetails(ymlFile, header, subHeader);
                 }
-            } else if (toggleKey.equalsIgnoreCase(BREAKS_INTERVALS)) {
-                if (shouldEnable) { // If enabling breaks
-                    BasePage.waitUntilElementPresent(jobDetailsPage.paidBreaksDuration, 60);
-                    selectTime(ymlFile, header, "Paid Breaks Duration", jobDetailsPage.paidBreaksDuration,
-                            jobDetailsPage.paidBreaksDurationAreaList, jobDetailsPage.availablePaidBreaksDurations,
-                            jobDetailsPage.paidBreaksDurationOkButton);
-                    selectTime(ymlFile, header, "Unpaid Breaks Duration", jobDetailsPage.unpaidBreaksDuration,
-                            jobDetailsPage.unpaidBreaksDurationAreaList, jobDetailsPage.availableUnpaidBreaksDurations,
-                            jobDetailsPage.unpaidBreaksDurationOkButton);
-
-                    String paidBreaksNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
-                            YML_HEADER_JOB_DURATION, subHeader, "Paid Breaks Note");
-                    BasePage.clearAndEnterTexts(jobDetailsPage.paidBreaksNote, paidBreaksNote);
-
-                    String unpaidBreaksNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
-                         header, YML_HEADER_JOB_DURATION, subHeader, "Unpaid Breaks Note");
-                    BasePage.clearAndEnterTexts(jobDetailsPage.unpaidBreaksNote, unpaidBreaksNote);
+            } else {
+                // If the toggle is already enabled
+                if (toggleKey.equalsIgnoreCase(ENABLE_RECURRENCE)) {
+                    // entering recurrence details
+                    enteringRecurrenceDetails(ymlFile, header, subHeader);
+                } else if (toggleKey.equalsIgnoreCase(BREAKS_INTERVALS)) {
+                    // entering breaks details
+                    enteringBreaksIntervalsDetails(ymlFile, header, subHeader);
                 }
             }
+        } else {
+            if (isCurrentlyEnabled) {
+                // disabling the toggle
+                BasePage.clickWithJavaScript(toggleElement);
+            }
         }
+    }
+
+    private void enteringBreaksIntervalsDetails(String ymlFile, String header, String subHeader) {
+        BasePage.waitUntilElementPresent(jobDetailsPage.paidBreaksDuration, 60);
+        selectTime(ymlFile, header, "Paid Breaks Duration", jobDetailsPage.paidBreaksDuration,
+                jobDetailsPage.paidBreaksDurationAreaList, jobDetailsPage.availablePaidBreaksDurations,
+                jobDetailsPage.paidBreaksDurationOkButton);
+        selectTime(ymlFile, header, "Unpaid Breaks Duration", jobDetailsPage.unpaidBreaksDuration,
+                jobDetailsPage.unpaidBreaksDurationAreaList, jobDetailsPage.availableUnpaidBreaksDurations,
+                jobDetailsPage.unpaidBreaksDurationOkButton);
+
+        String paidBreaksNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
+                YML_HEADER_JOB_DURATION, subHeader, "Paid Breaks Note");
+        BasePage.clearAndEnterTexts(jobDetailsPage.paidBreaksNote, paidBreaksNote);
+
+        String unpaidBreaksNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
+                header, YML_HEADER_JOB_DURATION, subHeader, "Unpaid Breaks Note");
+        BasePage.clearAndEnterTexts(jobDetailsPage.unpaidBreaksNote, unpaidBreaksNote);
+    }
+
+    private void enteringRecurrenceDetails(String ymlFile, String header, String subHeader) {
+        BasePage.waitUntilElementPresent(jobDetailsPage.repeatTypeDropdown, 60);
+        BasePage.clickWithJavaScript(jobDetailsPage.repeatTypeDropdown);
+        String repeatType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
+                YML_HEADER_JOB_DURATION, subHeader, "Repeat Type");
+        BasePage.clickWithJavaScript(jobDetailsPage.getDropdownOptionXpath(repeatType));
+        selectDateOnCalendar(subHeader ,ymlFile, header, jobDetailsPage.endsOn, "Ends On");
     }
 
     public void enterJobDetailsWithBreaks() {
