@@ -142,8 +142,10 @@ public class JobDetailsActions {
         assert siteTemplates != null;
         String site = siteTemplates.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
         site = site.replace("\"", "").trim();
+        BasePage.genericWait(500);
+        BasePage.waitUntilElementClickable(jobDetailsPage.siteDropdown, 60);
         BasePage.clickWithJavaScript(jobDetailsPage.siteDropdown);
-        BasePage.genericWait(1000);
+        BasePage.genericWait(500);
         by = By.xpath(jobDetailsPage.getDropdownOptionXpath(site));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
         BasePage.scrollToWebElement(jobDetailsPage.getDropdownOptionXpath(site));
