@@ -1,4 +1,4 @@
-@Regression-Create
+@Regression
 @Job
 @ManageTimesheetSleepInJobs
 @SuperAdminUser

@@ -53,10 +53,11 @@ public class AgencyProfileActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying the profile status >>>>>>>>>>>>>>>>>>>>");
         BasePage.refreshPage();
         BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.genericWait(500);
         BasePage.waitUntilElementPresent(agencyProfile.profileStatus, 60);
         String actual = BasePage.getText(agencyProfile.profileStatus).toLowerCase().trim();
         String expected = status.toLowerCase();
-        assertThat("Agent profile status is not valid", actual, is(expected));
+        assertThat("Agency profile status is not valid", actual, is(expected));
     }
 
     private void waitUntilCreatingPaymentProfilePopupGetDisappeared() {

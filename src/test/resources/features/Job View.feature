@@ -1,4 +1,4 @@
-@Regression-View
+@Regression
 @Job
 @SuperAdminUser
 Feature: Test CareHires view job

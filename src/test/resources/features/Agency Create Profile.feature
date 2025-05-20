@@ -1,4 +1,4 @@
-@Regression-Create
+@Regression
 @Agency
 @SuperAdminUser
 Feature: Test CareHires create agency with no VAT Registered, one location

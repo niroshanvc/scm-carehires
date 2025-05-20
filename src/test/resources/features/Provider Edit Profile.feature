@@ -1,4 +1,4 @@
-@Regression-Edit
+@Regression
 @Provider
 @SuperAdminUser
 Feature: Test CareHires edit provider and make profile approved

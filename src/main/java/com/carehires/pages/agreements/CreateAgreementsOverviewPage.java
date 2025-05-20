@@ -30,4 +30,10 @@ public class CreateAgreementsOverviewPage {
     public String getDropdownOptionXpath(String option) {
         return String.format("//nb-option[contains(text(),'%s')]", option);
     }
+
+    @FindBy(xpath = "(//nb-option-list/ul/nb-option/nb-checkbox)[1]")
+    public WebElement selectAllSitesCheckbox;
+
+    @FindBy(xpath = "(//nb-option-list/ul/nb-option)[1]")
+    public WebElement selectAllSitesCheckboxStatus;
 }

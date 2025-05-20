@@ -261,7 +261,7 @@ public class WorkerRatesActions {
     private void verifySavedWorkerRate() {
         String actualWithCurrency = BasePage.getText(workerRatesPage.hourlyRate).trim();
         String[] str = actualWithCurrency.split(" ");
-        String actual = str[1];
+        String actual = str[1].replaceAll("[^\\d.]", "");
         String expected = hourlyRate;
         assertThat("Worker rate is not correctly displayed!", actual, is(expected));
     }
