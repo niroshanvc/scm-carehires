@@ -58,6 +58,7 @@ public class JobsListViewActions {
     private static final String YML_HEADER_RESUBMIT_TIMESHEET1 = "Resubmit Timesheet A";
     private static final String YML_HEADER_RESUBMIT_TIMESHEET3 = "Resubmit Timesheet C";
     private static final String YML_HEADER_SCENARIO1A = "Job Preferences";
+    private static final String YML_HEADER_SCENARIO_E2E = "Job Preferences ScenarioE2E";
     private static final String YML_SUB_HEADER_CARE_PROVIDER = "Care Provider / Site and Service Preferences";
     private static final String YML_HEADER_SUGGESTED_WORKER = "Suggested Worker";
     private static final String YML_HEADER_SELECTED_WORKER = "Selected Worker";
@@ -1086,5 +1087,31 @@ public class JobsListViewActions {
 
     public void approveOrDisputeTimesheetForJobCancellation(String action) {
         approveOrDisputingTimesheet(action, YML_FILE_CANCELLATION, "Dispute Timesheet");
+    }
+
+    public void suggestingWorkerOnJobDetailsPopup() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<< Suggesting a worker >>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.refreshPage();
+        clickOnViewDetailedJobInfo();
+        gotoEligibleWorkersTabOnJobDetailPopup();
+        filterWorkerByAgencyOnJobDetailsPopup();
+        clickOnSuggestButtonOnJobDetails();
+        verifyWorkerSuggestSuccessMessage();
+    }
+
+    private void filterWorkerByAgencyOnJobDetailsPopup() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<< Searching eligible workers >>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.genericWait(2000);
+        BasePage.waitUntilElementClickable(listViewPage.detailViewWorkersFilterByAgencyDropdown,30);
+        BasePage.clickWithJavaScript(listViewPage.detailViewWorkersFilterByAgencyDropdown);
+
+        // Read agency name from YAML and replace <agencyIncrement> placeholder
+        String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SCENARIO1,
+                YML_HEADER_SCENARIO_E2E, "Agency");
+        By by = By.xpath(listViewPage.getDropdownOptionXpath(agency));
+        BasePage.waitUntilVisibilityOfElementLocated(by,90);
+        BasePage.scrollToWebElement(listViewPage.getDropdownOptionXpath(agency));
+        BasePage.clickWithJavaScript(listViewPage.getDropdownOptionXpath(agency));
+        BasePage.clickTabKey(listViewPage.detailViewWorkersFilterByAgencyDropdown);
     }
 }

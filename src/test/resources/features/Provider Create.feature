@@ -1,4 +1,4 @@
-@Regression-Create
+@Regression
 @Provider
 @SuperAdminUser
 Feature: Test CareHires create provider with one location

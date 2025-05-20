@@ -1,4 +1,4 @@
-@Regression-Create
+@Regression
 @Job
 @SuperAdminUser
 Feature: Test CareHires job post templates

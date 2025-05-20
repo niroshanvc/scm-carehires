@@ -89,8 +89,18 @@ public class CreateAgreementsOverviewActions {
         site = site.replace("\"", "").trim();
         BasePage.clickWithJavaScript(agreementsOverviewPage.siteDropdown);
         BasePage.waitUntilElementClickable(agreementsOverviewPage.getDropdownOptionXpath(site), 30);
-        selectAllSites();
-        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(agreementsOverviewPage.selectAllSitesCheckbox);
+        String isAllSelected = BasePage.getAttributeValue(agreementsOverviewPage.selectAllSitesCheckboxStatus, "class");
+
+        // Check if all sites are selected, if not, select all sites
+        int tries = 0;
+        while (!isAllSelected.contains("selected") && tries < 3) {
+            BasePage.clickWithJavaScript(agreementsOverviewPage.selectAllSitesCheckbox);
+            isAllSelected = BasePage.getAttributeValue(agreementsOverviewPage.selectAllSitesCheckboxStatus, "class");
+            tries++;
+        }
+
+        BasePage.waitUntilElementClickable(agreementsOverviewPage.continueButton, 60);
         BasePage.clickWithJavaScript(agreementsOverviewPage.continueButton);
         verifySuccessMessage();
 

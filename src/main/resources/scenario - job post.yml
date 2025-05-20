@@ -97,3 +97,24 @@ Job Preferences Scenario1E:
   Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
   Enable Block Booking: "No"
   Agency: Automation Agency 393
+
+Job Details ScenarioE2E:
+  Job Type: General Job
+  Care Provider / Site and Service Preferences:
+    Care Provider: Automation Provider "<providerIncrement>"
+    Site: BioRevolution Care "<providerIncrement>"
+    Using: Post Custom Job
+    Worker Type: Rehabilitation Worker
+    Number of Vacancies: 1
+
+  Job Duration and Recurrence:
+    Special Holiday:
+      Start Date: 25 Dec 2025
+      Enable Recurrence: "No"
+      Ends On: 25 Dec 2025
+      Breaks/ Intervals: "No"
+
+Job Preferences ScenarioE2E:
+  Gender: Male
+  Enable Block Booking: "No"
+  Agency: Automation Agency "<agencyIncrement>"

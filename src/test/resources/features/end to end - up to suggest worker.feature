@@ -1,7 +1,7 @@
-@Regression-Create
+@Smoke
 @Job
 @SuperAdminUser
-Feature: Test CareHires agreement's worker rates display in jobs
+Feature: Test CareHires System Check from E2E perspective
 
   Background: login to carehires
     Given User logins to carehires
@@ -51,8 +51,8 @@ Feature: Test CareHires agreement's worker rates display in jobs
 #    creating a job
     And User navigates to Jobs page
     And User moves to Post New Job page
-    And User enters Job Details for special holiday
+    And User enters Job Details for end to end testing
     And User enters Job Preferences
     And User enters Job Summary
-    When User suggests a worker
+    When User tries to suggesting a worker
     Then User moves to suggested workers tab and verifies Special Holiday worker rates

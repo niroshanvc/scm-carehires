@@ -43,6 +43,7 @@ public class JobDetailsActions {
     private static final String YML_HEADER_SCENARIO1D = "Job Details Scenario1D";
     private static final String YML_HEADER_SCENARIO1F = "Job Details Scenario1F";
     private static final String YML_HEADER_SCENARIO1G = "Job Details Scenario1G";
+    private static final String YML_HEADER_SCENARIO_E2E = "Job Details ScenarioE2E";
     private static final String NORMAL_DAY = "Normal Day";
     private static final String ENABLE_RECURRENCE = "Enable Recurrence";
     private static final String BREAKS_INTERVALS = "Breaks/ Intervals";
@@ -377,11 +378,11 @@ public class JobDetailsActions {
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
 
-    public void enterJobDetailsForSpecialHoliday() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Details for Special Holiday >>>>>>>>>>>>>>>>>>>>");
+    public void enterJobDetailsForEnd2End() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Details for End 2 End Testing >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         closePendingActionPopup();
-        enterCareProviderAndServicePreferences(YML_FILE, YML_HEADER);
+        enterCareProviderAndServicePreferences(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO_E2E);
         BasePage.scrollToWebElement(jobDetailsPage.continueButton);
         enterJobDurationRecurrenceForSpecialHoliday();
         BasePage.genericWait(5000);

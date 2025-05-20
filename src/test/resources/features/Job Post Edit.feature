@@ -1,4 +1,4 @@
-@Regression-Edit
+@Regression
 @Job
 @SuperAdminUser
 Feature: Test CareHires edit job

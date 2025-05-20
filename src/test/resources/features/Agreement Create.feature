@@ -1,4 +1,4 @@
-@Regression-Create
+@Regression
 @Agreement
 @SuperAdminUser
 Feature: Test CareHires create agreement with disable Bid4Care
