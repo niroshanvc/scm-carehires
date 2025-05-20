@@ -239,7 +239,7 @@ public class JobsListViewActions {
 
     private void clickOnViewDetailedJobInfo() {
         logger.info("<<<<<<<<<<<<<<<<<<< Move to a three dots and click on View Detailed Job Info >>>>>>>>>>>>>>>>");
-        BasePage.waitUntilElementPresent(listViewPage.firstThreeDotsElement, 30);
+        BasePage.waitUntilElementPresent(listViewPage.firstThreeDotsElement, 60);
         BasePage.mouseHoverAndClick(JobsListViewPage.firstThreeDots, JobsListViewPage.viewDetailedJobInfo);
     }
 
@@ -384,6 +384,7 @@ public class JobsListViewActions {
     private void clickOnSuggestButtonOnJobDetails() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on Suggest button on Job Details popup >>>>>>>>>>>>>>>>>>>>");
         BasePage.genericWait(5000);
+        BasePage.waitUntilElementPresent(listViewPage.suggestButtonOnJobDetailsPopup.get(0), 60);
         BasePage.waitUntilElementClickable(listViewPage.suggestButtonOnJobDetailsPopup.get(0), 60);
         BasePage.clickWithJavaScript(listViewPage.suggestButtonOnJobDetailsPopup.get(0));
     }

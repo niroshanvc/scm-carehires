@@ -820,6 +820,7 @@ public class BasePage {
         WebElement subMenu = wait.until(ExpectedConditions.presenceOfElementLocated(subLocator));
         genericWait(300);
         actions.moveToElement(subMenu);
+        waitUntilElementClickable(subMenu, 60);
         actions.click(subMenu).build().perform();
         BasePage.waitUntilPageCompletelyLoaded();
     }
