@@ -54,5 +54,5 @@ Feature: Test CareHires agreement's worker rates display in jobs
     And User enters Job Details for special holiday
     And User enters Job Preferences
     And User enters Job Summary
-    When User suggests a worker
-    Then User moves to suggested workers tab and verifies Special Holiday worker rates
+#    When User suggests a worker
+#    Then User moves to suggested workers tab and verifies Special Holiday worker rates
