@@ -6,9 +6,9 @@ Basic Information:
   Personal Information:
     Add:
       WorkerLogo: Worker101.png
-      FirstName: Automation
-      LastName: Worker {{increment}}
-      AlsoKnownAs: AutoWorker {{increment}}
+      FirstName: Non-British
+      LastName: HealthAndCare {{increment}}
+      AlsoKnownAs: ExternallySponsored {{increment}}
       WorkerEmailAddress: carehires+worker{{increment}}@zohomail.com
       PhoneNumberType: Mobile
       PhoneNumber: "07412001246"
