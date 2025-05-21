@@ -43,6 +43,7 @@ public class WorkerBasicInformationActions {
     private static final String YML_FILE = "worker-create";
     private static final String EDIT_YML_FILE = "worker-edit";
     private static final String YML_AGENCY_FILE = "agency-edit";
+    private static final String YML_FILE_NON_BRITISH = "scenario-non-British-worker";
     private static final String YML_HEADER = "Basic Information";
     private static final String ADD = "Add";
     private static final String UPDATE = "Update";
@@ -123,45 +124,54 @@ public class WorkerBasicInformationActions {
         BasePage.scrollToWebElement(basicInfo.travelInformationHeader);
 
         if (!nationality.equalsIgnoreCase("British")) {
+            assertThat("Passport number field is not displayed!", basicInfo.passportNumber.isDisplayed(),
+                    is(true));
+            logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering data for non British worker >>>>>>>>>>>>>>>>>>>>");
+
+            // entering passport number
             String passportNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
                     YML_SUB_HEADER_5, subHeader, "PassportNumber");
             BasePage.clearAndEnterTexts(basicInfo.passportNumber, passportNumber);
 
+            assertThat("Issued country field is not displayed!", basicInfo.issuedCountryDropdown.isDisplayed(),
+                    is(true));
+
+            // entering issued country
             String issuedCountry = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
                     YML_SUB_HEADER_5, subHeader, "IssuedCountry");
             BasePage.clickWithJavaScript(basicInfo.issuedCountryDropdown);
             BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(issuedCountry), 30);
             BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(issuedCountry));
 
+            assertThat("Visa type field is not displayed!", basicInfo.visaTypeDropdown.isDisplayed(),
+                    is(true));
+
+            // entering visa type
             String visaType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
                     YML_SUB_HEADER_5, subHeader, "VisaType");
             BasePage.clickWithJavaScript(basicInfo.visaTypeDropdown);
             BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(visaType), 30);
             BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(visaType));
 
-            // to view maximum weekly hours field
+            // clicking on passport number field to display maximum weekly hours field
             BasePage.clickWithJavaScript(basicInfo.passportNumber);
-            String maximumHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                    YML_SUB_HEADER_5, subHeader, "MaximumWeeklyHours");
-            BasePage.waitUntilElementPresent(basicInfo.maximumWeeklyHours, 20);
-            BasePage.clearAndEnterTexts(basicInfo.maximumWeeklyHours, maximumHours);
+            assertThat("Maximum weekly hours field is not displayed!", basicInfo.maximumWeeklyHours.
+                            isDisplayed(), is(true));
 
-            assert visaType != null;
-            if (visaType.equalsIgnoreCase("Health and care worker visa") || visaType.equalsIgnoreCase(
-                    "Skilled Worker")) {
-                String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                        YML_SUB_HEADER_5, subHeader, "CompanyName");
-                BasePage.clearAndEnterTexts(basicInfo.companyNameCosDocument, companyName);
-            }
-
+            // entering sponsor type
             String sponsorType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                    YML_SUB_HEADER_5, subHeader, "Sponsor Type");
+                    YML_SUB_HEADER_5, subHeader, "SponsorType");
+            assert visaType != null;
             if (visaType.equalsIgnoreCase("Health and care worker visa") || visaType.
                     equalsIgnoreCase("Skilled Worker")) {
-
+                assertThat("Sponsor type field is not displayed!", basicInfo.sponsorTypeDropdown.isDisplayed(),
+                        is(true));
                 BasePage.clickWithJavaScript(basicInfo.sponsorTypeDropdown);
                 BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(sponsorType), 30);
                 BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(sponsorType));
+            } else {
+                assertThat("Sponsor type field is displayed!", basicInfo.sponsorTypeDropdown.isDisplayed(),
+                        is(false));
             }
 
             if (visaType.equalsIgnoreCase("Health and care worker visa") || visaType.equalsIgnoreCase(
@@ -174,12 +184,48 @@ public class WorkerBasicInformationActions {
                 }
             }
 
+            // verify default value of maximum weekly hours
+            String defaultValue = BasePage.getAttributeValue(basicInfo.maximumWeeklyHours, VALUE_TEXT);
+            if (visaType.equalsIgnoreCase("Student Visa")) {
+                BasePage.waitUntilElementPresent(basicInfo.maximumWeeklyHours, 20);
+                assertThat("Default Maximum weekly hours value for non-student type visa type is wrong!",
+                        defaultValue, is("20"));
+            } else {
+                assertThat("Default Maximum weekly hours value for student type visa type is wrong!",
+                        defaultValue, is("40"));
+            }
+
+            String maximumHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                    YML_SUB_HEADER_5, subHeader, "MaximumWeeklyHours");
+            BasePage.waitUntilElementPresent(basicInfo.maximumWeeklyHours, 20);
+            BasePage.clearAndEnterTexts(basicInfo.maximumWeeklyHours, maximumHours);
+
+            if (visaType.equalsIgnoreCase("Health and care worker visa") || visaType.equalsIgnoreCase(
+                    "Skilled Worker")) {
+                String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                        YML_SUB_HEADER_5, subHeader, "CompanyName");
+                BasePage.clearAndEnterTexts(basicInfo.companyNameCosDocument, companyName);
+            }
+
+            assertThat("Share code field is not displayed!", basicInfo.shareCode.isDisplayed(),
+                    is(true));
             String shareCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
                     YML_SUB_HEADER_5, subHeader, "ShareCode");
             assert shareCode != null;
             if (!shareCode.equalsIgnoreCase("same")) {
                 BasePage.clearAndEnterTexts(basicInfo.shareCode, shareCode);
             }
+        } else {
+            assertThat("Passport number field is displaying!", basicInfo.passportNumber.isDisplayed(),
+                    is(false));
+            assertThat("Issued country field is displaying!", basicInfo.issuedCountryDropdown.isDisplayed(),
+                    is(false));
+            assertThat("Visa type field is displaying!", basicInfo.visaTypeDropdown.isDisplayed(),
+                    is(false));
+            assertThat("Sponsor type field is displaying!", basicInfo.sponsorTypeDropdown.isDisplayed(),
+                    is(false));
+            assertThat("Share code field is displaying!", basicInfo.shareCode.isDisplayed(),
+                    is(false));
         }
 
         String nationalInsuranceNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
@@ -611,5 +657,26 @@ public class WorkerBasicInformationActions {
         emergencyInformationActions.enterDataForEmergencyInformation();
         vaccinationAndAllergyInformationActions.enterDataForVaccinationInformation();
         employmentHistoryActions.enterDataForEmploymentHistory();
+    }
+
+    public void enterNonBritishWorkerBasicInformation() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Creating a non-British worker >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+
+        // Retrieve the current increment value for the worker (from the file)
+        int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
+
+        BasePage.genericWait(2000);
+        enterAgencyInformation(YML_FILE_NON_BRITISH, ADD);
+        enterPersonalInformation(YML_FILE_NON_BRITISH, ADD);
+        enterResidentialAddressInformation(YML_FILE_NON_BRITISH, ADD);
+        enterEmploymentInformation(YML_FILE_NON_BRITISH, ADD);
+        enterPassportAndOtherInformation(YML_FILE_NON_BRITISH, ADD);
+        enterTravelInformation(YML_FILE_NON_BRITISH, ADD);
+
+        BasePage.clickWithJavaScript(basicInfo.saveButton);
+
+        // Store the increment value in GlobalVariables for reuse in other steps
+        GlobalVariables.setVariable("worker_incrementValue", incrementValue);
     }
 }
