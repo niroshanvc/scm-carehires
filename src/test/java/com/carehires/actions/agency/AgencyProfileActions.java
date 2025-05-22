@@ -1,6 +1,10 @@
 package com.carehires.actions.agency;
 
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.carehires.common.GlobalVariables;
 import com.carehires.pages.agency.AgencyProfilePage;
 import com.carehires.utils.BasePage;
@@ -57,6 +61,12 @@ public class AgencyProfileActions {
         String actual = BasePage.getText(agencyProfile.profileStatus).toLowerCase().trim();
         String expected = status.toLowerCase();
         assertThat("Agent profile status is not valid", actual, is(expected));
+        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("extentReports.html");
+        ExtentReports extent = new ExtentReports();
+        extent.attachReporter(htmlReporter);
+        ExtentTest test = extent.createTest("Agency Profile Test", "Testing agency profile status");
+        test.log(Status.INFO, "Verified agency profile status");
+        extent.flush();
     }
 
     private void waitUntilCreatingPaymentProfilePopupGetDisappeared() {
