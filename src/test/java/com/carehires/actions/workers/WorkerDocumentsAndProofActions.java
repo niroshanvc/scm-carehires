@@ -365,4 +365,48 @@ public class WorkerDocumentsAndProofActions {
         BasePage.clickWithJavaScript(documentsAndProofPage.basicInformationStep);
         BasePage.genericWait(5000);
     }
+
+    public void enterDocumentsAndProofForNonBritishWorker() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Entering Document and Proof Information >>>>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for worker is not set in GlobalVariables.");
+        }
+
+        BasePage.waitUntilPageCompletelyLoaded();
+
+        // verify document upload field is available
+        By drivingLicenceTextField = By.xpath(WorkerDocumentsAndProofPage.DRIVING_LICENCE_FIELD_XPATH);
+        BasePage.verifyElementIsPresentAfterWait(drivingLicenceTextField, 60);
+
+        enterCvInfo(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.cvFileStatus);
+
+        enterDbsCertificateInfo(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.dbsCertificateStatus);
+
+        enterPassportDocument(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.passportDocumentStatus);
+
+        enterNationalInsuranceDocument(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.nationalInsuranceStatus);
+
+        enterProofOfAddress(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.proofOfAddressStatus);
+
+        enterDrivingLicence(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.drivingLicenceStatus);
+
+        enterVisaWorkPermitProof(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.visaStatus);
+
+        enterCosDocument(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.cosDocumentStatus);
+
+        BasePage.clickWithJavaScript(documentsAndProofPage.saveButton);
+        verifySuccessMessage();
+    }
 }
