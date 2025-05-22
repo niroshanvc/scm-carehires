@@ -10,7 +10,7 @@ Feature: Test CareHires create worker
   Scenario: Create a worker where nationality is British
     When User navigates to Worker Create page
     And User enters valid non-British worker basic information
-    And User enters Document and Proof information
+    And User enters Document and Proof information for non-British worker
     And User enters Education and Training data
     And User enters Emergency Information data
     And User enters Vaccination and Allergy Information data

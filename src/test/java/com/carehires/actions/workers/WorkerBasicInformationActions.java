@@ -93,10 +93,14 @@ public class WorkerBasicInformationActions {
         enterPassportAndOtherInformation(YML_FILE, ADD);
         enterTravelInformation(YML_FILE, ADD);
 
-        BasePage.clickWithJavaScript(basicInfo.saveButton);
+        clickOnSaveButton();
 
         // Store the increment value in GlobalVariables for reuse in other steps
         GlobalVariables.setVariable("worker_incrementValue", incrementValue);
+    }
+
+    private void clickOnSaveButton() {
+        BasePage.clickWithJavaScript(basicInfo.saveButton);
     }
 
     private void enterTravelInformation(String ymlFile, String subHeader) {
@@ -124,8 +128,8 @@ public class WorkerBasicInformationActions {
         BasePage.scrollToWebElement(basicInfo.travelInformationHeader);
 
         if (!nationality.equalsIgnoreCase("British")) {
-            assertThat("Passport number field is not displayed!", basicInfo.passportNumber.isDisplayed(),
-                    is(true));
+            assertThat("Passport number field is not displayed!", BasePage.isElementDisplayed(basicInfo.
+                    passportNumber), is(true));
             logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering data for non British worker >>>>>>>>>>>>>>>>>>>>");
 
             // entering passport number
@@ -133,8 +137,8 @@ public class WorkerBasicInformationActions {
                     YML_SUB_HEADER_5, subHeader, "PassportNumber");
             BasePage.clearAndEnterTexts(basicInfo.passportNumber, passportNumber);
 
-            assertThat("Issued country field is not displayed!", basicInfo.issuedCountryDropdown.isDisplayed(),
-                    is(true));
+            assertThat("Issued country field is not displayed!", BasePage.isElementDisplayed(basicInfo.
+                    issuedCountryDropdown), is(true));
 
             // entering issued country
             String issuedCountry = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
@@ -143,8 +147,8 @@ public class WorkerBasicInformationActions {
             BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(issuedCountry), 30);
             BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(issuedCountry));
 
-            assertThat("Visa type field is not displayed!", basicInfo.visaTypeDropdown.isDisplayed(),
-                    is(true));
+            assertThat("Visa type field is not displayed!", BasePage.isElementDisplayed(basicInfo.
+                    visaTypeDropdown), is(true));
 
             // entering visa type
             String visaType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
@@ -155,44 +159,54 @@ public class WorkerBasicInformationActions {
 
             // clicking on passport number field to display maximum weekly hours field
             BasePage.clickWithJavaScript(basicInfo.passportNumber);
-            assertThat("Maximum weekly hours field is not displayed!", basicInfo.maximumWeeklyHours.
-                            isDisplayed(), is(true));
+            assertThat("Maximum weekly hours field is not displayed!", BasePage.isElementDisplayed(basicInfo.
+                    maximumWeeklyHours), is(true));
+
+            // verify default value of maximum weekly hours - before displaying sponsor type field
+            BasePage.clickWithJavaScript(basicInfo.passportNumber);
+            String defaultValue = BasePage.getAttributeValue(basicInfo.maximumWeeklyHours, VALUE_TEXT);
+            assert visaType != null;
+            if (visaType.equalsIgnoreCase("Student Visa")) {
+                BasePage.waitUntilElementPresent(basicInfo.maximumWeeklyHours, 20);
+                assertThat("Default Maximum weekly hours value for student visa type is wrong!",
+                        defaultValue, is("20"));
+            } else {
+                assertThat("Default Maximum weekly hours value for non-student visa type is wrong!",
+                        defaultValue, is("40"));
+            }
 
             // entering sponsor type
-            String sponsorType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                    YML_SUB_HEADER_5, subHeader, "SponsorType");
-            assert visaType != null;
             if (visaType.equalsIgnoreCase("Health and care worker visa") || visaType.
                     equalsIgnoreCase("Skilled Worker")) {
-                assertThat("Sponsor type field is not displayed!", basicInfo.sponsorTypeDropdown.isDisplayed(),
-                        is(true));
+                assertThat("Sponsor type field is not displaying!", BasePage.isElementDisplayed(basicInfo.
+                        sponsorTypeDropdown), is(true));
+                String sponsorType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                        YML_SUB_HEADER_5, subHeader, "SponsorType");
                 BasePage.clickWithJavaScript(basicInfo.sponsorTypeDropdown);
                 BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(sponsorType), 30);
                 BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(sponsorType));
-            } else {
-                assertThat("Sponsor type field is displayed!", basicInfo.sponsorTypeDropdown.isDisplayed(),
-                        is(false));
-            }
 
-            if (visaType.equalsIgnoreCase("Health and care worker visa") || visaType.equalsIgnoreCase(
-                    "Skilled Worker")) {
+                // verify default value of maximum weekly hours - after displaying sponsor type field
+                BasePage.clickWithJavaScript(basicInfo.passportNumber);
+                defaultValue = BasePage.getAttributeValue(basicInfo.maximumWeeklyHours, VALUE_TEXT);
                 assert sponsorType != null;
                 if (sponsorType.equalsIgnoreCase("Externally Sponsored")) {
+                    BasePage.waitUntilElementPresent(basicInfo.maximumWeeklyHours, 20);
+                    assertThat("Default Maximum weekly hours value for is wrong!",
+                            defaultValue, is("20"));
+                } else {
+                    assertThat("Default Maximum weekly hours value is wrong!", defaultValue, is("40"));
+                    BasePage.clickWithJavaScript(basicInfo.passportNumber);
+                    String assignedProvider = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
+                            YML_HEADER, YML_SUB_HEADER_5, subHeader, "AssignedProvider");
                     BasePage.clickWithJavaScript(basicInfo.assignedProviderDropdown);
-                    BasePage.waitUntilElementClickable(basicInfo.firstOptionInDropdown, 30);
-                    BasePage.clickWithJavaScript(basicInfo.firstOptionInDropdown);
+                    BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(assignedProvider),
+                            30);
+                    BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(assignedProvider));
                 }
-            }
-
-            // verify default value of maximum weekly hours
-            String defaultValue = BasePage.getAttributeValue(basicInfo.maximumWeeklyHours, VALUE_TEXT);
-            if (visaType.equalsIgnoreCase("Student Visa")) {
-                BasePage.waitUntilElementPresent(basicInfo.maximumWeeklyHours, 20);
-                assertThat("Default Maximum weekly hours value for non-student type visa type is wrong!",
-                        defaultValue, is("20"));
             } else {
-                assertThat("Default Maximum weekly hours value for student type visa type is wrong!",
-                        defaultValue, is("40"));
+                assertThat("Sponsor type field should not be displayed!", BasePage.isElementDisplayed(
+                        basicInfo.sponsorTypeDropdown), is(false));
             }
 
             String maximumHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
@@ -205,9 +219,12 @@ public class WorkerBasicInformationActions {
                 String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
                         YML_SUB_HEADER_5, subHeader, "CompanyName");
                 BasePage.clearAndEnterTexts(basicInfo.companyNameCosDocument, companyName);
+            } else {
+                assertThat("Company name field should not be displayed!", BasePage.isElementDisplayed(
+                        basicInfo.companyNameCosDocument), is(false));
             }
 
-            assertThat("Share code field is not displayed!", basicInfo.shareCode.isDisplayed(),
+            assertThat("Share code field is not displayed!", BasePage.isElementDisplayed(basicInfo.shareCode),
                     is(true));
             String shareCode = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
                     YML_SUB_HEADER_5, subHeader, "ShareCode");
@@ -216,16 +233,16 @@ public class WorkerBasicInformationActions {
                 BasePage.clearAndEnterTexts(basicInfo.shareCode, shareCode);
             }
         } else {
-            assertThat("Passport number field is displaying!", basicInfo.passportNumber.isDisplayed(),
-                    is(false));
-            assertThat("Issued country field is displaying!", basicInfo.issuedCountryDropdown.isDisplayed(),
-                    is(false));
-            assertThat("Visa type field is displaying!", basicInfo.visaTypeDropdown.isDisplayed(),
-                    is(false));
-            assertThat("Sponsor type field is displaying!", basicInfo.sponsorTypeDropdown.isDisplayed(),
-                    is(false));
-            assertThat("Share code field is displaying!", basicInfo.shareCode.isDisplayed(),
-                    is(false));
+            assertThat("Passport number field should not be displayed!", BasePage.isElementDisplayed(
+                    basicInfo.passportNumber), is(false));
+            assertThat("Issued country field should not be displayed!", BasePage.isElementDisplayed(
+                    basicInfo.issuedCountryDropdown), is(false));
+            assertThat("Visa type field should not be displayed!", BasePage.isElementDisplayed(
+                    basicInfo.visaTypeDropdown), is(false));
+            assertThat("Sponsor type field should not be displayed!", BasePage.isElementDisplayed(
+                    basicInfo.sponsorTypeDropdown), is(false));
+            assertThat("Share code field should not be displayed!", BasePage.isElementDisplayed(
+                    basicInfo.shareCode), is(false));
         }
 
         String nationalInsuranceNumber = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
@@ -595,7 +612,7 @@ public class WorkerBasicInformationActions {
         enterTravelInformation(EDIT_YML_FILE, ADD);
         BasePage.genericWait(13000);
 
-        BasePage.clickWithJavaScript(basicInfo.saveButton);
+        clickOnSaveButton();
         // Store the increment value in GlobalVariables for reuse in other steps
         GlobalVariables.setVariable("worker_incrementValue", incrementValue);
     }
@@ -610,7 +627,7 @@ public class WorkerBasicInformationActions {
         enterEmploymentInformation(EDIT_YML_FILE, UPDATE);
         enterPassportAndOtherInformation(EDIT_YML_FILE, UPDATE);
         enterTravelInformation(EDIT_YML_FILE, UPDATE);
-        BasePage.clickWithJavaScript(basicInfo.saveButton);
+        clickOnSaveButton();
         verifyUpdateSuccessMessage();
     }
 
@@ -674,7 +691,7 @@ public class WorkerBasicInformationActions {
         enterPassportAndOtherInformation(YML_FILE_NON_BRITISH, ADD);
         enterTravelInformation(YML_FILE_NON_BRITISH, ADD);
 
-        BasePage.clickWithJavaScript(basicInfo.saveButton);
+        clickOnSaveButton();
 
         // Store the increment value in GlobalVariables for reuse in other steps
         GlobalVariables.setVariable("worker_incrementValue", incrementValue);

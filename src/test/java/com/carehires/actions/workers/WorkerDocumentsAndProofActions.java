@@ -24,6 +24,7 @@ public class WorkerDocumentsAndProofActions {
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
     private static final String EDIT_YML_FILE = "worker-edit";
+    private static final String YML_FILE_NON_BRITISH = "scenario-non-British-worker";
     private static final String YML_HEADER = "Documents and Proof";
     private static final String YML_HEADER_BASIC_INFO = "Basic Information";
     private static final String YML_SUB_HEADER_5 = "Passport Visa DBS Information";
@@ -34,7 +35,8 @@ public class WorkerDocumentsAndProofActions {
     private static final String YML_SUB_HEADER_EXPIRY_DATE = "ExpiryDate";
     private static final String DRIVING_LICENCE = "DrivingLicence";
     private static final String WORKER_DOCUMENTS_PATH = System.getProperty("user.dir") + File.separator + "src"
-            + File.separator + "test" + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator;
+            + File.separator + "test" + File.separator + "resources" + File.separator + "Upload" + File.separator +
+            "Worker" + File.separator;
 
     private static final Logger logger = LogManager.getLogger(WorkerDocumentsAndProofActions.class);
 
@@ -99,14 +101,17 @@ public class WorkerDocumentsAndProofActions {
     }
 
     private void enterCvInfo(String ymlFile, String subHeader) {
-        String cdvDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "CV", YML_SUB_HEADER_DOCUMENT);
+        String cdvDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
+                "CV", YML_SUB_HEADER_DOCUMENT);
         String cvFile = WORKER_DOCUMENTS_PATH + cdvDoc;
         BasePage.uploadFile(documentsAndProofPage.cvSelectFile, cvFile);
     }
 
     private void enterDbsCertificateInfo(String ymlFile, String subHeader) {
-        String dbsDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "DBSCertificate", YML_SUB_HEADER_DOCUMENT);
-        String dbsExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "DBSCertificate", YML_SUB_HEADER_EXPIRY_DATE);
+        String dbsDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
+                "DBSCertificate", YML_SUB_HEADER_DOCUMENT);
+        String dbsExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                subHeader, "DBSCertificate", YML_SUB_HEADER_EXPIRY_DATE);
         String dbsFile = WORKER_DOCUMENTS_PATH + dbsDoc;
         BasePage.clickWithJavaScript(documentsAndProofPage.dbsCertificateExpiryDate);
         genericUtils.selectDateFromCalendarPopup(dbsExpiryDate);
@@ -114,8 +119,10 @@ public class WorkerDocumentsAndProofActions {
     }
 
     private void enterPassportDocument(String ymlFile, String subHeader) {
-        String passportDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Passport", YML_SUB_HEADER_DOCUMENT);
-        String passportExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Passport", YML_SUB_HEADER_EXPIRY_DATE);
+        String passportDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                subHeader, "Passport", YML_SUB_HEADER_DOCUMENT);
+        String passportExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                subHeader, "Passport", YML_SUB_HEADER_EXPIRY_DATE);
         String passportFile = WORKER_DOCUMENTS_PATH + passportDoc;
         BasePage.clickWithJavaScript(documentsAndProofPage.passportDocumentExpiryDate);
         genericUtils.selectDateFromCalendarPopup(passportExpiryDate);
@@ -123,20 +130,24 @@ public class WorkerDocumentsAndProofActions {
     }
 
     private void enterNationalInsuranceDocument(String ymlFile, String subHeader) {
-        String nationalInsuranceDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "NationalInsurance", YML_SUB_HEADER_DOCUMENT);
+        String nationalInsuranceDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                subHeader, "NationalInsurance", YML_SUB_HEADER_DOCUMENT);
         String nationalInsuranceFile = WORKER_DOCUMENTS_PATH + nationalInsuranceDoc;
         BasePage.uploadFile(documentsAndProofPage.nationalInsuranceSelectFile, nationalInsuranceFile);
     }
 
     private void enterProofOfAddress(String ymlFile, String subHeader) {
-        String proofOfAddressDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "ProofOfAddress", YML_SUB_HEADER_DOCUMENT);
+        String proofOfAddressDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                subHeader, "ProofOfAddress", YML_SUB_HEADER_DOCUMENT);
         String proofOfAddressFile = WORKER_DOCUMENTS_PATH + proofOfAddressDoc;
         BasePage.uploadFile(documentsAndProofPage.proofOfAddressSelectFile, proofOfAddressFile);
     }
 
     private void enterDrivingLicence(String ymlFile, String subHeader) {
-        String drivingLicenseDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, DRIVING_LICENCE, YML_SUB_HEADER_DOCUMENT);
-        String drivingLicenseExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, DRIVING_LICENCE, YML_SUB_HEADER_EXPIRY_DATE);
+        String drivingLicenseDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
+                DRIVING_LICENCE, YML_SUB_HEADER_DOCUMENT);
+        String drivingLicenseExpiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                subHeader, DRIVING_LICENCE, YML_SUB_HEADER_EXPIRY_DATE);
         String drivingLicenseFile = WORKER_DOCUMENTS_PATH + drivingLicenseDoc;
         BasePage.clickWithJavaScript(documentsAndProofPage.drivingLicenceExpiryDate);
         genericUtils.selectDateFromCalendarPopup(drivingLicenseExpiryDate);
@@ -144,8 +155,10 @@ public class WorkerDocumentsAndProofActions {
     }
 
     private void enterVisaWorkPermitProof(String ymlFile, String subHeader) {
-        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "VisaWorkPermit", YML_SUB_HEADER_DOCUMENT);
-        String expiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "VisaWorkPermit", YML_SUB_HEADER_EXPIRY_DATE);
+        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
+                "VisaWorkPermit", YML_SUB_HEADER_DOCUMENT);
+        String expiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
+                "VisaWorkPermit", YML_SUB_HEADER_EXPIRY_DATE);
         String file = WORKER_DOCUMENTS_PATH + doc;
         BasePage.clickWithJavaScript(documentsAndProofPage.visaExpiryDate);
         genericUtils.selectDateFromCalendarPopup(expiryDate);
@@ -153,14 +166,17 @@ public class WorkerDocumentsAndProofActions {
     }
 
     private void enterCovid19(String ymlFile, String subHeader) {
-        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "Covid19", YML_SUB_HEADER_DOCUMENT);
+        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
+                "Covid19", YML_SUB_HEADER_DOCUMENT);
         String file = WORKER_DOCUMENTS_PATH + doc;
         BasePage.uploadFile(documentsAndProofPage.covid19SelectFile, file);
     }
 
     private void enterCosDocument(String ymlFile, String subHeader) {
-        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "CosDocument", YML_SUB_HEADER_DOCUMENT);
-        String expiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "CosDocument", YML_SUB_HEADER_EXPIRY_DATE);
+        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
+                "CosDocument", YML_SUB_HEADER_DOCUMENT);
+        String expiryDate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
+                "CosDocument", YML_SUB_HEADER_EXPIRY_DATE);
         String file = WORKER_DOCUMENTS_PATH + doc;
         BasePage.clickWithJavaScript(documentsAndProofPage.cosDocumentExpiryDate);
         genericUtils.selectDateFromCalendarPopup(expiryDate);
@@ -168,19 +184,22 @@ public class WorkerDocumentsAndProofActions {
     }
 
     private void enterPvgCertificate(String ymlFile, String subHeader) {
-        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "PvgCertificate", YML_SUB_HEADER_DOCUMENT);
+        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
+                "PvgCertificate", YML_SUB_HEADER_DOCUMENT);
         String file = WORKER_DOCUMENTS_PATH + doc;
         BasePage.uploadFile(documentsAndProofPage.pvgCertificateSelectFile, file);
     }
 
     private void enterRegulatorySettings(String ymlFile, String subHeader) {
-        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "RegulatorySettings", YML_SUB_HEADER_DOCUMENT);
+        String doc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
+                "RegulatorySettings", YML_SUB_HEADER_DOCUMENT);
         String file = WORKER_DOCUMENTS_PATH + doc;
         BasePage.uploadFile(documentsAndProofPage.regulatorySettingsSelectFile, file);
     }
 
     private void verifyDocumentUploadedSuccessfully(WebElement fileStatus) {
-        BasePage.waitUntilElementAttributeGetChanged(fileStatus, "status", "success", 60);
+        BasePage.waitUntilElementAttributeGetChanged(fileStatus, "status", "success",
+                60);
         String expectedStatus = "success";
         String actualStatus = BasePage.getAttributeValue(fileStatus, "status");
         assertThat("Document not uploaded", actualStatus, is(expectedStatus));
@@ -220,14 +239,16 @@ public class WorkerDocumentsAndProofActions {
         enterProofOfAddress(EDIT_YML_FILE, ADD);
         verifyDocumentUploadedSuccessfully(documentsAndProofPage.proofOfAddressStatus);
 
-        String drivingLicence = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER_BASIC_INFO, "Travel Information", UPDATE, DRIVING_LICENCE);
+        String drivingLicence = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE,
+                YML_HEADER_BASIC_INFO, "Travel Information", UPDATE, DRIVING_LICENCE);
         assert drivingLicence != null;
         if (drivingLicence.equalsIgnoreCase("Yes")) {
             enterDrivingLicence(EDIT_YML_FILE, ADD);
             verifyDocumentUploadedSuccessfully(documentsAndProofPage.drivingLicenceStatus);
         }
 
-        String nationality = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER_BASIC_INFO, "Personal Information", UPDATE, "Nationality");
+        String nationality = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE,
+                YML_HEADER_BASIC_INFO, "Personal Information", UPDATE, "Nationality");
         assert nationality != null;
         if (!nationality.equalsIgnoreCase("British")) {
             enterVisaWorkPermitProof(EDIT_YML_FILE, ADD);
@@ -237,9 +258,11 @@ public class WorkerDocumentsAndProofActions {
         enterCovid19(EDIT_YML_FILE, ADD);
         verifyDocumentUploadedSuccessfully(documentsAndProofPage.covid19Status);
 
-        String visaType = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER_BASIC_INFO, YML_SUB_HEADER_5, UPDATE, "VisaType");
+        String visaType = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE,
+                YML_HEADER_BASIC_INFO, YML_SUB_HEADER_5, UPDATE, "VisaType");
         assert visaType != null;
-        if (visaType.equalsIgnoreCase("Health and care worker visa") || visaType.equalsIgnoreCase("Skilled Worker")) {
+        if (visaType.equalsIgnoreCase("Health and care worker visa") || visaType.equalsIgnoreCase(
+                "Skilled Worker")) {
             enterCosDocument(EDIT_YML_FILE, ADD);
             verifyDocumentUploadedSuccessfully(documentsAndProofPage.cosDocumentStatus);
         }

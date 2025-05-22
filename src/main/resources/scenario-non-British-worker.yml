@@ -37,10 +37,11 @@ Basic Information:
     Add:
       PassportNumber: "<passportNumber>"
       IssuedCountry: Philippines
-      VisaType: Health and care worker visa
-      MaximumWeeklyHours: 40
-      SponsorType: Externally  Sponsored
-      CompanyName: Externally  Sponsored Company
+      VisaType: Student Visa
+      MaximumWeeklyHours: 10
+      SponsorType: Externally Sponsored
+      AssignedProvider: Automation Provider 813983
+      CompanyName: Externally Sponsored Company
       NationalInsuranceNumber: "<insuranceNumber>"
       ShareCode: "<shareCode>"
       DbsCertificateNumber: "00153557"
