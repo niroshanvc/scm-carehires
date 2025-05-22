@@ -575,7 +575,7 @@ public class BasePage {
         logger.info("****************** Checking element - %s is displayed:", element);
         try {
             return element.isDisplayed();
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
         }
     }

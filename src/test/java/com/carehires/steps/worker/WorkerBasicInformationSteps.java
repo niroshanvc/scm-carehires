@@ -31,4 +31,9 @@ public class WorkerBasicInformationSteps {
     public void userCreatesAWorker() {
         basicInformationActions.completeCreateWorkerProcess();
     }
+
+    @And("User enters valid non-British worker basic information")
+    public void enteringNonBritishWorkerBasicInfo() {
+        basicInformationActions.enterNonBritishWorkerBasicInformation();
+    }
 }
