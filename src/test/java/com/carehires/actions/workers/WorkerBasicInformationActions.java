@@ -211,7 +211,7 @@ public class WorkerBasicInformationActions {
                         basicInfo.sponsorTypeDropdown), is(false));
             }
 
-            String maximumHours = "";
+            String maximumHours;
             if (!visaType.equalsIgnoreCase("Student Visa")) {
                 maximumHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
                         YML_SUB_HEADER_5, subHeader, "MaximumWeeklyHours");
