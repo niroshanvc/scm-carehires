@@ -36,4 +36,14 @@ public class WorkerBasicInformationSteps {
     public void enteringNonBritishWorkerBasicInfo() {
         basicInformationActions.enterNonBritishWorkerBasicInformation();
     }
+
+    @And("User enters valid non-British worker with basic information")
+    public void enterNonBritishWorkerWithBasicInformation() {
+        basicInformationActions.enterNonBritishWorkerWithBasicInformation();
+    }
+
+    @And("User enters valid non-British worker and related basic information")
+    public void enterValidNonBritishWorkerBasicInformation() {
+        basicInformationActions.enterValidNonBritishWorkerBasicInformation();
+    }
 }
