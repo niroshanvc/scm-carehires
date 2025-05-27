@@ -128,9 +128,6 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//nb-select[@formcontrolname='sponsorType']/button")
     public WebElement sponsorTypeDropdown;
 
-    @FindBy(xpath = "//nb-option-list/ul/nb-option")
-    public WebElement firstOptionInDropdown;
-
     @FindBy(xpath = "//nb-select[@formcontrolname='assignedProvider']/button")
     public WebElement assignedProviderDropdown;
 
@@ -172,9 +169,6 @@ public class WorkerBasicInformationPage {
 
     @FindBy(xpath = "//p[contains(text(), 'Document is added')]")
     public WebElement documentUploadedSuccessMessage;
-
-    public static final String AGENCY_LOCATION_CHECKBOXES = "//div[contains(@id,'cdk-overlay')]//nb-option/" +
-            "nb-checkbox";
 
     @FindBy(xpath = "//p[contains(@class, 'text-icon') and contains(text(), '…')]")
     public WebElement topThreeDots;

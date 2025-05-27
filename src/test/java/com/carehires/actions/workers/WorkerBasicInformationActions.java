@@ -42,7 +42,6 @@ public class WorkerBasicInformationActions {
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
     private static final String EDIT_YML_FILE = "worker-edit";
-    private static final String YML_AGENCY_FILE = "agency-edit";
     private static final String YML_FILE_NON_BRITISH = "scenario-non-British-worker";
     private static final String YML_HEADER = "Basic Information";
     private static final String YML_HEADER_B = "Basic Information B";
