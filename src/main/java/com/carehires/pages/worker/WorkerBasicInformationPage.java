@@ -140,6 +140,9 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//input[@formcontrolname='visaQuota']")
     public WebElement maximumWeeklyHours;
 
+    @FindBy(xpath = "//input[@formcontrolname='visaQuota']")
+    public WebElement minimumWeeklyHours;
+
     @FindBy(xpath = "//input[@formcontrolname='cosIssueCompany']")
     public WebElement companyNameCosDocument;
 
