@@ -42,11 +42,11 @@ public class WorkerBasicInformationActions {
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
     private static final String EDIT_YML_FILE = "worker-edit";
-    private static final String YML_AGENCY_FILE = "agency-edit";
     private static final String YML_FILE_NON_BRITISH = "scenario-non-British-worker";
     private static final String YML_HEADER = "Basic Information";
     private static final String YML_HEADER_B = "Basic Information B";
     private static final String YML_HEADER_C = "Basic Information C";
+    private static final String YML_HEADER_D = "Basic Information D";
     private static final String ADD = "Add";
     private static final String UPDATE = "Update";
     private static final String YML_SUB_HEADER_2 = "Personal Information";
@@ -57,11 +57,11 @@ public class WorkerBasicInformationActions {
     private static final String VALUE_TEXT = "value";
     private static final String CLASS_TEXT = "class";
     private String nationality;
-    WorkerDocumentsAndProofActions documentsAndProofActions;
-    WorkerEducationAndTrainingActions educationAndTrainingActions;
-    WorkerEmergencyInformationActions emergencyInformationActions;
-    WorkerVaccinationAndAllergyInformationActions vaccinationAndAllergyInformationActions;
-    WorkerEmploymentHistoryActions employmentHistoryActions;
+    private final WorkerDocumentsAndProofActions documentsAndProofActions;
+    private final WorkerEducationAndTrainingActions educationAndTrainingActions;
+    private final WorkerEmergencyInformationActions emergencyInformationActions;
+    private final WorkerVaccinationAndAllergyInformationActions vaccinationAndAllergyInformationActions;
+    private final WorkerEmploymentHistoryActions employmentHistoryActions;
 
     private static final Logger logger = LogManager.getLogger(WorkerBasicInformationActions.class);
 
@@ -209,8 +209,18 @@ public class WorkerBasicInformationActions {
             } else {
                 assertThat("Sponsor type field should not be displayed!", BasePage.isElementDisplayed(
                         basicInfo.sponsorTypeDropdown), is(false));
+                if (visaType.equalsIgnoreCase("Student Visa")) {
+                    defaultValue = BasePage.getAttributeValue(basicInfo.minimumWeeklyHours, VALUE_TEXT);
+                    assertThat("Default Minimum weekly hours value for student visa type is wrong!",
+                            defaultValue, is("20"));
+                } else {
+                    defaultValue = BasePage.getAttributeValue(basicInfo.maximumWeeklyHours, VALUE_TEXT);
+                    assertThat("Default Maximum weekly hours value for non-student visa type is wrong!",
+                            defaultValue, is("40"));
+                }
             }
 
+            // entering maximum weekly hours or minimum weekly hours based on visa type
             String maximumHours;
             if (!visaType.equalsIgnoreCase("Student Visa")) {
                 maximumHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
@@ -223,6 +233,7 @@ public class WorkerBasicInformationActions {
             BasePage.waitUntilElementPresent(basicInfo.maximumWeeklyHours, 20);
             BasePage.clearAndEnterTexts(basicInfo.maximumWeeklyHours, maximumHours);
 
+            // entering company name
             if (visaType.equalsIgnoreCase("Health and care worker visa") || visaType.equalsIgnoreCase(
                     "Skilled Worker")) {
                 String companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
@@ -734,6 +745,26 @@ public class WorkerBasicInformationActions {
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
         BasePage.genericWait(2000);
         enterAgencyInformation(YML_FILE_NON_BRITISH, YML_HEADER_C, ADD);
+        enterPersonalInformation(YML_FILE_NON_BRITISH, ADD);
+        enterResidentialAddressInformation(YML_FILE_NON_BRITISH, ADD);
+        enterEmploymentInformation(YML_FILE_NON_BRITISH, ADD);
+        enterPassportAndOtherInformation(YML_FILE_NON_BRITISH, ADD);
+        enterTravelInformation(YML_FILE_NON_BRITISH, ADD);
+
+        clickOnSaveButton();
+
+        // Store the increment value in GlobalVariables for reuse in other steps
+        GlobalVariables.setVariable("worker_incrementValue", incrementValue);
+    }
+
+    public void createWorkerBySelectingGraduateSettlementVisaType() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<< Creating a non-British worker >>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+
+        // Retrieve the current increment value for the worker (from the file)
+        int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
+        BasePage.genericWait(2000);
+        enterAgencyInformation(YML_FILE_NON_BRITISH, YML_HEADER_D, ADD);
         enterPersonalInformation(YML_FILE_NON_BRITISH, ADD);
         enterResidentialAddressInformation(YML_FILE_NON_BRITISH, ADD);
         enterEmploymentInformation(YML_FILE_NON_BRITISH, ADD);

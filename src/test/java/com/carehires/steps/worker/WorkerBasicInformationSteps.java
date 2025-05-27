@@ -46,4 +46,9 @@ public class WorkerBasicInformationSteps {
     public void enterValidNonBritishWorkerBasicInformation() {
         basicInformationActions.enterValidNonBritishWorkerBasicInformation();
     }
+
+    @And("User enters valid non-British worker details by selecting Graduate Settlement as Visa Type")
+    public void createWorkerBySelectingGraduateSettlement() {
+        basicInformationActions.createWorkerBySelectingGraduateSettlementVisaType();
+    }
 }
