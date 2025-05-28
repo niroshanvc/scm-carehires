@@ -1,7 +1,7 @@
 Basic Information:
   Agency Information:
     Add:
-      Agency: Automation Agency 304350
+      Agency: Automation Agency 216118
       BusinessLocation: Select All Locations
 
   Personal Information:
@@ -55,7 +55,7 @@ Basic Information:
 Basic Information B:
   Agency Information:
     Add:
-      Agency: Automation Agency 304350
+      Agency: Automation Agency 216118
       BusinessLocation: Select All Locations
 
   Personal Information:
@@ -63,7 +63,7 @@ Basic Information B:
       WorkerLogo: Worker101.png
       FirstName: Non-British
       LastName: Skilled {{increment}}
-      AlsoKnownAs: ExternallySponsored {{increment}}
+      AlsoKnownAs: AgencySponsored {{increment}}
       WorkerEmailAddress: carehires+worker{{increment}}@zohomail.com
       PhoneNumberType: Mobile
       PhoneNumber: "07412001246"
@@ -95,7 +95,7 @@ Basic Information B:
       VisaType: Skilled Worker
       MaximumWeeklyHours: 10
       SponsorType: Agency Sponsored
-      AssignedProvider: Automation Provider 813983
+      AssignedProvider: Automation Provider 731010
       CompanyName: Agency Sponsored Company
       NationalInsuranceNumber: "<insuranceNumber>"
       ShareCode: "<shareCode>"
@@ -110,7 +110,7 @@ Basic Information B:
 Basic Information C:
   Agency Information:
     Add:
-      Agency: Automation Agency 304350
+      Agency: Automation Agency 216118
       BusinessLocation: Select All Locations
 
   Personal Information:
@@ -150,7 +150,7 @@ Basic Information C:
       VisaType: Student Visa
       MinimumWeeklyHours: 10
       SponsorType: Agency Sponsored
-      AssignedProvider: Automation Provider 813983
+      AssignedProvider: Automation Provider 731010
       CompanyName: Agency Sponsored Company
       NationalInsuranceNumber: "<insuranceNumber>"
       ShareCode: "<shareCode>"
@@ -166,7 +166,7 @@ Basic Information C:
 Basic Information D:
   Agency Information:
     Add:
-      Agency: Automation Agency 304350
+      Agency: Automation Agency 216118
       BusinessLocation: Select All Locations
 
   Personal Information:
@@ -206,8 +206,73 @@ Basic Information D:
       VisaType: Graduate Settlement
       MaximumWeeklyHours: 6
       SponsorType: Agency Sponsored
-      AssignedProvider: Automation Provider 813983
+      AssignedProvider: Automation Provider 731010
       CompanyName: Agency Sponsored Company
+      NationalInsuranceNumber: "<insuranceNumber>"
+      ShareCode: "<shareCode>"
+      DbsCertificateNumber: "00153557"
+      IsThereAnyConviction: "No"
+
+  Travel Information:
+    Add:
+      PreferredTravelDistance: 30
+      DrivingLicence: "Yes"
+
+
+Basic Information E:
+  Agency Information:
+    Add:
+      Agency: Automation Agency 216118
+      BusinessLocation: Select All Locations
+
+  Personal Information:
+    Add:
+      WorkerLogo: Worker101.png
+      FirstName: Non-British
+      LastName: HealthAndCare {{increment}}
+      AlsoKnownAs: Edited {{increment}}
+      WorkerEmailAddress: carehires+worker{{increment}}@zohomail.com
+      PhoneNumberType: Mobile
+      PhoneNumber: "07412001246"
+      DateOfBirth: 28 Feb 2000
+      Gender: Male
+      Nationality: Filipino
+
+  Residential Address Information:
+    Add:
+      Country: United Kingdom
+      PostCode: BL0 9YX
+      CurrentlyLivingInThisAddress: "Yes"
+      From: 18 Oct 2011
+      To: 13 Nov 2019
+      ProofOfAddressDocument: Proof of Address Example.pdf
+
+  Employment Information:
+    Add:
+      WorkerType: Rehabilitation Worker
+      Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+      RegulatorySettings: Not Required (NR)
+      WorkerEmploymentType: PAYE
+      WorkerEmploymentTypeValue: 0012390
+
+  Passport Visa DBS Information:
+    Add:
+      PassportNumber: "<passportNumber>"
+      IssuedCountry: Philippines
+      VisaType: EU Settlement Scheme
+      MaximumWeeklyHours: 10
+      NationalInsuranceNumber: "<insuranceNumber>"
+      ShareCode: "<shareCode>"
+      DbsCertificateNumber: "00153557"
+      IsThereAnyConviction: "No"
+
+    Update:
+      PassportNumber: "<passportNumber>"
+      IssuedCountry: Philippines
+      VisaType: Health and care worker visa
+      SponsorType: Externally Sponsored
+      CompanyName: Externally Sponsored Company
+      MaximumWeeklyHours: 10
       NationalInsuranceNumber: "<insuranceNumber>"
       ShareCode: "<shareCode>"
       DbsCertificateNumber: "00153557"
@@ -232,6 +297,8 @@ Documents and Proof:
       Document: National insurance.pdf
     ProofOfAddress:
       Document: Proof of Address.pdf
+    StudentTimetable:
+      Document: Student Time Table.pdf
     DrivingLicence:
       ExpiryDate: 18 Dec 2025
       Document: driving_licence.pdf

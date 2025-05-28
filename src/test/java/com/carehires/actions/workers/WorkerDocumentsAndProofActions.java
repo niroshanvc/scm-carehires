@@ -409,4 +409,96 @@ public class WorkerDocumentsAndProofActions {
         BasePage.clickWithJavaScript(documentsAndProofPage.saveButton);
         verifySuccessMessage();
     }
+
+    public void uploadDocumentsForNonBritishStudentWorker() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<< Entering Document and Proof Information >>>>>>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for worker is not set in GlobalVariables.");
+        }
+
+        BasePage.waitUntilPageCompletelyLoaded();
+
+        // verify document upload field is available
+        By drivingLicenceTextField = By.xpath(WorkerDocumentsAndProofPage.DRIVING_LICENCE_FIELD_XPATH);
+        BasePage.verifyElementIsPresentAfterWait(drivingLicenceTextField, 60);
+
+        enterCvInfo(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.cvFileStatus);
+
+        enterDbsCertificateInfo(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.dbsCertificateStatus);
+
+        enterPassportDocument(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.passportDocumentStatus);
+
+        enterNationalInsuranceDocument(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.nationalInsuranceStatus);
+
+        enterProofOfAddress(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.proofOfAddressStatus);
+
+        enterStudentTimeTable(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.proofOfAddressStatus);
+
+        enterDrivingLicence(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.drivingLicenceStatus);
+
+        enterVisaWorkPermitProof(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.visaStatus);
+
+        BasePage.clickWithJavaScript(documentsAndProofPage.saveButton);
+        verifySuccessMessage();
+    }
+
+    private void enterStudentTimeTable(String ymlFile, String subHeader) {
+        String timeTableDoc = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
+                subHeader, "StudentTimetable", YML_SUB_HEADER_DOCUMENT);
+        String proofOfAddressFile = WORKER_DOCUMENTS_PATH + timeTableDoc;
+        BasePage.uploadFile(documentsAndProofPage.studentTimeTableSelectFile, proofOfAddressFile);
+    }
+
+    public void uploadDocumentAndProofForNonBritishWorker() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<< Entering Document and Proof Information >>>>>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for worker is not set in GlobalVariables.");
+        }
+
+        BasePage.waitUntilPageCompletelyLoaded();
+
+        // verify document upload field is available
+        By drivingLicenceTextField = By.xpath(WorkerDocumentsAndProofPage.DRIVING_LICENCE_FIELD_XPATH);
+        BasePage.verifyElementIsPresentAfterWait(drivingLicenceTextField, 60);
+
+        enterCvInfo(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.cvFileStatus);
+
+        enterDbsCertificateInfo(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.dbsCertificateStatus);
+
+        enterPassportDocument(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.passportDocumentStatus);
+
+        enterNationalInsuranceDocument(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.nationalInsuranceStatus);
+
+        enterProofOfAddress(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.proofOfAddressStatus);
+
+        enterDrivingLicence(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.drivingLicenceStatus);
+
+        enterVisaWorkPermitProof(YML_FILE_NON_BRITISH, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.visaStatus);
+
+        BasePage.clickWithJavaScript(documentsAndProofPage.saveButton);
+        verifySuccessMessage();
+    }
 }

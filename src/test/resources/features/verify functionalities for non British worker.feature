@@ -46,7 +46,7 @@ Feature: Test CareHires create worker
   @VerifyNonBritishStudentWorker
   Scenario: Create a worker where nationality is non-British & Visa Type is Student
     And User enters valid non-British worker and related basic information
-    And User enters Document and Proof information for non-British worker
+    And User enters Document and Proof information for non-British Student worker
     And User enters Education and Training data
     And User enters Emergency Information data
     And User enters Vaccination and Allergy Information data
@@ -64,7 +64,7 @@ Feature: Test CareHires create worker
   @VerifyNonBritishMaximumWeeklyHoursWorker
   Scenario: Create a worker where nationality is non-British & Visa Type is Graduate Settlement
     And User enters valid non-British worker details by selecting Graduate Settlement as Visa Type
-    And User enters Document and Proof information for non-British worker
+    And User uploads Document and Proof information for non-British worker
     And User enters Education and Training data
     And User enters Emergency Information data
     And User enters Vaccination and Allergy Information data
@@ -78,3 +78,13 @@ Feature: Test CareHires create worker
     And User verifies the worker profile status as Submitted For Review
     And User updates the worker profile as Approve
     And User verifies the worker profile status as Approved
+
+  @EditNonBritishWorker
+  Scenario: Create a draft worker and update visa type and other related information
+    And User creates a non-British worker in draft stage
+    And User moves to Basic Information page again
+    And User collects workerId from Basic Information page
+    And User navigates to Worker View page
+    And User finds recently created worker
+    And User edit non-British worker profile data
+

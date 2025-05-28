@@ -28,7 +28,7 @@ public class WorkerBasicInformationSteps {
     }
 
     @And("User creates a worker")
-    public void userCreatesAWorker() {
+    public void createWorker() {
         basicInformationActions.completeCreateWorkerProcess();
     }
 
@@ -50,5 +50,15 @@ public class WorkerBasicInformationSteps {
     @And("User enters valid non-British worker details by selecting Graduate Settlement as Visa Type")
     public void createWorkerBySelectingGraduateSettlement() {
         basicInformationActions.createWorkerBySelectingGraduateSettlementVisaType();
+    }
+
+    @And("User creates a non-British worker in draft stage")
+    public void createANonBritishWorkerInDraftStage() {
+        basicInformationActions.createNonBritishWorkerInDraftStage();
+    }
+
+    @And("User edit non-British worker profile data")
+    public void updateNonBritishWorkerProfileData() {
+        basicInformationActions.updateNonBritishWorkerBasicInfo();
     }
 }
