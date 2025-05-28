@@ -88,7 +88,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         wait.until(ExpectedConditions.refreshed(ExpectedConditions.jsReturnsValue("return (" + condition.get() + ");")));
     }
@@ -175,7 +175,7 @@ public class BasePage {
             prop.load(fis);
         } catch (IOException e) {
             logger.error("An error occurred: ", e);
-            throw new RuntimeException("Failed to load properties file", e);
+            throw new WebDriverRuntimeException(e);
         } finally {
             if (fis != null) {
                 try {
@@ -219,7 +219,7 @@ public class BasePage {
         try {
             getDriver().get(url);
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
     }
 
@@ -228,7 +228,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         try {
             wait.until(ExpectedConditions.visibilityOf(element));
@@ -249,7 +249,7 @@ public class BasePage {
         try {
             js = ((JavascriptExecutor) getDriver());
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         js.executeScript("arguments[0].scrollIntoView(true);", ele);
     }
@@ -264,7 +264,7 @@ public class BasePage {
             logger.info("JavaScript click executed successfully on %s", ele);
         } catch (WebDriverInitializationException e) {
             logger.error("JavaScript click failed on element: %s", e.toString());
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
     }
 
@@ -299,7 +299,7 @@ public class BasePage {
         try {
             element = getDriver().findElement(by);
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         element.clear();
         element.sendKeys(data);
@@ -330,7 +330,7 @@ public class BasePage {
             ele = getDriver().findElement(by);
             waitUntilElementPresent(ele, 30);
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         return ele.getAttribute(attribute);
     }
@@ -355,7 +355,7 @@ public class BasePage {
         try {
             sel = new Select(getDriver().findElement(By.xpath(xpath)));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         sel.selectByValue("0");
     }
@@ -366,7 +366,7 @@ public class BasePage {
         try {
             actions = new Actions(getDriver());
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         actions.keyDown(Keys.SHIFT)
                 .sendKeys(Keys.TAB)
@@ -380,7 +380,7 @@ public class BasePage {
         try {
             getDriver().navigate().refresh();
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
     }
 
@@ -401,7 +401,7 @@ public class BasePage {
         try {
             js = (JavascriptExecutor) getDriver();
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
     }
@@ -412,7 +412,7 @@ public class BasePage {
         try {
             actions = new Actions(getDriver());
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         actions.sendKeys(Keys.END).perform();
     }
@@ -429,7 +429,7 @@ public class BasePage {
         try {
             return getDriver().getTitle();
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
     }
 
@@ -446,7 +446,7 @@ public class BasePage {
                 try {
                     return Objects.equals(((JavascriptExecutor) getDriver()).executeScript("return document.readyState"), "complete");
                 } catch (WebDriverInitializationException e) {
-                    throw new RuntimeException(e);
+                    throw new WebDriverRuntimeException(e);
                 }
             };
             wait.until(pageLoadCondition);
@@ -454,7 +454,7 @@ public class BasePage {
             logger.error("Page is not completely loaded after 90 seconds");
             throw timeoutException;
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
     }
 
@@ -531,7 +531,7 @@ public class BasePage {
             js.executeScript(JAVASCRIPT_CLICK, ele);
 
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
     }
 
@@ -539,7 +539,7 @@ public class BasePage {
         try {
             return getDriver().getCurrentUrl();
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
     }
 
@@ -566,7 +566,7 @@ public class BasePage {
             element = getDriver().findElement(By.xpath(xpath));
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
@@ -577,6 +577,18 @@ public class BasePage {
             return element.isDisplayed();
         } catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
+        }
+    }
+
+    public static boolean isElementDisplayed(String xpath) {
+        logger.info("******************** Checking element - %s is displayed:", xpath);
+        try {
+            WebElement element = getDriver().findElement(By.xpath(xpath));
+            return element.isDisplayed();
+        } catch (NoSuchElementException | StaleElementReferenceException e) {
+            return false;
+        } catch (WebDriverInitializationException e) {
+            throw new WebDriverRuntimeException(e);
         }
     }
 
@@ -618,7 +630,7 @@ public class BasePage {
         try {
             actions = new Actions(getDriver());
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         actions.moveToElement(element).build().perform();
     }
@@ -628,7 +640,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         wait.until(ExpectedConditions.invisibilityOf(element));
     }
@@ -639,7 +651,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         wait.ignoring(StaleElementReferenceException.class)
                 .until(ExpectedConditions.visibilityOf(element));
@@ -659,7 +671,7 @@ public class BasePage {
         try {
             return new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
     }
 
@@ -671,7 +683,7 @@ public class BasePage {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
             wait.until(ExpectedConditions.visibilityOf(element));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
     }
 
@@ -681,13 +693,13 @@ public class BasePage {
         try {
             js = ((JavascriptExecutor) getDriver());
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         WebElement element;
         try {
             element = getDriver().findElement(By.xpath(xpath));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         js.executeScript("arguments[0].scrollIntoView(true);", element);
     }
@@ -697,7 +709,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
@@ -711,7 +723,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         try {
             wait.until((ExpectedCondition<Boolean>) driver -> {
@@ -721,7 +733,7 @@ public class BasePage {
                     attributeValue = Objects.requireNonNull(((JavascriptExecutor) getDriver()).executeScript
                             ("return arguments[0].getAttribute(arguments[1]);", element, attribute)).toString();
                 } catch (WebDriverInitializationException e) {
-                    throw new RuntimeException(e);
+                    throw new WebDriverRuntimeException(e);
                 }
                 assert attributeValue != null;
                 return attributeValue.equals(attributeUpdatedValue);
@@ -745,7 +757,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
 
         // Wait until at least one element is present
@@ -755,7 +767,7 @@ public class BasePage {
             try {
                 elements = getDriver().findElements(locator);
             } catch (WebDriverInitializationException e) {
-                throw new RuntimeException(e);
+                throw new WebDriverRuntimeException(e);
             }
             return !elements.isEmpty(); // Return true if at least one element is found
         });
@@ -765,7 +777,7 @@ public class BasePage {
         try {
             elements = getDriver().findElements(locator);
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
     }
 
@@ -776,7 +788,7 @@ public class BasePage {
         try {
             actions = new Actions(getDriver());
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         actions.moveToElement(element);
         actions.moveToElement(subElement);
@@ -787,7 +799,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         try {
             wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(element)));
@@ -802,7 +814,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
@@ -814,7 +826,7 @@ public class BasePage {
         try {
             actions = new Actions(getDriver());
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         actions.moveToElement(mainLink).perform();
         WebElement subMenu = wait.until(ExpectedConditions.presenceOfElementLocated(subLocator));
@@ -842,7 +854,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         wait.until(driver -> {
             try {
@@ -850,10 +862,10 @@ public class BasePage {
                     return Objects.requireNonNull(((JavascriptExecutor) getDriver()).executeScript(
                             "return arguments[0].getAttribute('disabled') == null;", element));
                 } catch (WebDriverInitializationException e) {
-                    throw new RuntimeException(e);
+                    throw new WebDriverRuntimeException(e);
                 }
             } catch (RuntimeException e) {
-                throw new RuntimeException(e);
+                throw new WebDriverRuntimeException(e);
             }
         });
     }
@@ -940,6 +952,12 @@ public class BasePage {
                     "Select Site")));
         } catch (WebDriverInitializationException e) {
             logger.error("** Error while waiting for dropdown value: %s", e.getMessage());
+        }
+    }
+
+    public static class WebDriverRuntimeException extends RuntimeException {
+        public WebDriverRuntimeException(Throwable cause) {
+            super(cause);
         }
     }
 }

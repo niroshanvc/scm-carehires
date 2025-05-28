@@ -50,6 +50,9 @@ public class WorkerDocumentsAndProofPage {
     @FindBy(xpath = "//p[contains(text(), 'Proof Of Address Document')]/../../div[7]//input[@type='file']")
     public WebElement proofOfAddressSelectFile;
 
+    @FindBy(xpath = "//p[contains(text(), 'Student Time Table')]/../../div[7]//input[@type='file']")
+    public WebElement studentTimeTableSelectFile;
+
     @FindBy(xpath = "//p[contains(text(), 'Proof Of Address Document')]/../../div[6]/nb-icon")
     public WebElement proofOfAddressStatus;
 
