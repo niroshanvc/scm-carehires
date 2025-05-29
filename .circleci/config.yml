@@ -149,17 +149,13 @@ jobs:
                   "disposition": "attachment"
                 }
               ]
-            }' > email_payload.json
-            
-            # Debug the JSON payload
-            echo "Generated email payload:"
-            head -c 1000 email_payload.json  # Print the first 1000 characters for debugging
-            
-            # Send the email using SendGrid API
-            curl -X POST https://api.sendgrid.com/v3/mail/send \
+              }' > email_payload.json
+    
+              # Send the email using SendGrid API
+                curl -X POST https://api.sendgrid.com/v3/mail/send \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               -H "Content-Type: application/json" \
-              -d @email_payload.json || echo "Error sending email!"
+                -d @email_payload.json || echo "Error sending email!"
 
 workflows:
   version: 2
