@@ -12,7 +12,7 @@ parameters:
     default: "chrome" # Default browser
   feature_tag:
     type: string
-    default: "@Smoke" # Default test case tag
+    default: "@featureTag" # Default test case tag
   environment:
     type: string
     default: "dev" # Default environment
@@ -53,8 +53,15 @@ jobs:
             rm chromedriver.zip
 
       - run:
+          name: Run Tests
+          command: |
+            mvn clean test -Denv=<< parameters.environment >> -Dbrowser=<< parameters.browser >> -Dcucumber.filter.tags="<< parameters.feature_tag >>" \
+              -Demail=<< parameters.email >>      
+
+      - run:
           name: Generate Cucumber Reports
           command: mvn clean verify  # Ensure that Cucumber reports are generated
+
       - run:
           name: Prepare Report for Email
           command: |
