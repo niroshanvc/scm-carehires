@@ -11,8 +11,8 @@ public class JobDetailsPage {
     @FindBy(xpath = "//nb-button-group[@role='group']/button[2]")
     public WebElement sleepInButton;
 
-    @FindBy(xpath = "//nb-select[@id='care-provider']/button")
-    public WebElement careProviderDropdown;
+    @FindBy(id = "care-provider")
+    public WebElement careProviderInput;
 
     @FindBy(xpath = "//nb-select[@id='care-home']/button")
     public WebElement siteDropdown;

@@ -123,7 +123,7 @@ public class JobDetailsActions {
         // Retrieve the latest provider increment value
         int providerIncrementValue = DataConfigurationReader.getCurrentIncrementValue("provider");
 
-        BasePage.clickWithJavaScript(jobDetailsPage.careProviderDropdown);
+        BasePage.clickWithJavaScript(jobDetailsPage.careProviderInput);
 
         // Read care provider name from YAML and replace <providerIncrement> placeholder
         String providerTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
@@ -132,6 +132,7 @@ public class JobDetailsActions {
         String careProvider = providerTemplate.replace("<providerIncrement>", String.valueOf(
                 providerIncrementValue));
         careProvider = careProvider.replace("\"", "").trim();
+        BasePage.clearAndEnterTexts(jobDetailsPage.careProviderInput, careProvider);
         BasePage.genericWait(3000);
         By by = By.xpath(jobDetailsPage.getDropdownOptionXpath(careProvider));
         BasePage.waitUntilVisibilityOfElementLocated(by, 60);
