@@ -11,7 +11,8 @@ Feature: Test CareHires view job
   Scenario: Test view job
     And User searches jobs by date range
     And User searches jobs by provider
-    And User filters jobs by status as All Open
+    And User filters jobs by status as Open Urgent
+    And User filters jobs by status as Open
     And User filters jobs by status as Open Over-due
     And User filters jobs by status as Suggested
     And User filters jobs by status as Allocated
