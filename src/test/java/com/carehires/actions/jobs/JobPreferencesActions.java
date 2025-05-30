@@ -31,6 +31,7 @@ public class JobPreferencesActions {
     private static final String YML_FILE_CANCELLATION = "job-cancellation";
     private static final String YML_FILE_MANAGE_TEMPLATE = "manage-job-template";
     private static final String YML_FILE_PROVIDER_USER = "provider user - job-post";
+    private static final String YML_FILE_NON_BRITISH = "scenario-non-British-worker";
     private static final String YML_HEADER = "Job Preferences";
     private static final String YML_HEADER1 = "Job Preferences A";
     private static final String YML_HEADER2 = "Job Preferences B";
@@ -562,6 +563,16 @@ public class JobPreferencesActions {
         BasePage.waitUntilPageCompletelyLoaded();
         enableDisableBlockBooking(YML_FILE_PROVIDER_USER, YML_HEADER2);
         enterJobNotes(YML_FILE_PROVIDER_USER, YML_HEADER2);
+        BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
+    }
+
+    public void enterSkillsAndBlockBookingButNoNote() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<< Enter block booking without worker >>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        selectGender(YML_FILE_NON_BRITISH, YML_HEADER);
+        selectPreferences(YML_FILE_NON_BRITISH, YML_HEADER, false);
+        enableBlockBookingWithoutWorker(YML_FILE_NON_BRITISH, YML_HEADER);
+        BasePage.waitUntilElementClickable(jobPreferencesPage.continueButton, 30);
         BasePage.clickWithJavaScript(jobPreferencesPage.continueButton);
     }
 }

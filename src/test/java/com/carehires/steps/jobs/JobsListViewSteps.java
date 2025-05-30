@@ -178,4 +178,9 @@ public class JobsListViewSteps {
     public void trySuggestingWorker() {
         jobsListViewActions.suggestingWorkerOnJobDetailsPopup();
     }
+
+    @And("User suggests a worker for selected job")
+    public void suggestAWorkerForSelectedJob() {
+        jobsListViewActions.suggestAWorkerForSelectedJob();
+    }
 }

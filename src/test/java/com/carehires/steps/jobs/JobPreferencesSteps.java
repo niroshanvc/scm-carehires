@@ -147,4 +147,9 @@ public class JobPreferencesSteps {
     public void providerUserEntersJobPreferencesWithBlockBooking() {
         jobPreferencesActions.providerUserEntersJobPreferencesWithBlockBooking();
     }
+
+    @And("User enters skills and block booking but without note")
+    public void enterSkillsAndBlockBookingButNoNote() {
+        jobPreferencesActions.enterSkillsAndBlockBookingButNoNote();
+    }
 }

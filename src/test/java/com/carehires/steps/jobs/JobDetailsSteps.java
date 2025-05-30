@@ -162,4 +162,9 @@ public class JobDetailsSteps {
     public void providerUserEntersSleepInDurationAndRecurrence() {
         jobDetailsActions.providerUserEntersSleepInDurationAndRecurrence();
     }
+
+    @And("User enters Job Details information without enabling Recurrence and Breaks")
+    public void enterJobDetailsAndDisablingRecurrenceAndBreaks() {
+        jobDetailsActions.enterJobDetailsAndDisablingRecurrenceAndBreaks();
+    }
 }

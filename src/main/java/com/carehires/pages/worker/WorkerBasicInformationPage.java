@@ -11,6 +11,9 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//nb-select[@formcontrolname='agency']/button")
     public WebElement agencyDropdown;
 
+    @FindBy(id = "agency-input")
+    public WebElement agencyInput;
+
     @FindBy(xpath = "//nb-select[@formcontrolname='agencyLocations']/button")
     public WebElement agencyLocationDropdown;
 

@@ -39,7 +39,7 @@ Basic Information:
       PassportNumber: "<passportNumber>"
       IssuedCountry: Philippines
       VisaType: Health and care worker visa
-      MaximumWeeklyHours: 10
+      MinimumWeeklyHours: 10
       SponsorType: Externally Sponsored
       CompanyName: Externally Sponsored Company
       NationalInsuranceNumber: "<insuranceNumber>"
@@ -93,7 +93,7 @@ Basic Information B:
       PassportNumber: "<passportNumber>"
       IssuedCountry: Philippines
       VisaType: Skilled Worker
-      MaximumWeeklyHours: 10
+      MinimumWeeklyHours: 10
       SponsorType: Agency Sponsored
       AssignedProvider: Automation Provider 731010
       CompanyName: Agency Sponsored Company
@@ -149,9 +149,6 @@ Basic Information C:
       IssuedCountry: Philippines
       VisaType: Student Visa
       MinimumWeeklyHours: 10
-      SponsorType: Agency Sponsored
-      AssignedProvider: Automation Provider 731010
-      CompanyName: Agency Sponsored Company
       NationalInsuranceNumber: "<insuranceNumber>"
       ShareCode: "<shareCode>"
       DbsCertificateNumber: "00153557"
@@ -205,9 +202,6 @@ Basic Information D:
       IssuedCountry: Philippines
       VisaType: Graduate Settlement
       MaximumWeeklyHours: 6
-      SponsorType: Agency Sponsored
-      AssignedProvider: Automation Provider 731010
-      CompanyName: Agency Sponsored Company
       NationalInsuranceNumber: "<insuranceNumber>"
       ShareCode: "<shareCode>"
       DbsCertificateNumber: "00153557"
@@ -387,3 +381,27 @@ Employment:
         ReferenceNote: >
           When crafting your resume, highlight your experience in patient care, 
           your ability to communicate effectively, and any relevant certifications you hold.
+
+Job Details:
+  Job Type: General Job
+  Care Provider / Site and Service Preferences:
+    Care Provider: Automation Provider 731010
+    Site: Automation Master 731010
+    Using: Post Custom Job
+    Worker Type: Rehabilitation Worker
+    Number of Vacancies: 1
+
+  Job Duration and Recurrence:
+    Normal Day:
+      Start Date: "today - 1"
+      Start Time: "00:30"
+      End Time: "07:30"
+      Enable Recurrence: "No"
+      Breaks/ Intervals: "No"
+
+Job Preferences:
+  Gender: Male
+  Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+  Enable Block Booking: "Yes"
+  Agency: Automation Agency 216118
+  Job Notes: "Sample Job Post Note added."

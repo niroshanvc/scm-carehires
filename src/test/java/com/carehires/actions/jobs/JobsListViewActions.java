@@ -45,6 +45,7 @@ public class JobsListViewActions {
     private static final String YML_FILE_CREATE_BREAKS = "job-create-with-breaks";
     private static final String YML_FILE_CANCELLATION = "job-cancellation";
     private static final String YML_FILE_SCENARIO1 = "scenario - job post";
+    private static final String YML_FILE_NON_BRITISH = "scenario-non-British-worker";
     private static final String YML_HEADER_JOB_PREFERENCES = "Job Preferences";
     private static final String YML_HEADER_JOB_DETAILS = "Job Details";
     private static final String YML_HEADER_JOB_CANCEL = "Cancel Job";
@@ -1113,5 +1114,15 @@ public class JobsListViewActions {
         BasePage.scrollToWebElement(listViewPage.getDropdownOptionXpath(agency));
         BasePage.clickWithJavaScript(listViewPage.getDropdownOptionXpath(agency));
         BasePage.clickTabKey(listViewPage.detailViewWorkersFilterByAgencyDropdown);
+    }
+
+    public void suggestAWorkerForSelectedJob() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Suggesting a worker for a sleep in job >>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.refreshPage();
+        clickOnViewDetailedJobInfo();
+        gotoEligibleWorkersTabOnJobDetailPopup();
+        workersFilterByAgencyOnJobDetailsPopup(YML_FILE_NON_BRITISH);
+        clickOnSuggestButtonOnJobDetails();
+        verifyWorkerSuggestSuccessMessage();
     }
 }
