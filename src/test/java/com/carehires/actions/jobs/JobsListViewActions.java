@@ -120,15 +120,16 @@ public class JobsListViewActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Searching jobs by selecting a provider name >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.genericWait(5000);
-        BasePage.clickWithJavaScript(listViewPage.providerDropdown);
+        BasePage.clickWithJavaScript(listViewPage.providerInput);
         BasePage.genericWait(1000);
         String providerName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_CREATE,
                 YML_HEADER_JOB_DETAILS, YML_SUB_HEADER_CARE_PROVIDER, "Care Provider");
+        BasePage.clearAndEnterTexts(listViewPage.providerInput, providerName);
         By by = By.xpath(listViewPage.getDropdownOptionXpath(providerName));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
         BasePage.scrollToWebElement(listViewPage.getDropdownOptionXpath(providerName));
         BasePage.clickWithJavaScript(listViewPage.getDropdownOptionXpath(providerName));
-        BasePage.clickTabKey(listViewPage.providerDropdown);
+        BasePage.clickTabKey(listViewPage.providerInput);
         BasePage.waitUntilElementPresent(listViewPage.finishSearch, 60);
     }
 
@@ -151,17 +152,17 @@ public class JobsListViewActions {
         List<WebElement> statuses = listViewPage.jobStatuses;
         BasePage.waitUntilElementPresent(statuses.get(0), 60);
 
-        if (status.equalsIgnoreCase("All Open")) {
+        if (status.equalsIgnoreCase("Open Urgent")) {
             status = "OPEN";
         } else {
             status = status.toUpperCase();
         }
 
-        // verify all status display as Suggested
+        // verify all status display as expected
         for (WebElement el : statuses) {
             BasePage.scrollToWebElement(el);
             String text = el.getText();
-            if (status.equalsIgnoreCase("Open")) {
+            /*if (status.equalsIgnoreCase("Open")) {
                 if (text.equalsIgnoreCase("Suggested")
                         || text.equalsIgnoreCase("Open Over-due")) {
                     text = "OPEN";
@@ -169,7 +170,7 @@ public class JobsListViewActions {
             } else if (status.equalsIgnoreCase("Open Over-due") && text.equalsIgnoreCase(
                     "Suggested")) {
                     text = "OPEN OVER-DUE";
-                }
+                }*/
 
             assertThat("Filter by status is not working.", text, is(status));
         }
@@ -180,13 +181,17 @@ public class JobsListViewActions {
         BasePage.waitUntilPageCompletelyLoaded();
         String normalizedStatus = jobStatus.trim().toLowerCase();  // Normalize input
         switch(normalizedStatus) {
-            case "all open":
+            case "open urgent":
+                BasePage.waitUntilElementClickable(listViewPage.openUrgentStatusButton, 60);
+                BasePage.clickWithJavaScript(listViewPage.openUrgentStatusButton);
+                break;
+            case "open":
                 BasePage.waitUntilElementClickable(listViewPage.openStatusButton, 60);
                 BasePage.clickWithJavaScript(listViewPage.openStatusButton);
                 break;
             case "open over-due":
-                BasePage.waitUntilElementClickable(listViewPage.openOverDueStatusButton, 60);
-                BasePage.clickWithJavaScript(listViewPage.openOverDueStatusButton);
+                BasePage.waitUntilElementClickable(listViewPage.openOverdueStatusButton, 60);
+                BasePage.clickWithJavaScript(listViewPage.openOverdueStatusButton);
                 break;
             case "suggested":
                 BasePage.waitUntilElementClickable(listViewPage.suggestedStatusButton, 60);

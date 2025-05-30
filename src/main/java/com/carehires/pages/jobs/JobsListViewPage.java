@@ -100,28 +100,37 @@ public class JobsListViewPage {
     @FindBy(xpath = "//nb-select[@id='provider-id']/button")
     public WebElement providerDropdown;
 
+    @FindBy(id = "provider-id")
+    public WebElement providerInput;
+
     @FindBy(xpath = "//nb-select[@placeholder='Site']/button")
     public WebElement siteDropdown;
+
+    @FindBy(xpath = "//input[@id='carehome-id']")
+    public WebElement siteInput;
 
     @FindBy(xpath = "//div[contains(@class, 'btn')]/button[1]")
     public WebElement allStatusButton;
 
     @FindBy(xpath = "//div[contains(@class, 'btn')]/button[2]")
-    public WebElement openStatusButton;
+    public WebElement openUrgentStatusButton;
 
     @FindBy(xpath = "//div[contains(@class, 'btn')]/button[3]")
-    public WebElement openOverDueStatusButton;
+    public WebElement openStatusButton;
 
     @FindBy(xpath = "//div[contains(@class, 'btn')]/button[4]")
-    public WebElement suggestedStatusButton;
+    public WebElement openOverdueStatusButton;
 
     @FindBy(xpath = "//div[contains(@class, 'btn')]/button[5]")
-    public WebElement allocatedStatusButton;
+    public WebElement suggestedStatusButton;
 
     @FindBy(xpath = "//div[contains(@class, 'btn')]/button[6]")
-    public WebElement completedStatusButton;
+    public WebElement allocatedStatusButton;
 
     @FindBy(xpath = "//div[contains(@class, 'btn')]/button[7]")
+    public WebElement completedStatusButton;
+
+    @FindBy(xpath = "//div[contains(@class, 'btn')]/button[8]")
     public WebElement cancelledStatusButton;
 
     @FindBy(xpath = "//nb-select[@formcontrolname='reason']/button")
