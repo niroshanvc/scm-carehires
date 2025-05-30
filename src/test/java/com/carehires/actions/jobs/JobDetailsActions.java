@@ -32,6 +32,7 @@ public class JobDetailsActions {
     private static final String YML_FILE_CANCELLATION = "job-cancellation";
     private static final String YML_FILE_MANAGE_TEMPLATE = "manage-job-template";
     private static final String YML_FILE_PROVIDER_USER = "provider user - job-post";
+    private static final String YML_FILE_NON_BRITISH = "scenario-non-British-worker";
     private static final String YML_HEADER = "Job Details";
     private static final String YML_HEADER1 = "Job Details A";
     private static final String YML_HEADER2 = "Job Details B";
@@ -827,6 +828,17 @@ public class JobDetailsActions {
     public void providerUserEntersSleepInDurationAndRecurrence() {
         enterSleepInDurationAndRecurrence(YML_FILE_PROVIDER_USER, YML_HEADER4);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void enterJobDetailsAndDisablingRecurrenceAndBreaks() {
+        logger.info("<<<<<<<<<<<<<<<<<<< Enter job details by disabling recurrence and breaks >>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderAndServicePreferences(YML_FILE_NON_BRITISH, YML_HEADER);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_NON_BRITISH, YML_HEADER);
+        BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
 }

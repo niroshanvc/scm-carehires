@@ -71,13 +71,20 @@ Feature: Test CareHires create worker
     And User enters Employment Information data
     And User collects workerId from Worker - Employment History page
     And User navigates to Worker View page
-    When User finds recently created worker
-    Then User verifies the worker profile status as Profile Complete
+    And User finds recently created worker
+    And User verifies the worker profile status as Profile Complete
     And User accepts all the compliance
     And User updates the worker profile as Submitted for Review
     And User verifies the worker profile status as Submitted For Review
     And User updates the worker profile as Approve
     And User verifies the worker profile status as Approved
+    And User navigates to Jobs page
+    And User moves to Post New Job page
+    And User enters Job Details information without enabling Recurrence and Breaks
+    And User enters skills and block booking but without note
+    And User enters Job Summary
+    And User suggests a worker for selected job
+
 
   @EditNonBritishWorker
   Scenario: Create a draft worker and update visa type and other related information
