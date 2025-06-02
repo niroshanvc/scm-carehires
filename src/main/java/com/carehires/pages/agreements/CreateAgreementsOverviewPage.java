@@ -5,13 +5,13 @@ import org.openqa.selenium.support.FindBy;
 
 public class CreateAgreementsOverviewPage {
     @FindBy(id = "agency-id")
-    public WebElement agencyDropdown;
+    public WebElement agencyInput;
 
     @FindBy(id = "agency-location-id")
     public WebElement agencyLocationDropdown;
 
     @FindBy(id = "provider-id")
-    public WebElement careProviderDropdown;
+    public WebElement careProviderInput;
 
     public static final String SITE_CHECKBOXES = "//div[contains(@id,'cdk-overlay')]//nb-option/nb-checkbox";
 
