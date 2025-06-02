@@ -146,8 +146,9 @@ public class JobDetailsActions {
         String site = siteTemplates.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
         site = site.replace("\"", "").trim();
         BasePage.genericWait(500);
-        BasePage.waitUntilElementClickable(jobDetailsPage.siteDropdown, 60);
-        BasePage.clickWithJavaScript(jobDetailsPage.siteDropdown);
+        BasePage.waitUntilElementClickable(jobDetailsPage.siteInput, 60);
+        BasePage.clickWithJavaScript(jobDetailsPage.siteInput);
+        BasePage.clearAndEnterTexts(jobDetailsPage.siteInput, site);
         BasePage.genericWait(500);
         by = By.xpath(jobDetailsPage.getDropdownOptionXpath(site));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
@@ -486,7 +487,7 @@ public class JobDetailsActions {
         assert siteTemplates != null;
         String site = siteTemplates.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
         site = site.replace("\"", "").trim();
-        BasePage.waitUntilValueLoadedInDropdown(jobDetailsPage.siteDropdown, site, 60);
+        BasePage.waitUntilValueLoadedInDropdown(jobDetailsPage.siteInput, site, 60);
     }
 
 
@@ -612,7 +613,7 @@ public class JobDetailsActions {
         assert siteTemplates != null;
         String site = siteTemplates.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
         site = site.replace("\"", "").trim();
-        BasePage.waitUntilValueLoadedInDropdown(jobDetailsPage.siteDropdown, site, 60);
+        BasePage.waitUntilValueLoadedInDropdown(jobDetailsPage.siteInput, site, 60);
     }
 
     public void enterSleepInDurationAndRecurrence() {
@@ -749,7 +750,7 @@ public class JobDetailsActions {
         BasePage.genericWait(5000);
 
         // select site
-        selectFirstOptionFromDropdown(jobDetailsPage.siteDropdown);
+        selectFirstOptionFromDropdown(jobDetailsPage.siteInput);
 
         // select post custom job or post using template
         selectRadioButton(ymlFile, header, jobDetailsPage.usingRadioButtons);
@@ -762,8 +763,8 @@ public class JobDetailsActions {
         selectDropdownOption(ymlFile, header, "Number of Vacancies", jobDetailsPage.numberOfVacanciesDropdown);
     }
 
-    private void selectFirstOptionFromDropdown(WebElement dropdown) {
-        BasePage.clickWithJavaScript(dropdown);
+    private void selectFirstOptionFromDropdown(WebElement input) {
+        BasePage.clickWithJavaScript(input);
         BasePage.genericWait(5000);
         List<WebElement> options = jobDetailsPage.availableOptionsList();
         BasePage.waitUntilElementPresent(options.get(0), 30);

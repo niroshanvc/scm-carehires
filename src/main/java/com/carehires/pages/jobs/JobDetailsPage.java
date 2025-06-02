@@ -14,8 +14,8 @@ public class JobDetailsPage {
     @FindBy(id = "care-provider")
     public WebElement careProviderInput;
 
-    @FindBy(xpath = "//nb-select[@id='care-home']/button")
-    public WebElement siteDropdown;
+    @FindBy(id = "care-home")
+    public WebElement siteInput;
 
     @FindBy(xpath = "//nb-radio-group[@id='break-paid-status']/nb-radio//input")
     public List<WebElement> usingRadioButtons;
