@@ -17,8 +17,8 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//nb-select[@formcontrolname='agencyLocations']/button")
     public WebElement agencyLocationDropdown;
 
-    @FindBy(xpath = "//nb-select[@formcontrolname='nationality']/button")
-    public WebElement nationalityDropdown;
+    @FindBy(xpath = "//input[@formcontrolname='nationality']")
+    public WebElement nationalityInput;
 
     @FindBy(xpath = "//span[contains(@class, 'image-edit')]")
     public WebElement uploadLogo;

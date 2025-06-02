@@ -529,7 +529,9 @@ public class WorkerBasicInformationActions {
 
         nationality = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2,
                 subHeader, "Nationality");
-        BasePage.clickWithJavaScript(basicInfo.nationalityDropdown);
+        BasePage.doubleClick(basicInfo.nationalityInput);
+        BasePage.genericWait(2000);
+        BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(nationality), 30);
         BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(nationality));
     }
 

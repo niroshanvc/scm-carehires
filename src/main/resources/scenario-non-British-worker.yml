@@ -39,7 +39,7 @@ Basic Information:
       PassportNumber: "<passportNumber>"
       IssuedCountry: Philippines
       VisaType: Health and care worker visa
-      MinimumWeeklyHours: 10
+      MaximumWeeklyHours: 10
       SponsorType: Externally Sponsored
       CompanyName: Externally Sponsored Company
       NationalInsuranceNumber: "<insuranceNumber>"
