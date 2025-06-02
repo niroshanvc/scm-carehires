@@ -40,4 +40,8 @@ public class AgencyBusinessLocationsPage {
 
     @FindBy(xpath = "//nb-icon[@icon='edit-2-outline']")
     public WebElement editDetailsIcon;
+
+    public String getCityXpath(String city) {
+        return String.format("//nb-option[contains(text(),'%s')]", city);
+    }
 }
