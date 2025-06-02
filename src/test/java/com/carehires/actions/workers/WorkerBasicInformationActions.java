@@ -529,7 +529,9 @@ public class WorkerBasicInformationActions {
 
         nationality = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2,
                 subHeader, "Nationality");
-        BasePage.clickWithJavaScript(basicInfo.nationalityDropdown);
+        BasePage.doubleClick(basicInfo.nationalityInput);
+        BasePage.genericWait(2000);
+        BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(nationality), 30);
         BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(nationality));
     }
 
@@ -562,20 +564,9 @@ public class WorkerBasicInformationActions {
         String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
         agency = agency.replace("\"", "").trim();
         BasePage.genericWait(2000);
-        BasePage.waitUntilElementClickable(basicInfo.agencyDropdown, 30);
-        for (int i = 0; i < 7; i++) {
-            try {
-                BasePage.clickWithJavaScript(basicInfo.agencyDropdown);
-                BasePage.genericWait(500);
-                if (BasePage.isElementDisplayed(basicInfo.getDropdownOptionXpath(agency))) {
-                    break;
-                }
-            } catch (Exception e) {
-                if (i == 4) throw e;
-                BasePage.genericWait(500);
-            }
-        }
-
+        BasePage.waitUntilElementClickable(basicInfo.agencyInput, 30);
+        BasePage.doubleClick(basicInfo.agencyInput);
+        BasePage.genericWait(3000);
         By by = By.xpath(basicInfo.getDropdownOptionXpath(agency));
         BasePage.waitUntilVisibilityOfElementLocated(by, 60);
         BasePage.scrollToWebElement(basicInfo.getDropdownOptionXpath(agency));
@@ -717,6 +708,9 @@ public class WorkerBasicInformationActions {
         // Retrieve the current increment value for the worker (from the file)
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
 
+        // Store the increment value in GlobalVariables for reuse in other steps
+        GlobalVariables.setVariable("worker_incrementValue", incrementValue);
+
         BasePage.genericWait(2000);
         enterAgencyInformation(YML_FILE_NON_BRITISH, YML_HEADER, ADD);
         enterPersonalInformation(YML_FILE_NON_BRITISH, ADD);
@@ -726,9 +720,6 @@ public class WorkerBasicInformationActions {
         enterTravelInformation(YML_FILE_NON_BRITISH, ADD);
 
         clickOnSaveButton();
-
-        // Store the increment value in GlobalVariables for reuse in other steps
-        GlobalVariables.setVariable("worker_incrementValue", incrementValue);
     }
 
     public void enterNonBritishWorkerWithBasicInformation() {

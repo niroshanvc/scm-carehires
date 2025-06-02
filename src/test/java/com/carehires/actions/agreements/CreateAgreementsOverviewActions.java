@@ -52,9 +52,9 @@ public class CreateAgreementsOverviewActions {
         String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
         agency = agency.replace("\"", "").trim();
 
-        BasePage.waitUntilElementClickable(agreementsOverviewPage.agencyDropdown, 60);
+        BasePage.waitUntilElementClickable(agreementsOverviewPage.agencyInput, 60);
+        BasePage.doubleClick(agreementsOverviewPage.agencyInput);
         BasePage.genericWait(2000);
-        BasePage.clickWithJavaScript(agreementsOverviewPage.agencyDropdown);
         By by = By.xpath(agreementsOverviewPage.getDropdownOptionXpath(agency));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
         BasePage.scrollToWebElement(agreementsOverviewPage.getDropdownOptionXpath(agency));
@@ -76,7 +76,7 @@ public class CreateAgreementsOverviewActions {
         String careProvider = careProviderTemplate.replace("<providerIncrement>", String.valueOf(
                 providerIncrementValue));
         careProvider = careProvider.replace("\"", "").trim();
-        BasePage.clickWithJavaScript(agreementsOverviewPage.careProviderDropdown);
+        BasePage.doubleClick(agreementsOverviewPage.careProviderInput);
         By careProviderBy = By.xpath(agreementsOverviewPage.getDropdownOptionXpath(careProvider));
         BasePage.waitUntilVisibilityOfElementLocated(careProviderBy, 20);
         BasePage.scrollToWebElement(agreementsOverviewPage.getDropdownOptionXpath(careProvider));

@@ -123,7 +123,7 @@ public class JobDetailsActions {
         // Retrieve the latest provider increment value
         int providerIncrementValue = DataConfigurationReader.getCurrentIncrementValue("provider");
 
-        BasePage.clickWithJavaScript(jobDetailsPage.careProviderDropdown);
+        BasePage.clickWithJavaScript(jobDetailsPage.careProviderInput);
 
         // Read care provider name from YAML and replace <providerIncrement> placeholder
         String providerTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
@@ -132,6 +132,7 @@ public class JobDetailsActions {
         String careProvider = providerTemplate.replace("<providerIncrement>", String.valueOf(
                 providerIncrementValue));
         careProvider = careProvider.replace("\"", "").trim();
+        BasePage.clearAndEnterTexts(jobDetailsPage.careProviderInput, careProvider);
         BasePage.genericWait(3000);
         By by = By.xpath(jobDetailsPage.getDropdownOptionXpath(careProvider));
         BasePage.waitUntilVisibilityOfElementLocated(by, 60);
@@ -145,8 +146,9 @@ public class JobDetailsActions {
         String site = siteTemplates.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
         site = site.replace("\"", "").trim();
         BasePage.genericWait(500);
-        BasePage.waitUntilElementClickable(jobDetailsPage.siteDropdown, 60);
-        BasePage.clickWithJavaScript(jobDetailsPage.siteDropdown);
+        BasePage.waitUntilElementClickable(jobDetailsPage.siteInput, 60);
+        BasePage.clickWithJavaScript(jobDetailsPage.siteInput);
+        BasePage.clearAndEnterTexts(jobDetailsPage.siteInput, site);
         BasePage.genericWait(500);
         by = By.xpath(jobDetailsPage.getDropdownOptionXpath(site));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
@@ -485,7 +487,7 @@ public class JobDetailsActions {
         assert siteTemplates != null;
         String site = siteTemplates.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
         site = site.replace("\"", "").trim();
-        BasePage.waitUntilValueLoadedInDropdown(jobDetailsPage.siteDropdown, site, 60);
+        BasePage.waitUntilValueLoadedInDropdown(jobDetailsPage.siteInput, site, 60);
     }
 
 
@@ -611,7 +613,7 @@ public class JobDetailsActions {
         assert siteTemplates != null;
         String site = siteTemplates.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
         site = site.replace("\"", "").trim();
-        BasePage.waitUntilValueLoadedInDropdown(jobDetailsPage.siteDropdown, site, 60);
+        BasePage.waitUntilValueLoadedInDropdown(jobDetailsPage.siteInput, site, 60);
     }
 
     public void enterSleepInDurationAndRecurrence() {
@@ -748,7 +750,7 @@ public class JobDetailsActions {
         BasePage.genericWait(5000);
 
         // select site
-        selectFirstOptionFromDropdown(jobDetailsPage.siteDropdown);
+        selectFirstOptionFromDropdown(jobDetailsPage.siteInput);
 
         // select post custom job or post using template
         selectRadioButton(ymlFile, header, jobDetailsPage.usingRadioButtons);
@@ -761,9 +763,15 @@ public class JobDetailsActions {
         selectDropdownOption(ymlFile, header, "Number of Vacancies", jobDetailsPage.numberOfVacanciesDropdown);
     }
 
-    private void selectFirstOptionFromDropdown(WebElement dropdown) {
-        BasePage.clickWithJavaScript(dropdown);
-        BasePage.genericWait(5000);
+    private void selectFirstOptionFromDropdown(WebElement input) {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Selecting first option from dropdown >>>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(input, 30);
+        BasePage.clearAndEnterTexts(input, "aaa");
+        BasePage.genericWait(500);
+        BasePage.clearTexts(input);
+        BasePage.genericWait(500);
+        BasePage.doubleClick(input);
+        BasePage.genericWait(3000);
         List<WebElement> options = jobDetailsPage.availableOptionsList();
         BasePage.waitUntilElementPresent(options.get(0), 30);
         BasePage.scrollToWebElement(options.get(0));

@@ -62,7 +62,8 @@ public class AgencyBusinessLocationsActions {
 
         String city = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, YML_HEADER, ADD, "City");
         BasePage.clickWithJavaScript(locationsPage.selectCity);
-        BasePage.clickWithJavaScript(getCityXpath(city));
+        BasePage.waitUntilElementClickable(locationsPage.getCityXpath(city), 90);
+        BasePage.clickWithJavaScript(locationsPage.getCityXpath(city));
 
         BasePage.genericWait(15000);
 
@@ -74,10 +75,6 @@ public class AgencyBusinessLocationsActions {
         BasePage.clickWithJavaScript(locationsPage.updateButton);
         BasePage.waitUntilElementClickable(locationsPage.nextButton, 90);
         BasePage.clickWithJavaScript(locationsPage.nextButton);
-    }
-
-    private String getCityXpath(String city) {
-        return String.format("//nb-option[contains(text(),'%s')]", city);
     }
 
     private void isBusinessLocationSaved() {
@@ -111,7 +108,8 @@ public class AgencyBusinessLocationsActions {
         String city = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, headers,
                 "City");
         BasePage.clickWithJavaScript(locationsPage.selectCity);
-        BasePage.clickWithJavaScript(getCityXpath(city));
+        BasePage.waitUntilElementClickable(locationsPage.getCityXpath(city), 90);
+        BasePage.clickWithJavaScript(locationsPage.getCityXpath(city));
 
         BasePage.genericWait(10000);
     }
