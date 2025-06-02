@@ -1,6 +1,7 @@
 @Regression
 @Worker
 @SuperAdminUser
+@NonBritishWorkerCreation
 Feature: Test CareHires create worker
 
   Background: login to carehires

@@ -708,6 +708,9 @@ public class WorkerBasicInformationActions {
         // Retrieve the current increment value for the worker (from the file)
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
 
+        // Store the increment value in GlobalVariables for reuse in other steps
+        GlobalVariables.setVariable("worker_incrementValue", incrementValue);
+
         BasePage.genericWait(2000);
         enterAgencyInformation(YML_FILE_NON_BRITISH, YML_HEADER, ADD);
         enterPersonalInformation(YML_FILE_NON_BRITISH, ADD);
@@ -717,9 +720,6 @@ public class WorkerBasicInformationActions {
         enterTravelInformation(YML_FILE_NON_BRITISH, ADD);
 
         clickOnSaveButton();
-
-        // Store the increment value in GlobalVariables for reuse in other steps
-        GlobalVariables.setVariable("worker_incrementValue", incrementValue);
     }
 
     public void enterNonBritishWorkerWithBasicInformation() {
