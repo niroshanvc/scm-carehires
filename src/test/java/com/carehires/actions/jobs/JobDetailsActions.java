@@ -764,8 +764,14 @@ public class JobDetailsActions {
     }
 
     private void selectFirstOptionFromDropdown(WebElement input) {
-        BasePage.clickWithJavaScript(input);
-        BasePage.genericWait(5000);
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Selecting first option from dropdown >>>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(input, 30);
+        BasePage.clearAndEnterTexts(input, "aaa");
+        BasePage.genericWait(500);
+        BasePage.clearTexts(input);
+        BasePage.genericWait(500);
+        BasePage.doubleClick(input);
+        BasePage.genericWait(3000);
         List<WebElement> options = jobDetailsPage.availableOptionsList();
         BasePage.waitUntilElementPresent(options.get(0), 30);
         BasePage.scrollToWebElement(options.get(0));

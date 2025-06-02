@@ -375,6 +375,17 @@ public class BasePage {
                 .perform();
     }
 
+    // double-click on an element
+    public static void doubleClick(WebElement element) {
+        Actions actions;
+        try {
+            actions = new Actions(getDriver());
+        } catch (WebDriverInitializationException e) {
+            throw new WebDriverRuntimeException(e);
+        }
+        actions.doubleClick(element).perform();
+    }
+
     public static void refreshPage() {
         logger.info("****************** Refreshing page");
         try {
