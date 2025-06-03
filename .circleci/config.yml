@@ -220,7 +220,7 @@ jobs:
 
       - run:
           name: Generate Cucumber Reports
-          command: mvn clean verify -Dcucumber.filter.tags="<< parameters.feature_tag >>" -Dwebdriver.chrome.headless=false
+          command: mvn clean verify -Dcucumber.filter.tags="<< parameters.feature_tag >>" -Dwebdriver.chrome.headless=true
       - run:
           name: Prepare Report for Email
           command: |
