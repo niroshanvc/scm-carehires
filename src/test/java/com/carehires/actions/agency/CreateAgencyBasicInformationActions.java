@@ -95,6 +95,7 @@ public class CreateAgencyBasicInformationActions {
                 + File.separator + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator + companyLogo;
         BasePage.clickWithJavaScript(createAgencyBasicInfoPage.uploadLogo);
         BasePage.uploadFile(createAgencyBasicInfoPage.fileInputButton, absoluteFilePath);
+        BasePage.genericWait(2000);
         BasePage.waitUntilElementDisplayed(createAgencyBasicInfoPage.imageSaveButton, 60);
         BasePage.clickWithJavaScript(createAgencyBasicInfoPage.imageSaveButton);
 
