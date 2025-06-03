@@ -53,7 +53,7 @@ jobs:
             rm chromedriver.zip
       - run:
           name: Generate Cucumber Reports
-          command: mvn clean verify  # Ensure that Cucumber reports are generated
+          command: mvn clean verify -Dcucumber.filter.tags="<< parameters.feature_tag >>"
       - run:
           name: Prepare Report for Email
           command: |
