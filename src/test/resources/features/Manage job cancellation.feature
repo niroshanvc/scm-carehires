@@ -1,7 +1,8 @@
-@Regression-Create
+@Regression
 @Job
+@ManageJobCancellation
 @SuperAdminUser
-Feature: Test CareHires manage timesheet - general jobs
+Feature: Test CareHires manage job cancellation - general jobs
 
   Background: login to carehires
     Given User logins to carehires

@@ -17,17 +17,9 @@ import java.util.List;
 public class JobDetailsActions {
 
     private final JobDetailsPage jobDetailsPage;
-    private static GenericUtils genericUtils = null;
+    private final GenericUtils genericUtils;
 
     private static final Logger logger = LogManager.getLogger(JobDetailsActions.class);
-
-    static {
-        try {
-            genericUtils = new GenericUtils();
-        } catch (BasePage.WebDriverInitializationException e) {
-            logger.error("Error while initializing GenericUtils: {}", e.toString());
-        }
-    }
 
     private static final String ENTITY = "job";
     private static final String YML_FILE = "job-create";
@@ -40,6 +32,7 @@ public class JobDetailsActions {
     private static final String YML_FILE_CANCELLATION = "job-cancellation";
     private static final String YML_FILE_MANAGE_TEMPLATE = "manage-job-template";
     private static final String YML_FILE_PROVIDER_USER = "provider user - job-post";
+    private static final String YML_FILE_NON_BRITISH = "scenario-non-British-worker";
     private static final String YML_HEADER = "Job Details";
     private static final String YML_HEADER1 = "Job Details A";
     private static final String YML_HEADER2 = "Job Details B";
@@ -51,6 +44,7 @@ public class JobDetailsActions {
     private static final String YML_HEADER_SCENARIO1D = "Job Details Scenario1D";
     private static final String YML_HEADER_SCENARIO1F = "Job Details Scenario1F";
     private static final String YML_HEADER_SCENARIO1G = "Job Details Scenario1G";
+    private static final String YML_HEADER_SCENARIO_E2E = "Job Details ScenarioE2E";
     private static final String NORMAL_DAY = "Normal Day";
     private static final String ENABLE_RECURRENCE = "Enable Recurrence";
     private static final String BREAKS_INTERVALS = "Breaks/ Intervals";
@@ -67,6 +61,7 @@ public class JobDetailsActions {
         } catch (BasePage.WebDriverInitializationException e) {
             logger.error("Error while initializing Job Details Page elements: {}", e.getMessage());
         }
+        this.genericUtils = GenericUtils.getInstance();
     }
 
     public void enterJobDetails() {
@@ -101,7 +96,7 @@ public class JobDetailsActions {
      */
     private void enterJobDurationRecurrenceAndBreaksWithoutEndsOn(String ymlFile, String header) {
         enterJobDurationOnly(ymlFile, header, NORMAL_DAY);
-        BasePage.scrollToWebElement(jobDetailsPage.enableRecurrence);
+        BasePage.scrollToBottomOfPage();
         handleToggleOption(ymlFile, header, NORMAL_DAY, ENABLE_RECURRENCE, jobDetailsPage.enableRecurrence);
         handleToggleOption(ymlFile, header, NORMAL_DAY, BREAKS_INTERVALS, jobDetailsPage.breaksOrIntervals);
     }
@@ -128,7 +123,7 @@ public class JobDetailsActions {
         // Retrieve the latest provider increment value
         int providerIncrementValue = DataConfigurationReader.getCurrentIncrementValue("provider");
 
-        BasePage.clickWithJavaScript(jobDetailsPage.careProviderDropdown);
+        BasePage.clickWithJavaScript(jobDetailsPage.careProviderInput);
 
         // Read care provider name from YAML and replace <providerIncrement> placeholder
         String providerTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
@@ -137,6 +132,7 @@ public class JobDetailsActions {
         String careProvider = providerTemplate.replace("<providerIncrement>", String.valueOf(
                 providerIncrementValue));
         careProvider = careProvider.replace("\"", "").trim();
+        BasePage.clearAndEnterTexts(jobDetailsPage.careProviderInput, careProvider);
         BasePage.genericWait(3000);
         By by = By.xpath(jobDetailsPage.getDropdownOptionXpath(careProvider));
         BasePage.waitUntilVisibilityOfElementLocated(by, 60);
@@ -149,8 +145,11 @@ public class JobDetailsActions {
         assert siteTemplates != null;
         String site = siteTemplates.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
         site = site.replace("\"", "").trim();
-        BasePage.clickWithJavaScript(jobDetailsPage.siteDropdown);
-        BasePage.genericWait(1000);
+        BasePage.genericWait(500);
+        BasePage.waitUntilElementClickable(jobDetailsPage.siteInput, 60);
+        BasePage.clickWithJavaScript(jobDetailsPage.siteInput);
+        BasePage.clearAndEnterTexts(jobDetailsPage.siteInput, site);
+        BasePage.genericWait(500);
         by = By.xpath(jobDetailsPage.getDropdownOptionXpath(site));
         BasePage.waitUntilVisibilityOfElementLocated(by, 30);
         BasePage.scrollToWebElement(jobDetailsPage.getDropdownOptionXpath(site));
@@ -284,38 +283,61 @@ public class JobDetailsActions {
         boolean isCurrentlyEnabled = currentAttr.equalsIgnoreCase("true");
 
         // If the current state does not match the expected state, click the toggle
-        if (shouldEnable != isCurrentlyEnabled) {
-            BasePage.clickWithJavaScript(toggleElement);
+        if (shouldEnable) {
+            if (!isCurrentlyEnabled) {
+                // enabling the toggle
+                BasePage.clickWithJavaScript(toggleElement);
 
-            if (toggleKey.equalsIgnoreCase(ENABLE_RECURRENCE)) {
-                if (shouldEnable) { // If enabling recurrence
-                    BasePage.waitUntilElementPresent(jobDetailsPage.repeatTypeDropdown, 60);
-                    BasePage.clickWithJavaScript(jobDetailsPage.repeatTypeDropdown);
-                    String repeatType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
-                            YML_HEADER_JOB_DURATION, subHeader, "Repeat Type");
-                    BasePage.clickWithJavaScript(jobDetailsPage.getDropdownOptionXpath(repeatType));
-                    selectDateOnCalendar(subHeader ,ymlFile, header, jobDetailsPage.endsOn, "Ends On");
+                if (toggleKey.equalsIgnoreCase(ENABLE_RECURRENCE)) {
+                    // entering recurrence details
+                    enteringRecurrenceDetails(ymlFile, header, subHeader);
+                } else if (toggleKey.equalsIgnoreCase(BREAKS_INTERVALS)) {
+                    // entering breaks details
+                    enteringBreaksIntervalsDetails(ymlFile, header, subHeader);
                 }
-            } else if (toggleKey.equalsIgnoreCase(BREAKS_INTERVALS)) {
-                if (shouldEnable) { // If enabling breaks
-                    BasePage.waitUntilElementPresent(jobDetailsPage.paidBreaksDuration, 60);
-                    selectTime(ymlFile, header, "Paid Breaks Duration", jobDetailsPage.paidBreaksDuration,
-                            jobDetailsPage.paidBreaksDurationAreaList, jobDetailsPage.availablePaidBreaksDurations,
-                            jobDetailsPage.paidBreaksDurationOkButton);
-                    selectTime(ymlFile, header, "Unpaid Breaks Duration", jobDetailsPage.unpaidBreaksDuration,
-                            jobDetailsPage.unpaidBreaksDurationAreaList, jobDetailsPage.availableUnpaidBreaksDurations,
-                            jobDetailsPage.unpaidBreaksDurationOkButton);
-
-                    String paidBreaksNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
-                            YML_HEADER_JOB_DURATION, subHeader, "Paid Breaks Note");
-                    BasePage.clearAndEnterTexts(jobDetailsPage.paidBreaksNote, paidBreaksNote);
-
-                    String unpaidBreaksNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
-                         header, YML_HEADER_JOB_DURATION, subHeader, "Unpaid Breaks Note");
-                    BasePage.clearAndEnterTexts(jobDetailsPage.unpaidBreaksNote, unpaidBreaksNote);
+            } else {
+                // If the toggle is already enabled
+                if (toggleKey.equalsIgnoreCase(ENABLE_RECURRENCE)) {
+                    // entering recurrence details
+                    enteringRecurrenceDetails(ymlFile, header, subHeader);
+                } else if (toggleKey.equalsIgnoreCase(BREAKS_INTERVALS)) {
+                    // entering breaks details
+                    enteringBreaksIntervalsDetails(ymlFile, header, subHeader);
                 }
             }
+        } else {
+            if (isCurrentlyEnabled) {
+                // disabling the toggle
+                BasePage.clickWithJavaScript(toggleElement);
+            }
         }
+    }
+
+    private void enteringBreaksIntervalsDetails(String ymlFile, String header, String subHeader) {
+        BasePage.waitUntilElementPresent(jobDetailsPage.paidBreaksDuration, 60);
+        selectTime(ymlFile, header, "Paid Breaks Duration", jobDetailsPage.paidBreaksDuration,
+                jobDetailsPage.paidBreaksDurationAreaList, jobDetailsPage.availablePaidBreaksDurations,
+                jobDetailsPage.paidBreaksDurationOkButton);
+        selectTime(ymlFile, header, "Unpaid Breaks Duration", jobDetailsPage.unpaidBreaksDuration,
+                jobDetailsPage.unpaidBreaksDurationAreaList, jobDetailsPage.availableUnpaidBreaksDurations,
+                jobDetailsPage.unpaidBreaksDurationOkButton);
+
+        String paidBreaksNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
+                YML_HEADER_JOB_DURATION, subHeader, "Paid Breaks Note");
+        BasePage.clearAndEnterTexts(jobDetailsPage.paidBreaksNote, paidBreaksNote);
+
+        String unpaidBreaksNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile,
+                header, YML_HEADER_JOB_DURATION, subHeader, "Unpaid Breaks Note");
+        BasePage.clearAndEnterTexts(jobDetailsPage.unpaidBreaksNote, unpaidBreaksNote);
+    }
+
+    private void enteringRecurrenceDetails(String ymlFile, String header, String subHeader) {
+        BasePage.waitUntilElementPresent(jobDetailsPage.repeatTypeDropdown, 60);
+        BasePage.clickWithJavaScript(jobDetailsPage.repeatTypeDropdown);
+        String repeatType = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, header,
+                YML_HEADER_JOB_DURATION, subHeader, "Repeat Type");
+        BasePage.clickWithJavaScript(jobDetailsPage.getDropdownOptionXpath(repeatType));
+        selectDateOnCalendar(subHeader ,ymlFile, header, jobDetailsPage.endsOn, "Ends On");
     }
 
     public void enterJobDetailsWithBreaks() {
@@ -359,11 +381,11 @@ public class JobDetailsActions {
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
 
-    public void enterJobDetailsForSpecialHoliday() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Details for Special Holiday >>>>>>>>>>>>>>>>>>>>");
+    public void enterJobDetailsForEnd2End() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Job Details for End 2 End Testing >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
         closePendingActionPopup();
-        enterCareProviderAndServicePreferences(YML_FILE, YML_HEADER);
+        enterCareProviderAndServicePreferences(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO_E2E);
         BasePage.scrollToWebElement(jobDetailsPage.continueButton);
         enterJobDurationRecurrenceForSpecialHoliday();
         BasePage.genericWait(5000);
@@ -398,7 +420,7 @@ public class JobDetailsActions {
     }
 
     private void enterJobDurationRecurrenceAndClickContinue() {
-        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1B);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_SCENARIO1, YML_HEADER_SCENARIO1A);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
@@ -465,7 +487,7 @@ public class JobDetailsActions {
         assert siteTemplates != null;
         String site = siteTemplates.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
         site = site.replace("\"", "").trim();
-        BasePage.waitUntilValueLoadedInDropdown(jobDetailsPage.siteDropdown, site, 60);
+        BasePage.waitUntilValueLoadedInDropdown(jobDetailsPage.siteInput, site, 60);
     }
 
 
@@ -591,7 +613,7 @@ public class JobDetailsActions {
         assert siteTemplates != null;
         String site = siteTemplates.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
         site = site.replace("\"", "").trim();
-        BasePage.waitUntilValueLoadedInDropdown(jobDetailsPage.siteDropdown, site, 60);
+        BasePage.waitUntilValueLoadedInDropdown(jobDetailsPage.siteInput, site, 60);
     }
 
     public void enterSleepInDurationAndRecurrence() {
@@ -728,7 +750,7 @@ public class JobDetailsActions {
         BasePage.genericWait(5000);
 
         // select site
-        selectFirstOptionFromDropdown(jobDetailsPage.siteDropdown);
+        selectFirstOptionFromDropdown(jobDetailsPage.siteInput);
 
         // select post custom job or post using template
         selectRadioButton(ymlFile, header, jobDetailsPage.usingRadioButtons);
@@ -741,9 +763,15 @@ public class JobDetailsActions {
         selectDropdownOption(ymlFile, header, "Number of Vacancies", jobDetailsPage.numberOfVacanciesDropdown);
     }
 
-    private void selectFirstOptionFromDropdown(WebElement dropdown) {
-        BasePage.clickWithJavaScript(dropdown);
-        BasePage.genericWait(5000);
+    private void selectFirstOptionFromDropdown(WebElement input) {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Selecting first option from dropdown >>>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(input, 30);
+        BasePage.clearAndEnterTexts(input, "aaa");
+        BasePage.genericWait(500);
+        BasePage.clearTexts(input);
+        BasePage.genericWait(500);
+        BasePage.doubleClick(input);
+        BasePage.genericWait(3000);
         List<WebElement> options = jobDetailsPage.availableOptionsList();
         BasePage.waitUntilElementPresent(options.get(0), 30);
         BasePage.scrollToWebElement(options.get(0));
@@ -808,6 +836,17 @@ public class JobDetailsActions {
     public void providerUserEntersSleepInDurationAndRecurrence() {
         enterSleepInDurationAndRecurrence(YML_FILE_PROVIDER_USER, YML_HEADER4);
         BasePage.waitUntilElementClickable(jobDetailsPage.continueButton, 20);
+        BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
+    }
+
+    public void enterJobDetailsAndDisablingRecurrenceAndBreaks() {
+        logger.info("<<<<<<<<<<<<<<<<<<< Enter job details by disabling recurrence and breaks >>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+        closePendingActionPopup();
+        enterCareProviderAndServicePreferences(YML_FILE_NON_BRITISH, YML_HEADER);
+        BasePage.scrollToWebElement(jobDetailsPage.continueButton);
+        enterJobDurationRecurrenceAndBreaksWithoutEndsOn(YML_FILE_NON_BRITISH, YML_HEADER);
+        BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(jobDetailsPage.continueButton);
     }
 }

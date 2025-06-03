@@ -21,4 +21,19 @@ public class WorkerDocumentsAndProofSteps {
     public void moveToDocumentsAndProofAndEditData() {
         documentsAndProofActions.updateDocumentsAndProof();
     }
+
+    @And("User enters Document and Proof information for non-British worker")
+    public void enterDocumentAndProofForNonBritishWorker() {
+        documentsAndProofActions.enterDocumentsAndProofForNonBritishWorker();
+    }
+
+    @And("User enters Document and Proof information for non-British Student worker")
+    public void uploadDocumentsForNonBritishStudentWorker() {
+        documentsAndProofActions.uploadDocumentsForNonBritishStudentWorker();
+    }
+
+    @And("User uploads Document and Proof information for non-British worker")
+    public void uploadDocumentAndProofForNonBritishWorker() {
+        documentsAndProofActions.uploadDocumentAndProofForNonBritishWorker();
+    }
 }

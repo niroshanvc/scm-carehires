@@ -1,5 +1,6 @@
-@Regression-Create
+@Regression
 @Job
+@ManageTimesheetSleepInJobs
 @SuperAdminUser
 Feature: Test CareHires manage timesheet - sleep in jobs
 

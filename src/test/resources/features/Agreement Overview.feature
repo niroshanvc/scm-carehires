@@ -1,4 +1,4 @@
-@Regression-Create
+@Regression
 @Agreement
 @SuperAdminUser
 Feature: Test CareHires agreement overview

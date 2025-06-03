@@ -1,5 +1,6 @@
-@Regression-Create
+@Regression
 @Job
+@PostSleepInJobUsingTemplate
 @SuperAdminUser
 Feature: Test CareHires create sleep in job post using template
 

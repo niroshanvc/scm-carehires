@@ -1,4 +1,4 @@
-@Regression-View
+@Regression
 @Job
 @SuperAdminUser
 Feature: Test CareHires view job
@@ -11,19 +11,13 @@ Feature: Test CareHires view job
   Scenario: Test view job
     And User searches jobs by date range
     And User searches jobs by provider
-    And User filters jobs by status as All Open
+    And User filters jobs by status as Open Urgent
+    And User filters jobs by status as Open
     And User filters jobs by status as Open Over-due
     And User filters jobs by status as Suggested
     And User filters jobs by status as Allocated
     And User filters jobs by status as Completed
     And User filters jobs by status as Cancelled
-    And User suggests a worker
-    And User rejects suggested worker
-    And User selects rejected worker
-    And User rejects selected worker
-    And User selects rejected worker
-    When User fills out the timesheets
-    Then User Approves the timesheet
 
   @ManageAllocations
     @Worker

@@ -52,9 +52,9 @@ public class CreateAgreementsOverviewActions {
         String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
         agency = agency.replace("\"", "").trim();
 
-        BasePage.waitUntilElementClickable(agreementsOverviewPage.agencyDropdown, 60);
+        BasePage.waitUntilElementClickable(agreementsOverviewPage.agencyInput, 60);
+        BasePage.doubleClick(agreementsOverviewPage.agencyInput);
         BasePage.genericWait(2000);
-        BasePage.clickWithJavaScript(agreementsOverviewPage.agencyDropdown);
         By by = By.xpath(agreementsOverviewPage.getDropdownOptionXpath(agency));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);
         BasePage.scrollToWebElement(agreementsOverviewPage.getDropdownOptionXpath(agency));
@@ -76,7 +76,7 @@ public class CreateAgreementsOverviewActions {
         String careProvider = careProviderTemplate.replace("<providerIncrement>", String.valueOf(
                 providerIncrementValue));
         careProvider = careProvider.replace("\"", "").trim();
-        BasePage.clickWithJavaScript(agreementsOverviewPage.careProviderDropdown);
+        BasePage.doubleClick(agreementsOverviewPage.careProviderInput);
         By careProviderBy = By.xpath(agreementsOverviewPage.getDropdownOptionXpath(careProvider));
         BasePage.waitUntilVisibilityOfElementLocated(careProviderBy, 20);
         BasePage.scrollToWebElement(agreementsOverviewPage.getDropdownOptionXpath(careProvider));
@@ -89,8 +89,18 @@ public class CreateAgreementsOverviewActions {
         site = site.replace("\"", "").trim();
         BasePage.clickWithJavaScript(agreementsOverviewPage.siteDropdown);
         BasePage.waitUntilElementClickable(agreementsOverviewPage.getDropdownOptionXpath(site), 30);
-        selectAllSites();
-        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(agreementsOverviewPage.selectAllSitesCheckbox);
+        String isAllSelected = BasePage.getAttributeValue(agreementsOverviewPage.selectAllSitesCheckboxStatus, "class");
+
+        // Check if all sites are selected, if not, select all sites
+        int tries = 0;
+        while (!isAllSelected.contains("selected") && tries < 3) {
+            BasePage.clickWithJavaScript(agreementsOverviewPage.selectAllSitesCheckbox);
+            isAllSelected = BasePage.getAttributeValue(agreementsOverviewPage.selectAllSitesCheckboxStatus, "class");
+            tries++;
+        }
+
+        BasePage.waitUntilElementClickable(agreementsOverviewPage.continueButton, 60);
         BasePage.clickWithJavaScript(agreementsOverviewPage.continueButton);
         verifySuccessMessage();
 

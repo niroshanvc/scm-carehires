@@ -1,4 +1,4 @@
-@Regression-Edit
+@Regression
 @Agreement
 @SuperAdminUser
 Feature: Test CareHires edit agreement with disable Bid4Care

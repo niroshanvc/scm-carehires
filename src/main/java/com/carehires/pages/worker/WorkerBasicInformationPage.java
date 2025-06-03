@@ -11,11 +11,14 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//nb-select[@formcontrolname='agency']/button")
     public WebElement agencyDropdown;
 
+    @FindBy(id = "agency-input")
+    public WebElement agencyInput;
+
     @FindBy(xpath = "//nb-select[@formcontrolname='agencyLocations']/button")
     public WebElement agencyLocationDropdown;
 
-    @FindBy(xpath = "//nb-select[@formcontrolname='nationality']/button")
-    public WebElement nationalityDropdown;
+    @FindBy(xpath = "//input[@formcontrolname='nationality']")
+    public WebElement nationalityInput;
 
     @FindBy(xpath = "//span[contains(@class, 'image-edit')]")
     public WebElement uploadLogo;
@@ -128,9 +131,6 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//nb-select[@formcontrolname='sponsorType']/button")
     public WebElement sponsorTypeDropdown;
 
-    @FindBy(xpath = "//nb-option-list/ul/nb-option")
-    public WebElement firstOptionInDropdown;
-
     @FindBy(xpath = "//nb-select[@formcontrolname='assignedProvider']/button")
     public WebElement assignedProviderDropdown;
 
@@ -139,6 +139,9 @@ public class WorkerBasicInformationPage {
 
     @FindBy(xpath = "//input[@formcontrolname='visaQuota']")
     public WebElement maximumWeeklyHours;
+
+    @FindBy(xpath = "//input[@formcontrolname='visaQuota']")
+    public WebElement minimumWeeklyHours;
 
     @FindBy(xpath = "//input[@formcontrolname='cosIssueCompany']")
     public WebElement companyNameCosDocument;
@@ -169,9 +172,6 @@ public class WorkerBasicInformationPage {
 
     @FindBy(xpath = "//p[contains(text(), 'Document is added')]")
     public WebElement documentUploadedSuccessMessage;
-
-    public static final String AGENCY_LOCATION_CHECKBOXES = "//div[contains(@id,'cdk-overlay')]//nb-option/" +
-            "nb-checkbox";
 
     @FindBy(xpath = "//p[contains(@class, 'text-icon') and contains(text(), '…')]")
     public WebElement topThreeDots;

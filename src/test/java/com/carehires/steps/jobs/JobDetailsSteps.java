@@ -27,9 +27,9 @@ public class JobDetailsSteps {
         jobDetailsActions.editInfo();
     }
 
-    @And("User enters Job Details for special holiday")
-    public void enterJobDetailsForSpecialHoliday() {
-        jobDetailsActions.enterJobDetailsForSpecialHoliday();
+    @And("User enters Job Details for end to end testing")
+    public void enterJobDetailsForEnd2EndTesting() {
+        jobDetailsActions.enterJobDetailsForEnd2End();
     }
 
     @And("User enters Job Details without Recurrence and Breaks")
@@ -161,5 +161,10 @@ public class JobDetailsSteps {
     @And("Provider User enters sleep in duration and recurrence")
     public void providerUserEntersSleepInDurationAndRecurrence() {
         jobDetailsActions.providerUserEntersSleepInDurationAndRecurrence();
+    }
+
+    @And("User enters Job Details information without enabling Recurrence and Breaks")
+    public void enterJobDetailsAndDisablingRecurrenceAndBreaks() {
+        jobDetailsActions.enterJobDetailsAndDisablingRecurrenceAndBreaks();
     }
 }

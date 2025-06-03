@@ -1,4 +1,4 @@
-@Regression-Edit
+@Regression
 @Worker
 @SuperAdminUser
 Feature: Test CareHires edit worker and make profile approved

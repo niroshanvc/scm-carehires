@@ -173,4 +173,14 @@ public class JobsListViewSteps {
     public void clickOnDisputeButton(String action) {
         jobsListViewActions.approveOrDisputeTimesheetForJobCancellation(action);
     }
+
+    @And("User tries to suggesting a worker")
+    public void trySuggestingWorker() {
+        jobsListViewActions.suggestingWorkerOnJobDetailsPopup();
+    }
+
+    @And("User suggests a worker for selected job")
+    public void suggestAWorkerForSelectedJob() {
+        jobsListViewActions.suggestAWorkerForSelectedJob();
+    }
 }
