@@ -56,7 +56,7 @@ public class WorkerEmploymentHistoryPage {
     @FindBy(xpath = "//textarea[@formcontrolname='referenceNote']")
     public WebElement referenceNote;
 
-    @FindBy(xpath = "//input[@type='file']")
+    @FindBy(xpath = "//label[text()='Upload File']/../div//label/input[@type='file']")
     public WebElement uploadFile;
 
     @FindBy(xpath = "//button[contains(text(), 'Add Reference')]")

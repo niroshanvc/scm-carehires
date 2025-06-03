@@ -72,7 +72,7 @@ public class SubContractingAgreementActions {
     }
 
     private void verifySuccessMessage() {
-        BasePage.waitUntilElementPresent(subContractingAgreementPage.successMessage, 1200);
+        BasePage.waitUntilElementPresent(subContractingAgreementPage.successMessage, 20);
         String actualInLowerCase = BasePage.getText(subContractingAgreementPage.successMessage).toLowerCase().trim();
         String expected = "Contract signed successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
