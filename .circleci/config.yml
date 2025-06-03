@@ -51,17 +51,9 @@ jobs:
             curl -sS -o chromedriver.zip https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
             sudo unzip chromedriver.zip -d /usr/local/bin/
             rm chromedriver.zip
-
-      - run:
-          name: Run Tests
-          command: |
-            mvn clean test -Denv=<< parameters.environment >> -Dbrowser=<< parameters.browser >> -Dcucumber.filter.tags="<< parameters.feature_tag >>" \
-              -Demail=<< parameters.email >>      
-
       - run:
           name: Generate Cucumber Reports
           command: mvn clean verify  # Ensure that Cucumber reports are generated
-
       - run:
           name: Prepare Report for Email
           command: |
@@ -113,7 +105,7 @@ jobs:
                 }
               ]
             }' > email_payload.json
-            
+
             curl -X POST https://api.sendgrid.com/v3/mail/send \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               -H "Content-Type: application/json" \
@@ -123,10 +115,10 @@ jobs:
           command: |
             export LC_ALL=en_US.UTF-8
             export LANG=en_US.UTF-8
-            
+
             # Encode the attachment
             base64 -w 0 target/surefire-reports/test-report.zip > encoded_attachment.txt
-            
+
             # Construct the JSON payload
             echo '{
               "from": {
@@ -156,13 +148,17 @@ jobs:
                   "disposition": "attachment"
                 }
               ]
-              }' > email_payload.json
-    
-              # Send the email using SendGrid API
-                curl -X POST https://api.sendgrid.com/v3/mail/send \
+            }' > email_payload.json
+
+            # Debug the JSON payload
+            echo "Generated email payload:"
+            head -c 1000 email_payload.json  # Print the first 1000 characters for debugging
+
+            # Send the email using SendGrid API
+            curl -X POST https://api.sendgrid.com/v3/mail/send \
               -H "Authorization: Bearer $SENDGRID_API_KEY" \
               -H "Content-Type: application/json" \
-                -d @email_payload.json || echo "Error sending email!"
+              -d @email_payload.json || echo "Error sending email!"
 
 workflows:
   version: 2
