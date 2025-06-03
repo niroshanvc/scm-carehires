@@ -351,7 +351,7 @@ public class WorkerEmploymentHistoryActions {
                 + uploadFile;
 
         BasePage.genericWait(3000);
-        BasePage.waitUntilElementPresent(employmentHistoryPage.uploadFile, 60); // Wait for the element to be present
+        BasePage.waitUntilElementClickable(employmentHistoryPage.uploadFile, 60); // Wait for the element to be present
         BasePage.scrollToWebElement(employmentHistoryPage.uploadFile); // Scroll to make the element visible
 
         try {
