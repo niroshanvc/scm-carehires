@@ -7,6 +7,7 @@ import com.carehires.utils.DataConfigurationReader;
 import com.carehires.utils.EncryptAndDecrypt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.PageFactory;
 
 public class SignInPageActions {
@@ -41,6 +42,7 @@ public class SignInPageActions {
         BasePage.clickWithJavaScript(signin.signinButton);
         logger.info("successfully logged in to scm");
         BasePage.waitUntilPageCompletelyLoaded();
+        clickCloseButtonIfNewUpdatePopupWindowIsDisplayed();
     }
 
     public void doLoginOff() {
@@ -57,4 +59,14 @@ public class SignInPageActions {
         String decryptedPassword = EncryptAndDecrypt.decrypt(encryptedPassword);
         signInToCareHires(username, decryptedPassword);
     }
+
+    // click on the close button if new update popup window is displayed
+    public void clickCloseButtonIfNewUpdatePopupWindowIsDisplayed() {
+        try {
+            BasePage.clickWithJavaScript(signin.newReleasePopupCloseButton);
+        } catch (NoSuchElementException e) {
+            logger.info("New release popup window is not displayed");
+        }
+    }
+
 }

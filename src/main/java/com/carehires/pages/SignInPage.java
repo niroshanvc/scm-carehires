@@ -19,4 +19,7 @@ public class SignInPage {
 
     @FindBy(xpath = "//li//div[contains(text(), 'Logout')]")
     public WebElement logoutLink;
+
+    @FindBy(xpath = "//button[@data-testid]")
+    public WebElement newReleasePopupCloseButton;
 }
