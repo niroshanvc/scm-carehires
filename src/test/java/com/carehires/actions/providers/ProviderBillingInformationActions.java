@@ -160,6 +160,7 @@ public class ProviderBillingInformationActions {
         BasePage.clearAndEnterTexts(billingInformationPage.phoneNumberBillingContact, contactPhone);
 
         BasePage.genericWait(5000);
+        BasePage.waitUntilElementClickable(billingInformationPage.saveButton, 60);
         BasePage.clickWithJavaScript(billingInformationPage.saveButton);
     }
 

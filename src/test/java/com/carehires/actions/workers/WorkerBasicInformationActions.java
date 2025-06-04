@@ -90,7 +90,7 @@ public class WorkerBasicInformationActions {
 
         BasePage.genericWait(2000);
         enterAgencyInformation(YML_FILE, YML_HEADER, ADD);
-        enterPersonalInformation(YML_FILE, ADD);
+        enterPersonalInformation(YML_FILE);
         enterResidentialAddressInformation(YML_FILE, ADD);
         enterEmploymentInformation(YML_FILE, ADD);
         enterPassportAndOtherInformation(YML_FILE, YML_HEADER, ADD);
@@ -475,49 +475,51 @@ public class WorkerBasicInformationActions {
         waitUntilDocumentUploaded();
     }
 
-    private void enterPersonalInformation(String ymlFile, String subHeader) {
+    private void enterPersonalInformation(String ymlFile) {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Personal Information >>>>>>>>>>>>>>>>>>>>");
         //upload a logo
         String workerImage = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                YML_SUB_HEADER_2, subHeader, "WorkerLogo");
+                YML_SUB_HEADER_2, ADD, "WorkerLogo");
         String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
                 + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
                 + workerImage;
+        BasePage.clickTabKey(basicInfo.firstName);
+        BasePage.waitUntilElementClickable(basicInfo.uploadLogo, 60);
         BasePage.clickWithJavaScript(basicInfo.uploadLogo);
         BasePage.uploadFile(basicInfo.uploadLogoInput, absoluteFilePath);
         BasePage.waitUntilElementDisplayed(basicInfo.imageSaveButton, 60);
         BasePage.clickWithJavaScript(basicInfo.imageSaveButton);
 
         String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                YML_SUB_HEADER_2, subHeader, "FirstName");
+                YML_SUB_HEADER_2, ADD, "FirstName");
         BasePage.clearAndEnterTexts(basicInfo.firstName, firstName);
 
         String lastName = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                YML_SUB_HEADER_2, subHeader, "LastName");
+                YML_SUB_HEADER_2, ADD, "LastName");
         BasePage.clearAndEnterTexts(basicInfo.lastName, lastName);
 
         String alsoKnownAs = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                YML_SUB_HEADER_2, subHeader, "AlsoKnownAs");
+                YML_SUB_HEADER_2, ADD, "AlsoKnownAs");
         BasePage.clearAndEnterTexts(basicInfo.alsoKnownAs, alsoKnownAs);
 
         String workerEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                YML_SUB_HEADER_2, subHeader, "WorkerEmailAddress");
+                YML_SUB_HEADER_2, ADD, "WorkerEmailAddress");
         BasePage.clearAndEnterTexts(basicInfo.email, workerEmail);
 
         BasePage.scrollToWebElement(basicInfo.passportInformationHeader);
 
         genericUtils.fillPhoneNumber(ENTITY, ymlFile, basicInfo.phoneNumberInput, YML_HEADER, YML_SUB_HEADER_2,
-                subHeader, "PhoneNumberType");
+                ADD, "PhoneNumberType");
         genericUtils.fillPhoneNumber(ENTITY, ymlFile, basicInfo.phoneNumberInput, YML_HEADER, YML_SUB_HEADER_2,
-                subHeader, "PhoneNumber");
+                ADD, "PhoneNumber");
 
         String dateOfBirth = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
-                YML_SUB_HEADER_2, subHeader, "DateOfBirth");
+                YML_SUB_HEADER_2, ADD, "DateOfBirth");
         BasePage.clickWithJavaScript(basicInfo.dateOfBirth);
         genericUtils.selectDateFromCalendarPopup(dateOfBirth);
 
         String gender = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2,
-                subHeader, "Gender");
+                ADD, "Gender");
         assert gender != null;
         if (gender.equalsIgnoreCase("Male")) {
             BasePage.clickWithJavaScript((basicInfo.genderRadioButton).get(0));
@@ -528,7 +530,58 @@ public class WorkerBasicInformationActions {
         }
 
         nationality = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, YML_SUB_HEADER_2,
-                subHeader, "Nationality");
+                ADD, "Nationality");
+        BasePage.doubleClick(basicInfo.nationalityInput);
+        BasePage.genericWait(2000);
+        BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(nationality), 30);
+        BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath(nationality));
+    }
+
+    private void updatePersonalInformation() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Updating Personal Information >>>>>>>>>>>>>>>>>>>>>>");
+        String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
+                YML_SUB_HEADER_2, UPDATE, "FirstName");
+        BasePage.waitUntilElementClickableMethod(basicInfo.firstNameUpdateField, 30);
+        BasePage.clickElement(basicInfo.firstNameUpdateField, 30);
+        BasePage.clearFirstAndEnterTexts(basicInfo.firstNameUpdateField, firstName, 30);
+
+        String lastName = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
+                YML_SUB_HEADER_2, UPDATE, "LastName");
+        BasePage.clearAndEnterTexts(basicInfo.lastName, lastName);
+
+        String alsoKnownAs = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
+                YML_SUB_HEADER_2, UPDATE, "AlsoKnownAs");
+        BasePage.clearAndEnterTexts(basicInfo.alsoKnownAs, alsoKnownAs);
+
+        String workerEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
+                YML_SUB_HEADER_2, UPDATE, "WorkerEmailAddress");
+        BasePage.clearAndEnterTexts(basicInfo.email, workerEmail);
+
+        BasePage.scrollToWebElement(basicInfo.passportInformationHeader);
+
+        genericUtils.fillPhoneNumber(ENTITY, EDIT_YML_FILE, basicInfo.phoneNumberInput, YML_HEADER, YML_SUB_HEADER_2,
+                UPDATE, "PhoneNumberType");
+        genericUtils.fillPhoneNumber(ENTITY, EDIT_YML_FILE, basicInfo.phoneNumberInput, YML_HEADER, YML_SUB_HEADER_2,
+                UPDATE, "PhoneNumber");
+
+        String dateOfBirth = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
+                YML_SUB_HEADER_2, UPDATE, "DateOfBirth");
+        BasePage.clickWithJavaScript(basicInfo.dateOfBirth);
+        genericUtils.selectDateFromCalendarPopup(dateOfBirth);
+
+        String gender = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, YML_SUB_HEADER_2,
+                UPDATE, "Gender");
+        assert gender != null;
+        if (gender.equalsIgnoreCase("Male")) {
+            BasePage.clickWithJavaScript((basicInfo.genderRadioButton).get(0));
+        } else if (gender.equalsIgnoreCase("Female")) {
+            BasePage.clickWithJavaScript((basicInfo.genderRadioButton).get(1));
+        } else {
+            BasePage.clickWithJavaScript((basicInfo.genderRadioButton).get(2));
+        }
+
+        nationality = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER, YML_SUB_HEADER_2,
+                UPDATE, "Nationality");
         BasePage.doubleClick(basicInfo.nationalityInput);
         BasePage.genericWait(2000);
         BasePage.waitUntilElementClickable(basicInfo.getDropdownOptionXpath(nationality), 30);
@@ -630,7 +683,7 @@ public class WorkerBasicInformationActions {
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
         BasePage.clickWithJavaScript(basicInfo.firstName);
         enterAgencyInformation(EDIT_YML_FILE, YML_HEADER, ADD);
-        enterPersonalInformation(EDIT_YML_FILE, ADD);
+        enterPersonalInformation(EDIT_YML_FILE);
         enterResidentialAddressInformation(EDIT_YML_FILE, ADD);
         enterEmploymentInformation(EDIT_YML_FILE, ADD);
         enterPassportAndOtherInformation(EDIT_YML_FILE, YML_HEADER, ADD);
@@ -647,7 +700,7 @@ public class WorkerBasicInformationActions {
         BasePage.waitUntilPageCompletelyLoaded();
         clickOnUpdateProfileLink();
         enterAgencyInformation(EDIT_YML_FILE, YML_HEADER, UPDATE);
-        enterPersonalInformation(EDIT_YML_FILE, UPDATE);
+        updatePersonalInformation();
         enterResidentialAddressInformation(EDIT_YML_FILE, UPDATE);
         enterEmploymentInformation(EDIT_YML_FILE, UPDATE);
         enterPassportAndOtherInformation(EDIT_YML_FILE, YML_HEADER, UPDATE);
@@ -713,7 +766,7 @@ public class WorkerBasicInformationActions {
 
         BasePage.genericWait(2000);
         enterAgencyInformation(YML_FILE_NON_BRITISH, YML_HEADER, ADD);
-        enterPersonalInformation(YML_FILE_NON_BRITISH, ADD);
+        enterPersonalInformation(YML_FILE_NON_BRITISH);
         enterResidentialAddressInformation(YML_FILE_NON_BRITISH, ADD);
         enterEmploymentInformation(YML_FILE_NON_BRITISH, ADD);
         enterPassportAndOtherInformation(YML_FILE_NON_BRITISH, YML_HEADER, ADD);
@@ -730,7 +783,7 @@ public class WorkerBasicInformationActions {
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
         BasePage.genericWait(2000);
         enterAgencyInformation(YML_FILE_NON_BRITISH, YML_HEADER_B, ADD);
-        enterPersonalInformation(YML_FILE_NON_BRITISH, ADD);
+        enterPersonalInformation(YML_FILE_NON_BRITISH);
         enterResidentialAddressInformation(YML_FILE_NON_BRITISH, ADD);
         enterEmploymentInformation(YML_FILE_NON_BRITISH, ADD);
         enterPassportAndOtherInformation(YML_FILE_NON_BRITISH, YML_HEADER_B, ADD);
@@ -750,7 +803,7 @@ public class WorkerBasicInformationActions {
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
         BasePage.genericWait(2000);
         enterAgencyInformation(YML_FILE_NON_BRITISH, YML_HEADER_C, ADD);
-        enterPersonalInformation(YML_FILE_NON_BRITISH, ADD);
+        enterPersonalInformation(YML_FILE_NON_BRITISH);
         enterResidentialAddressInformation(YML_FILE_NON_BRITISH, ADD);
         enterEmploymentInformation(YML_FILE_NON_BRITISH, ADD);
         enterPassportAndOtherInformation(YML_FILE_NON_BRITISH, YML_HEADER_C, ADD);
@@ -770,7 +823,7 @@ public class WorkerBasicInformationActions {
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
         BasePage.genericWait(2000);
         enterAgencyInformation(YML_FILE_NON_BRITISH, YML_HEADER_D, ADD);
-        enterPersonalInformation(YML_FILE_NON_BRITISH, ADD);
+        enterPersonalInformation(YML_FILE_NON_BRITISH);
         enterResidentialAddressInformation(YML_FILE_NON_BRITISH, ADD);
         enterEmploymentInformation(YML_FILE_NON_BRITISH, ADD);
         enterPassportAndOtherInformation(YML_FILE_NON_BRITISH, YML_HEADER_D, ADD);
@@ -790,7 +843,7 @@ public class WorkerBasicInformationActions {
         int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
         BasePage.clickWithJavaScript(basicInfo.firstName);
         enterAgencyInformation(YML_FILE_NON_BRITISH, YML_HEADER_E, ADD);
-        enterPersonalInformation(YML_FILE_NON_BRITISH, ADD);
+        enterPersonalInformation(YML_FILE_NON_BRITISH);
         enterResidentialAddressInformation(YML_FILE_NON_BRITISH, ADD);
         enterEmploymentInformation(YML_FILE_NON_BRITISH, ADD);
         enterPassportAndOtherInformation(YML_FILE_NON_BRITISH, YML_HEADER_E, ADD);

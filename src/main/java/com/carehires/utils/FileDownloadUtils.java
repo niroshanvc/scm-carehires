@@ -66,6 +66,7 @@ public class FileDownloadUtils {
 
     public static void triggerDownloadAndCloseTab(WebElement element) {
         // Store the current window handle
+        BasePage.genericWait(2000);
         String originalWindow = null;
         try {
             originalWindow = BasePage.getDriver().getWindowHandle();

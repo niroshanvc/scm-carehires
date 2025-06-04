@@ -32,6 +32,9 @@ public class WorkerBasicInformationPage {
     @FindBy(xpath = "//input[@formcontrolname='firstName']")
     public WebElement firstName;
 
+    @FindBy(xpath = "//div[@class='basic-info-section']//input[@formcontrolname='firstName']")
+    public WebElement firstNameUpdateField;
+
     @FindBy(xpath = "//input[@formcontrolname='lastName']")
     public WebElement lastName;
 

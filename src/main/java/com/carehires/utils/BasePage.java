@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.MutableCapabilities;
@@ -350,6 +351,73 @@ public class BasePage {
         }
     }
 
+    public static void waitUntilElementClickableMethod(WebElement element, int timeOutSeconds) {
+        logger.info("****************** Waiting until element is clickable: %s", element);
+        WebDriverWait wait = null;
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+            logger.info("Element is now clickable: %s", element);
+        } catch (TimeoutException e) {
+            logger.error("TimeoutException: Element was not clickable after waiting for %s seconds. Element: " +
+                    "%s", timeOutSeconds, elementToString(element), e);
+            // Optionally re-throw or handle as a test failure
+            throw e; // It's often better to let the test fail clearly if a wait times out
+        } catch (InvalidElementStateException ies) {
+            logger.error("InvalidElementStateException during wait for clickability. Element: %s",
+                    elementToString(element), ies);
+            throw ies;
+        }
+    }
+
+    // Helper to get some identifying information from the WebElement for logging
+    public static String elementToString(WebElement element) {
+        if (element == null) {
+            return "null";
+        }
+        try {
+            // Attempt to get some useful identifying information
+            String tagName = element.getTagName();
+            String text = element.getText();
+            String id = element.getAttribute("id");
+            String name = element.getAttribute("name");
+            String classAttr = element.getAttribute("class");
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("TagName: '").append(tagName).append("'");
+            if (id != null && !id.isEmpty()) sb.append(", Id: '").append(id).append("'");
+            if (name != null && !name.isEmpty()) sb.append(", Name: '").append(name).append("'");
+            if (classAttr != null && !classAttr.isEmpty()) sb.append(", Class: '").append(classAttr).append("'");
+            if (text != null && !text.isEmpty() && text.length() < 50) sb.append(", Text: '").append(text.trim()).append("'");
+            // Add other attributes if they are commonly used in your application for identification
+            return sb.toString();
+        } catch (Exception e) {
+            // If trying to get attributes fails (e.g., stale element), return a basic string
+            return element.toString();
+        }
+    }
+
+    public static void clickElement(WebElement element, int timeOutSeconds) {
+        waitUntilElementClickable(element, timeOutSeconds); // Wait for it to be clickable
+        try {
+            logger.info("Attempting to click element: %s", elementToString(element));
+            element.click();
+            logger.info("Successfully clicked element: %s", elementToString(element));
+        } catch (InvalidElementStateException e) {
+            logger.error("InvalidElementStateException when trying to click. Element: %s. IsDisplayed: %s, " +
+                            "IsEnabled: %s",
+                    elementToString(element), element.isDisplayed(), element.isEnabled(), e);
+            throw e;
+        } catch (Exception e) { // Catch other potential exceptions during click
+            logger.error("Exception during click on element: %s", elementToString(element), e);
+            throw e;
+        }
+    }
+
     public static void selectFirstOption(String xpath) {
         Select sel;
         try {
@@ -433,6 +501,51 @@ public class BasePage {
         waitUntilElementPresent(element, 30);
         element.clear();
         typeWithStringBuilder(element, texts);
+    }
+
+    public static void clearFirstAndEnterTexts(WebElement element, String texts, int timeOutSeconds) { // Added timeout
+        logger.info("******************** Attempting to clear and enter texts in: {}", elementToString(element));
+
+        try {
+            // Wait for the element to be visible and enabled before trying to clear
+            // You might even want a specific wait for it to be an input field if applicable
+            WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
+            wait.until(ExpectedConditions.and(
+                    ExpectedConditions.visibilityOf(element),
+                    ExpectedConditions.elementToBeClickable(element) // Ensures it's visible and enabled
+            ));
+
+            logger.info("Element {} is visible and enabled. IsDisplayed: {}, IsEnabled: {}. Attempting to clear...",
+                    elementToString(element), element.isDisplayed(), element.isEnabled());
+
+            element.clear(); // The problematic line
+            logger.info("Successfully cleared element: {}", elementToString(element));
+
+            typeWithStringBuilder(element, texts); // Assuming this method also needs the element to be interactable
+
+        } catch (TimeoutException e) {
+            logger.error("TimeoutException: Element was not ready for clear/sendkeys after waiting for {} seconds. Element: {}",
+                    timeOutSeconds, elementToString(element), e);
+            // Log current state if possible, even if it's about to throw
+            try {
+                logger.error("Current state before throw - IsDisplayed: {}, IsEnabled: {}, TagName: {}, ReadOnly: {}",
+                        element.isDisplayed(), element.isEnabled(), element.getTagName(), element.getAttribute("readonly"));
+            } catch (Exception ex) {
+                logger.error("Could not get element state during TimeoutException logging", ex);
+            }
+            throw e;
+        } catch (InvalidElementStateException ies) {
+            logger.error("InvalidElementStateException during clear or type. Element: {}. IsDisplayed: {}, IsEnabled: {}, TagName: {}, ReadOnly: {}",
+                    elementToString(element),
+                    element.isDisplayed(), // This might fail if element is truly weird
+                    element.isEnabled(),   // This might fail too
+                    element.getTagName(),
+                    element.getAttribute("readonly"),
+                    ies);
+            throw ies;
+        } catch (Exception exc) {
+            logger.error("An unexpected error occurred in clearFirstAndEnterTexts for element: {}", elementToString(element), exc);
+        }
     }
 
     public static String getPageTitle() {
