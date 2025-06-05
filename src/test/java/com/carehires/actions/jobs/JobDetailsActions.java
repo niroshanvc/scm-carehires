@@ -819,7 +819,7 @@ public class JobDetailsActions {
 
         // wait until desired site is selected
         By siteLocator = By.xpath(jobDetailsPage.siteXpath());
-        BasePage.waitForDropdownTextChange(siteLocator, "select", 30);
+        BasePage.waitForDropdownTextChange(siteLocator, 30);
     }
 
     public void providerUserSelectJobTypeAsSleepInAndProceedWithCustomJob() {
