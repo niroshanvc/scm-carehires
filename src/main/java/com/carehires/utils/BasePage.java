@@ -116,6 +116,11 @@ public class BasePage {
 
         if (isCIRunning) {
             configureCIOptions(options);
+            try {
+                getDriver().manage().window().maximize();
+            } catch (WebDriverInitializationException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         WebDriverManager.chromedriver().setup();
