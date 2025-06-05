@@ -95,7 +95,10 @@ public class CreateAgencyBasicInformationActions {
                 + File.separator + "resources" + File.separator + "Upload" + File.separator + "Agency" + File.separator + companyLogo;
         BasePage.clickWithJavaScript(createAgencyBasicInfoPage.uploadLogo);
         BasePage.uploadFile(createAgencyBasicInfoPage.fileInputButton, absoluteFilePath);
-        BasePage.waitUntilElementDisplayed(createAgencyBasicInfoPage.imageSaveButton, 60);
+        BasePage.genericWait(500);
+        BasePage.waitUntilElementClickable(createAgencyBasicInfoPage.imageSaveButton, 120);
+        logger.info("Save button displayed: {}", createAgencyBasicInfoPage.saveButton.isDisplayed());
+        logger.info("Save button enabled: {}", createAgencyBasicInfoPage.saveButton.isEnabled());
         BasePage.clickWithJavaScript(createAgencyBasicInfoPage.imageSaveButton);
 
         String alsoKnownAs = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader, "AlsoKnownAs");

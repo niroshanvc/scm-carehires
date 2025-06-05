@@ -138,7 +138,7 @@ public class ViewAgreementOverviewActions {
     }
 
     private void verifySuccessMessage() {
-        BasePage.waitUntilElementPresent(agreementOverviewPage.successMessage, 1200);
+        BasePage.waitUntilElementPresent(agreementOverviewPage.successMessage, 120);
         String actualInLowerCase = BasePage.getText(agreementOverviewPage.successMessage).toLowerCase().trim();
         String expected = "Contract signed successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();
@@ -502,7 +502,7 @@ public class ViewAgreementOverviewActions {
     }
 
     private void verifyInactiveSuccessMessage() {
-        BasePage.waitUntilElementPresent(agreementOverviewPage.successMessage, 1200);
+        BasePage.waitUntilElementPresent(agreementOverviewPage.successMessage, 120);
         String actualInLowerCase = BasePage.getText(agreementOverviewPage.successMessage).toLowerCase().trim();
         String expected = "Agreement marked as inactive";
         String expectedInLowerCase = expected.toLowerCase().trim();
@@ -518,7 +518,7 @@ public class ViewAgreementOverviewActions {
     }
 
     private void verifyActivateAgreementSuccessMessage() {
-        BasePage.waitUntilElementPresent(agreementOverviewPage.successMessage, 1200);
+        BasePage.waitUntilElementPresent(agreementOverviewPage.successMessage, 120);
         String actualInLowerCase = BasePage.getText(agreementOverviewPage.successMessage).toLowerCase().trim();
         String expected = "Agreement marked as active";
         String expectedInLowerCase = expected.toLowerCase().trim();

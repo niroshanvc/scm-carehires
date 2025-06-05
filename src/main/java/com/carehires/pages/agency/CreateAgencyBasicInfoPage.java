@@ -31,7 +31,7 @@ public class CreateAgencyBasicInfoPage {
     @FindBy(xpath = "//input[@formcontrolname='phoneNumber']")
     public WebElement phoneNumberInput;
 
-    @FindBy(xpath = "(//button[contains(@class, 'float-end')])[2]")
+    @FindBy(xpath = "//nb-card-footer/button[text()='Save']")
     public WebElement imageSaveButton;
 
     @FindBy(xpath = "//button[contains(text(), 'Skip')]")
