@@ -72,7 +72,7 @@ public class FileDownloadUtils {
 
     public static void triggerDownloadAndCloseTab(WebElement element) {
         WebDriver driver;
-        String originalWindow = null;
+        String originalWindow;
         // Initialize logger, assuming you have one (e.g., SLF4J)
         // private static final Logger logger = LoggerFactory.getLogger(YourClassName.class);
 
@@ -132,9 +132,6 @@ public class FileDownloadUtils {
             logger.warn("NoSuchWindowException while trying to switch to the new tab. It might have " +
                     "closed prematurely. Handle: %s", newTabHandle, e);
             newTabHandle = null; // Mark as null so we don't try to close it.
-        } catch (BasePage.WebDriverInitializationException e) {
-            logger.error("WebDriver initialization error during window handling.", e);
-            throw new RuntimeException("WebDriver initialization error during window handling.", e);
         }
 
         // Small wait to ensure the download process begins (copied from your original logic)
