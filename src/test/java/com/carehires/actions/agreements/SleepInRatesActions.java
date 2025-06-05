@@ -162,7 +162,7 @@ public class SleepInRatesActions {
     private void verifySavedHourlyChargeRate() {
         String actualWithCurrency = BasePage.getText(sleepInRatesPage.hourlyChargeRate).trim();
         String[] str = actualWithCurrency.split(" ");
-        String actual = str[1];
+        String actual = str[1].split("\\R|/")[0].trim();
         String expected = hourlyRate;
         assertThat("Hourly charge rate is not correctly displayed!", actual, is(expected));
     }

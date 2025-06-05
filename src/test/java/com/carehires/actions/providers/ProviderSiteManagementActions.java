@@ -189,12 +189,15 @@ public class ProviderSiteManagementActions {
     }
 
     public void updateSiteInfo() {
+        BasePage.genericWait(2000);
+        BasePage.waitUntilPageCompletelyLoaded();
         navigationMenu.gotoSitePage();
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Site Management Information - In Edit >>>>>>>>>>>>>>>>>>>>");
         // Retrieve the incremented value
         incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
-        BasePage.genericWait(3000);
+        BasePage.genericWait(5000);
+        BasePage.waitUntilElementClickable(siteManagementPage.addNewButton, 90);
         BasePage.clickWithJavaScript(siteManagementPage.addNewButton);
         enterSiteManagementData(EDIT_YML_FILE, ADD, YML_HEADER_DATASET1);
 
@@ -210,12 +213,13 @@ public class ProviderSiteManagementActions {
 
         BasePage.clickWithJavaScript(siteManagementPage.addButton);
         verifySuccessMessage();
+        BasePage.genericWait(2000);
         BasePage.waitUntilElementClickable(siteManagementPage.updateButton, 90);
 
         // edit already added site data
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Editing Site Management Information - In Edit >>>>>>>>>>>>>>>>>>>>");
         BasePage.clickWithJavaScript(siteManagementPage.updateButton);
-        BasePage.waitUntilElementDisplayed(siteManagementPage.editDetailsIcon, 30);
+        BasePage.waitUntilElementClickable(siteManagementPage.editDetailsIcon, 30);
         BasePage.clickWithJavaScript(siteManagementPage.editDetailsIcon);
         enterSiteManagementData(EDIT_YML_FILE, UPDATE, YML_HEADER_DATASET1);
 

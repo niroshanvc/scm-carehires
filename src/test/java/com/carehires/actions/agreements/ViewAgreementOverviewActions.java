@@ -112,7 +112,7 @@ public class ViewAgreementOverviewActions {
     }
 
     public void clickOnMarkAsSignedAndDoVerifications() {
-        logger.info("<<<<<<<<<<<<<<<<<<<< Clicking on Mark as Signed button and Doing Verifications >>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<< Clicking on Mark as Signed button and Doing Verifications >>>>>>>>>>>>>>>>");
         BasePage.scrollToWebElement(agreementOverviewPage.markAsSignedButton);
         BasePage.clickWithJavaScript(agreementOverviewPage.markAsSignedButton);
         verifyProviderNameLoadedInAttachAgreementPopup();
@@ -182,7 +182,7 @@ public class ViewAgreementOverviewActions {
     }
 
     public void verifyContentsInWorkerRates() {
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying data displaying in the Worker Rates Popup >>>>>>>>>>>>>>>>>>>>");
+        logger.info("<<<<<<<<<<<<<<<<<<<<<< Verifying data displaying in the Worker Rates Popup >>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilElementClickable(agreementOverviewPage.workerRatesViewIcon, 60);
         BasePage.clickWithJavaScript(agreementOverviewPage.workerRatesViewIcon);
 
@@ -864,6 +864,71 @@ public class ViewAgreementOverviewActions {
 
     public void closeWorkerRatesPopup() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Close worker rates popup >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(agreementOverviewPage.workerRatesCloseIcon, 30);
+        BasePage.clickWithJavaScript(agreementOverviewPage.workerRatesCloseIcon);
+    }
+
+    public void verifyNameOfTheAgreement() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying name of the agreement >>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementClickable(agreementOverviewPage.headerAgreementId, 30);
+        String headerAgreementName = BasePage.getText(agreementOverviewPage.headerAgreementName).trim();
+        String tableAgreementFullName = BasePage.getText(agreementOverviewPage.tableAgreementName).trim();
+        String tableAgreementName = tableAgreementFullName.split("Between")[1].trim();
+        assertThat("Agreement name is not matching!", headerAgreementName, is(tableAgreementName));
+        logger.info("Agreement name is matching");
+    }
+
+    public void verifyAgreementIds() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying agreement ids >>>>>>>>>>>>>>>>>>>>>>>");
+
+        // Get the full text for both elements
+        String fullHeaderAgreementText = BasePage.getText(agreementOverviewPage.headerAgreementId).trim();
+        String fullTableAgreementText = BasePage.getText(agreementOverviewPage.tableAgreementId).trim();
+
+        // Process BOTH strings to extract only the first line (the ID)
+        String processedHeaderAgreementId = fullHeaderAgreementText.split("\\n")[0].trim();
+        String processedTableAgreementId = fullTableAgreementText.split("\\n")[0].trim();
+
+        assertThat("Agreement id is not matching! Processed Header: [" + processedHeaderAgreementId + "], " +
+                        "Processed Table: [" + processedTableAgreementId + "]",
+                processedHeaderAgreementId, is(processedTableAgreementId));
+
+        logger.info("Agreement id is matching");
+    }
+
+    public void verifySavedWorkerRatesCanBeViewed() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying saved worker rates can be viewed >>>>>>>>>>>>>>>>>>>>>>>");
+
+        // open worker rates popup
+        BasePage.waitUntilElementClickable(agreementOverviewPage.workerRatesViewIcon, 30);
+        BasePage.clickWithJavaScript(agreementOverviewPage.workerRatesViewIcon);
+
+        // verify normal rate has some data
+        WebElement ele = BasePage.waitUntilElementVisible(agreementOverviewPage.hourlyRateInput("Normal Rate"));
+        String normalRate = BasePage.getAttributeValue(ele,"placeholder");
+        logger.info("Element 'ele' Attribute 'placeholder': {}", normalRate);
+        assertThat("Normal rate is empty!", normalRate, not(emptyOrNullString()));
+
+        // close worker rates popup
+        BasePage.waitUntilElementClickable(agreementOverviewPage.workerRatesCloseIcon, 30);
+        BasePage.clickWithJavaScript(agreementOverviewPage.workerRatesCloseIcon);
+    }
+
+    public void verifySavedSleepInRatesCanBeViewed() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying saved sleep in rates can be viewed >>>>>>>>>>>>>>>>>>>>>>>");
+
+        // open sleep in rates popup
+        BasePage.waitUntilElementPresent(agreementOverviewPage.sleepInRatesViewIcon, 60);
+        BasePage.scrollToWebElement(agreementOverviewPage.sleepInRatesViewIcon);
+        BasePage.clickWithJavaScript(agreementOverviewPage.sleepInRatesViewIcon);
+
+        // verify normal rate has some data
+        WebElement ele = BasePage.waitUntilElementVisible(agreementOverviewPage.hourlyRateInput("Normal Rate"));
+        String normalRate = BasePage.getAttributeValue(ele, "placeholder");
+        logger.info("Element 'ele' Attribute 'placeholder': '{}'", normalRate);
+        assertThat("Normal rate is empty!", normalRate, not(emptyOrNullString()));
+
+        // close sleep in rates popup
         BasePage.waitUntilElementClickable(agreementOverviewPage.workerRatesCloseIcon, 30);
         BasePage.clickWithJavaScript(agreementOverviewPage.workerRatesCloseIcon);
     }

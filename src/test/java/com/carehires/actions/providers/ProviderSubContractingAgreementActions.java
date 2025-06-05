@@ -32,6 +32,8 @@ public class ProviderSubContractingAgreementActions {
     public void clickOnCompleteProfileButton() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on Complete Profile button >>>>>>>>>>>>>>>>>>>>");
         BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.genericWait(4000);
+        BasePage.waitUntilElementClickable(subContractingAgreementPage.completeProfileButton, 60);
         BasePage.clickWithJavaScript(subContractingAgreementPage.completeProfileButton);
         BasePage.waitUntilElementPresent(subContractingAgreementPage.attachSubContractDocumentButton, 60);
 

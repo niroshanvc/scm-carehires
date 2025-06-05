@@ -113,4 +113,11 @@ public class LeftSideMenuActions {
         BasePage.clickWithJavaScript(leftSideMenu.organisationMainLink);
         logger.info(" --------------------------- Moves to Organisation Page ---------------------------");
     }
+
+    public void gotoProviderAgreementViewPage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.mouseHoverAndClick(LeftSideMenuPage.agreementsMainLink, LeftSideMenuPage.agreementsViewOnlySubLink);
+        logger.info(" ------------------------ Provider User Moves to Agreements View Page ------------------------");
+    }
 }

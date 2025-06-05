@@ -1,11 +1,14 @@
 package com.carehires.utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
@@ -42,7 +45,7 @@ public class BasePage {
     private static final Logger logger = LogManager.getFormatterLogger(BasePage.class);
     private static final Properties prop = new Properties();
     private static FileInputStream fis;
-    // private static final String HEADLESS = "--headless"; // Using "--headless=new" is preferred
+    private static final String HEADLESS = "--headless";
     private static final String JAVASCRIPT_CLICK = "arguments[0].click();";
 
     //for parallel execution
@@ -56,28 +59,22 @@ public class BasePage {
     private static void initializeDriver() throws WebDriverInitializationException {
         if (threadLocalDriver.get() == null) {
             String browser = getProperty("BROWSER");
-            // boolean isCIRunning = isCIEnvironment(); // We'll use the system property for headless
+            boolean isCIRunning = isCIEnvironment();
             logger.info("Initializing WebDriver for browser: %s", browser);
 
             try {
                 switch (browser.toLowerCase()) {
                     case "chrome":
-                        threadLocalDriver.set(setupChromeDriver());
+                        threadLocalDriver.set(setupChromeDriver(isCIRunning));
                         break;
                     case "firefox":
-                        threadLocalDriver.set(setupFirefoxDriver());
+                        threadLocalDriver.set(setupFirefoxDriver(isCIRunning));
                         break;
                     case "edge":
-                        threadLocalDriver.set(setupEdgeDriver());
+                        threadLocalDriver.set(setupEdgeDriver(isCIRunning));
                         break;
                     default:
                         throw new IllegalArgumentException("Unsupported browser: " + browser);
-                }
-                // Set common timeouts after driver initialization
-                if (threadLocalDriver.get() != null) {
-                    threadLocalDriver.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(10)); // Example
-                    threadLocalDriver.get().manage().timeouts().pageLoadTimeout(Duration.ofSeconds(Long.parseLong(getProperty("PAGE_LOAD_TIMEOUT", "60"))));
-                    threadLocalDriver.get().manage().timeouts().scriptTimeout(Duration.ofSeconds(Long.parseLong(getProperty("SCRIPT_TIMEOUT", "30"))));
                 }
                 logger.info("WebDriver initialized successfully.");
             } catch (Exception e) {
@@ -108,73 +105,41 @@ public class BasePage {
     }
 
     private static boolean isCIEnvironment() {
-        // This can still be useful for other CI-specific logic if needed
-        return System.getenv("CI") != null || System.getenv("CIRCLECI") != null || System.getenv("JENKINS_URL") != null;
+        return System.getenv("CI") != null || System.getenv("JENKINS_URL") != null;
     }
 
-    private static WebDriver setupChromeDriver() {
+    private static WebDriver setupChromeDriver(boolean isCIRunning) {
         logger.info("****************** Setting up ChromeDriver.");
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", getChromePreferences());
-        options.addArguments("start-maximized"); // Start maximized for headed mode
-        options.addArguments("--safebrowsing-disable-download-protection"); // Keep this if needed
+        options.addArguments("start-maximized", "--safebrowsing-disable-download-protection");
 
-        // Read headless mode from system property (set by CircleCI Maven command)
-        boolean isHeadless = Boolean.parseBoolean(System.getProperty("webdriver.chrome.headless", "false"));
-
-        if (isHeadless) {
-            logger.info("****************** Configuring ChromeDriver for HEADLESS execution.");
-            options.addArguments("--headless=new"); // Use the new headless mode
-            options.addArguments("--window-size=1920,1080"); // Crucial for headless stability
-            options.addArguments("--no-sandbox"); // Often required in Linux/Docker CI environments
-            options.addArguments("--disable-dev-shm-usage"); // Overcomes resource limitations in Docker
-            options.addArguments("--disable-gpu"); // Generally recommended for headless
-            // options.addArguments("--remote-debugging-port=9222"); // Optional: for debugging CI if possible
-        } else {
-            logger.info("****************** Configuring ChromeDriver for HEADED execution.");
+        if (isCIRunning) {
+            configureCIOptions(options);
         }
-
-        // Add other general arguments if needed, e.g.
-        // options.addArguments("--disable-extensions");
-        // options.addArguments("--ignore-certificate-errors");
-
 
         WebDriverManager.chromedriver().setup();
         return new ChromeDriver(options);
     }
 
-    private static WebDriver setupFirefoxDriver() {
+    private static WebDriver setupFirefoxDriver(boolean isCIRunning) {
         logger.info("****************** Setting up FirefoxDriver.");
         FirefoxOptions options = new FirefoxOptions();
-        boolean isHeadless = Boolean.parseBoolean(System.getProperty("webdriver.firefox.headless", "false"));
 
-
-        if (isHeadless || isCIEnvironment()) { // Fallback to CI check if specific property not set
-            logger.info("****************** Configuring FirefoxDriver for HEADLESS execution.");
-            options.addArguments("--headless");
-        } else {
-            logger.info("****************** Configuring FirefoxDriver for HEADED execution.");
+        if (isCIRunning) {
+            options.addArguments(HEADLESS);
         }
-
 
         WebDriverManager.firefoxdriver().setup();
         return new FirefoxDriver(options);
     }
 
-    private static WebDriver setupEdgeDriver() {
+    private static WebDriver setupEdgeDriver(boolean isCIRunning) {
         logger.info("****************** Setting up EdgeDriver.");
         EdgeOptions options = new EdgeOptions();
-        boolean isHeadless = Boolean.parseBoolean(System.getProperty("webdriver.edge.headless", "false"));
 
-        if (isHeadless || isCIEnvironment()) { // Fallback to CI check
-            logger.info("****************** Configuring EdgeDriver for HEADLESS execution.");
-            options.addArguments("--headless");
-            options.addArguments("--disable-gpu"); // Similar to Chrome
-            options.addArguments("--no-sandbox");
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--window-size=1920,1080");
-        } else {
-            logger.info("****************** Configuring EdgeDriver for HEADED execution.");
+        if (isCIRunning) {
+            configureCIOptions(options);
         }
 
         WebDriverManager.edgedriver().setup();
@@ -191,39 +156,33 @@ public class BasePage {
         return prefs;
     }
 
-    // This method might be redundant if headless options are set directly in setupXXXDriver methods
-    // Or it can be used for other non-headless CI specific configurations.
-    // For now, the headless specific parts are integrated into setupChromeDriver.
-    /*
     private static void configureCIOptions(MutableCapabilities options) {
-        logger.info("****************** Running in CI environment, configuring CI-specific options.");
-        // This method can be used for other CI specific settings if needed,
-        // but headless for Chrome is now handled by the system property.
+        logger.info("****************** Running in CI environment, configuring headless options.");
+
         if (options instanceof ChromeOptions chromeOptions) {
-            // Arguments like --no-sandbox and --disable-dev-shm-usage are good for CI
-            // even if not strictly headless, but usually applied with headless.
-            // chromeOptions.addArguments("--no-sandbox", "--disable-dev-shm-usage");
+            chromeOptions.addArguments(HEADLESS, "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+        } else if (options instanceof FirefoxOptions firefoxOptions) {
+            firefoxOptions.addArguments(HEADLESS);
+        } else if (options instanceof EdgeOptions edgeOptions) {
+            edgeOptions.addArguments(HEADLESS, "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+        } else {
+            logger.warn("Unsupported browser options class: %s", options.getClass().getSimpleName());
         }
-        // ... similar for other browsers if there are non-headless CI specific settings
     }
-    */
 
     // Static initializer block to load properties
     static {
-        try {
-            // Corrected path for fis initialization
-            fis = new FileInputStream(RESOURCES_DIR + File.separator + "properties" + File.separator + "project.properties");
+        try (FileInputStream fis = new FileInputStream(RESOURCES_DIR + File.separator + "properties" + File.separator + "project.properties")) {
             prop.load(fis);
         } catch (IOException e) {
-            logger.error("An error occurred while loading project.properties: ", e);
-            // Consider re-throwing as a runtime exception if properties are critical
-            throw new WebDriverRuntimeException(new WebDriverInitializationException("Failed to load project.properties", e));
+            logger.error("An error occurred: ", e);
+            throw new WebDriverRuntimeException(e);
         } finally {
             if (fis != null) {
                 try {
                     fis.close();
                 } catch (IOException e) {
-                    logger.error("An error occurred while closing FileInputStream: ", e);
+                    logger.error("An error occurred: ", e);
                 }
             }
         }
@@ -232,11 +191,6 @@ public class BasePage {
     public static String getProperty(String key) {
         return prop.getProperty(key);
     }
-
-    public static String getProperty(String key, String defaultValue) {
-        return prop.getProperty(key, defaultValue);
-    }
-
 
     public static WebDriver getDriver() throws WebDriverInitializationException {
         if (threadLocalDriver.get() == null) {
@@ -255,13 +209,8 @@ public class BasePage {
 
     public static void tearDown() {
         if (threadLocalDriver.get() != null) {
-            try {
-                threadLocalDriver.get().quit();
-            } catch (Exception e) {
-                logger.error("Error during WebDriver quit: " + e.getMessage());
-            } finally {
-                threadLocalDriver.remove();
-            }
+            threadLocalDriver.get().quit();
+            threadLocalDriver.remove();
         }
     }
 
@@ -279,22 +228,18 @@ public class BasePage {
         logger.info("****************** Wait until element present: %s, in seconds: %s", element, timeOutSeconds);
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
-            wait.until(ExpectedConditions.visibilityOf(element));
         } catch (WebDriverInitializationException e) {
-            // This exception is for driver init, WebDriverWait will throw TimeoutException
-            logger.error("WebDriver not initialized while waiting for element: %s", element, e);
             throw new WebDriverRuntimeException(e);
+        }
+        try {
+            wait.until(ExpectedConditions.visibilityOf(element));
         } catch (TimeoutException e) {
             logger.error("Element %s not visible after waiting for %s seconds.", element, timeOutSeconds);
-            throw e; // Re-throw the TimeoutException
         }
     }
 
     public static void clickAfterWait(WebElement element) {
-        // Defaulting to a reasonable timeout, e.g., 60 seconds.
-        // Consider making this configurable or passing it as a parameter.
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_CLICK_TIMEOUT", "60"));
-        waitUntilElementClickable(element, defaultTimeout); // Use waitUntilElementClickable
+        waitUntilElementPresent(element, 60);
         logger.info("****************** Clicked on the web element %s", element);
         element.click();
     }
@@ -304,17 +249,15 @@ public class BasePage {
         JavascriptExecutor js;
         try {
             js = ((JavascriptExecutor) getDriver());
-            js.executeScript("arguments[0].scrollIntoView(true);", ele);
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
         }
+        js.executeScript("arguments[0].scrollIntoView(true);", ele);
     }
 
     public static void clickWithJavaScript(WebElement ele) {
         logger.info("****************** Clicking on the web element captured using webelement: %s", ele);
-        // Defaulting to a reasonable timeout.
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "30"));
-        waitUntilElementPresent(ele, defaultTimeout);
+        waitUntilElementPresent(ele, 30);
         JavascriptExecutor js;
         try {
             js = (JavascriptExecutor) getDriver();
@@ -331,15 +274,9 @@ public class BasePage {
         try {
             By locator = By.xpath(xpath);
             els = getDriver().findElements(locator);
-            if (els != null && !els.isEmpty()) {
-                // Defaulting to a reasonable timeout.
-                int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "90"));
-                waitUntilElementPresent(els.get(0), defaultTimeout);
-            } else {
-                logger.info("****************** No elements found for xpath: %s", xpath);
-            }
+            waitUntilElementPresent(els.get(0), 90);
         } catch (Exception ex) {
-            logger.error("****************** Object not found or error during findListOfWebElements for xpath: %s. Error: %s", xpath, ex.getMessage());
+            logger.error("****************** Object not found: %s", xpath);
         }
         return els;
     }
@@ -347,66 +284,42 @@ public class BasePage {
     public static void typeWithStringBuilder(WebElement element, String data) {
         logger.info("****************** Type using StringBuilder in %s", element);
         StringBuilder sb = new StringBuilder(data);
-        // Defaulting to a reasonable timeout.
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "30"));
-        waitUntilElementPresent(element, defaultTimeout);
+        waitUntilElementPresent(element, 30);
         element.clear();
         element.sendKeys(sb);
     }
 
     public static void sendKeys(WebElement element, String data) {
         logger.info("****************** Send keys in %s", element);
-        // It's good practice to ensure element is present/visible before sendKeys
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "30"));
-        waitUntilElementPresent(element, defaultTimeout);
         element.sendKeys(data);
     }
 
     public static void sendKeys(By by, String data) {
         logger.info("****************** Type using by locator in %s", by);
-        WebElement element = null;
+        WebElement element;
         try {
-            // Defaulting to a reasonable timeout.
-            int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "30"));
-            element = new WebDriverWait(getDriver(), Duration.ofSeconds(defaultTimeout))
-                    .until(ExpectedConditions.visibilityOfElementLocated(by));
-            element.clear();
-            element.sendKeys(data);
+            element = getDriver().findElement(by);
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Timeout waiting for element %s to be visible before sending keys.", by);
-            throw e;
         }
+        element.clear();
+        element.sendKeys(data);
     }
 
     public static String getText(WebElement element) {
         logger.info("****************** Get text in %s", element);
-        // Defaulting to a reasonable timeout.
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "30"));
-        waitUntilElementPresent(element, defaultTimeout);
+        waitUntilElementPresent(element, 30);
         return element.getText();
     }
 
     public static String getTextWithoutWait(WebElement element) {
         logger.info("****************** Without waiting any second, get text in %s", element);
-        // Be cautious with this method, as it might lead to StaleElementReferenceException
-        // if the element is not immediately available or changes.
-        try {
-            return element.getText();
-        } catch (StaleElementReferenceException e) {
-            logger.warn("StaleElementReferenceException while getting text without wait for %s. Attempting to re-find.", element);
-            // Attempt to re-find the element - this requires knowing its locator, which is not available here.
-            // This method is inherently risky. Consider passing locator or ensuring element is stable.
-            throw e;
-        }
+        return element.getText();
     }
 
     public static String getAttributeValue(WebElement element, String attribute) {
         logger.info("****************** attribute value from element %s and %s", element, attribute);
-        // Defaulting to a reasonable timeout.
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "30"));
-        waitUntilElementPresent(element, defaultTimeout);
+        waitUntilElementPresent(element, 30);
         return element.getAttribute(attribute);
     }
 
@@ -415,24 +328,16 @@ public class BasePage {
         By by = By.xpath(xpath);
         WebElement ele;
         try {
-            // Defaulting to a reasonable timeout.
-            int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "30"));
-            ele = new WebDriverWait(getDriver(), Duration.ofSeconds(defaultTimeout))
-                    .until(ExpectedConditions.visibilityOfElementLocated(by));
-            return ele.getAttribute(attribute);
+            ele = getDriver().findElement(by);
+            waitUntilElementPresent(ele, 30);
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Timeout waiting for element %s to be visible before getting attribute.", xpath);
-            throw e;
         }
+        return ele.getAttribute(attribute);
     }
 
     public static void clickTabKey(WebElement element) {
         logger.info("****************** Click tab key in %s", element);
-        // Ensure element is interactable first
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_CLICKABLE_TIMEOUT", "30"));
-        waitUntilElementClickable(element, defaultTimeout);
         element.sendKeys(Keys.TAB);
     }
 
@@ -442,11 +347,73 @@ public class BasePage {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
             wait.until(ExpectedConditions.elementToBeClickable(element));
         } catch (WebDriverInitializationException e) {
-            logger.error("WebDriver not initialized while waiting for element %s to be clickable.", element, e);
-            throw new WebDriverRuntimeException(e);
+            logger.error("Element was not clickable after waiting for %s seconds. Locator: %s", timeOutSeconds, element);
+        }
+    }
+
+    public static void waitUntilElementClickableMethod(WebElement element, int timeOutSeconds) {
+        logger.info("****************** Waiting until element is clickable: %s", element);
+        WebDriverWait wait;
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+            logger.info("Element is now clickable: %s", element);
         } catch (TimeoutException e) {
-            logger.error("Element was not clickable after waiting for %s seconds. Element: %s", timeOutSeconds, element.toString());
-            // It's important to re-throw the original TimeoutException so test frameworks can handle it.
+            logger.error("TimeoutException: Element was not clickable after waiting for %s seconds. Element: " +
+                    "%s", timeOutSeconds, elementToString(element), e);
+            // Optionally re-throw or handle as a test failure
+            throw e; // It's often better to let the test fail clearly if a wait times out
+        } catch (InvalidElementStateException ies) {
+            logger.error("InvalidElementStateException during wait for clickability. Element: %s",
+                    elementToString(element), ies);
+            throw ies;
+        }
+    }
+
+    // Helper to get some identifying information from the WebElement for logging
+    public static String elementToString(WebElement element) {
+        if (element == null) {
+            return "null";
+        }
+        try {
+            // Attempt to get some useful identifying information
+            String tagName = element.getTagName();
+            String text = element.getText();
+            String id = element.getAttribute("id");
+            String name = element.getAttribute("name");
+            String classAttr = element.getAttribute("class");
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("TagName: '").append(tagName).append("'");
+            if (id != null && !id.isEmpty()) sb.append(", Id: '").append(id).append("'");
+            if (name != null && !name.isEmpty()) sb.append(", Name: '").append(name).append("'");
+            if (classAttr != null && !classAttr.isEmpty()) sb.append(", Class: '").append(classAttr).append("'");
+            if (!text.isEmpty() && text.length() < 50) sb.append(", Text: '").append(text.trim()).append("'");
+            // Add other attributes if they are commonly used in your application for identification
+            return sb.toString();
+        } catch (Exception e) {
+            // If trying to get attributes fails (e.g., stale element), return a basic string
+            return element.toString();
+        }
+    }
+
+    public static void clickElement(WebElement element, int timeOutSeconds) {
+        waitUntilElementClickable(element, timeOutSeconds); // Wait for it to be clickable
+        try {
+            logger.info("Attempting to click element: %s", elementToString(element));
+            element.click();
+            logger.info("Successfully clicked element: %s", elementToString(element));
+        } catch (InvalidElementStateException e) {
+            logger.error("InvalidElementStateException when trying to click. Element: %s. IsDisplayed: %s, " +
+                            "IsEnabled: %s",
+                    elementToString(element), element.isDisplayed(), element.isEnabled(), e);
+            throw e;
+        } catch (Exception e) { // Catch other potential exceptions during click
+            logger.error("Exception during click on element: %s", elementToString(element), e);
             throw e;
         }
     }
@@ -454,54 +421,37 @@ public class BasePage {
     public static void selectFirstOption(String xpath) {
         Select sel;
         try {
-            // Defaulting to a reasonable timeout.
-            int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "30"));
-            WebElement dropdownElement = new WebDriverWait(getDriver(), Duration.ofSeconds(defaultTimeout))
-                    .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
-            sel = new Select(dropdownElement);
-            if (!sel.getOptions().isEmpty()) {
-                sel.selectByIndex(0); // selectByValue("0") might not always work if value "0" isn't the first.
-            } else {
-                logger.warn("Dropdown at xpath %s has no options to select.", xpath);
-            }
+            sel = new Select(getDriver().findElement(By.xpath(xpath)));
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Timeout waiting for dropdown %s to be visible.", xpath);
-            throw e;
         }
+        sel.selectByValue("0");
     }
 
     public static void clickShiftAndTabKeyTogether(WebElement element) {
         logger.info("****************** Click shift + tab key in %s", element);
         Actions actions;
         try {
-            // Ensure element is interactable
-            int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_CLICKABLE_TIMEOUT", "30"));
-            waitUntilElementClickable(element, defaultTimeout);
             actions = new Actions(getDriver());
-            actions.keyDown(Keys.SHIFT)
-                    .sendKeys(Keys.TAB)
-                    .keyUp(Keys.SHIFT)
-                    .build()
-                    .perform();
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
         }
+        actions.keyDown(Keys.SHIFT)
+                .sendKeys(Keys.TAB)
+                .keyUp(Keys.SHIFT)
+                .build()
+                .perform();
     }
 
     // double-click on an element
     public static void doubleClick(WebElement element) {
         Actions actions;
         try {
-            // Ensure element is interactable
-            int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_CLICKABLE_TIMEOUT", "30"));
-            waitUntilElementClickable(element, defaultTimeout);
             actions = new Actions(getDriver());
-            actions.doubleClick(element).perform();
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
         }
+        actions.doubleClick(element).perform();
     }
 
     public static void refreshPage() {
@@ -515,17 +465,11 @@ public class BasePage {
 
     public static void clearTexts(WebElement element) {
         logger.info("****************** Clear texts in %s", element);
-        // Ensure element is present
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "30"));
-        waitUntilElementPresent(element, defaultTimeout);
         element.clear();
     }
 
     public static void clearTextsUsingSendKeys(WebElement element) {
         logger.info("****************** Clear texts in %s using Send Keys", element);
-        // Ensure element is present
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "30"));
-        waitUntilElementPresent(element, defaultTimeout);
         element.sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
     }
 
@@ -535,10 +479,10 @@ public class BasePage {
         JavascriptExecutor js;
         try {
             js = (JavascriptExecutor) getDriver();
-            js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
         }
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
     }
 
     public static void scrollToBottomOfPage() {
@@ -546,21 +490,67 @@ public class BasePage {
         Actions actions;
         try {
             actions = new Actions(getDriver());
-            actions.sendKeys(Keys.END).perform();
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
         }
+        actions.sendKeys(Keys.END).perform();
     }
 
     public static void clearAndEnterTexts(WebElement element, String texts) {
         logger.info("****************** Clear and enter texts in %s", element);
-        // Defaulting to a reasonable timeout.
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "30"));
-        waitUntilElementPresent(element, defaultTimeout);
+        waitUntilElementPresent(element, 30);
         element.clear();
-        // Using sendKeys directly after clear is often more reliable than typeWithStringBuilder for this combined action
-        element.sendKeys(texts);
-        // typeWithStringBuilder(element, texts); // Or keep this if it works better for your specific inputs
+        typeWithStringBuilder(element, texts);
+    }
+
+    public static void clearFirstAndEnterTexts(WebElement element, String texts, int timeOutSeconds) { // Added timeout
+        logger.info("******************** Attempting to clear and enter texts in: %s",
+                elementToString(element));
+
+        try {
+            // Wait for the element to be visible and enabled before trying to clear
+            // You might even want a specific wait for it to be an input field if applicable
+            WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
+            wait.until(ExpectedConditions.and(
+                    ExpectedConditions.visibilityOf(element),
+                    ExpectedConditions.elementToBeClickable(element) // Ensures it's visible and enabled
+            ));
+
+            logger.info("Element %s is visible and enabled. IsDisplayed: %s, IsEnabled: %s. Attempting " +
+                            "to clear...", elementToString(element), element.isDisplayed(), element.isEnabled());
+
+            element.clear(); // The problematic line
+            logger.info("Successfully cleared element: %s", elementToString(element));
+
+            typeWithStringBuilder(element, texts); // Assuming this method also needs the element to be interactable
+
+        } catch (TimeoutException e) {
+            logger.error("TimeoutException: Element was not ready for clear/sendkeys after waiting for %s " +
+                            "seconds. Element: %s",
+                    timeOutSeconds, elementToString(element), e);
+            // Log current state if possible, even if it's about to throw
+            try {
+                logger.error("Current state before throw - IsDisplayed: %s, IsEnabled: %s, TagName: %s, " +
+                                "ReadOnly: %s", element.isDisplayed(), element.isEnabled(), element.getTagName(),
+                        element.getAttribute("readonly"));
+            } catch (Exception ex) {
+                logger.error("Could not get element state during TimeoutException logging", ex);
+            }
+            throw e;
+        } catch (InvalidElementStateException ies) {
+            logger.error("InvalidElementStateException during clear or type. Element: %s. IsDisplayed: %s, " +
+                            "IsEnabled: %s, TagName: %s, ReadOnly: %s",
+                    elementToString(element),
+                    element.isDisplayed(), // This might fail if element is truly weird
+                    element.isEnabled(),   // This might fail too
+                    element.getTagName(),
+                    element.getAttribute("readonly"),
+                    ies);
+            throw ies;
+        } catch (Exception exc) {
+            logger.error("An unexpected error occurred in clearFirstAndEnterTexts for element: %s",
+                    elementToString(element), exc);
+        }
     }
 
     public static String getPageTitle() {
@@ -578,67 +568,48 @@ public class BasePage {
     public static void waitUntilPageCompletelyLoaded() {
         logger.info("****************** Wait until page completely loaded");
         try {
-            // Defaulting to a reasonable timeout.
-            int pageLoadTimeout = Integer.parseInt(getProperty("PAGE_COMPLETE_LOAD_TIMEOUT", "90"));
-            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(pageLoadTimeout));
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(90));
+            // Wait until the document's readyState is "complete"
             ExpectedCondition<Boolean> pageLoadCondition = driver -> {
                 assert driver != null;
                 try {
-                    return Objects.equals(((JavascriptExecutor) getDriver()).executeScript("return document.readyState"), "complete");
+                    return Objects.equals(((JavascriptExecutor) getDriver()).executeScript("return document." +
+                            "readyState"), "complete");
                 } catch (WebDriverInitializationException e) {
-                    // This specific catch might be problematic if getDriver() itself throws during an unstable phase.
-                    // Consider if this should be a WebDriverRuntimeException or if the outer catch handles it.
-                    logger.error("WebDriverInitializationException during page load check", e);
-                    return false; // Or rethrow
+                    throw new WebDriverRuntimeException(e);
                 }
             };
             wait.until(pageLoadCondition);
         } catch (TimeoutException timeoutException) {
-            logger.error("Page is not completely loaded after configured timeout.");
+            logger.error("Page is not completely loaded after 90 seconds");
             throw timeoutException;
         } catch (WebDriverInitializationException e) {
-            // This would catch issues with getDriver() in the WebDriverWait constructor
             throw new WebDriverRuntimeException(e);
         }
     }
 
     public static void mouseHoverAndClick(WebElement element, WebElement subElement, By childElement) {
-        // Defaulting to a reasonable timeout.
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_CLICKABLE_TIMEOUT", "60"));
-        waitUntilElementClickable(element, defaultTimeout); // Ensure main element is at least clickable (implies visibility)
+        waitUntilElementPresent(element, 60);
         try {
             Actions actions = new Actions(getDriver());
             actions.moveToElement(element).perform();
+            waitUntilVisibilityOfElementLocated(childElement, 60);
 
-            // Wait for the child/sub-element to be visible and then clickable
-            WebElement clickableSubElement = new WebDriverWait(getDriver(), Duration.ofSeconds(defaultTimeout))
-                    .until(ExpectedConditions.elementToBeClickable(subElement)); // Prefer waiting on subElement directly
-
-            // Check visibility and enabled again just before click, though elementToBeClickable should cover this.
-            if (clickableSubElement.isDisplayed() && clickableSubElement.isEnabled()) {
-                actions.moveToElement(clickableSubElement).click().perform();
+            if (subElement.isDisplayed() && subElement.isEnabled()) {
+                actions.moveToElement(subElement).click().perform();
             } else {
-                logger.warn("Sub-element %s was not interactable, attempting JS click.", subElement);
                 JavascriptExecutor js = (JavascriptExecutor) getDriver();
-                js.executeScript(JAVASCRIPT_CLICK, clickableSubElement);
+                js.executeScript(JAVASCRIPT_CLICK, subElement);
             }
         } catch (Exception e) {
-            logger.error("Failed to perform mouse hover and click: message: %s and error: %s", e.getMessage(), e);
-            // Consider re-throwing a custom exception or the original one
-            throw new RuntimeException("Mouse hover and click failed", e);
+            logger.error("Failed to perform mouse hover and click: message: %s and error: %s",
+                    e.getMessage(), e);
         }
     }
 
     //upload file
     public static void uploadFile(WebElement element, String filePath) {
         logger.info("****************** Uploading file: %s to %s", filePath, element);
-        // For <input type="file">, it should be directly interactable without explicit waits usually,
-        // but ensuring it's present can be good. It doesn't need to be "visible" in the traditional sense.
-        try {
-            new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='file']"))); // Example generic wait for such an element
-        } catch (WebDriverInitializationException e) {
-            throw new WebDriverRuntimeException(e);
-        }
         element.sendKeys(filePath);
     }
 
@@ -647,7 +618,7 @@ public class BasePage {
             logger.info("****************** Waiting for %s milliseconds", milliseconds);
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
-            logger.warn("Generic wait interrupted", e); // Corrected logging level and message
+            logger.info(String.valueOf(Level.WARN), "Interrupted", e.getMessage());
             Thread.currentThread().interrupt();
         }
     }
@@ -664,19 +635,16 @@ public class BasePage {
 
         // Create an instance of Robot class
         Robot robot = new Robot();
-        robot.setAutoDelay(500); // Add a small delay between robot actions
 
-        // Press Enter (to open file dialog if needed, or confirm if already open) - This behavior is OS/App dependent
-        // robot.keyPress(KeyEvent.VK_ENTER);
-        // robot.keyRelease(KeyEvent.VK_ENTER);
-        // genericWait(500); // Wait for dialog
+        // Press Enter
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
 
         // Press Ctrl+V (paste)
         robot.keyPress(KeyEvent.VK_CONTROL);
         robot.keyPress(KeyEvent.VK_V);
         robot.keyRelease(KeyEvent.VK_V);
         robot.keyRelease(KeyEvent.VK_CONTROL);
-        genericWait(500); // Wait for paste to complete
 
         // Press Enter again to confirm the file selection
         robot.keyPress(KeyEvent.VK_ENTER);
@@ -687,20 +655,14 @@ public class BasePage {
         logger.info("****************** Clicking on the web element captured using xpath: %s", xpath);
         WebElement ele;
         try {
-            // Defaulting to a reasonable timeout.
-            int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "30"));
-            // Wait for presence first, then attempt JS click
-            ele = new WebDriverWait(getDriver(), Duration.ofSeconds(defaultTimeout))
-                    .until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
+            ele = getDriver().findElement(By.xpath(xpath));
+            waitUntilElementPresent(ele, 30);
             JavascriptExecutor js;
             js = (JavascriptExecutor) getDriver();
             js.executeScript(JAVASCRIPT_CLICK, ele);
 
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Timeout waiting for element %s to be present before JS click.", xpath);
-            throw e;
         }
     }
 
@@ -714,21 +676,15 @@ public class BasePage {
 
     public static void clickOnEnterKey(WebElement element) {
         logger.info("****************** Click on enter key");
-        // Ensure element is interactable
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_CLICKABLE_TIMEOUT", "30"));
-        waitUntilElementClickable(element, defaultTimeout);
         element.sendKeys(Keys.ENTER);
     }
 
     public static void typeWithStringBuilderAndDelay(WebElement element, String data, int milliseconds) {
         logger.info("****************** Type using StringBuilder in %s with %d milliseconds delay", element, milliseconds);
         StringBuilder sb = new StringBuilder(data);
-        // Defaulting to a reasonable timeout.
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "30"));
-        waitUntilElementPresent(element, defaultTimeout);
-        element.clear(); // Clear before typing
-        String[] strs = sb.toString().split(""); // Consider iterating over char array directly
-        for (String character : strs) {
+        waitUntilElementPresent(element, 30);
+        String[] strs = sb.toString().split("");
+        for (String  character : strs) {
             element.sendKeys(character);
             genericWait(milliseconds);
         }
@@ -738,40 +694,29 @@ public class BasePage {
         logger.info("****************** Wait until element clickable at xpath: %s", xpath);
         WebElement element;
         try {
-            // Find element first, then wait for clickability
-            element = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds))
-                    .until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
-            // Now wait for this specific element to be clickable
-            new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds))
-                    .until(ExpectedConditions.elementToBeClickable(element));
+            element = getDriver().findElement(By.xpath(xpath));
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Element at xpath %s was not clickable after %s seconds", xpath, timeOutSeconds);
-            throw e;
         }
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     public static boolean isElementDisplayed(WebElement element) {
         logger.info("****************** Checking element - %s is displayed:", element);
         try {
-            // It's better to wait for a short period for visibility rather than immediate check
-            return new WebDriverWait(getDriver(), Duration.ofSeconds(5)) // Short wait
-                    .until(ExpectedConditions.visibilityOf(element)) != null;
-        } catch (TimeoutException | NoSuchElementException | StaleElementReferenceException e) {
+            return element.isDisplayed();
+        } catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
-        } catch (WebDriverInitializationException e) {
-            throw new WebDriverRuntimeException(e);
         }
     }
 
     public static boolean isElementDisplayed(String xpath) {
         logger.info("******************** Checking element - %s is displayed:", xpath);
         try {
-            WebElement element = new WebDriverWait(getDriver(), Duration.ofSeconds(5)) // Short wait
-                    .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
-            return element != null;
-        } catch (TimeoutException | NoSuchElementException e) {
+            WebElement element = getDriver().findElement(By.xpath(xpath));
+            return element.isDisplayed();
+        } catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
@@ -780,97 +725,77 @@ public class BasePage {
 
     public static void waitUntilElementDisplayed(WebElement element, int seconds) {
         logger.info("****************** Wait until element displayed: %s, and seconds: %s", element, seconds);
+
+        // Create a wait instance with the provided timeout
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
             wait.until(ExpectedConditions.visibilityOf(element));
         } catch (WebDriverInitializationException e) {
-            logger.error("WebDriver not initialized while waiting for element %s to be displayed.", element, e);
-            throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Element was not displayed after waiting for %s seconds. Element: %s", seconds, element.toString());
-            throw e;
+            logger.error("Element was not displayed after waiting for %s seconds. Locator: %s",
+                    seconds, element);
         }
     }
 
     public static List<WebElement> findListOfWebElements(By locator) {
         List<WebElement> els = null;
         try {
-            // Wait for at least one element to be present to avoid immediate empty list if page is loading
-            new WebDriverWait(getDriver(), Duration.ofSeconds(10))
-                    .until(ExpectedConditions.presenceOfElementLocated(locator));
             els = getDriver().findElements(locator);
         } catch (Exception ex) {
-            logger.error("****************** Object not found at the locator: %s. Error: %s", locator, ex.getMessage());
+            logger.error("****************** Object not found at the locator: %s", locator);
         }
-        return els != null ? els : List.of(); // Return empty list if null
+        return els;
     }
 
     public static List<WebElement> listOfWebElements(String xpath) {
         List<WebElement> els = null;
         try {
-            By locator = By.xpath(xpath);
-            new WebDriverWait(getDriver(), Duration.ofSeconds(10))
-                    .until(ExpectedConditions.presenceOfElementLocated(locator));
-            els = getDriver().findElements(locator);
+            els = getDriver().findElements(By.xpath(xpath));
         } catch (Exception ex) {
-            logger.error("******************* Object not found at the locator: %s. Error: %s", xpath, ex.getMessage());
+            logger.error("******************* Object not found at the locator: %s", xpath);
         }
-        return els != null ? els : List.of(); // Return empty list if null
+        return els;
     }
 
     public static void mouseHoverOverElement(WebElement element) {
-        // Defaulting to a reasonable timeout.
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_CLICKABLE_TIMEOUT", "30"));
-        waitUntilElementClickable(element, defaultTimeout); // Ensure it's interactable
+        waitUntilElementClickable(element, 30);
         Actions actions;
         try {
             actions = new Actions(getDriver());
-            actions.moveToElement(element).build().perform();
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
         }
+        actions.moveToElement(element).build().perform();
     }
 
     public static void waitUntilElementDisappeared(WebElement element, int seconds) {
-        logger.info("****************** Wait until element disappeared: %s, and seconds: %s", element, seconds);
+        logger.info("****************** Wait until element disappeared: %s, and seconds: %s", element,
+                seconds);
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
-            wait.until(ExpectedConditions.invisibilityOf(element));
         } catch (WebDriverInitializationException e) {
-            logger.error("WebDriver not initialized while waiting for element %s to disappear.", element, e);
             throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.warn("Element %s did not disappear after %s seconds.", element.toString(), seconds);
-            // Depending on test logic, this might not be an error to throw.
         }
+        wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
     public static void waitAndIgnoreStaleException(WebElement element, int seconds) {
-        logger.info("****************** Wait until element displayed by ignoring stale element exception: %s, " +
-                "and seconds: %s", element, seconds);
+        logger.info("****************** Wait until element displayed by ignoring stale element " +
+                "exception: %s, " + "and seconds: %s", element, seconds);
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
-            wait.ignoring(StaleElementReferenceException.class)
-                    .until(ExpectedConditions.visibilityOf(element));
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Element %s not visible (even ignoring StaleElementReferenceException) after %s seconds.", element.toString(), seconds);
-            throw e;
         }
+        wait.ignoring(StaleElementReferenceException.class)
+                .until(ExpectedConditions.visibilityOf(element));
     }
 
     public static boolean isElementEnabled(WebElement element) {
         logger.info("****************** Checking element - %s is enabled:", element);
         try {
-            // Wait for element to be present before checking if enabled
-            new WebDriverWait(getDriver(), Duration.ofSeconds(5))
-                    .until(ExpectedConditions.visibilityOf(element));
             return element.isEnabled();
-        } catch (TimeoutException | NoSuchElementException | StaleElementReferenceException e) {
+        } catch (NoSuchElementException e) {
             return false;
-        } catch (WebDriverInitializationException e) {
-            throw new WebDriverRuntimeException(e);
         }
     }
 
@@ -884,16 +809,15 @@ public class BasePage {
     }
 
     public static void waitUntilElementPresent(String xpath, int timeOutSeconds) {
-        logger.info("****************** Wait until element present at xpath: %s, in seconds: %s", xpath, timeOutSeconds);
+        logger.info("****************** Wait until element present at xpath: %s, in seconds: %s",
+                xpath, timeOutSeconds);
+        WebElement element;
         try {
+            element = getDriver().findElement(By.xpath(xpath));
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
-            // Wait for presence of element, not necessarily visibility for this method
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
+            wait.until(ExpectedConditions.visibilityOf(element));
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Element at xpath %s not present after %s seconds.", xpath, timeOutSeconds);
-            throw e;
         }
     }
 
@@ -902,55 +826,58 @@ public class BasePage {
         JavascriptExecutor js;
         try {
             js = ((JavascriptExecutor) getDriver());
-            WebElement element;
-            // Wait for element to be present before trying to scroll to it
-            element = new WebDriverWait(getDriver(), Duration.ofSeconds(10))
-                    .until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
-            js.executeScript("arguments[0].scrollIntoView(true);", element);
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Timeout waiting for element %s to be present before scrolling.", xpath);
-            throw e;
         }
+        WebElement element;
+        try {
+            element = getDriver().findElement(By.xpath(xpath));
+        } catch (WebDriverInitializationException e) {
+            throw new WebDriverRuntimeException(e);
+        }
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
     public static void waitUntilVisibilityOfElementLocated(By locator, int seconds) {
-        logger.info("****************** Wait until visibility of element located by %s, and seconds: %s", locator, seconds);
+        logger.info("****************** Wait until visibility of element located by %s, and seconds: %s",
+                locator, seconds);
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         } catch (WebDriverInitializationException e) {
-            logger.error("WebDriver not initialized while waiting for visibility of %s.", locator, e);
             throw new WebDriverRuntimeException(e);
+        }
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         } catch (TimeoutException e) {
             logger.error("Element was not visible after waiting for %s seconds. Locator: %s", seconds, locator);
-            throw e;
         }
     }
 
-    public static void waitUntilElementAttributeGetChanged(WebElement element, String attribute, String attributeUpdatedValue, int seconds) {
-        logger.info("****************** Wait until element attribute %s changes to %s", attribute, attributeUpdatedValue);
+    public static void waitUntilElementAttributeGetChanged(WebElement element, String attribute, String
+            attributeUpdatedValue, int seconds) {
+        logger.info("****************** Wait until element attribute get changed: %s, and seconds: %s",
+                element, seconds);
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
+        } catch (WebDriverInitializationException e) {
+            throw new WebDriverRuntimeException(e);
+        }
+        try {
             wait.until((ExpectedCondition<Boolean>) driver -> {
                 assert driver != null;
                 String attributeValue;
                 try {
-                    // Re-fetch element inside the condition to avoid staleness if possible, though element reference is passed.
-                    // For robustness, passing a By locator might be better for attribute checks over time.
-                    attributeValue = element.getAttribute(attribute);
-                } catch (StaleElementReferenceException e) {
-                    logger.warn("StaleElementReferenceException while checking attribute %s for element. Retrying might be needed or re-locate element.", attribute);
-                    return false; // Or re-locate and check
+                    attributeValue = Objects.requireNonNull(((JavascriptExecutor) getDriver()).executeScript
+                            ("return arguments[0].getAttribute(arguments[1]);", element, attribute)).toString();
+                } catch (WebDriverInitializationException e) {
+                    throw new WebDriverRuntimeException(e);
                 }
-                return attributeUpdatedValue.equals(attributeValue);
+                assert attributeValue != null;
+                return attributeValue.equals(attributeUpdatedValue);
             });
-        } catch (WebDriverInitializationException e) {
-            throw new WebDriverRuntimeException(e);
         } catch (TimeoutException e) {
-            logger.error("Element attribute '%s' did not change to '%s' after %s seconds. Element: %s", attribute, attributeUpdatedValue, seconds, element.toString());
-            throw e;
+            logger.error("Element attribute was not changed after waiting for %s seconds. Locator: %s",
+                    seconds, element);
         }
     }
 
@@ -962,46 +889,60 @@ public class BasePage {
      */
     public static void verifyElementIsPresentAfterWait(By locator, int timeOutSeconds) {
         logger.info("****************** Verify element present: %s, in seconds: %s", locator, timeOutSeconds);
+
+        // Create a WebDriverWait instance
         WebDriverWait wait;
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
-            wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator)); // presenceOfAllElementsLocatedBy or presenceOfElementLocated
-            // If the above doesn't throw TimeoutException, the element(s) is/are present.
-            // No explicit assertion needed here as wait.until itself will throw if condition not met.
-            logger.info("Element %s is present.", locator);
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Element %s was NOT present after %s seconds.", locator, timeOutSeconds);
-            throw e; // Re-throw for test framework to catch
+        }
+
+        // Wait until at least one element is present
+        wait.until((ExpectedCondition<Boolean>) driver -> {
+            assert driver != null;
+            List<WebElement> elements;
+            try {
+                elements = getDriver().findElements(locator);
+            } catch (WebDriverInitializationException e) {
+                throw new WebDriverRuntimeException(e);
+            }
+            return !elements.isEmpty(); // Return true if at least one element is found
+        });
+
+        // After waiting, assert that the element is present
+        List<WebElement> elements;
+        try {
+            elements = getDriver().findElements(locator);
+        } catch (WebDriverInitializationException e) {
+            throw new WebDriverRuntimeException(e);
         }
     }
 
     // mouse hover and release webelement
     public static void mouseHoverAndRelease(WebElement element, WebElement subElement) {
-        // Defaulting to a reasonable timeout.
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_CLICKABLE_TIMEOUT", "30"));
-        waitUntilElementClickable(element, defaultTimeout); // Ensure main element is interactable
+        waitUntilElementClickable(element, 30);
         Actions actions;
         try {
             actions = new Actions(getDriver());
-            actions.moveToElement(element).perform();
-            // Ensure sub-element is also interactable/visible before trying to move to it
-            waitUntilElementClickable(subElement, defaultTimeout);
-            actions.moveToElement(subElement).release().build().perform();
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
         }
+        actions.moveToElement(element);
+        actions.moveToElement(subElement);
+        actions.release().build().perform();
     }
 
     public static void waitUntilElementRefreshedAndClickable(WebElement element, int timeOutSeconds) {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
-            wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(element)));
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
+        }
+        try {
+            wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(element)));
         } catch (TimeoutException e) {
-            logger.error("Element not clickable even after refreshing: %s", element.toString());
+            logger.error("Element not clickable even after refreshing: %s", element);
             throw e;
         }
     }
@@ -1010,46 +951,28 @@ public class BasePage {
         WebDriverWait wait;
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
-            wait.until(ExpectedConditions.elementToBeClickable(locator));
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Element at locator %s was not clickable after %s seconds.", locator, timeoutInSeconds);
-            throw e;
         }
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
     public static void mouseHoverAndClick(By mainLocator, By subLocator) {
-        // Defaulting to a reasonable timeout.
-        int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_VISIBLE_TIMEOUT", "60"));
-        WebDriverWait localWait;
-        try {
-            localWait = new WebDriverWait(getDriver(), Duration.ofSeconds(defaultTimeout));
-        } catch (WebDriverInitializationException e) {
-            throw new WebDriverRuntimeException(e);
-        }
-
-        WebElement mainLink = localWait.until(ExpectedConditions.visibilityOfElementLocated(mainLocator));
-        // waitUntilElementPresent(mainLink, defaultTimeout); // Already covered by visibilityOfElementLocated
-
+        WebElement mainLink = wait.until(ExpectedConditions.visibilityOfElementLocated(mainLocator));
+        waitUntilElementPresent(mainLink, 60);
         Actions actions;
         try {
             actions = new Actions(getDriver());
-            actions.moveToElement(mainLink).perform();
-
-            WebElement subMenu = localWait.until(ExpectedConditions.elementToBeClickable(subLocator)); // Wait for sub-menu to be clickable
-            // genericWait(300); // Avoid fixed waits if possible; elementToBeClickable is better.
-
-            // No need to moveToElement again if elementToBeClickable passed for subMenu,
-            // as it implies it's visible and interactable.
-            actions.click(subMenu).build().perform();
-            BasePage.waitUntilPageCompletelyLoaded();
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Timeout during mouse hover and click. Main: %s, Sub: %s", mainLocator, subLocator);
-            throw e;
         }
+        actions.moveToElement(mainLink).perform();
+        WebElement subMenu = wait.until(ExpectedConditions.presenceOfElementLocated(subLocator));
+        genericWait(300);
+        actions.moveToElement(subMenu);
+        waitUntilElementClickable(subMenu, 60);
+        actions.click(subMenu).build().perform();
+        BasePage.waitUntilPageCompletelyLoaded();
     }
 
     public static void waitUntilPresenceOfElementLocated(By locator, int timeoutSeconds) {
@@ -1058,65 +981,50 @@ public class BasePage {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutSeconds));
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
         } catch (WebDriverInitializationException e) {
-            logger.error("WebDriver not initialized while waiting for presence of %s", locator, e);
-            throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
             logger.error("Element was not present after waiting for %s seconds. Locator: %s", timeoutSeconds, locator);
-            throw e;
         }
     }
 
 
     public static void waitUntilDisabledAttributeDisappears(WebElement element, int timeOutSeconds) {
-        logger.info("****************** Wait until 'disabled' attribute disappears from element: %s", element);
+        logger.info("****************** Wait until element attribute disappeared: %s", element);
 
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
-            wait.until(driver -> {
-                try {
-                    // Re-fetch the element's disabled attribute in each check to get the current state
-                    return element.getAttribute("disabled") == null;
-                } catch (StaleElementReferenceException e) {
-                    // If element is stale, it means the DOM changed, re-evaluation will happen.
-                    // Or, you might need to re-find the element if its locator is available.
-                    logger.warn("StaleElementReferenceException while checking 'disabled' attribute for %s. Condition will re-evaluate.", element);
-                    return false; // Let the wait continue and re-evaluate
-                }
-            });
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("'disabled' attribute did not disappear from element %s after %s seconds.", element.toString(), timeOutSeconds);
-            throw e;
         }
+        wait.until(driver -> {
+            try {
+                try {
+                    return Objects.requireNonNull(((JavascriptExecutor) getDriver()).executeScript(
+                            "return arguments[0].getAttribute('disabled') == null;", element));
+                } catch (WebDriverInitializationException e) {
+                    throw new WebDriverRuntimeException(e);
+                }
+            } catch (RuntimeException e) {
+                throw new WebDriverRuntimeException(e);
+            }
+        });
     }
 
     public static WebElement getElement(String xpath) {
         try {
-            // It's better to wait for presence before returning
-            int defaultTimeout = Integer.parseInt(getProperty("ELEMENT_PRESENT_TIMEOUT", "10"));
-            return new WebDriverWait(getDriver(), Duration.ofSeconds(defaultTimeout))
-                    .until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
+            return getDriver().findElement(By.xpath(xpath));
         } catch (WebDriverInitializationException e) {
-            // This custom exception might hide the actual Selenium exception (e.g. TimeoutException)
-            throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Element with xpath '%s' not found after timeout.", xpath);
-            throw new NoSuchElementException("Element not found with xpath: " + xpath, e);
+            throw new NoSuchElementException(e.getMessage());
         }
     }
 
     public static void waitUntilAttributeContains(WebElement element, String attributeName, String attributeValue, int timeoutSeconds) {
-        logger.info("****************** Wait until element attribute '%s' contains '%s'", attributeName, attributeValue);
+        logger.info("****************** Wait until element attribute contains: %s", attributeValue);
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutSeconds));
+
+            // Wait until the 'attributeName' attribute contains 'attributeValue'
             wait.until(ExpectedConditions.attributeContains(element, attributeName, attributeValue));
         } catch (WebDriverInitializationException e) {
-            logger.error("WebDriver not initialized while waiting for attribute '%s' to contain '%s' on element %s", attributeName, attributeValue, element, e);
-            throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Attribute '%s' did not contain '%s' for element %s after %s seconds.", attributeName, attributeValue, element.toString(), timeoutSeconds);
-            throw e;
+            logger.error("Element attribute not get updated %s", attributeValue);
         }
     }
 
@@ -1127,39 +1035,41 @@ public class BasePage {
      * @param timeoutInSeconds Maximum time to wait
      */
     public static void waitUntilValueLoadedInDropdown(WebElement dropdown, String expectedValue, int timeoutInSeconds) {
-        logger.info("Waiting for value '%s' to be loaded in dropdown: %s", expectedValue, dropdown);
+        logger.info("Waiting for value %s to be loaded in dropdown", expectedValue);
 
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
-            wait.until(new ExpectedCondition<Boolean>() {
-                @Override
-                public Boolean apply(WebDriver driver) {
-                    try {
-                        String currentValue = dropdown.getText().trim();
-                        logger.debug("Current dropdown value: %s", currentValue);
-                        return currentValue.equals(expectedValue);
-                    } catch (StaleElementReferenceException e) {
-                        logger.debug("Stale element exception while waiting for dropdown value, retrying...");
-                        return false;
-                    } catch (Exception e) {
-                        logger.debug("Exception while checking dropdown value: %s", e.getMessage());
-                        return false;
-                    }
-                }
-
-                @Override
-                public String toString() {
-                    return String.format("value to be '%s' in dropdown (%s)", expectedValue, dropdown);
-                }
-            });
-            logger.info("Dropdown now contains the expected value: %s", expectedValue);
         } catch (WebDriverInitializationException e) {
             logger.error("Error while waiting for dropdown value: %s", e.getMessage());
-            throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Timeout waiting for value '%s' in dropdown %s", expectedValue, dropdown.toString());
-            throw e;
         }
+
+        wait.until(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                try {
+                    // Get the current selected value without opening the dropdown
+                    String currentValue = dropdown.getText().trim();
+                    logger.debug("Current dropdown value: %s", currentValue);
+
+                    // Check if it matches the expected value
+                    return currentValue.equals(expectedValue);
+                } catch (StaleElementReferenceException e) {
+                    // Handle case where element is being updated in DOM
+                    logger.debug("Stale element exception while waiting for dropdown value, retrying...");
+                    return false;
+                } catch (Exception e) {
+                    logger.debug("Exception while checking dropdown value: %s", e.getMessage());
+                    return false;
+                }
+            }
+
+            @Override
+            public String toString() {
+                return "value to be '" + expectedValue + "' in dropdown";
+            }
+        });
+
+        logger.info("Dropdown now contains the expected value: %s", expectedValue);
     }
 
     // navigate to method
@@ -1169,23 +1079,17 @@ public class BasePage {
             getDriver().navigate().to(url);
         } catch (WebDriverInitializationException e) {
             logger.error("Error while navigating to %s: %s", url, e.getMessage());
-            throw new WebDriverRuntimeException(e);
         }
     }
 
-    public static void waitForDropdownTextChange(By dropdownLocator, String initialText, int timeoutInSeconds){
-        logger.info("Waiting for dropdown text at %s to change from '%s'", dropdownLocator, initialText);
+    public static void waitForDropdownTextChange(By dropdownLocator, int timeoutInSeconds){
         WebDriverWait wait;
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
-            wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementLocated(dropdownLocator, initialText)));
-            logger.info("Dropdown text at %s has changed from '%s'.", dropdownLocator, initialText);
+            wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementLocated(dropdownLocator,
+                    "Select Site")));
         } catch (WebDriverInitializationException e) {
             logger.error("** Error while waiting for dropdown value: %s", e.getMessage());
-            throw new WebDriverRuntimeException(e);
-        } catch (TimeoutException e) {
-            logger.error("Timeout: Dropdown text at %s did not change from '%s' within %s seconds.", dropdownLocator, initialText, timeoutInSeconds);
-            throw e;
         }
     }
 
@@ -1193,8 +1097,52 @@ public class BasePage {
         public WebDriverRuntimeException(Throwable cause) {
             super(cause);
         }
-        public WebDriverRuntimeException(String message, Throwable cause) {
-            super(message, cause);
+    }
+
+    /**
+     * Waits until an element is visible on the page.
+     * @param locator The By locator of the element.
+     * @return The WebElement once it's visible.
+     */
+    public static WebElement waitUntilElementVisible(By locator) {
+        logger.info("Waiting for %s to be visible: ", locator);
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    /**
+     * Waits until an already located element is visible on the page.
+     * @param element The WebElement.
+     * @return The WebElement once it's visible.
+     */
+    public static WebElement waitUntilElementVisible(WebElement element) {
+        // First, ensure the element reference itself isn't null before trying to use it
+        if (element == null) {
+            throw new IllegalArgumentException("WebElement to wait for cannot be null");
+        }
+        // It's good practice to log which element you're waiting for.
+        // Getting a good string representation of a WebElement can be tricky if it becomes stale.
+        logger.info("Waiting for pre-located element to be visible: %s", element);
+        return wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public static String getValueFromDisabledInputViaJS(WebElement element) {
+        if (element == null) {
+            logger.error("Element is null, cannot get value via JS.");
+            return null;
+        }
+        JavascriptExecutor js;
+        try {
+            js = (JavascriptExecutor) getDriver();
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            // Try to get the 'value' property directly using JavaScript
+            Object result = js.executeScript("return arguments[0].value;", element);
+            return result != null ? result.toString() : null;
+        } catch (Exception e) {
+            logger.error("Error getting value via JS from element: %s", elementToString(element), e);
+            return null;
         }
     }
 }

@@ -66,4 +66,9 @@ public class LeftSideMenuSteps {
     public void moveToOrganisationPage() {
         leftSideMenuActions.gotoOrganisationPage();
     }
+
+    @And("Provider User navigates to Agreement View page")
+    public void providerNavigatesToAgreementViewPage() {
+        leftSideMenuActions.gotoProviderAgreementViewPage();
+    }
 }

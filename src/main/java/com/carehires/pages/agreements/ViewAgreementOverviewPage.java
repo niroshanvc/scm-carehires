@@ -62,19 +62,23 @@ public class ViewAgreementOverviewPage {
     @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[4]")
     public WebElement workerRatesTableWorkerHourlyRate;
 
-    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[5]/div[1]/div[2]")
+    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[5]/div[1]/" +
+            "div[2]")
     public WebElement workerRatesTableAgencyHourlyCostWithVat;
 
-    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[5]/div[2]/div[2]")
+    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[5]/div[2]/" +
+            "div[2]")
     public WebElement workerRatesTableAgencyHourlyCostWithNoVat;
 
     @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[6]")
     public WebElement workerRatesTableCareHiresHourlyCost;
 
-    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[7]/div[1]/div[2]/b")
+    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[7]/div[1]/" +
+            "div[2]/b")
     public WebElement workerRatesTableFinalHourlyRateWithVat;
 
-    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[7]/div[2]/div[2]/b")
+    @FindBy(xpath = "//h5[text()='Worker Rates']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[7]/div[2]/" +
+            "div[2]/b")
     public WebElement workerRatesTableFinalHourlyRateWithNoVat;
 
     @FindBy(xpath = "//label[text()='Worker Type']/..//button")
@@ -119,19 +123,20 @@ public class ViewAgreementOverviewPage {
     @FindBy(xpath = "//h5[text()='Sleep In Request']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[3]")
     public WebElement sleepInRatesTableHourlyChargeRate;
 
-    @FindBy(xpath = "//h5[text()='Sleep In Request']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[4]/div[1]/div[2]")
+    @FindBy(xpath = "//h5[text()='Sleep In Request']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[4]/div[1]/" +
+            "div[2]")
     public WebElement sleepInRatesTableAgencyHourlyCostWithVat;
 
-    @FindBy(xpath = "//h5[text()='Sleep In Request']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[4]/div[2]/div[2]")
+    @FindBy(xpath = "//h5[text()='Sleep In Request']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[4]/div[2]/" +
+            "div[2]")
     public WebElement sleepInRatesTableAgencyHourlyCostWithNoVat;
 
-    @FindBy(xpath = "//h5[text()='Sleep In Request']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[5]")
-    public WebElement sleepInRatesTableCareHiresHourlyCost;
-
-    @FindBy(xpath = "//h5[text()='Sleep In Request']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[6]/div[1]/div[2]/b")
+    @FindBy(xpath = "//h5[text()='Sleep In Request']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[6]/div[1]/" +
+            "div[2]/b")
     public WebElement sleepInRatesTableFinalHourlyRateWithVat;
 
-    @FindBy(xpath = "//h5[text()='Sleep In Request']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[6]/div[2]/div[2]/b")
+    @FindBy(xpath = "//h5[text()='Sleep In Request']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[6]/div[2]/" +
+            "div[2]/b")
     public WebElement sleepInRatesTableFinalHourlyRateWithNoVat;
 
     @FindBy(xpath = "//label[text()='Worker Type']/..//button")
@@ -170,9 +175,6 @@ public class ViewAgreementOverviewPage {
         @FindBy(xpath = "//ch-agreement-deactivate-modal//button")
     public WebElement deactivateButtonInDeactivateConfirmPopup;
 
-    @FindBy(xpath = "//button[contains(text(), 'Activate Agreement')]")
-    public WebElement activeAgreementButton;
-
     @FindBy(xpath = "//button[contains(text(), 'Edit Agreement')]")
     public WebElement editAgreementButton;
 
@@ -196,9 +198,6 @@ public class ViewAgreementOverviewPage {
 
     @FindBy(xpath = "(//p[@class='text-icon'])[1]")
     public WebElement workerRatesThreeDots;
-
-    @FindBy(xpath = "//div[@class='side-menu-action-container']//nb-icon[@icon='edit']")
-    public WebElement editIcon;
 
     @FindBy(xpath = "//div[@class='side-menu-action-container']//nb-icon[contains(@icon,'trash')]")
     public WebElement deleteIcon;
@@ -236,7 +235,8 @@ public class ViewAgreementOverviewPage {
     }
 
     public WebElement enableRateCheckboxSpan(String rateType) {
-        String xpath = String.format("//div[text()='%s']/ancestor::tr/td[1]//span[contains(@class, 'checkbox')]", rateType);
+        String xpath = String.format("//div[text()='%s']/ancestor::tr/td[1]//span[contains(@class, 'checkbox')]",
+                rateType);
         return BasePage.getElement(xpath);
     }
 
@@ -244,7 +244,8 @@ public class ViewAgreementOverviewPage {
     public WebElement workerRatesPopupAddButton;
 
     public WebElement finalRateVat(String rateType) {
-        String xpath = String.format("//div[text()='%s']/ancestor::tr//input[@formcontrolname='finalChargeRateVat']", rateType);
+        String xpath = String.format("//div[text()='%s']/ancestor::tr//input[@formcontrolname='finalChargeRateVat']",
+                rateType);
         return BasePage.getElement(xpath);
     }
 
@@ -325,7 +326,7 @@ public class ViewAgreementOverviewPage {
         return String.format("//div[contains(text(), '%s')]/ancestor::tr/td[7]/p", rateType);
     }
 
-    @FindBy(xpath = "//tr/td[10]//nb-icon[contains(@nbtooltip, 'Special')]")
+    @FindBy(xpath = "//th[contains(text(), 'Resource ID')]/ancestor::table//td/nb-icon")
     public WebElement workerRatesViewIcon;
 
     @FindBy(xpath = "//nb-card//div[@class='close']/img")
@@ -334,4 +335,16 @@ public class ViewAgreementOverviewPage {
     public String getFinalRateNoVat(String rateType) {
         return String.format("//div[contains(text(), '%s')]/ancestor::tr/td[8]/span/div[2]/div[2]", rateType);
     }
+
+    @FindBy(xpath = "//h3/..//strong")
+    public WebElement headerAgreementId;
+
+    @FindBy(xpath = "//div[contains(@class, 'agreement-view')]/h3")
+    public WebElement headerAgreementName;
+
+    @FindBy(xpath = "//table//b[contains(text(), 'Between')]")
+    public WebElement tableAgreementName;
+
+    @FindBy(xpath = "//table//div[contains(text(), 'AGR')]")
+    public WebElement tableAgreementId;
 }

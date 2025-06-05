@@ -56,7 +56,9 @@ public class SearchAgreementsActions {
 
         String agency = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_EDIT,
                 YML_HEADER_WITH_SKILLS, YML_HEADER_EDIT, "Agency");
-        BasePage.genericWait(2000);
+        BasePage.genericWait(500);
+        BasePage.clickTabKey(searchAgreementsPage.filterByCarehomeDropdown);
+        BasePage.genericWait(500);
         BasePage.clickWithJavaScript(searchAgreementsPage.filterByAgencyDropdown);
         by = By.xpath(searchAgreementsPage.getDropdownOptionXpath(agency));
         BasePage.waitUntilVisibilityOfElementLocated(by, 20);

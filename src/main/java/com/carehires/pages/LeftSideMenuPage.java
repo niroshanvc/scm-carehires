@@ -36,11 +36,14 @@ public class LeftSideMenuPage {
     @FindBy(xpath = "//img[@title='Organisation']/..")
     public WebElement organisationMainLink;
 
-    public static final By paymentAuthorisationsSubLink = By.xpath("//div[text()='Payment Authorisations']");
+    public static final By paymentAuthorisationsSubLink = By.xpath("//div[text()='Payment " +
+            "Authorisations']");
 
     @FindBy(xpath = "//img[@alt='Jobs']")
     public WebElement jobsIcon;
 
     @FindBy(xpath = "//img[@alt='Settings']/..")
     public String settingsIcon;
+
+    public static final By agreementsViewOnlySubLink = By.xpath("//div[text()='View']");
 }
