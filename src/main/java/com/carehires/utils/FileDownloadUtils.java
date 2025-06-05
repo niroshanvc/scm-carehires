@@ -3,12 +3,18 @@ package com.carehires.utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.NoSuchWindowException;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.Set;
 
 public class FileDownloadUtils {
 
@@ -65,63 +71,131 @@ public class FileDownloadUtils {
     }
 
     public static void triggerDownloadAndCloseTab(WebElement element) {
-        // Store the current window handle
-        BasePage.genericWait(2000);
-        String originalWindow = null;
+        WebDriver driver;
+        String originalWindow;
+        // Initialize logger, assuming you have one (e.g., SLF4J)
+        // private static final Logger logger = LoggerFactory.getLogger(YourClassName.class);
+
+
         try {
-            originalWindow = BasePage.getDriver().getWindowHandle();
+            driver = BasePage.getDriver(); // Get your WebDriver instance
+            originalWindow = driver.getWindowHandle();
         } catch (BasePage.WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            // logger.error("Failed to get WebDriver instance or original window handle.", e);
+            throw new RuntimeException("Failed to get WebDriver instance or original window handle.", e);
         }
 
-        // Trigger the download that opens a new tab
-        BasePage.clickWithJavaScript(element);
+        Set<String> handlesBeforeClick = driver.getWindowHandles();
+        BasePage.clickWithJavaScript(element); // Trigger the download that might open a new tab
 
-        // Wait for the new tab to open and switch to it
         String newTabHandle = null;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Adjust timeout as necessary
+
         try {
-            for (String windowHandle : BasePage.getDriver().getWindowHandles()) {
-                if (!windowHandle.equals(originalWindow)) {
-                    BasePage.genericWait(2000);
-                    BasePage.getDriver().switchTo().window(windowHandle);
-                    newTabHandle = windowHandle;
+            final int currentWindowCount = handlesBeforeClick.size();
+            wait.until(new ExpectedCondition<Boolean>() {
+                @Override
+                public Boolean apply(WebDriver d) {
+                    return d.getWindowHandles().size() > currentWindowCount;
+                }
+                @Override
+                public String toString() {
+                    return String.format("number of windows to be greater than %d", currentWindowCount);
+                }
+            });
+
+            Set<String> handlesAfterClick = driver.getWindowHandles();
+            for (String handle : handlesAfterClick) {
+                if (!handlesBeforeClick.contains(handle)) {
+                    newTabHandle = handle;
                     break;
                 }
             }
-        } catch (BasePage.WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+
+            if (newTabHandle != null) {
+                // The error was occurring here. The explicit wait above should make this more reliable.
+                driver.switchTo().window(newTabHandle);
+                logger.info("Successfully switched to new tab: %s", newTabHandle);
+                // Optional: Short wait if the new tab needs a moment to initiate the download fully.
+                BasePage.genericWait(500); // Reduced wait, or make it conditional
+            } else {
+                logger.warn("No new tab was identified after click. Download might be happening in the original " +
+                        "tab or a quickly closed tab.");
+            }
+
+        } catch (TimeoutException e) {
+            logger.warn("Timed out waiting for a new window/tab to open. Proceeding with download check " +
+                    "in original tab.", e);
+            // newTabHandle will remain null, indicating no new tab to close.
+        } catch (NoSuchWindowException e) {
+            // This can happen if, despite the wait, the window closes just as we try to switch.
+            logger.warn("NoSuchWindowException while trying to switch to the new tab. It might have " +
+                    "closed prematurely. Handle: %s", newTabHandle, e);
+            newTabHandle = null; // Mark as null so we don't try to close it.
         }
 
-        // Small wait to ensure the download process begins
+        // Small wait to ensure the download process begins (copied from your original logic)
+        // This might need to be adjusted or made more robust (e.g., waiting for file to exist)
         BasePage.genericWait(2000);
 
-        // Check if download started by verifying files in the download directory
+        // Check if download started (copied from your original logic)
         File downloadDir = new File(FileDownloadUtils.DOWNLOAD_DIR);
         boolean downloadStarted = false;
-        for (int i = 0; i < 5; i++) {  // Retry check
-            if (Objects.requireNonNull(downloadDir.listFiles((dir, name) -> name.endsWith(".pdf"))).length > 0) {
+        for (int i = 0; i < 5; i++) { // Retry check
+            if (Objects.requireNonNull(downloadDir.listFiles((dir, name) -> name.endsWith(".pdf")))
+                    .length > 0) {
                 downloadStarted = true;
                 break;
             }
             BasePage.genericWait(1000);
         }
 
-        // Close the new tab if download started and avoid exceptions if already closed
-        if (downloadStarted && newTabHandle != null) {
+        // Close the new tab if it was identified and we successfully switched to it
+        if (newTabHandle != null) {
             try {
-                BasePage.getDriver().switchTo().window(newTabHandle).close();
-            } catch (NoSuchWindowException | BasePage.WebDriverInitializationException e) {
-                logger.warn("New tab already closed.");
+                // Ensure we are on the new tab (or switch back if focus somehow shifted)
+                // before attempting to close. driver.close() closes the current focused window.
+                if (!driver.getWindowHandle().equals(newTabHandle) && driver.getWindowHandles().contains(newTabHandle)) {
+                    driver.switchTo().window(newTabHandle);
+                }
+                // Only close if the current window is the new tab
+                if (driver.getWindowHandle().equals(newTabHandle)) {
+                    driver.close();
+                    logger.info("Closed new tab: %s", newTabHandle);
+                }
+            } catch (NoSuchWindowException e) {
+                logger.warn("New tab %s already closed before explicit close operation.", newTabHandle, e);
+            } catch (Exception e) { // Catch broader exceptions during close
+                 logger.error("Error closing new tab %s: ", newTabHandle, e);
             }
-        } else {
-            logger.warn("Download may not have started as expected.");
+        } else if (!downloadStarted) {
+             logger.warn("Download may not have started as expected, and no new tab was handled.");
         }
+
 
         // Switch back to the original tab
         try {
-            BasePage.getDriver().switchTo().window(originalWindow);
-        } catch (BasePage.WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            // Ensure the original window still exists before trying to switch.
+            if (driver.getWindowHandles().contains(originalWindow)) {
+                driver.switchTo().window(originalWindow);
+                 logger.info("Successfully switched back to original window: %s", originalWindow);
+            } else {
+                 logger.warn("Original window %s no longer exists. Attempting to switch to any available " +
+                         "window.", originalWindow);
+                // Fallback: if original window is gone, try to switch to any other available window.
+                Set<String> remainingHandles = driver.getWindowHandles();
+                if (!remainingHandles.isEmpty()) {
+                    driver.switchTo().window(remainingHandles.iterator().next());
+                     logger.info("Switched to a remaining window: %s", driver.getWindowHandle());
+                } else {
+                     logger.error("No windows available to switch back to. Test state might be compromised.");
+                    // This could be an issue if the main application window also closed.
+                }
+            }
+        } catch (NoSuchWindowException e) {
+             logger.error("Failed to switch back to original window %s as it no longer exists.",
+                     originalWindow, e);
+            // This is a critical state, the test might not be able to continue as expected.
         }
     }
 }

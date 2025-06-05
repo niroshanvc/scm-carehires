@@ -20,6 +20,7 @@ public class Hooks {
     @Before
     public void setup(Scenario scenario) throws BasePage.WebDriverInitializationException {
         BasePage.setUpDriver();
+        BasePage.getDriver().manage().window().setSize(new org.openqa.selenium.Dimension(1920, 1080));
 
         // Determine the entity type (agency, provider, etc.) based on scenario tags
         String entityType = determineEntityTypeFromScenario(scenario);

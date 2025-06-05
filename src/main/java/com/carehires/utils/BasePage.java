@@ -116,11 +116,6 @@ public class BasePage {
 
         if (isCIRunning) {
             configureCIOptions(options);
-            try {
-                getDriver().manage().window().setSize(new org.openqa.selenium.Dimension(1920, 1080));
-            } catch (WebDriverInitializationException e) {
-                throw new RuntimeException(e);
-            }
         }
 
         WebDriverManager.chromedriver().setup();
