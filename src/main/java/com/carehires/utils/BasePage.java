@@ -296,7 +296,7 @@ public class BasePage {
 
     public static void sendKeys(By by, String data) {
         logger.info("****************** Type using by locator in %s", by);
-        WebElement element = null;
+        WebElement element;
         try {
             element = getDriver().findElement(by);
         } catch (WebDriverInitializationException e) {
@@ -353,7 +353,7 @@ public class BasePage {
 
     public static void waitUntilElementClickableMethod(WebElement element, int timeOutSeconds) {
         logger.info("****************** Waiting until element is clickable: %s", element);
-        WebDriverWait wait = null;
+        WebDriverWait wait;
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
         } catch (WebDriverInitializationException e) {
