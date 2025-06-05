@@ -318,13 +318,13 @@ public class BasePage {
     }
 
     public static String getAttributeValue(WebElement element, String attribute) {
-        logger.info("******************  attribute value from element %s and %s", element, attribute);
+        logger.info("****************** attribute value from element %s and %s", element, attribute);
         waitUntilElementPresent(element, 30);
         return element.getAttribute(attribute);
     }
 
     public static String getAttributeValue(String xpath, String attribute) {
-        logger.info("******************  attribute value from xpath %s and attribute %s", xpath, attribute);
+        logger.info("****************** attribute value from xpath %s and attribute %s", xpath, attribute);
         By by = By.xpath(xpath);
         WebElement ele;
         try {
@@ -524,18 +524,21 @@ public class BasePage {
             typeWithStringBuilder(element, texts); // Assuming this method also needs the element to be interactable
 
         } catch (TimeoutException e) {
-            logger.error("TimeoutException: Element was not ready for clear/sendkeys after waiting for {} seconds. Element: {}",
+            logger.error("TimeoutException: Element was not ready for clear/sendkeys after waiting for %s " +
+                            "seconds. Element: %s",
                     timeOutSeconds, elementToString(element), e);
             // Log current state if possible, even if it's about to throw
             try {
-                logger.error("Current state before throw - IsDisplayed: {}, IsEnabled: {}, TagName: {}, ReadOnly: {}",
-                        element.isDisplayed(), element.isEnabled(), element.getTagName(), element.getAttribute("readonly"));
+                logger.error("Current state before throw - IsDisplayed: %s, IsEnabled: %s, TagName: %s, ReadOnly: %s",
+                        element.isDisplayed(), element.isEnabled(), element.getTagName(), element.
+                                getAttribute("readonly"));
             } catch (Exception ex) {
                 logger.error("Could not get element state during TimeoutException logging", ex);
             }
             throw e;
         } catch (InvalidElementStateException ies) {
-            logger.error("InvalidElementStateException during clear or type. Element: {}. IsDisplayed: {}, IsEnabled: {}, TagName: {}, ReadOnly: {}",
+            logger.error("InvalidElementStateException during clear or type. Element: %s. IsDisplayed: %s, " +
+                            "IsEnabled: %s, TagName: %s, ReadOnly: %s",
                     elementToString(element),
                     element.isDisplayed(), // This might fail if element is truly weird
                     element.isEnabled(),   // This might fail too
@@ -544,7 +547,8 @@ public class BasePage {
                     ies);
             throw ies;
         } catch (Exception exc) {
-            logger.error("An unexpected error occurred in clearFirstAndEnterTexts for element: {}", elementToString(element), exc);
+            logger.error("An unexpected error occurred in clearFirstAndEnterTexts for element: %s",
+                    elementToString(element), exc);
         }
     }
 
@@ -568,7 +572,8 @@ public class BasePage {
             ExpectedCondition<Boolean> pageLoadCondition = driver -> {
                 assert driver != null;
                 try {
-                    return Objects.equals(((JavascriptExecutor) getDriver()).executeScript("return document.readyState"), "complete");
+                    return Objects.equals(((JavascriptExecutor) getDriver()).executeScript("return document." +
+                            "readyState"), "complete");
                 } catch (WebDriverInitializationException e) {
                     throw new WebDriverRuntimeException(e);
                 }
@@ -596,7 +601,8 @@ public class BasePage {
                 js.executeScript(JAVASCRIPT_CLICK, subElement);
             }
         } catch (Exception e) {
-            logger.error("Failed to perform mouse hover and click: message: %s and error: %s", e.getMessage(), e);
+            logger.error("Failed to perform mouse hover and click: message: %s and error: %s",
+                    e.getMessage(), e);
         }
     }
 
@@ -724,7 +730,8 @@ public class BasePage {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
             wait.until(ExpectedConditions.visibilityOf(element));
         } catch (WebDriverInitializationException e) {
-            logger.error("Element was not displayed after waiting for %s seconds. Locator: %s", seconds, element);
+            logger.error("Element was not displayed after waiting for %s seconds. Locator: %s",
+                    seconds, element);
         }
     }
 
@@ -760,7 +767,8 @@ public class BasePage {
     }
 
     public static void waitUntilElementDisappeared(WebElement element, int seconds) {
-        logger.info("****************** Wait until element disappeared: %s, and seconds: %s", element, seconds);
+        logger.info("****************** Wait until element disappeared: %s, and seconds: %s", element,
+                seconds);
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
         } catch (WebDriverInitializationException e) {
@@ -770,8 +778,8 @@ public class BasePage {
     }
 
     public static void waitAndIgnoreStaleException(WebElement element, int seconds) {
-        logger.info("****************** Wait until element displayed by ignoring stale element exception: %s, " +
-                "and seconds: %s", element, seconds);
+        logger.info("****************** Wait until element displayed by ignoring stale element " +
+                "exception: %s, " + "and seconds: %s", element, seconds);
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
         } catch (WebDriverInitializationException e) {
@@ -800,7 +808,8 @@ public class BasePage {
     }
 
     public static void waitUntilElementPresent(String xpath, int timeOutSeconds) {
-        logger.info("****************** Wait until element present at xpath: %s, in seconds: %s", xpath, timeOutSeconds);
+        logger.info("****************** Wait until element present at xpath: %s, in seconds: %s",
+                xpath, timeOutSeconds);
         WebElement element;
         try {
             element = getDriver().findElement(By.xpath(xpath));
@@ -829,7 +838,8 @@ public class BasePage {
     }
 
     public static void waitUntilVisibilityOfElementLocated(By locator, int seconds) {
-        logger.info("****************** Wait until visibility of element located by %s, and seconds: %s", locator, seconds);
+        logger.info("****************** Wait until visibility of element located by %s, and seconds: %s",
+                locator, seconds);
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
         } catch (WebDriverInitializationException e) {
@@ -842,8 +852,10 @@ public class BasePage {
         }
     }
 
-    public static void waitUntilElementAttributeGetChanged(WebElement element, String attribute, String attributeUpdatedValue, int seconds) {
-        logger.info("****************** Wait until element attribute get changed: %s, and seconds: %s", element, seconds);
+    public static void waitUntilElementAttributeGetChanged(WebElement element, String attribute, String
+            attributeUpdatedValue, int seconds) {
+        logger.info("****************** Wait until element attribute get changed: %s, and seconds: %s",
+                element, seconds);
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
         } catch (WebDriverInitializationException e) {
@@ -863,7 +875,8 @@ public class BasePage {
                 return attributeValue.equals(attributeUpdatedValue);
             });
         } catch (TimeoutException e) {
-            logger.error("Element attribute was not changed after waiting for %s seconds. Locator: %s", seconds, element);
+            logger.error("Element attribute was not changed after waiting for %s seconds. Locator: %s",
+                    seconds, element);
         }
     }
 
@@ -1082,6 +1095,53 @@ public class BasePage {
     public static class WebDriverRuntimeException extends RuntimeException {
         public WebDriverRuntimeException(Throwable cause) {
             super(cause);
+        }
+    }
+
+    /**
+     * Waits until an element is visible on the page.
+     * @param locator The By locator of the element.
+     * @return The WebElement once it's visible.
+     */
+    public static WebElement waitUntilElementVisible(By locator) {
+        logger.info("Waiting for %s to be visible: ", locator);
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    /**
+     * Waits until an already located element is visible on the page.
+     * @param element The WebElement.
+     * @return The WebElement once it's visible.
+     */
+    public static WebElement waitUntilElementVisible(WebElement element) {
+        // First, ensure the element reference itself isn't null before trying to use it
+        if (element == null) {
+            throw new IllegalArgumentException("WebElement to wait for cannot be null");
+        }
+        // It's good practice to log which element you're waiting for.
+        // Getting a good string representation of a WebElement can be tricky if it becomes stale.
+        logger.info("Waiting for pre-located element to be visible: %s", element);
+        return wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public static String getValueFromDisabledInputViaJS(WebElement element) {
+        if (element == null) {
+            logger.error("Element is null, cannot get value via JS.");
+            return null;
+        }
+        JavascriptExecutor js = null;
+        try {
+            js = (JavascriptExecutor) getDriver();
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            // Try to get the 'value' property directly using JavaScript
+            Object result = js.executeScript("return arguments[0].value;", element);
+            return result != null ? result.toString() : null;
+        } catch (Exception e) {
+            logger.error("Error getting value via JS from element: %s", elementToString(element), e);
+            return null;
         }
     }
 }

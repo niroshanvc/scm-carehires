@@ -107,4 +107,24 @@ public class ViewAgreementOverviewSteps {
     public void closeWorkerRatesPopup() {
         viewAgreementOverviewActions.closeWorkerRatesPopup();
     }
+
+    @Then("User verifies name of the agreement")
+    public void verifyNameOfTheAgreement() {
+        viewAgreementOverviewActions.verifyNameOfTheAgreement();
+    }
+
+    @And("User verifies agreement ids")
+    public void verifyAgreementIds() {
+        viewAgreementOverviewActions.verifyAgreementIds();
+    }
+
+    @And("User verifies saved worker rates can be viewed")
+    public void verifyWorkerRatesCanBeViewed() {
+        viewAgreementOverviewActions.verifySavedWorkerRatesCanBeViewed();
+    }
+
+    @And("User verifies saved sleep in rates can be viewed")
+    public void verifySleepInRatesCanBeViewed() {
+        viewAgreementOverviewActions.verifySavedSleepInRatesCanBeViewed();
+    }
 }
