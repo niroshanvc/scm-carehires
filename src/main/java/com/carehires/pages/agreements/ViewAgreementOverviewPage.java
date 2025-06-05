@@ -131,9 +131,6 @@ public class ViewAgreementOverviewPage {
             "div[2]")
     public WebElement sleepInRatesTableAgencyHourlyCostWithNoVat;
 
-    @FindBy(xpath = "//h5[text()='Sleep In Request']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[5]")
-    public WebElement sleepInRatesTableCareHiresHourlyCost;
-
     @FindBy(xpath = "//h5[text()='Sleep In Request']/ancestor::div[contains(@class, 'row mt')]//table//tr/td[6]/div[1]/" +
             "div[2]/b")
     public WebElement sleepInRatesTableFinalHourlyRateWithVat;
@@ -178,9 +175,6 @@ public class ViewAgreementOverviewPage {
         @FindBy(xpath = "//ch-agreement-deactivate-modal//button")
     public WebElement deactivateButtonInDeactivateConfirmPopup;
 
-    @FindBy(xpath = "//button[contains(text(), 'Activate Agreement')]")
-    public WebElement activeAgreementButton;
-
     @FindBy(xpath = "//button[contains(text(), 'Edit Agreement')]")
     public WebElement editAgreementButton;
 
@@ -204,9 +198,6 @@ public class ViewAgreementOverviewPage {
 
     @FindBy(xpath = "(//p[@class='text-icon'])[1]")
     public WebElement workerRatesThreeDots;
-
-    @FindBy(xpath = "//div[@class='side-menu-action-container']//nb-icon[@icon='edit']")
-    public WebElement editIcon;
 
     @FindBy(xpath = "//div[@class='side-menu-action-container']//nb-icon[contains(@icon,'trash')]")
     public WebElement deleteIcon;

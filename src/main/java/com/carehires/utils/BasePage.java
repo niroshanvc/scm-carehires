@@ -392,7 +392,7 @@ public class BasePage {
             if (id != null && !id.isEmpty()) sb.append(", Id: '").append(id).append("'");
             if (name != null && !name.isEmpty()) sb.append(", Name: '").append(name).append("'");
             if (classAttr != null && !classAttr.isEmpty()) sb.append(", Class: '").append(classAttr).append("'");
-            if (text != null && !text.isEmpty() && text.length() < 50) sb.append(", Text: '").append(text.trim()).append("'");
+            if (!text.isEmpty() && text.length() < 50) sb.append(", Text: '").append(text.trim()).append("'");
             // Add other attributes if they are commonly used in your application for identification
             return sb.toString();
         } catch (Exception e) {
@@ -504,7 +504,8 @@ public class BasePage {
     }
 
     public static void clearFirstAndEnterTexts(WebElement element, String texts, int timeOutSeconds) { // Added timeout
-        logger.info("******************** Attempting to clear and enter texts in: {}", elementToString(element));
+        logger.info("******************** Attempting to clear and enter texts in: %s",
+                elementToString(element));
 
         try {
             // Wait for the element to be visible and enabled before trying to clear
@@ -515,11 +516,11 @@ public class BasePage {
                     ExpectedConditions.elementToBeClickable(element) // Ensures it's visible and enabled
             ));
 
-            logger.info("Element {} is visible and enabled. IsDisplayed: {}, IsEnabled: {}. Attempting to clear...",
-                    elementToString(element), element.isDisplayed(), element.isEnabled());
+            logger.info("Element %s is visible and enabled. IsDisplayed: %s, IsEnabled: %s. Attempting " +
+                            "to clear...", elementToString(element), element.isDisplayed(), element.isEnabled());
 
             element.clear(); // The problematic line
-            logger.info("Successfully cleared element: {}", elementToString(element));
+            logger.info("Successfully cleared element: %s", elementToString(element));
 
             typeWithStringBuilder(element, texts); // Assuming this method also needs the element to be interactable
 
@@ -529,9 +530,9 @@ public class BasePage {
                     timeOutSeconds, elementToString(element), e);
             // Log current state if possible, even if it's about to throw
             try {
-                logger.error("Current state before throw - IsDisplayed: %s, IsEnabled: %s, TagName: %s, ReadOnly: %s",
-                        element.isDisplayed(), element.isEnabled(), element.getTagName(), element.
-                                getAttribute("readonly"));
+                logger.error("Current state before throw - IsDisplayed: %s, IsEnabled: %s, TagName: %s, " +
+                                "ReadOnly: %s", element.isDisplayed(), element.isEnabled(), element.getTagName(),
+                        element.getAttribute("readonly"));
             } catch (Exception ex) {
                 logger.error("Could not get element state during TimeoutException logging", ex);
             }
@@ -1082,7 +1083,7 @@ public class BasePage {
     }
 
     public static void waitForDropdownTextChange(By dropdownLocator, int timeoutInSeconds){
-        WebDriverWait wait = null;
+        WebDriverWait wait;
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
             wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementLocated(dropdownLocator,
@@ -1129,7 +1130,7 @@ public class BasePage {
             logger.error("Element is null, cannot get value via JS.");
             return null;
         }
-        JavascriptExecutor js = null;
+        JavascriptExecutor js;
         try {
             js = (JavascriptExecutor) getDriver();
         } catch (WebDriverInitializationException e) {
