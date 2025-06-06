@@ -236,19 +236,25 @@ jobs:
       - run:
           name: Send Report Link via Email
           command: |
-            # Install swaks
+            # 1. Install swaks
             sudo apt-get update && sudo apt-get install -y swaks
             
-            # CHANGE 2: The body of the email now contains a link to the build's artifacts.
-            # The $CIRCLE_BUILD_URL variable is automatically provided by CircleCI.
-            echo "The Cucumber test execution has completed. View the detailed HTML report in the 'Artifacts' tab of the CircleCI build: $CIRCLE_BUILD_URL/artifacts" | swaks \
+            # 2. Define the email body in a variable.
+            # The double quotes are essential for the $CIRCLE_BUILD_URL variable to be inserted correctly.
+            EMAIL_BODY="The Cucumber test execution has completed. View the detailed HTML report by clicking the link below and navigating to the 'Artifacts' tab of the build:
+            $CIRCLE_BUILD_URL/artifacts"
+            
+            # 3. Call swaks using the --body flag and passing the variable.
+            # Note there is no attachment, as we are sending a link.
+            swaks \
               --to "<< parameters.email_recipient >>" \
               --from "$SMTP_USER" \
               --server "$SMTP_HOST:$SMTP_PORT" \
               --auth-user "$SMTP_USER" \
               --auth-password "$SMTP_PASSWORD" \
               --tls \
-              --header "Subject: Cucumber Test Automation Report is Ready"
+              --header "Subject: Cucumber Test Automation Report is Ready" \
+              --body "$EMAIL_BODY"
 
 workflows:
   version: 2
