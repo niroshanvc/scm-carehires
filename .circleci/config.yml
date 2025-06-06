@@ -226,20 +226,6 @@ jobs:
           path: target/cucumber-reports  # Path to cucumber reports
           destination: cucumber-reports
 
-      - run:
-          name: Archive Cucumber Report
-          when: always
-          command: |
-            if [ -d "target/cucumber-reports" ]; then
-            zip -r cucumber-report.zip target/cucumber-reports
-            else
-            echo "Report directory not found. Skipping archiving."
-            fi
-      - persist_to_workspace:
-          root: .
-          paths:
-            - cucumber-report.zip
-
   # This job now uses a manual script instead of an orb
   email-report:
     executor: java-executor
@@ -247,31 +233,22 @@ jobs:
       email_recipient:
         type: string
     steps:
-      - attach_workspace:
-          at: ~/repo
       - run:
-          name: Send Email with Report
+          name: Send Report Link via Email
           command: |
-            # 1. Install the command-line email client
+            # Install swaks
             sudo apt-get update && sudo apt-get install -y swaks
             
-            # 2. Check if the report zip exists before trying to send
-            if [ ! -f "cucumber-report.zip" ]; then
-              echo "cucumber-report.zip not found. Cannot send email."
-              exit 1
-            fi
-            
-            # 3. Send the email using swaks and the environment variables
-            swaks \
+            # CHANGE 2: The body of the email now contains a link to the build's artifacts.
+            # The $CIRCLE_BUILD_URL variable is automatically provided by CircleCI.
+            echo "The Cucumber test execution has completed. View the detailed HTML report in the 'Artifacts' tab of the CircleCI build: $CIRCLE_BUILD_URL/artifacts" | swaks \
               --to "<< parameters.email_recipient >>" \
               --from "$SMTP_USER" \
               --server "$SMTP_HOST:$SMTP_PORT" \
               --auth-user "$SMTP_USER" \
               --auth-password "$SMTP_PASSWORD" \
-              --tls \ # <-- THE CRITICAL FIX: Tells swaks to use STARTTLS
-              --header "Subject: Cucumber Test Automation Report" \
-              --body "Please find the attached Cucumber test execution report." \
-              --attach '@cucumber-report.zip' # <-- Good practice fix for the deprecation warning
+              --tls \
+              --header "Subject: Cucumber Test Automation Report is Ready"
 
 workflows:
   version: 2
