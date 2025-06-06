@@ -357,7 +357,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         try {
             wait.until(ExpectedConditions.elementToBeClickable(element));
@@ -368,8 +368,8 @@ public class BasePage {
             // Optionally re-throw or handle as a test failure
             throw e; // It's often better to let the test fail clearly if a wait times out
         } catch (InvalidElementStateException ies) {
-            logger.error("InvalidElementStateException during wait for clickability. Element: %s",
-                    elementToString(element), ies);
+            logger.error("InvalidElementStateException during wait for clickability. Element: %s . " +
+                            "Exception: %s", elementToString(element), ies);
             throw ies;
         }
     }
@@ -416,7 +416,7 @@ public class BasePage {
                     elementToString(element), element.isDisplayed(), element.isEnabled(), e);
             throw e;
         } catch (Exception e) { // Catch other potential exceptions during click
-            logger.error("Exception during click on element: %s", elementToString(element), e);
+            logger.error("Exception during click on element: %s . Exception: %s", elementToString(element), e);
             throw e;
         }
     }
@@ -551,8 +551,8 @@ public class BasePage {
                     ies);
             throw ies;
         } catch (Exception exc) {
-            logger.error("An unexpected error occurred in clearFirstAndEnterTexts for element: %s",
-                    elementToString(element), exc);
+            logger.error("An unexpected error occurred in clearFirstAndEnterTexts for element: %s . " +
+                            "Exception: %s", elementToString(element), exc);
         }
     }
 
@@ -1137,7 +1137,7 @@ public class BasePage {
         try {
             js = (JavascriptExecutor) getDriver();
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         try {
             // Try to get the 'value' property directly using JavaScript
@@ -1157,7 +1157,7 @@ public class BasePage {
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
         logger.info("Waiting for element to be present in DOM: %s", locator);
         return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
