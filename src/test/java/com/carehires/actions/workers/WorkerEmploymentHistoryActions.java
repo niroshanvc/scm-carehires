@@ -352,23 +352,17 @@ public class WorkerEmploymentHistoryActions {
 
         BasePage.genericWait(3000);
         try {
-            // You need the By locator for the new wait method. Let's assume you have it in your page object.
-            // If not, you'll need to add it.
-            // By uploadFileLocator = By.xpath("//label[text()='Upload File']/../div//label/input[@type='file']");
-
             // Wait for the element to be PRESENT in the DOM, not visible.
             // This finds the element and returns it.
             WebElement uploadElement = BasePage.waitUntilElementPresent(employmentHistoryPage.getUploadFileLocator(), 20);
 
             // Directly send the file path to the input element. No click is needed.
-            uploadElement.sendKeys(absoluteFilePath);
+            BasePage.sendKeys(uploadElement, absoluteFilePath);
             logger.info("Successfully sent file path to the upload element.");
 
         } catch (Exception e) {
-            logger.error("Failed to upload file. Path: " + absoluteFilePath, e);
-            // You might want to re-throw or handle this as a critical test failure.
+            logger.error("Failed to upload file. Path: %s. Error: %s", absoluteFilePath, e);
         }
-
 
         String referenceNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
                 YML_SUB_HEADER2, ADD, dataset, "ReferenceNote");

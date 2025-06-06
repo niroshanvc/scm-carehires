@@ -73,15 +73,12 @@ public class FileDownloadUtils {
     public static void triggerDownloadAndCloseTab(WebElement element) {
         WebDriver driver;
         String originalWindow;
-        // Initialize logger, assuming you have one (e.g., SLF4J)
-        // private static final Logger logger = LoggerFactory.getLogger(YourClassName.class);
-
 
         try {
             driver = BasePage.getDriver(); // Get your WebDriver instance
             originalWindow = driver.getWindowHandle();
         } catch (BasePage.WebDriverInitializationException e) {
-            // logger.error("Failed to get WebDriver instance or original window handle.", e);
+             logger.error("Failed to get WebDriver instance or original window handle.", e);
             throw new RuntimeException("Failed to get WebDriver instance or original window handle.", e);
         }
 
@@ -164,9 +161,9 @@ public class FileDownloadUtils {
                     logger.info("Closed new tab: %s", newTabHandle);
                 }
             } catch (NoSuchWindowException e) {
-                logger.warn("New tab %s already closed before explicit close operation.", newTabHandle, e);
+                logger.warn("New tab %s already closed before explicit close operation. %s", newTabHandle, e);
             } catch (Exception e) { // Catch broader exceptions during close
-                 logger.error("Error closing new tab %s: ", newTabHandle, e);
+                 logger.error("Error closing new tab %s: %s", newTabHandle, e);
             }
         } else if (!downloadStarted) {
              logger.warn("Download may not have started as expected, and no new tab was handled.");
@@ -193,7 +190,7 @@ public class FileDownloadUtils {
                 }
             }
         } catch (NoSuchWindowException e) {
-             logger.error("Failed to switch back to original window %s as it no longer exists.",
+             logger.error("Failed to switch back to original window %s as it no longer exists. %s",
                      originalWindow, e);
             // This is a critical state, the test might not be able to continue as expected.
         }

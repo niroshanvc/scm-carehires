@@ -1159,4 +1159,10 @@ public class BasePage {
         logger.info("Waiting for element to be present in DOM: %s", locator);
         return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
+
+    // Selenium click method without waiting
+    public static void clickWithoutWaiting(WebElement element) {
+        logger.info("****************** Clicking on the web element without waiting: %s", element);
+        element.click();
+    }
 }
