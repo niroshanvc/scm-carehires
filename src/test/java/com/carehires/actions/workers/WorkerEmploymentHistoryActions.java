@@ -351,21 +351,22 @@ public class WorkerEmploymentHistoryActions {
                 + uploadFile;
 
         BasePage.genericWait(3000);
-        BasePage.waitUntilElementVisible(employmentHistoryPage.uploadFile); // Wait for the element to be present
-        BasePage.waitUntilElementClickable(employmentHistoryPage.uploadFile, 60);
-        BasePage.scrollToWebElement(employmentHistoryPage.uploadFile); // Scroll to make the element visible
-
         try {
-            BasePage.waitUntilElementClickable(employmentHistoryPage.uploadFile, 20); // Wait until clickable
-            if (employmentHistoryPage.uploadFile.isDisplayed() && employmentHistoryPage.uploadFile.isEnabled()) {
-                BasePage.uploadFile(employmentHistoryPage.uploadFile, absoluteFilePath); // Upload the file
-            } else {
-                logger.error("Upload file element is not interactable. Check visibility and state.");
-            }
-        } catch (org.openqa.selenium.TimeoutException e) {
-            logger.error("Timeout waiting for upload file element to become clickable. Attempting JavaScript click.");
-            BasePage.clickWithJavaScript(employmentHistoryPage.uploadFile); // Fallback to JavaScript click
-            BasePage.uploadFile(employmentHistoryPage.uploadFile, absoluteFilePath); // Upload the file
+            // You need the By locator for the new wait method. Let's assume you have it in your page object.
+            // If not, you'll need to add it.
+            // By uploadFileLocator = By.xpath("//label[text()='Upload File']/../div//label/input[@type='file']");
+
+            // Wait for the element to be PRESENT in the DOM, not visible.
+            // This finds the element and returns it.
+            WebElement uploadElement = BasePage.waitUntilElementPresent(employmentHistoryPage.getUploadFileLocator(), 20);
+
+            // Directly send the file path to the input element. No click is needed.
+            uploadElement.sendKeys(absoluteFilePath);
+            logger.info("Successfully sent file path to the upload element.");
+
+        } catch (Exception e) {
+            logger.error("Failed to upload file. Path: " + absoluteFilePath, e);
+            // You might want to re-throw or handle this as a critical test failure.
         }
 
 

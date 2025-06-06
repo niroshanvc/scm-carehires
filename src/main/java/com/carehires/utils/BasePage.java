@@ -1141,8 +1141,22 @@ public class BasePage {
             Object result = js.executeScript("return arguments[0].value;", element);
             return result != null ? result.toString() : null;
         } catch (Exception e) {
-            logger.error("Error getting value via JS from element: %s", elementToString(element), e);
+            logger.error("Error getting value via JS from element: %s", elementToString(element));
             return null;
         }
+    }
+
+    public static WebElement waitUntilElementPresent(By locator, int timeoutInSeconds) {
+        if (locator == null) {
+            throw new IllegalArgumentException("Locator to wait for cannot be null");
+        }
+        WebDriverWait wait = null;
+        try {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+        logger.info("Waiting for element to be present in DOM: %s", locator);
+        return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 }
