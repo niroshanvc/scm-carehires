@@ -119,7 +119,7 @@ public class CreateAgreementsOverviewActions {
     }
 
     private void verifySuccessMessage() {
-        BasePage.waitUntilElementPresent(agreementsOverviewPage.successMessage, 30);
+        BasePage.waitUntilElementPresent(agreementsOverviewPage.getSuccessMessageLocator(), 30);
         String actualInLowerCase = BasePage.getText(agreementsOverviewPage.successMessage).toLowerCase().trim();
         String expected = "Agreement created successfully";
         String expectedInLowerCase = expected.toLowerCase().trim();

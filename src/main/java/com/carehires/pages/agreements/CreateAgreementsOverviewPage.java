@@ -1,5 +1,6 @@
 package com.carehires.pages.agreements;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -26,6 +27,10 @@ public class CreateAgreementsOverviewPage {
 
     @FindBy(xpath = "//nb-toast//span")
     public WebElement successMessage;
+
+    public By getSuccessMessageLocator() {
+        return By.xpath("//nb-toast//span");
+    }
 
     public String getDropdownOptionXpath(String option) {
         return String.format("//nb-option[contains(text(),'%s')]", option);
