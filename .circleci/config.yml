@@ -240,37 +240,37 @@ jobs:
           paths:
             - cucumber-report.zip
 
-# This job now uses a manual script instead of an orb
-email-report:
-  executor: java-executor
-  parameters:
-    email_recipient:
-      type: string
-  steps:
-    - attach_workspace:
-        at: ~/repo
-    - run:
-        name: Send Email with Report
-        command: |
-          # 1. Install the command-line email client
-          sudo apt-get update && sudo apt-get install -y swaks
-          
-          # 2. Check if the report zip exists before trying to send
-          if [ ! -f "cucumber-report.zip" ]; then
-            echo "cucumber-report.zip not found. Cannot send email."
-            exit 1
-          fi
-          
-          # 3. Send the email using swaks and the environment variables
-          swaks \
-            --to "<< parameters.email_recipient >>" \
-            --from "$SMTP_USER" \
-            --server "$SMTP_HOST:$SMTP_PORT" \
-            --auth-user "$SMTP_USER" \
-            --auth-password "$SMTP_PASSWORD" \
-            --header "Subject: Cucumber Test Automation Report" \
-            --body "Please find the attached Cucumber test execution report." \
-            --attach "cucumber-report.zip"
+  # This job now uses a manual script instead of an orb
+  email-report:
+    executor: java-executor
+    parameters:
+      email_recipient:
+        type: string
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Send Email with Report
+          command: |
+            # 1. Install the command-line email client
+            sudo apt-get update && sudo apt-get install -y swaks
+            
+            # 2. Check if the report zip exists before trying to send
+            if [ ! -f "cucumber-report.zip" ]; then
+              echo "cucumber-report.zip not found. Cannot send email."
+              exit 1
+            fi
+            
+            # 3. Send the email using swaks and the environment variables
+            swaks \
+              --to "<< parameters.email_recipient >>" \
+              --from "$SMTP_USER" \
+              --server "$SMTP_HOST:$SMTP_PORT" \
+              --auth-user "$SMTP_USER" \
+              --auth-password "$SMTP_PASSWORD" \
+              --header "Subject: Cucumber Test Automation Report" \
+              --body "Please find the attached Cucumber test execution report." \
+              --attach "cucumber-report.zip"
 
 workflows:
   version: 2
