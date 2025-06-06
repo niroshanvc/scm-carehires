@@ -268,9 +268,10 @@ jobs:
               --server "$SMTP_HOST:$SMTP_PORT" \
               --auth-user "$SMTP_USER" \
               --auth-password "$SMTP_PASSWORD" \
+              --tls \ # <-- THE CRITICAL FIX: Tells swaks to use STARTTLS
               --header "Subject: Cucumber Test Automation Report" \
               --body "Please find the attached Cucumber test execution report." \
-              --attach "cucumber-report.zip"
+              --attach '@cucumber-report.zip' # <-- Good practice fix for the deprecation warning
 
 workflows:
   version: 2
