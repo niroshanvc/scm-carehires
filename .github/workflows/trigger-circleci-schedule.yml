@@ -1,0 +1,18 @@
+name: Trigger CircleCI Pipeline
+
+on:
+  schedule:
+    - cron: "* 1 * * *"  # Every minute (for testing)
+  workflow_dispatch:
+
+jobs:
+  trigger-circleci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger CircleCI pipeline
+        run: |
+          curl -X POST https://circleci.com/api/v2/project/gh/carehires/scm-qa-automation/pipeline \
+          -H "Circle-Token: ${{ secrets.CIRCLECI_API_TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -d '{}'
+test
