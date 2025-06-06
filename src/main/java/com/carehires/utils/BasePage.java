@@ -402,6 +402,9 @@ public class BasePage {
     }
 
     public static void clickElement(WebElement element, int timeOutSeconds) {
+        if (element == null) {
+            throw new IllegalArgumentException("Element cannot be null");
+        }
         waitUntilElementClickable(element, timeOutSeconds); // Wait for it to be clickable
         try {
             logger.info("Attempting to click element: %s", elementToString(element));
