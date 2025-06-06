@@ -2,7 +2,7 @@ version: 2.1
 
 # Add the email orb
 orbs:
-    email: circleci/email-orbs@2.0.0
+    email: circleci/email@2.0.0
 
 executors:
   java-executor:
