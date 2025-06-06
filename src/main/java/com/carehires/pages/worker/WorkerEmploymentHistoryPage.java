@@ -1,5 +1,6 @@
 package com.carehires.pages.worker;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -58,6 +59,10 @@ public class WorkerEmploymentHistoryPage {
 
     @FindBy(xpath = "//label[text()='Upload File']/../div//label/input[@type='file']")
     public WebElement uploadFile;
+
+    public By getUploadFileLocator() {
+        return By.xpath("//label[text()='Upload File']/../div//label/input[@type='file']");
+    }
 
     @FindBy(xpath = "//button[contains(text(), 'Add Reference')]")
     public WebElement addReferenceButton;
