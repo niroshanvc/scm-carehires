@@ -275,7 +275,12 @@ workflows:
   version: 2
   test-and-email-workflow:
     jobs:
-      - build
+      - build:
+          # Pass pipeline parameters to the build job
+          browser: << pipeline.parameters.browser >>
+          feature_tag: << pipeline.parameters.feature_tag >>
+          environment: << pipeline.parameters.environment >>
+          email: << pipeline.parameters.email >>
 
       - email-report:
           requires:
