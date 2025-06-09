@@ -226,6 +226,15 @@ jobs:
           path: target/cucumber-reports  # Path to cucumber reports
           destination: cucumber-reports
 
+      - run:
+          name: Save Build Job URL
+          command: echo $CIRCLE_BUILD_URL > build_url.txt
+
+      - persist_to_workspace:
+          root: .
+          paths:
+              - build_url.txt  # Save the build URL for later use in email job
+
   # This job now uses a manual script instead of an orb
   email-report:
     executor: java-executor
@@ -233,16 +242,22 @@ jobs:
       email_recipient:
         type: string
     steps:
+      - attach_workspace:
+          at: ~/repo
+
       - run:
           name: Send Report Link via Email
           command: |
             # 1. Install swaks
             sudo apt-get update && sudo apt-get install -y swaks
             
+            # Read the correct build URL from the file passed via workspace.
+            CORRECT_BUILD_URL=$(cat build_url.txt)
+            
             # 2. Define the email body in a variable.
             # The double quotes are essential for the $CIRCLE_BUILD_URL variable to be inserted correctly.
             EMAIL_BODY="The Cucumber test execution has completed. View the detailed HTML report by clicking the link below and navigating to the 'Artifacts' tab of the build:
-            $CIRCLE_BUILD_URL/artifacts"
+            $CORRECT_BUILD_URL/artifacts"
             
             # 3. Call swaks using the --body flag and passing the variable.
             # Note there is no attachment, as we are sending a link.
@@ -260,12 +275,7 @@ workflows:
   version: 2
   test-and-email-workflow:
     jobs:
-      - build:
-          # Pass pipeline parameters to the build job
-          browser: << pipeline.parameters.browser >>
-          feature_tag: << pipeline.parameters.feature_tag >>
-          environment: << pipeline.parameters.environment >>
-          email: << pipeline.parameters.email >>
+      - build
 
       - email-report:
           requires:
