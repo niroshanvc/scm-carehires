@@ -1168,7 +1168,7 @@ public class BasePage {
         if (locator == null) {
             throw new IllegalArgumentException("Locator to wait for cannot be null");
         }
-        WebDriverWait wait = null;
+        WebDriverWait wait;
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
         } catch (WebDriverInitializationException e) {
