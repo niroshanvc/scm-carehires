@@ -77,3 +77,32 @@ Job Preferences C:
   Job Notes: "Sample Job Post Note added."
   Job Posting Reason: Annual leave
   Internal Notes: "Internal Note added - mandatory field"
+
+
+New Template:
+  Template Details:
+    Template Name: Automation Template {{increment}}
+    Template Description: Automation Template Description {{increment}}
+
+  Job Type: General Job
+  Care Provider / Site and Service Preferences:
+    Site: BioRevolution Care 148428
+    Worker Type: Rehabilitation Worker
+    Number of Vacancies: 2
+
+  Job Duration and Recurrence:
+    Start Time: "12:00"
+    End Time: "16:00"
+    Enable Recurrence: "No"
+    Repeat Type: Daily
+    Ends On: "today + 3"
+    Breaks/ Intervals: "No"
+    Paid Breaks Duration: "02:00"
+    Unpaid Breaks Duration: "03:00"
+    Paid Breaks Note: "General note added for the paid breaks."
+    Unpaid Breaks Note: "Unpaid breaks note added."
+
+  Gender and Skill Preferences:
+    Gender: Male
+    Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+    Job Notes: "Sample Job Post Note added."

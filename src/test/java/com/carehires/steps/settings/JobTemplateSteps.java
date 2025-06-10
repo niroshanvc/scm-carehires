@@ -13,6 +13,7 @@ public class JobTemplateSteps {
         jobTemplate.moveToJobTemplatesPage();
     }
 
+
     @And("User searches template by name")
     public void searchTemplateByName() {
         jobTemplate.searchTemplateByName();
@@ -21,5 +22,10 @@ public class JobTemplateSteps {
     @Then("^User makes job template (.*)$")
     public void inactiveJobTemplate(String status) {
         jobTemplate.doInactiveTemplate(status);
+    }
+
+    @And("Provider User creates a new job template")
+    public void createNewJobTemplate() {
+        jobTemplate.createNewJobTemplate();
     }
 }

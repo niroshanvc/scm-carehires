@@ -12,17 +12,7 @@ import io.cucumber.testng.CucumberOptions;
                 "html:target/cucumber-reports/cucumber-html-report.html" // HTML report in a separate directory
         },
         monochrome = true,
-        tags = "@CreateWorker" // Default constant value
-        //        tags = "CreateAgency, EditAgency
-//        or CreateProvider, CreateProviderWithCustomBilling, EditProvider
-//        or CreateWorker, EditWorker"
-//        or CreateAgreement, CreateAgreementForDDProvider, ViewAgreement, EditAgreement, OverviewAgreement
-//        or CreateJobPost, CreateJobPostWithBreaks, CreateJobPostForSpecialHoliday
-//        EditJobPost, ViewJob, CancelJobFromJobDetail,
-//        or CancelJobFromJobView, ManageAllocations
-//        or JobsAgencyView
-//        VerifyJobPostForSpecialHoliday --> health check annotation
-//        PostGeneralJobsCustomJobs
+        tags = "@ProviderUserCreateJobTemplate" // Default constant value
 )
 
 public class CucumberRunnerTests extends AbstractTestNGCucumberTests {
