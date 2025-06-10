@@ -71,4 +71,12 @@ public class LeftSideMenuSteps {
     public void providerNavigatesToAgreementViewPage() {
         leftSideMenuActions.gotoProviderAgreementViewPage();
     }
+
+    /**
+     * This step navigates to the settings page for a provider user.
+     */
+    @When("Provider User navigates to Settings")
+    public void navigatesToSettings() {
+        leftSideMenuActions.gotoSettingsPage();
+    }
 }

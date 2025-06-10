@@ -669,6 +669,21 @@ public class BasePage {
         }
     }
 
+    public static void clickWithJavaScript(By locator) {
+        logger.info("****************** Clicking on the web element captured using locator: %s", locator);
+        WebElement ele;
+        try {
+            ele = getDriver().findElement(locator);
+            waitUntilElementClickable(ele, 30);
+            JavascriptExecutor js;
+            js = (JavascriptExecutor) getDriver();
+            js.executeScript(JAVASCRIPT_CLICK, ele);
+
+        } catch (WebDriverInitializationException e) {
+            throw new WebDriverRuntimeException(e);
+        }
+    }
+
     public static String getCurrentUrl() {
         try {
             return getDriver().getCurrentUrl();
@@ -1153,7 +1168,7 @@ public class BasePage {
         if (locator == null) {
             throw new IllegalArgumentException("Locator to wait for cannot be null");
         }
-        WebDriverWait wait = null;
+        WebDriverWait wait;
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
         } catch (WebDriverInitializationException e) {

@@ -25,28 +25,28 @@ public class LeftSideMenuActions {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(LeftSideMenuPage.agenciesMainLink, LeftSideMenuPage.agencyCreateSubLink);
-        logger.info(" --------------------------- Moves to Agency Create Page ---------------------------");
+        logger.info(" ------------------------- Successfully Moves to Agency Create Page -------------------------");
     }
 
     public void gotoAgencyViewPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(LeftSideMenuPage.agenciesMainLink, LeftSideMenuPage.agencyViewSubLink);
-        logger.info(" --------------------------- Moves to Agency View Page ---------------------------");
+        logger.info(" --------------------------- Successfully Moves to Agency View Page ---------------------------");
     }
 
     public void gotoWorkerCreatePage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(LeftSideMenuPage.workersMainLink, LeftSideMenuPage.workersCreateIndividual);
-        logger.info(" --------------------------- Moves to Worker Individual Create Page ---------------------------");
+        logger.info(" -------------------- Successfully Moves to Worker Individual Create Page ---------------------");
     }
 
     public void gotoWorkerViewPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(LeftSideMenuPage.workersMainLink, LeftSideMenuPage.workersViewSubLink);
-        logger.info(" --------------------------- Moves to Worker View Page ---------------------------");
+        logger.info(" --------------------------- Successfully Moves to Worker View Page ---------------------------");
     }
 
     public void gotoProviderCreatePage() {
@@ -55,63 +55,63 @@ public class LeftSideMenuActions {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(LeftSideMenuPage.providersMainLink, LeftSideMenuPage.providersCreateSubLink);
-        logger.info(" --------------------------- Moves to Provider Create Page ---------------------------");
+        logger.info(" ------------------------- Successfully Moves to Provider Create Page -------------------------");
     }
 
     public void gotoProviderViewPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(LeftSideMenuPage.providersMainLink, LeftSideMenuPage.providersViewSubLink);
-        logger.info(" --------------------------- Moves to Provider View Page ---------------------------");
+        logger.info(" ------------------------- Successfully Moves to Provider View Page -------------------------");
     }
 
     public void gotoAgreementCreatePage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(LeftSideMenuPage.agreementsMainLink, LeftSideMenuPage.agreementsCreateSubLink);
-        logger.info(" --------------------------- Moves to Agreements Create Page ---------------------------");
+        logger.info(" ------------------------ Successfully Moves to Agreements Create Page ------------------------");
     }
 
     public void gotoAgreementViewPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(LeftSideMenuPage.agreementsMainLink, LeftSideMenuPage.agreementsViewSubLink);
-        logger.info(" --------------------------- Moves to Agreements View Page ---------------------------");
+        logger.info(" -------------------------- SuccessfullyMoves to Agreements View Page --------------------------");
     }
 
     public void gotoAgreementOverviewPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(LeftSideMenuPage.agreementsMainLink, LeftSideMenuPage.agreementsOverviewSubLink);
-        logger.info(" --------------------------- Moves to Agreements Overview Page ---------------------------");
+        logger.info(" ----------------------- Successfully Moves to Agreements Overview Page -----------------------");
     }
 
     public void gotoTasksPaymentAuthorisationsPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.mouseHoverAndClick(LeftSideMenuPage.tasksMainLink, LeftSideMenuPage.paymentAuthorisationsSubLink);
-        logger.info(" --------------------------- Moves to Payment Authorisations Page ---------------------------");
+        logger.info(" ---------------------- Successfully Moves to Payment Authorisations Page ----------------------");
     }
 
     public void gotoJobsPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.clickWithJavaScript(leftSideMenu.jobsIcon);
-        logger.info(" --------------------------- Moves to Jobs Page ---------------------------");
+        logger.info(" --------------------------- Successfully Moves to Jobs Page ---------------------------");
     }
 
     public void gotoSettingsPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.navigateTo("https://portal.dev.v4.carehires.co.uk/dashboard/settings");
         BasePage.waitUntilPageCompletelyLoaded();
-        logger.info(" --------------------------- Moves to Settings Page ---------------------------");
+        logger.info(" --------------------------- Successfully Moves to Settings Page ---------------------------");
     }
 
     public void gotoOrganisationPage() {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
         BasePage.clickWithJavaScript(leftSideMenu.organisationMainLink);
-        logger.info(" --------------------------- Moves to Organisation Page ---------------------------");
+        logger.info(" --------------------------- Successfully Moves to Organisation Page ---------------------------");
     }
 
     public void gotoProviderAgreementViewPage() {
