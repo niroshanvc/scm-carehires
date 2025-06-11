@@ -5,7 +5,7 @@ import io.cucumber.java.en.And;
 
 public class TimesheetApprovalsSteps {
 
-    private TimesheetApprovalsActions timesheetApprovals = new TimesheetApprovalsActions();
+    private final TimesheetApprovalsActions timesheetApprovals = new TimesheetApprovalsActions();
 
     @And("Provider User approves timesheet")
     public void clickOnApproveButton() {
