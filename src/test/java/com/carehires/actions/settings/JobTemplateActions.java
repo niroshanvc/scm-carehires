@@ -27,7 +27,6 @@ public class JobTemplateActions {
     private final JobTemplatePage jobTemplatePage;
     private final GenericUtils genericUtils;
 
-
     private static final Logger logger = LogManager.getLogger(JobTemplateActions.class);
 
     private static final String ENTITY = "job";

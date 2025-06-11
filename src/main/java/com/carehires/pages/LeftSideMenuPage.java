@@ -46,4 +46,7 @@ public class LeftSideMenuPage {
     public String settingsIcon;
 
     public static final By agreementsViewOnlySubLink = By.xpath("//div[text()='View']");
+
+    public static final By timesheetApprovalsSubLink = By.xpath("//div[text()='Timesheet approvals']");
+
 }

@@ -120,4 +120,11 @@ public class LeftSideMenuActions {
         BasePage.mouseHoverAndClick(LeftSideMenuPage.agreementsMainLink, LeftSideMenuPage.agreementsViewOnlySubLink);
         logger.info(" ------------------------ Provider User Moves to Agreements View Page ------------------------");
     }
+
+    public void gotoTasksTimesheetsApprovalPage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.mouseHoverAndClick(LeftSideMenuPage.tasksMainLink, LeftSideMenuPage.timesheetApprovalsSubLink);
+        logger.info(" ---------------------- Successfully Moves to Timesheets Approval Page ----------------------");
+    }
 }
