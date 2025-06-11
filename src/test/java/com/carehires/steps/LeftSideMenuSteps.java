@@ -79,4 +79,9 @@ public class LeftSideMenuSteps {
     public void navigatesToSettings() {
         leftSideMenuActions.gotoSettingsPage();
     }
+
+    @When("Provider User navigates to Tasks - Timesheets approval page")
+    public void navigatesToTimesheetsApprovalPage() {
+        leftSideMenuActions.gotoTasksTimesheetsApprovalPage();
+    }
 }

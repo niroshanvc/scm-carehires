@@ -42,8 +42,8 @@ public class LeftSideMenuPage {
     @FindBy(xpath = "//img[@alt='Jobs']")
     public WebElement jobsIcon;
 
-    @FindBy(xpath = "//img[@alt='Settings']/..")
-    public String settingsIcon;
-
     public static final By agreementsViewOnlySubLink = By.xpath("//div[text()='View']");
+
+    public static final By timesheetApprovalsSubLink = By.xpath("//div[text()='Timesheet approvals']");
+
 }
