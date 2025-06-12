@@ -46,4 +46,6 @@ public class LeftSideMenuPage {
 
     public static final By timesheetApprovalsSubLink = By.xpath("//div[text()='Timesheet approvals']");
 
+    @FindBy(xpath = "//img[@title='Overview']")
+    public WebElement providerOverviewIcon;
 }

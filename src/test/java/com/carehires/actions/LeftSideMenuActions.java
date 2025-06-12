@@ -127,4 +127,11 @@ public class LeftSideMenuActions {
         BasePage.mouseHoverAndClick(LeftSideMenuPage.tasksMainLink, LeftSideMenuPage.timesheetApprovalsSubLink);
         logger.info(" ---------------------- Successfully Moves to Timesheets Approval Page ----------------------");
     }
+
+    public void gotoProviderOverviewPage() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementPresent(leftSideMenu.jobsIcon, 60);
+        BasePage.clickWithJavaScript(leftSideMenu.providerOverviewIcon);
+        logger.info(" ----------------------- Successfully Moves to Provider Overview Page -----------------------");
+    }
 }

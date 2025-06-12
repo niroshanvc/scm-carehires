@@ -112,10 +112,24 @@ public class BasePage {
         logger.info("****************** Setting up ChromeDriver.");
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", getChromePreferences());
-        options.addArguments("start-maximized", "--safebrowsing-disable-download-protection");
+        options.addArguments("--safeBrowse-disable-download-protection"); // Moved common argument out of the conditional
 
         if (isCIRunning) {
-            configureCIOptions(options);
+            // For CI, use a fixed size and other headless-friendly options.
+            logger.info("CI environment detected. Using fixed window size and headless mode.");
+            options.addArguments(
+                    HEADLESS,
+                    "--window-size=1920,1080",
+                    "--disable-gpu",
+                    "--no-sandbox",
+                    "--disable-dev-shm-usage"
+            );
+            // The configureCIOptions(options) call might be redundant if you add arguments here,
+            // but can be kept if it does other things.
+        } else {
+            // For local execution, use --start-maximized to fill the screen.
+            logger.info("Local environment detected. Using --start-maximized.");
+            options.addArguments("--start-maximized");
         }
 
         WebDriverManager.chromedriver().setup();
