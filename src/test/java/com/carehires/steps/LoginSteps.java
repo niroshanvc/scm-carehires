@@ -54,5 +54,6 @@ public class LoginSteps {
         signInPageActions.navigateToSignInPage();
         signInPageActions.loginAsProviderUser();
         overviewActions.waitAndAcceptCookies();
+        overviewActions.closeNewVersionPopup();
     }
 }

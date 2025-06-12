@@ -6,6 +6,7 @@ import com.carehires.utils.BasePage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.PageFactory;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -39,5 +40,19 @@ public class OverviewActions {
         String actualTitle = BasePage.getPageTitle().trim();
         String expectedTitle = "Care Hires Portal Business Web Application";
         assertThat("Page title is incorrect", actualTitle, is(expectedTitle));
+    }
+
+    // close new version popup if it appears
+    public void closeNewVersionPopup() {
+        try {
+            BasePage.waitUntilElementPresent(OverviewPage.closeNewVersionPopupButtonByLocator, 30);
+
+            if (overview.closeNewVersionPopupButton.isDisplayed()) {
+                BasePage.clickWithJavaScript(overview.closeNewVersionPopupButton);
+                logger.info("Closed new version popup.");
+            }
+        } catch (TimeoutException e) {
+            logger.info("New version popup did not appear within the time limit.");
+        }
     }
 }

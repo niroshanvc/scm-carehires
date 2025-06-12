@@ -14,6 +14,18 @@ public class ProviderOverviewPage {
 
     public static final By pageHeaderByLocator = By.xpath("//h3");
 
+    public static final By helpCenterPageHeaderByLocator = By.xpath("//h1");
+
+    @FindBy(xpath = "//h1")
+    public WebElement helpCenterPageHeader;
+
+    public static final By knowledgeBasePageHeaderByLocator = By.xpath("//h1/div");
+
+    @FindBy(xpath  = "//h1/div")
+    public WebElement knowledgeBasePageHeader;
+
+    public static final By aboutCareHiresByLocator = By.xpath("//a[contains(@href, 'about') and @id]");
+
     @FindBy(xpath = "//a[contains(text(),'Go to Financial Dashboard')]")
     public WebElement outstandingPaymentLink;
 
@@ -61,6 +73,6 @@ public class ProviderOverviewPage {
     @FindBy(xpath = "//img[contains(@src,'Group.png')]/parent::h3[contains(text(), 'base')]")
     public WebElement knowledgeBaseLink;
 
-    @FindBy(xpath = "//img[contains(@src,'Group.png')]/parent::h3[contains(text(), 'Email')]")
-    public WebElement emailUsLink;
+    @FindBy(xpath = "//a[contains(@href, 'share')]")
+    public WebElement getInTouchButton;
 }

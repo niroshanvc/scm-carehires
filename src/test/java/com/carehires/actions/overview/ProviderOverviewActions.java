@@ -63,7 +63,58 @@ public class ProviderOverviewActions {
         softAssert.assertTrue(actual, "Allocated Review Timesheets Link is not working as expected!");
         logger.info("Allocated Review Timesheets Link is working as expected!");
 
+        goBackToOverviewPage();
+        softAssert.assertEquals(getRaiseATicketLinkPageHeader(), "Send us your request");
+        logger.info("Raise A Ticket Link is working as expected!");
+
+        closeNewTabAndSwitchBack();
+        softAssert.assertEquals(getKnowledgeBaseLinkPageHeader(), "Hello. How can we help you?");
+        logger.info("Knowledge Base Link is working as expected!");
+
+        closeNewTabAndSwitchBack();
+        String actualTitle = getGetInTouchButtonPageHeader();
+        softAssert.assertTrue(actualTitle.contains("Care Academy"), "Title did not contain 'Care Academy'");
+        softAssert.assertTrue(actualTitle.contains("Support Request"),"Title did not contain 'Support Request'");
+        logger.info("Get In Touch Button is working as expected!");
+
         softAssert.assertAll();
+    }
+
+    private String getGetInTouchButtonPageHeader() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Get In Touch Button >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementPresent(providerOverviewPage.getInTouchButton, 60);
+        BasePage.switchToNewTabAndWait(providerOverviewPage.getInTouchButton, ProviderOverviewPage.
+                helpCenterPageHeaderByLocator);
+        String pageTitle = BasePage.getText(providerOverviewPage.helpCenterPageHeader).trim();
+        BasePage.switchToOtherTab();
+        return pageTitle;
+    }
+
+    private String getKnowledgeBaseLinkPageHeader() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Knowledge Base Link >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementPresent(providerOverviewPage.knowledgeBaseLink, 60);
+        BasePage.switchToNewTabAndWait(providerOverviewPage.knowledgeBaseLink, ProviderOverviewPage.
+                knowledgeBasePageHeaderByLocator);
+        String pageHeader = BasePage.getText(providerOverviewPage.knowledgeBasePageHeader).trim();
+        BasePage.switchToOtherTab();
+        return pageHeader;
+    }
+
+    // close newly opened tab window and switch back to the main window
+    private void closeNewTabAndSwitchBack() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Closing new tab and switching back >>>>>>>>>>>>>>>>>>>>");
+        BasePage.closeCurrentTabAndSwitchToMainWindow();
+        BasePage.waitUntilPageCompletelyLoaded();
+    }
+
+    private String getRaiseATicketLinkPageHeader() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Verifying Raise A Ticket Link >>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilElementPresent(providerOverviewPage.raiseATicketLink, 60);
+        BasePage.switchToNewTabAndWait(providerOverviewPage.raiseATicketLink, ProviderOverviewPage.
+                helpCenterPageHeaderByLocator);
+        String pageHeader = BasePage.getText(providerOverviewPage.helpCenterPageHeader).trim();
+        BasePage.switchToOtherTab();
+        return pageHeader;
     }
 
     private String getAllocatedReviewTimesheetsLink() {
@@ -72,8 +123,7 @@ public class ProviderOverviewActions {
         BasePage.clickWithJavaScript(providerOverviewPage.jobSummaryAllocatedReviewTimesheetsLink);
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(ProviderOverviewPage.jobsBreadcrumbByLocator, 60);
-        String actual = BasePage.getAttributeValue(providerOverviewPage.jobFilterByAllocatedButton, "class");
-        return actual;
+        return BasePage.getAttributeValue(providerOverviewPage.jobFilterByAllocatedButton, "class");
     }
 
     private String getSuggestedJobsLink() {
@@ -82,8 +132,7 @@ public class ProviderOverviewActions {
         BasePage.clickWithJavaScript(providerOverviewPage.jobSummarySuggestedAllocateWorkersLink);
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(ProviderOverviewPage.jobsBreadcrumbByLocator, 60);
-        String actual = BasePage.getAttributeValue(providerOverviewPage.jobFilterBySuggestedButton, "class");
-        return actual;
+        return BasePage.getAttributeValue(providerOverviewPage.jobFilterBySuggestedButton, "class");
     }
 
     private String getOpenOverdueViewJobsLink() {
@@ -92,8 +141,7 @@ public class ProviderOverviewActions {
         BasePage.clickWithJavaScript(providerOverviewPage.jobSummaryOpenOverdueViewJobsLink);
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(ProviderOverviewPage.jobsBreadcrumbByLocator, 60);
-        String actual = BasePage.getAttributeValue(providerOverviewPage.jobFilterByOpenOverdueButton, "class");
-        return actual;
+        return BasePage.getAttributeValue(providerOverviewPage.jobFilterByOpenOverdueButton, "class");
     }
 
 
@@ -103,8 +151,7 @@ public class ProviderOverviewActions {
         BasePage.clickWithJavaScript(providerOverviewPage.jobSummaryAllOpenViewJobsLink);
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(ProviderOverviewPage.jobsBreadcrumbByLocator, 60);
-        String actual = BasePage.getAttributeValue(providerOverviewPage.jobFilterByOpenButton, "class");
-        return actual;
+        return BasePage.getAttributeValue(providerOverviewPage.jobFilterByOpenButton, "class");
     }
 
     private String getCompletedViewJobsLink() {
@@ -113,8 +160,7 @@ public class ProviderOverviewActions {
         BasePage.clickWithJavaScript(providerOverviewPage.jobSummaryCompletedViewJobsLink);
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(ProviderOverviewPage.jobsBreadcrumbByLocator, 60);
-        String actual = BasePage.getAttributeValue(providerOverviewPage.jobFilterByCompletedButton, "class");
-        return actual;
+        return BasePage.getAttributeValue(providerOverviewPage.jobFilterByCompletedButton, "class");
     }
 
     private String getGoToFinancialDashboardLinkDirectedHeader() {
@@ -123,8 +169,7 @@ public class ProviderOverviewActions {
         BasePage.clickWithJavaScript(providerOverviewPage.outstandingPaymentLink);
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(ProviderOverviewPage.financeHeaderByLocator, 60);
-        String actual = BasePage.getText(providerOverviewPage.financeHeader);
-        return actual;
+        return BasePage.getText(providerOverviewPage.financeHeader);
     }
 
     private void goBackToOverviewPage() {
@@ -140,7 +185,6 @@ public class ProviderOverviewActions {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementPresent(ProviderOverviewPage.pageHeaderByLocator, 60);
         BasePage.genericWait(500);
-        String actual = BasePage.getText(providerOverviewPage.pageHeader);
-        return actual;
+        return BasePage.getText(providerOverviewPage.pageHeader);
     }
 }
