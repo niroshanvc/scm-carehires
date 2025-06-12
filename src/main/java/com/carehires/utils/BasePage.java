@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.Set;
 import java.util.function.Supplier;
 
 public class BasePage {
@@ -46,13 +47,16 @@ public class BasePage {
     private static final Properties prop = new Properties();
     private static FileInputStream fis;
     private static final String HEADLESS = "--headless";
+    private static final String DISABLE_GPU = "--disable-gpu";
+    private static final String NO_SANDBOX = "--no-sandbox";
+    private static final String DISABLE_DEV = "--disable-dev-shm-usage";
     private static final String JAVASCRIPT_CLICK = "arguments[0].click();";
 
     //for parallel execution
     private static final ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
 
-    private static final String RESOURCES_DIR = System.getProperty("user.dir") + File.separator + "src" + File.separator
-            + "test" + File.separator + "resources";
+    private static final String RESOURCES_DIR = System.getProperty("user.dir") + File.separator + "src" + File.
+            separator + "test" + File.separator + "resources";
 
     private static final String DOWNLOAD_DIR = RESOURCES_DIR + File.separator + "downloads";
 
@@ -91,7 +95,54 @@ public class BasePage {
         } catch (WebDriverInitializationException e) {
             throw new WebDriverRuntimeException(e);
         }
-        wait.until(ExpectedConditions.refreshed(ExpectedConditions.jsReturnsValue("return (" + condition.get() + ");")));
+        wait.until(ExpectedConditions.refreshed(ExpectedConditions.jsReturnsValue("return (" + condition.
+                get() + ");")));
+    }
+
+    // close newly opened tab window and switch back to the main window
+    public static void closeCurrentTabAndSwitchToMainWindow() {
+        logger.info("****************** Closing current tab and switching back to main window.");
+        try {
+            String mainWindowHandle = getDriver().getWindowHandle();
+            for (String windowHandle : getDriver().getWindowHandles()) {
+                if (!windowHandle.equals(mainWindowHandle)) {
+                    getDriver().switchTo().window(windowHandle).close();
+                }
+            }
+            getDriver().switchTo().window(mainWindowHandle);
+        } catch (NoSuchElementException | StaleElementReferenceException | WebDriverInitializationException e) {
+            logger.error("Error while closing the current tab and switching back to the main window: %s",
+                    e.getMessage());
+        }
+    }
+
+    /**
+     * Switches the WebDriver focus to the other open tab.
+     * This method assumes there are exactly two tabs open.
+     * If you are on Tab A, it will switch to Tab B, and vice-versa.
+     */
+    public static void switchToOtherTab() {
+        try {
+            WebDriver driver = getDriver();
+            String currentHandle = driver.getWindowHandle();
+            Set<String> allHandles = driver.getWindowHandles();
+
+            if (allHandles.size() != 2) {
+                logger.warn("switchToOtherTab() was called, but there are not exactly two tabs open. Found: " +
+                        "%s", allHandles.size());
+                return;
+            }
+
+            for (String handle : allHandles) {
+                if (!handle.equalsIgnoreCase(currentHandle)) {
+                    driver.switchTo().window(handle);
+                    logger.info("Switched to tab with handle: %s", handle);
+                    break;
+                }
+            }
+        } catch (WebDriverInitializationException e) {
+            throw new WebDriverRuntimeException(e);
+        }
     }
 
     public static class WebDriverInitializationException extends Exception {
@@ -120,9 +171,9 @@ public class BasePage {
             options.addArguments(
                     HEADLESS,
                     "--window-size=1920,1080",
-                    "--disable-gpu",
-                    "--no-sandbox",
-                    "--disable-dev-shm-usage"
+                    DISABLE_GPU,
+                    NO_SANDBOX,
+                    DISABLE_DEV
             );
             // The configureCIOptions(options) call might be redundant if you add arguments here,
             // but can be kept if it does other things.
@@ -174,11 +225,11 @@ public class BasePage {
         logger.info("****************** Running in CI environment, configuring headless options.");
 
         if (options instanceof ChromeOptions chromeOptions) {
-            chromeOptions.addArguments(HEADLESS, "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+            chromeOptions.addArguments(HEADLESS, DISABLE_GPU, NO_SANDBOX, DISABLE_DEV);
         } else if (options instanceof FirefoxOptions firefoxOptions) {
             firefoxOptions.addArguments(HEADLESS);
         } else if (options instanceof EdgeOptions edgeOptions) {
-            edgeOptions.addArguments(HEADLESS, "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+            edgeOptions.addArguments(HEADLESS, DISABLE_GPU, NO_SANDBOX, DISABLE_DEV);
         } else {
             logger.warn("Unsupported browser options class: %s", options.getClass().getSimpleName());
         }
@@ -1196,5 +1247,61 @@ public class BasePage {
     public static void clickWithoutWaiting(WebElement element) {
         logger.info("****************** Clicking on the web element without waiting: %s", element);
         element.click();
+    }
+
+    /**
+     * Clicks an element that opens a new tab, switches focus to the new tab,
+     * and waits for a key element on the new page to be visible.
+     *
+     * @param elementToClick The WebElement that, when clicked, opens the new tab.
+     * @param keyElementOnNewTab A By locator for a reliable element on the new page
+     * (e.g., a header or main content area) to wait for.
+     * @return The String handle of the original tab, so you can switch back later.
+     */
+    public static String switchToNewTabAndWait(WebElement elementToClick, By keyElementOnNewTab) {
+        WebDriver driver;
+        String originalTabHandle;
+        try {
+            driver = getDriver();
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // 10-second timeout
+
+            // 1. Store the handle of the original tab
+            originalTabHandle = driver.getWindowHandle();
+            logger.info("Original tab handle: %s", originalTabHandle);
+
+            // 2. Click the link to open the new tab
+            elementToClick.click();
+
+            // 3. Wait until the number of window handles is 2
+            wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+            logger.info("New tab detected.");
+
+            // 4. Get all window handles and find the new one
+            Set<String> allWindowHandles = driver.getWindowHandles();
+            String newTabHandle = "";
+            for (String handle : allWindowHandles) {
+                if (!handle.equalsIgnoreCase(originalTabHandle)) {
+                    newTabHandle = handle;
+                    break;
+                }
+            }
+
+            // 5. Switch to the new tab
+            if (!newTabHandle.isEmpty()) {
+                driver.switchTo().window(newTabHandle);
+                logger.info("Switched focus to new tab: %s", newTabHandle);
+            } else {
+                throw new RuntimeException("Could not find new tab to switch to.");
+            }
+
+            // 6. Wait for the new page's key element to be visible
+            wait.until(ExpectedConditions.visibilityOfElementLocated(keyElementOnNewTab));
+            logger.info("Key element '%s' is visible on the new tab. Page is ready.", keyElementOnNewTab);
+        } catch (WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
+
+        // 7. Return the original handle so you can switch back if needed
+        return originalTabHandle;
     }
 }
