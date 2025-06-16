@@ -247,8 +247,7 @@ public class ProviderUserManagementActions {
                 "JobTitle");
         BasePage.clearAndEnterTexts(userManagement.jobTitle,  jobTitle);
 
-        String phone = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER, subHeader,
-                "Phone");
+        String phone = DataConfigurationReader.generateUkMobileNumber();
         BasePage.clickWithJavaScript(userManagement.phone);
         BasePage.clearAndEnterTexts(userManagement.phone,  phone);
 
