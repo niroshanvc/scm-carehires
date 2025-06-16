@@ -12,7 +12,7 @@ parameters:
     default: "chrome" # Default browser
   feature_tag:
     type: string
-    default: "@featureTag" # Default test case tag
+    default: "@Login" # Default test case tag
   environment:
     type: string
     default: "dev" # Default environment
@@ -235,12 +235,13 @@ jobs:
           paths:
               - build_url.txt  # Save the build URL for later use in email job
 
-  # This job now uses a manual script instead of an orb
   email-report:
     executor: java-executor
     parameters:
       email_recipient:
         type: string
+      feature_tag_param:
+          type: string
     steps:
       - attach_workspace:
           at: ~/repo
@@ -259,7 +260,10 @@ jobs:
             EMAIL_BODY="The Cucumber test execution has completed. View the detailed HTML report by clicking the link below and navigating to the 'Artifacts' tab of the build:
             $CORRECT_BUILD_URL/artifacts"
             
-            # 3. Call swaks using the --body flag and passing the variable.
+            # 3. Define the email subject dynamically using the parameter.
+            EMAIL_SUBJECT="Cucumber Test Report for << parameters.feature_tag_param >> is Ready"
+            
+            # 4. Call swaks using the --body flag and passing the variable.
             # Note there is no attachment, as we are sending a link.
             swaks \
               --to "<< parameters.email_recipient >>" \
@@ -268,7 +272,7 @@ jobs:
               --auth-user "$SMTP_USER" \
               --auth-password "$SMTP_PASSWORD" \
               --tls \
-              --header "Subject: Cucumber Test Automation Report is Ready" \
+              --header "Subject: $EMAIL_SUBJECT" \
               --body "$EMAIL_BODY"
 
 workflows:
@@ -286,3 +290,4 @@ workflows:
           requires:
             - build
           email_recipient: << pipeline.parameters.email >>
+          feature_tag_param: << pipeline.parameters.feature_tag >>
