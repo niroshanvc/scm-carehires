@@ -108,7 +108,7 @@ Billing Information:
       DigitalBillingAddress: carehires+pro-billing-edited{{increment}}@zohomail.com
       Postal Code: LE10 3AN
       PhoneNumber: "07432351246"
-      CreditLimitAmount: 700
+      CreditLimitAmount: 2000
       BillingCycle: Monthly
       CreditTerm: 21 Days
       FirstName: Geoffrey

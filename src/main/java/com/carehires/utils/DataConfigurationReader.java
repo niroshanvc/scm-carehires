@@ -302,13 +302,13 @@ public class DataConfigurationReader {
         
         // Select a random prefix
         String prefix = prefixes[random.nextInt(prefixes.length)];
-        
-        // Generate the remaining 8 digits (total 11 digits including '07')
+
+        // Start with "07" and add the prefix
         StringBuilder mobileNumber = new StringBuilder("07"); // UK mobile numbers start with 07
         mobileNumber.append(prefix);
         
-        // Generate 8 random digits (0-9)
-        for (int i = 0; i < 8; i++) {
+        // Generate 7 random digits (0-9)
+        for (int i = 0; i < 7; i++) {
             mobileNumber.append(random.nextInt(10));
         }
         

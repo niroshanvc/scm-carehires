@@ -119,7 +119,7 @@ public class BasePage {
     /**
      * Switches the WebDriver focus to the other open tab.
      * This method assumes there are exactly two tabs open.
-     * If you are on Tab A, it will switch to Tab B, and vice-versa.
+     * If you are on Tab A, it will switch to Tab B, and vice versa.
      */
     public static void switchToOtherTab() {
         try {
@@ -1233,7 +1233,6 @@ public class BasePage {
         if (locator == null) {
             throw new IllegalArgumentException("Locator to wait for cannot be null");
         }
-        WebDriverWait wait;
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
         } catch (WebDriverInitializationException e) {
@@ -1263,7 +1262,7 @@ public class BasePage {
         String originalTabHandle;
         try {
             driver = getDriver();
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // 10-second timeout
+            wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // 10-second timeout
 
             // 1. Store the handle of the original tab
             originalTabHandle = driver.getWindowHandle();
@@ -1298,7 +1297,7 @@ public class BasePage {
             wait.until(ExpectedConditions.visibilityOfElementLocated(keyElementOnNewTab));
             logger.info("Key element '%s' is visible on the new tab. Page is ready.", keyElementOnNewTab);
         } catch (WebDriverInitializationException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverRuntimeException(e);
         }
 
         // 7. Return the original handle so you can switch back if needed
