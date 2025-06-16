@@ -45,7 +45,7 @@ public class OverviewActions {
     // close new version popup if it appears
     public void closeNewVersionPopup() {
         try {
-            BasePage.waitUntilElementPresent(OverviewPage.closeNewVersionPopupButtonByLocator, 30);
+            BasePage.waitUntilElementPresent(OverviewPage.closeNewVersionPopupButtonByLocator, 10);
 
             if (overview.closeNewVersionPopupButton.isDisplayed()) {
                 BasePage.clickWithJavaScript(overview.closeNewVersionPopupButton);
