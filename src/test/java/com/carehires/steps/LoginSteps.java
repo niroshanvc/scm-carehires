@@ -29,6 +29,8 @@ public class LoginSteps {
         signInPageActions.navigateToSignInPage();
         signInPageActions.loginToCareHires();
         overviewActions.waitAndAcceptCookies();
+        BasePage.refreshPage();
+        overviewActions.closeNewVersionPopup();
     }
 
     @And("User navigates to SCM page")
