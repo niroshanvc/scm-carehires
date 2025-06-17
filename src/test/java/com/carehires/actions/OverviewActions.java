@@ -45,13 +45,15 @@ public class OverviewActions {
     // close new version popup if it appears
     public void closeNewVersionPopup() {
         try {
-            BasePage.waitUntilElementPresent(OverviewPage.closeNewVersionPopupButtonByLocator, 10);
+            BasePage.waitUntilElementPresent(overview.newVersionPopupIframe, 10);
 
-            if (overview.closeNewVersionPopupButton.isDisplayed()) {
+            if (overview.newVersionPopupIframe.isDisplayed()) {
+                BasePage.switchToIframe(overview.newVersionPopupIframe);
                 BasePage.clickWithJavaScript(overview.closeNewVersionPopupButton);
                 logger.info("Closed new version popup.");
+                BasePage.switchToDefaultContent();
             }
-        } catch (TimeoutException e) {
+        } catch (TimeoutException | NoSuchElementException e) {
             logger.info("New version popup did not appear within the time limit.");
         }
     }

@@ -434,7 +434,7 @@ public class BasePage {
             throw e; // It's often better to let the test fail clearly if a wait times out
         } catch (InvalidElementStateException ies) {
             logger.error("InvalidElementStateException during wait for clickability. Element: %s . " +
-                            "Exception: %s", elementToString(element), ies);
+                    "Exception: %s", elementToString(element), ies);
             throw ies;
         }
     }
@@ -585,7 +585,7 @@ public class BasePage {
             ));
 
             logger.info("Element %s is visible and enabled. IsDisplayed: %s, IsEnabled: %s. Attempting " +
-                            "to clear...", elementToString(element), element.isDisplayed(), element.isEnabled());
+                    "to clear...", elementToString(element), element.isDisplayed(), element.isEnabled());
 
             element.clear(); // The problematic line
             logger.info("Successfully cleared element: %s", elementToString(element));
@@ -617,7 +617,7 @@ public class BasePage {
             throw ies;
         } catch (Exception exc) {
             logger.error("An unexpected error occurred in clearFirstAndEnterTexts for element: %s . " +
-                            "Exception: %s", elementToString(element), exc);
+                    "Exception: %s", elementToString(element), exc);
         }
     }
 
@@ -767,7 +767,7 @@ public class BasePage {
         StringBuilder sb = new StringBuilder(data);
         waitUntilElementPresent(element, 30);
         String[] strs = sb.toString().split("");
-        for (String  character : strs) {
+        for (String character : strs) {
             element.sendKeys(character);
             genericWait(milliseconds);
         }
@@ -967,7 +967,7 @@ public class BasePage {
     /**
      * Verifies if an element is present on the page after waiting for a specified time using Hamcrest assertion.
      *
-     * @param locator     The By locator for the element.
+     * @param locator        The By locator for the element.
      * @param timeOutSeconds The number of seconds to wait for the element to be present.
      */
     public static void verifyElementIsPresentAfterWait(By locator, int timeOutSeconds) {
@@ -1113,8 +1113,9 @@ public class BasePage {
 
     /**
      * Waits until a specific value is loaded in a dropdown (without opening it)
-     * @param dropdown The WebElement representing the dropdown
-     * @param expectedValue The expected value to wait for
+     *
+     * @param dropdown         The WebElement representing the dropdown
+     * @param expectedValue    The expected value to wait for
      * @param timeoutInSeconds Maximum time to wait
      */
     public static void waitUntilValueLoadedInDropdown(WebElement dropdown, String expectedValue, int timeoutInSeconds) {
@@ -1165,7 +1166,7 @@ public class BasePage {
         }
     }
 
-    public static void waitForDropdownTextChange(By dropdownLocator, int timeoutInSeconds){
+    public static void waitForDropdownTextChange(By dropdownLocator, int timeoutInSeconds) {
         WebDriverWait wait;
         try {
             wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeoutInSeconds));
@@ -1184,6 +1185,7 @@ public class BasePage {
 
     /**
      * Waits until an element is visible on the page.
+     *
      * @param locator The By locator of the element.
      * @return The WebElement once it's visible.
      */
@@ -1194,6 +1196,7 @@ public class BasePage {
 
     /**
      * Waits until an already located element is visible on the page.
+     *
      * @param element The WebElement.
      * @return The WebElement once it's visible.
      */
@@ -1252,9 +1255,9 @@ public class BasePage {
      * Clicks an element that opens a new tab, switches focus to the new tab,
      * and waits for a key element on the new page to be visible.
      *
-     * @param elementToClick The WebElement that, when clicked, opens the new tab.
+     * @param elementToClick     The WebElement that, when clicked, opens the new tab.
      * @param keyElementOnNewTab A By locator for a reliable element on the new page
-     * (e.g., a header or main content area) to wait for.
+     *                           (e.g., a header or main content area) to wait for.
      * @return The String handle of the original tab, so you can switch back later.
      */
     public static String switchToNewTabAndWait(WebElement elementToClick, By keyElementOnNewTab) {
@@ -1302,5 +1305,22 @@ public class BasePage {
 
         // 7. Return the original handle so you can switch back if needed
         return originalTabHandle;
+    }
+
+    // switch to the iframe by element
+    public static void switchToIframe(WebElement iframeElement) {
+        try {
+            getDriver().switchTo().frame(iframeElement);
+        } catch (WebDriverInitializationException e) {
+            throw new WebDriverRuntimeException(e);
+        }
+    }
+
+    public static void switchToDefaultContent() {
+        try {
+            getDriver().switchTo().defaultContent();
+        } catch (WebDriverInitializationException e) {
+            throw new WebDriverRuntimeException(e);
+        }
     }
 }
