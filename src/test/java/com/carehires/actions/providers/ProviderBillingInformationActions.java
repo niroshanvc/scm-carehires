@@ -172,11 +172,6 @@ public class ProviderBillingInformationActions {
         BasePage.genericWait(8000);
         BasePage.waitUntilElementClickable(billingInformationPage.saveButton, 60);
         BasePage.clickWithoutWaiting(billingInformationPage.saveButton);
-
-        BasePage.genericWait(7000);
-        if (BasePage.isElementDisplayed(billingInformationPage.saveButton)) {
-            BasePage.clickWithoutWaiting(billingInformationPage.saveButton);
-        }
     }
 
 

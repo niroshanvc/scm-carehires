@@ -13,6 +13,9 @@ public class OverviewPage {
 
     public static final By closeNewVersionPopupButtonByLocator = By.xpath("//button[@data-testid]");
 
+    @FindBy(xpath = "//iframe[@title='modal'  and not(@aria-hidden)]")
+    public WebElement newVersionPopupIframe;
+
     @FindBy(xpath = "//button[@data-testid]")
     public WebElement closeNewVersionPopupButton;
 }
