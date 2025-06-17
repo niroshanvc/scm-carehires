@@ -10,9 +10,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -541,6 +545,7 @@ public class WorkerBasicInformationActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Updating Personal Information >>>>>>>>>>>>>>>>>>>>>>");
         String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
                 YML_SUB_HEADER_2, UPDATE, "FirstName");
+
         BasePage.waitUntilElementClickableMethod(basicInfo.firstNameUpdateField, 30);
         BasePage.clickElement(basicInfo.firstNameUpdateField, 30);
         BasePage.clearFirstAndEnterTexts(basicInfo.firstNameUpdateField, firstName, 30);
@@ -603,6 +608,7 @@ public class WorkerBasicInformationActions {
         if (!BasePage.getAttributeValue(basicInfo.agencyLocation, CLASS_TEXT).contains("selected")) {
             BasePage.clickWithJavaScript(basicInfo.getDropdownOptionXpath("Select All Locations"));
         }
+        BasePage.clickOnEnterKey(basicInfo.agencyLocationDropdown);
     }
 
     private void selectAgencyName(String ymlFile, String header, String subHeader) {
@@ -711,13 +717,31 @@ public class WorkerBasicInformationActions {
 
     private void clickOnUpdateProfileLink() {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Clicking on the update profile link >>>>>>>>>>>>>>>>>>>>");
-        BasePage.waitUntilPageCompletelyLoaded();
-        BasePage.genericWait(3000);
-        BasePage.waitUntilElementPresent(basicInfo.topThreeDots, 30);
-        BasePage.mouseHoverAndClick(basicInfo.topThreeDots, basicInfo.updateProfileLink,
-                WorkerBasicInformationPage.updateProfileLinkChildElement);
-        BasePage.genericWait(3000);
-        BasePage.waitUntilElementClickable(basicInfo.saveButton, 30);
+        try {
+            // 2. Initialize WebDriverWait and Actions
+            WebDriverWait wait = new WebDriverWait(BasePage.getDriver(), Duration.ofSeconds(10));
+            Actions actions = new Actions(BasePage.getDriver());
+
+            // 3. Find the three-dots element and hover over it
+            logger.info("Locating and hovering over the three-dots menu...");
+            WebElement threeDotsMenu = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    WorkerBasicInformationPage.threeDotsMenuLocator));
+            actions.moveToElement(threeDotsMenu).perform();
+            logger.info("Successfully hovered over the three-dots menu.");
+
+            // 4. Wait for the "Update Profile" link to be visible after the hover
+            logger.info("Waiting for 'Update Profile' link to be visible...");
+            WebElement updateProfileLink = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    WorkerBasicInformationPage.updateProfileLinkLocator));
+            logger.info("'Update Profile' link is now visible.");
+
+            // 5. Click the "Update Profile" link
+            updateProfileLink.click();
+            logger.info("Successfully clicked on 'Update Profile'.");
+            BasePage.waitUntilElementClickable(basicInfo.saveButton, 30);
+        } catch (BasePage.WebDriverInitializationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void verifyUpdateSuccessMessage() {
