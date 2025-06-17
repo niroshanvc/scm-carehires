@@ -107,4 +107,7 @@ public class ProviderBillingInformationPage {
     public String getDropdownOptionXpath(String city) {
         return String.format("//nb-option[contains(text(),'%s')]", city);
     }
+
+    @FindBy(id = "creditLimitAmount")
+    public WebElement creditLimitAmount;
 }

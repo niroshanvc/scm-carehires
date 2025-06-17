@@ -66,7 +66,9 @@ public class ProviderBillingInformationActions {
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementDisplayed(billingInformationPage.addressBillsInAttentionTo, 60);
 
-        enterGeneralBillingData(YML_FILE, ADD);
+        enterGeneralBillingDataWithoutPreferredPaymentPolicies(YML_FILE, ADD);
+        enterPreferredPaymentPolicies(YML_FILE, ADD);
+
         BasePage.genericWait(5000);
 
         BasePage.clickWithJavaScript(billingInformationPage.saveButton);
@@ -74,7 +76,7 @@ public class ProviderBillingInformationActions {
         verifySuccessMessage();
     }
 
-    private void enterGeneralBillingData(String ymlFile, String subHeader) {
+    private void enterGeneralBillingDataWithoutPreferredPaymentPolicies(String ymlFile, String subHeader) {
         String attentionTo = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
                 YML_HEADER_SUB, subHeader, "AddressBillsInAttentionTo");
         BasePage.clearAndEnterTexts(billingInformationPage.addressBillsInAttentionTo, attentionTo);
@@ -96,7 +98,9 @@ public class ProviderBillingInformationActions {
         if (costCenter != null && !costCenter.trim().isEmpty()) {
             BasePage.clearAndEnterTexts(billingInformationPage.costCenter, costCenter);
         }
+    }
 
+    private void enterPreferredPaymentPolicies(String ymlFile, String subHeader) {
         BasePage.scrollToWebElement(billingInformationPage.saveButton);
         String billingCycle = DataConfigurationReader.readDataFromYmlFile(ENTITY, ymlFile, YML_HEADER,
                 YML_HEADER_SUB, subHeader, "BillingCycle");
@@ -127,7 +131,9 @@ public class ProviderBillingInformationActions {
 
         // enter general billing information
         BasePage.waitUntilElementDisplayed(billingInformationPage.addressBillsInAttentionTo, 60);
-        enterGeneralBillingData(EDIT_YML_FILE, ADD);
+        enterGeneralBillingDataWithoutPreferredPaymentPolicies(EDIT_YML_FILE, ADD);
+        logger.info("Entered General Billing Information without Preferred Payment Policies");
+        enterPreferredPaymentPolicies(EDIT_YML_FILE, ADD);
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(billingInformationPage.saveButton);
         verifySuccessMessage();
@@ -140,7 +146,11 @@ public class ProviderBillingInformationActions {
         navigationMenu.gotoBillingPage();
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementDisplayed(billingInformationPage.addressBillsInAttentionTo, 60);
-        enterGeneralBillingData(EDIT_YML_FILE, UPDATE);
+        enterGeneralBillingDataWithoutPreferredPaymentPolicies(EDIT_YML_FILE, UPDATE);
+        String creditLimit = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
+                YML_HEADER_SUB, UPDATE, "CreditLimitAmount");
+        BasePage.clearAndEnterTexts(billingInformationPage.creditLimitAmount, creditLimit);
+        enterPreferredPaymentPolicies(EDIT_YML_FILE, UPDATE);
 
         // enter Billing Contact Details
         String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, EDIT_YML_FILE, YML_HEADER,
@@ -159,9 +169,14 @@ public class ProviderBillingInformationActions {
                 YML_HEADER_SUB, UPDATE, "PhoneNumberContact");
         BasePage.clearAndEnterTexts(billingInformationPage.phoneNumberBillingContact, contactPhone);
 
-        BasePage.genericWait(5000);
+        BasePage.genericWait(8000);
         BasePage.waitUntilElementClickable(billingInformationPage.saveButton, 60);
-        BasePage.clickWithJavaScript(billingInformationPage.saveButton);
+        BasePage.clickWithoutWaiting(billingInformationPage.saveButton);
+
+        BasePage.genericWait(7000);
+        if (BasePage.isElementDisplayed(billingInformationPage.saveButton)) {
+            BasePage.clickWithoutWaiting(billingInformationPage.saveButton);
+        }
     }
 
 
@@ -178,7 +193,8 @@ public class ProviderBillingInformationActions {
         BasePage.genericWait(5000);
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementDisplayed(billingInformationPage.addressBillsInAttentionTo, 60);
-        enterGeneralBillingData(YML_FILE, ADD);
+        enterGeneralBillingDataWithoutPreferredPaymentPolicies(YML_FILE, ADD);
+        enterPreferredPaymentPolicies(YML_FILE, ADD);
         BasePage.genericWait(5000);
         BasePage.clickWithJavaScript(billingInformationPage.saveButton);
 
@@ -272,7 +288,8 @@ public class ProviderBillingInformationActions {
         navigationMenu.gotoBillingPage();
         BasePage.waitUntilPageCompletelyLoaded();
         BasePage.waitUntilElementDisplayed(billingInformationPage.addressBillsInAttentionTo, 60);
-        enterGeneralBillingData(YML_FILE_PROVIDER, UPDATE);
+        enterGeneralBillingDataWithoutPreferredPaymentPolicies(YML_FILE_PROVIDER, UPDATE);
+        enterPreferredPaymentPolicies(YML_FILE_PROVIDER, UPDATE);
 
         // enter Billing Contact Details
         String firstName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_PROVIDER, YML_HEADER,

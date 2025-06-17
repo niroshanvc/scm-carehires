@@ -289,4 +289,29 @@ public class DataConfigurationReader {
 
         return siteCode.toString();
     }
+
+    /**
+     * Generates a random UK mobile number with a valid UK mobile prefix.
+     * Supports various UK mobile number formats starting with 071-075 and 077-079.
+     *
+     * @return A randomly generated UK mobile number (e.g., "07123456789", "07700987654")
+     */
+    public static String generateUkMobileNumber() {
+        // Array of valid UK mobile number prefixes
+        String[] prefixes = {"71", "73", "74", "75", "77", "78", "79"};
+        
+        // Select a random prefix
+        String prefix = prefixes[random.nextInt(prefixes.length)];
+
+        // Start with "07" and add the prefix
+        StringBuilder mobileNumber = new StringBuilder("07"); // UK mobile numbers start with 07
+        mobileNumber.append(prefix);
+        
+        // Generate 7 random digits (0-9)
+        for (int i = 0; i < 7; i++) {
+            mobileNumber.append(random.nextInt(10));
+        }
+        
+        return mobileNumber.toString();
+    }
 }
