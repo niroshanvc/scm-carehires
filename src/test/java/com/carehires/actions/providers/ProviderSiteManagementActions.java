@@ -38,6 +38,7 @@ public class ProviderSiteManagementActions {
 
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
+    private static final String YML_FILE_SMOKE = "provider-create-smoke";
     private static final String EDIT_YML_FILE = "provider-edit";
     private static final String YML_FILE_PROVIDER = "provider-user-update-organization";
     private static final String YML_HEADER = "Site Management";
@@ -312,5 +313,62 @@ public class ProviderSiteManagementActions {
 
         BasePage.clickWithJavaScript(siteManagementPage.updateButton);
         verifyUpdateSuccessMessage();
+    }
+
+    public void addSiteManagementDataForSmoke() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<< Entering Site Management Information >>>>>>>>>>>>>>>>>>>>>>>>");
+
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
+
+        // Log the retrieved value
+        logger.info("< Retrieved provider increment value in SiteManagement: %s", incrementValue);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");
+        }
+
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.genericWait(3000);
+        // add first site
+        BasePage.clickWithJavaScript(siteManagementPage.addNewButton);
+        enterSiteManagementData(YML_FILE_SMOKE, ADD, YML_HEADER_DATASET1);
+        logger.info("<< Entering Site Specialism");
+        BasePage.scrollToWebElement(siteManagementPage.siteTypeDropdown);
+        String[] siteSpecialism = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY,
+                YML_FILE_SMOKE, YML_HEADER, ADD, YML_HEADER_DATASET1, SITE_SPECIALISM)).split(",");
+        BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
+        BasePage.genericWait(500);
+        for (String specialism : siteSpecialism) {
+            BasePage.clickWithJavaScript(getMultiSelectDropdownXpath(specialism));
+        }
+        BasePage.clickWithJavaScript(siteManagementPage.alsoKnownAs);
+
+        BasePage.scrollToWebElement(siteManagementPage.addButton);
+        BasePage.genericWait(10000);
+        BasePage.clickWithJavaScript(siteManagementPage.addButton);
+        verifySuccessMessage();
+        isSiteSaved();
+
+        // add second site
+        BasePage.clickWithJavaScript(siteManagementPage.addNewButton);
+        enterSiteManagementData(YML_FILE_SMOKE, ADD, YML_HEADER_DATASET2);
+        logger.info("< Entering Site Specialism");
+        BasePage.scrollToWebElement(siteManagementPage.siteTypeDropdown);
+        String[] siteSpecialism2 = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY,
+                YML_FILE_SMOKE, YML_HEADER, ADD, YML_HEADER_DATASET2, SITE_SPECIALISM)).split(",");
+        BasePage.clickWithJavaScript(siteManagementPage.siteSpecialismMultiSelectDropdown);
+        BasePage.genericWait(500);
+        for (String specialism : siteSpecialism2) {
+            BasePage.clickWithJavaScript(getMultiSelectDropdownXpath(specialism));
+        }
+        BasePage.clickWithJavaScript(siteManagementPage.alsoKnownAs);
+        BasePage.genericWait(10000);
+        BasePage.clickWithJavaScript(siteManagementPage.addButton);
+
+        BasePage.clickWithJavaScript(siteManagementPage.updateButton);
+        BasePage.waitUntilElementClickable(siteManagementPage.nextButton, 90);
+        BasePage.clickWithJavaScript(siteManagementPage.nextButton);
     }
 }

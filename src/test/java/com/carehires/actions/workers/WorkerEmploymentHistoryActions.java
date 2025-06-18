@@ -36,6 +36,7 @@ public class WorkerEmploymentHistoryActions {
 
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
+    private static final String YML_FILE_SMOKE = "worker-create-smoke";
     private static final String EDIT_YML_FILE = "worker-edit";
     private static final String YML_HEADER = "Employment";
     private static final String YML_SUB_HEADER1 = "Worker History";
@@ -397,5 +398,69 @@ public class WorkerEmploymentHistoryActions {
 
     public void collectWorkerId() {
         getWorkerId();
+    }
+
+    public void enterDataForEmploymentHistoryForSmoke() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<< Entering Employment Information Data >>>>>>>>>>>>>>>>>>>>>");
+
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for worker is not set in GlobalVariables.");
+        }
+
+        BasePage.waitUntilPageCompletelyLoaded();
+
+        // add Dataset1
+        BasePage.clickWithJavaScript(employmentHistoryPage.workerHistoryAddNewButton);
+        enterWorkerHistoryInfo(YML_FILE_SMOKE, ADD, YML_SUB_HEADER_DATASET1);
+
+        //click on Add work history button
+        BasePage.clickWithJavaScript(employmentHistoryPage.addWorkHistoryButton);
+        verifySuccessMessage();
+
+        // add Dataset2
+        BasePage.clickWithJavaScript(employmentHistoryPage.workerHistoryAddNewButton);
+        BasePage.waitUntilElementPresent(employmentHistoryPage.employmentTypeDropdown, 20);
+        enterWorkerHistoryInfo(YML_FILE_SMOKE, ADD, YML_SUB_HEADER_DATASET2);
+
+        //click on Add work history button
+        BasePage.clickWithJavaScript(employmentHistoryPage.addWorkHistoryButton);
+        verifySuccessMessage();
+
+        // TBD: verify care sector related experience and total experience values are calculated correctly
+
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<< Entering Reference Information Data >>>>>>>>>>>>>>>>>>>>>");
+        // add dataset1 - Reference section
+        BasePage.scrollToWebElement(employmentHistoryPage.referenceAddNewButton);
+        BasePage.clickWithJavaScript(employmentHistoryPage.referenceAddNewButton);
+        BasePage.scrollToWebElement(employmentHistoryPage.addReferenceButton);
+
+        enterReferenceInfo(YML_FILE_SMOKE, YML_SUB_HEADER_DATASET1);
+
+        // click on the Add button
+        BasePage.clickWithJavaScript(employmentHistoryPage.addReferenceButton);
+        verifySuccessMessage();
+
+        // add dataset2 - Reference section
+        BasePage.clickWithJavaScript(employmentHistoryPage.referenceAddNewButton);
+        enterReferenceInfo(YML_FILE_SMOKE, YML_SUB_HEADER_DATASET2);
+
+        // click on the Add button
+        BasePage.clickWithJavaScript(employmentHistoryPage.addReferenceButton);
+        verifySuccessMessage();
+
+        // click on the Update button
+        BasePage.waitUntilElementClickable(employmentHistoryPage.updateButton, 90);
+        BasePage.clickWithJavaScript(employmentHistoryPage.updateButton);
+        BasePage.waitUntilElementClickable(employmentHistoryPage.saveButton, 90);
+        BasePage.clickWithJavaScript(employmentHistoryPage.saveButton);
+
+        //verify employment history data saved successfully
+        verifyEmploymentHistorySavedSuccessfully();
+        BasePage.waitUntilElementPresent(employmentHistoryPage.successPopupNoLink, 30);
+        BasePage.clickWithJavaScript(employmentHistoryPage.successPopupNoLink);
     }
 }

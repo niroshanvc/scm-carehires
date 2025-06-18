@@ -1,0 +1,143 @@
+Basic Information:
+  Agency Information:
+    Add:
+      Agency: Automation Agency "<agencyIncrement>"
+
+  Personal Information:
+    Add:
+      WorkerLogo: Worker101.png
+      FirstName: Automation
+      LastName: Worker {{increment}}
+      AlsoKnownAs: AutoWorker {{increment}}
+      WorkerEmailAddress: carehires+worker{{increment}}@zohomail.com
+      PhoneNumberType: Mobile
+      PhoneNumber: "07412001246"
+      DateOfBirth: 28 Feb 2000
+      Gender: Male
+      Nationality: British
+
+  Residential Address Information:
+    Add:
+      Country: United Kingdom
+      PostCode: BL0 9YX
+      CurrentlyLivingInThisAddress: "Yes"
+      From: 18 Oct 2011
+      To: 13 Nov 2019
+      ProofOfAddressDocument: Proof of Address Example.pdf
+
+  Employment Information:
+    Add:
+      WorkerType: Rehabilitation Worker
+      Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+      RegulatorySettings: Not Required (NR)
+      WorkerEmploymentType: PAYE
+      WorkerEmploymentTypeValue: 0012390
+
+  Passport Visa DBS Information:
+    Add:
+      NationalInsuranceNumber: "<insuranceNumber>"
+      ShareCode: "<shareCode>"
+      DbsCertificateNumber: "00153557"
+      IsThereAnyConviction: "No"
+
+  Travel Information:
+    Add:
+      PreferredTravelDistance: 30
+      DrivingLicence: "Yes"
+
+Documents and Proof:
+  Add:
+    CV:
+      Document: carer_CV_template.pdf
+    DBSCertificate:
+      ExpiryDate: 18 Oct 2025
+      Document: DBS_basic_certificate.pdf
+    Passport:
+      ExpiryDate: 18 Nov 2025
+      Document: passport.pdf
+    NationalInsurance:
+      Document: National insurance.pdf
+    ProofOfAddress:
+      Document: Proof of Address.pdf
+    DrivingLicence:
+      ExpiryDate: 18 Dec 2025
+      Document: driving_licence.pdf
+
+Education and Training:
+  Add:
+    Dataset1:
+      Certificate: Autism Awareness
+      ValidUntil: 28 Feb 2027
+      UploadCertificate: education and training-1.pdf
+    Dataset2:
+      Certificate: Anti-Bullying
+      ValidUntil: 28 Feb 2027
+      UploadCertificate: education and training-2.pdf
+
+Emergency Information:
+  Add:
+    Dataset1:
+      ContactName: Wilson Alexander {{increment}}
+      Relationship: Father
+      PrimaryContactNumber: "07413301246"
+      SecondaryContactNumber: "07412001226"
+    Dataset2:
+      ContactName: Tania Quintus {{increment}}
+      Relationship: Sister
+      PrimaryContactNumber: "07413601246"
+      SecondaryContactNumber: "07415001226"
+
+Vaccination and Allergy Information:
+  #  Hepatitis-B,Influenza,MMR,Varicella
+  Add:
+    Dataset1:
+      NameOrType: Covid-19
+      VaccinationDate: 18 Dec 2023
+      VaccinationDocument: vaccination.pdf
+      IsCovid-19Vaccine: "Yes"
+    Dataset2:
+      NameOrType: Varicella
+      VaccinationDate: 11 May 2023
+      VaccinationDocument: vaccination - 2.pdf
+      IsCovid-19Vaccine: "No"
+
+Employment:
+  Worker History:
+    Add:
+      Dataset1:
+        EmploymentType: Full-time employment
+        IsCurrentlyWorkHere: "Yes"
+        CompanyName: Best Care
+        Designation: Development Manager
+        From: 28 Feb 2019
+        To: 15 Aug 2021
+        IsCareSectorRelatedExperience: "Yes"
+        ReasonForLeaving: Career Progression
+        AdditionalNote: >
+          Care workers play a crucial role in providing support and assistance to individuals in need, 
+          ensuring their well-being and comfort.
+      Dataset2:
+        EmploymentType: Full-time employment
+        IsCurrentlyWorkHere: "No"
+        CompanyName: Orange Pvt
+        Designation: Care Assistant
+        From: 20 Feb 2016
+        To: 14 Jan 2019
+        IsCareSectorRelatedExperience: "Yes"
+        ReasonForLeaving: Personal/Family
+        AdditionalNote: >
+          Care workers play a crucial role in providing support and assistance to individuals in need, 
+          ensuring their well-being and comfort.
+  Reference:
+    Add:
+      Dataset1:
+        ReferenceType: Professional Referee
+        UploadFile: Employment History Reference.pdf
+        ReferenceNote: >
+          When crafting your resume, highlight your experience in patient care.
+      Dataset2:
+        ReferenceType: Academic Referee
+        UploadFile: Employment History Reference - 2.pdf
+        ReferenceNote: >
+          When crafting your resume, highlight your experience in patient care, 
+          your ability to communicate effectively, and any relevant certifications you hold.

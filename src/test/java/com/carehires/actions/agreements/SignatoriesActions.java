@@ -17,6 +17,7 @@ public class SignatoriesActions {
     SignatoriesPage signatoriesPage;
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
+    private static final String YML_FILE_SMOKE = "agreement-create-smoke";
     private static final String SKILLS = "With Skills";
     private static final String YML_HEADER = "Signatories";
     private static final String YML_HEADER_AGENCY = "Agency";
@@ -45,22 +46,28 @@ public class SignatoriesActions {
             throw new NullPointerException("Increment value for agreement is not set in GlobalVariables.");
         }
 
-        String agencyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, YML_HEADER_AGENCY, "Name");
+        String agencyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS,
+                YML_HEADER, YML_HEADER_AGENCY, "Name");
         BasePage.clearAndEnterTexts(signatoriesPage.agencyName, agencyName);
 
-        String agencyDesignation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, YML_HEADER_AGENCY, "Designation");
+        String agencyDesignation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS,
+                YML_HEADER, YML_HEADER_AGENCY, "Designation");
         BasePage.clearAndEnterTexts(signatoriesPage.agencyDesignation, agencyDesignation);
 
-        String agencyEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, YML_HEADER_AGENCY, "Email");
+        String agencyEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS,
+                YML_HEADER, YML_HEADER_AGENCY, "Email");
         BasePage.clearAndEnterTexts(signatoriesPage.agencyEmail, agencyEmail);
 
-        String providerName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, YML_HEADER_PROVIDER, "Name");
+        String providerName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS,
+                YML_HEADER, YML_HEADER_PROVIDER, "Name");
         BasePage.clearAndEnterTexts(signatoriesPage.providerName, providerName);
 
-        String providerDesignation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, YML_HEADER_PROVIDER, "Designation");
+        String providerDesignation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS,
+                YML_HEADER, YML_HEADER_PROVIDER, "Designation");
         BasePage.clearAndEnterTexts(signatoriesPage.providerDesignation, providerDesignation);
 
-        String providerEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, YML_HEADER_PROVIDER, "Email");
+        String providerEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS,
+                YML_HEADER, YML_HEADER_PROVIDER, "Email");
         BasePage.clearAndEnterTexts(signatoriesPage.providerEmail, providerEmail);
 
         BasePage.clickWithJavaScript(signatoriesPage.agreementCheckbox);
@@ -82,5 +89,47 @@ public class SignatoriesActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Worker rate is not created!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(signatoriesPage.successMessage, 20);
+    }
+
+    public void addSignatoryInfoForAgreement() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Signatories Info >>>>>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("agreement_incrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for agreement is not set in GlobalVariables.");
+        }
+
+        String agencyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, SKILLS,
+                YML_HEADER, YML_HEADER_AGENCY, "Name");
+        BasePage.clearAndEnterTexts(signatoriesPage.agencyName, agencyName);
+
+        String agencyDesignation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE,
+                SKILLS, YML_HEADER, YML_HEADER_AGENCY, "Designation");
+        BasePage.clearAndEnterTexts(signatoriesPage.agencyDesignation, agencyDesignation);
+
+        String agencyEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, SKILLS,
+                YML_HEADER, YML_HEADER_AGENCY, "Email");
+        BasePage.clearAndEnterTexts(signatoriesPage.agencyEmail, agencyEmail);
+
+        String providerName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, SKILLS,
+                YML_HEADER, YML_HEADER_PROVIDER, "Name");
+        BasePage.clearAndEnterTexts(signatoriesPage.providerName, providerName);
+
+        String providerDesignation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE,
+                SKILLS, YML_HEADER, YML_HEADER_PROVIDER, "Designation");
+        BasePage.clearAndEnterTexts(signatoriesPage.providerDesignation, providerDesignation);
+
+        String providerEmail = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, SKILLS,
+                YML_HEADER, YML_HEADER_PROVIDER, "Email");
+        BasePage.clearAndEnterTexts(signatoriesPage.providerEmail, providerEmail);
+
+        BasePage.clickWithJavaScript(signatoriesPage.agreementCheckbox);
+        BasePage.clickTabKey(signatoriesPage.agreementCheckbox);
+        BasePage.clickWithJavaScript(signatoriesPage.finaliseAndCheckButton);
+        confirmAgreementCreation();
+        verifyWorkerRateIsAddedSuccessfully();
     }
 }

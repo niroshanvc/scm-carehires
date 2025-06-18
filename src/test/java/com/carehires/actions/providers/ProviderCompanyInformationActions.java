@@ -41,6 +41,7 @@ public class ProviderCompanyInformationActions {
 
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
+    private static final String YML_FILE_SMOKE = "provider-create-smoke";
     private static final String EDIT_YML_FILE = "provider-edit";
     private static final String YML_FILE_PROVIDER = "provider-user-update-organization";
     private static final String YML_HEADER = "Company Information";
@@ -329,14 +330,35 @@ public class ProviderCompanyInformationActions {
     }
 
     public void completeProviderCreationSteps() {
-        enterCompanyInformation();
-        siteManagementActions.addSiteManagementData();
-        workerStaffActions.addingWorkerStaffData();
+        enterCompanyInformationForSmoke();
+        siteManagementActions.addSiteManagementDataForSmoke();
+        workerStaffActions.addingWorkerStaffDataForSmoke();
         workerStaffActions.clickingOnAddButton();
         workerStaffActions.moveToUserManagementPage();
-        userManagementActions.addUser();
-        billingInformationActions.savingGeneralBillingInformation();
+        userManagementActions.addUserForSmoke();
+        billingInformationActions.savingGeneralBillingInformationForSmoke();
         subContractingAgreementActions.clickOnCompleteProfileButton();
+    }
+
+    public void enterCompanyInformationForSmoke() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<< Entering Company Information >>>>>>>>>>>>>>>>>>>>>");
+
+        // Retrieve the current increment value for the provider (from the file)
+        int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
+        logger.info("< Initial increment value retrieved for provider: {}", incrementValue);
+
+
+        enterDataForInputFields(YML_FILE_SMOKE, ADD);
+        BasePage.genericWait(5000);
+        BasePage.clickWithJavaScript(companyInformationPage.saveButton);
+        verifySuccessMessage();
+        BasePage.waitUntilElementClickable(companyInformationPage.updateButton, 120);
+        isCompanyInfoSaved();
+
+        // Store in GlobalVariables for use by subsequent methods
+        GlobalVariables.setVariable(ENTITY + "_incrementValue", incrementValue);
+        logger.info("< Stored current provider_incrementValue {} in GlobalVariables", incrementValue);
     }
 
     public void updateProviderProfileData() {

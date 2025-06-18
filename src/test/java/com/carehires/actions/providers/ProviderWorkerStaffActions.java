@@ -29,6 +29,7 @@ public class ProviderWorkerStaffActions {
 
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
+    private static final String YML_FILE_SMOKE = "provider-create-smoke";
     private static final String EDIT_YML_FILE = "provider-edit";
     private static final String YML_FILE_PROVIDER = "provider-user-update-organization";
     private static final String YML_HEADER = "Worker Staff Management";
@@ -312,5 +313,38 @@ public class ProviderWorkerStaffActions {
         uploadProofOfDemandDocument(YML_FILE_PROVIDER, UPDATE);
         BasePage.clickWithJavaScript(workerStaffPage.updateButton);
         verifyUpdateSuccessMessage();
+    }
+
+    public void addingWorkerStaffDataForSmoke() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<< Entering Worker Staff information >>>>>>>>>>>>>>>>>>>>>>>>");
+
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
+
+        // Log the retrieved value
+        logger.info("< Retrieved provider increment value in WorkerStaff: %s", incrementValue);
+
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering staff information >>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.clickWithJavaScript(workerStaffPage.addNewButton);
+
+        enterWorkerStaffManagementData(YML_FILE_SMOKE, ADD);
+
+        //select skill(s)
+        // Add null check before calling split
+        String skillsValue = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, YML_HEADER, ADD, SKILLS);
+        if (skillsValue != null) {
+            String[] skills = skillsValue.split(",");
+            BasePage.waitUntilElementClickable(workerStaffPage.skills, 20);
+            BasePage.clickWithJavaScript(workerStaffPage.skills);
+            BasePage.genericWait(1500);
+            for (String skill : skills) {
+                BasePage.clickWithJavaScript(WorkerStaffPage.getDropdownXpath(skill));
+            }
+        } else {
+            logger.warn("< No skills found in configuration file for worker staff");
+        }
+
+        uploadProofOfDemandDocument(YML_FILE_SMOKE, ADD);
     }
 }

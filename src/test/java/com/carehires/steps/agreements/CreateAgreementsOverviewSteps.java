@@ -10,4 +10,9 @@ public class CreateAgreementsOverviewSteps {
     public void enterAgreementOverviewData() {
         agreementsOverview.enterOverviewInfo();
     }
+
+    @And("User enters agreement overview data")
+    public void enteringAgreementOverviewData() {
+        agreementsOverview.enterOverviewInfoForSmoke();
+    }
 }

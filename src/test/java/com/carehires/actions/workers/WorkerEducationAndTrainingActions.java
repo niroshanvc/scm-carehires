@@ -33,6 +33,7 @@ public class WorkerEducationAndTrainingActions {
 
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
+    private static final String YML_FILE_SMOKE = "worker-create-smoke";
     private static final String EDIT_YML_FILE = "worker-edit";
     private static final String YML_HEADER = "Education and Training";
     private static final String YML_HEADER_DATASET1 = "Dataset1";
@@ -195,5 +196,40 @@ public class WorkerEducationAndTrainingActions {
 
     private void markAsCareAcademyIssuedCheckbox1() {
         BasePage.clickWithJavaScript(educationAndTrainingPage.caIssuedCheckbox1);
+    }
+
+    public void enterDataForEducationAndTrainingForSmoke() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Entering Education and Training Data >>>>>>>>>>>>>>>>>>>>>>");
+
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for worker is not set in GlobalVariables.");
+        }
+
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.clickWithJavaScript(educationAndTrainingPage.addButton);
+
+        //enter first set of data
+        addEducationAndTrainingEntry(YML_FILE_SMOKE, ADD, YML_HEADER_DATASET1);
+        verifySuccessMessage();
+        verifyCertificateValidityStatus();
+
+        //enter second set of data
+        BasePage.clickWithJavaScript(educationAndTrainingPage.addNewButton);
+        addEducationAndTrainingEntry(YML_FILE_SMOKE, ADD, YML_HEADER_DATASET2);
+        verifySuccessMessage();
+        verifyCertificateValidityStatus();
+
+        //moving to the next section
+        BasePage.clickWithJavaScript(educationAndTrainingPage.updateButton);
+        markAsCareAcademyIssuedCheckbox1();
+        BasePage.waitUntilElementPresent(educationAndTrainingPage.saveButton, 60);
+        BasePage.clickWithJavaScript(educationAndTrainingPage.saveButton);
+
+        //move to next section
+        verifySaveButtonSuccessMessage();
     }
 }

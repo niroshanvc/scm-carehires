@@ -51,6 +51,7 @@ public class BasePage {
     private static final String NO_SANDBOX = "--no-sandbox";
     private static final String DISABLE_DEV = "--disable-dev-shm-usage";
     private static final String JAVASCRIPT_CLICK = "arguments[0].click();";
+    private static final String READONLY = "readonly";
 
     //for parallel execution
     private static final ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
@@ -571,36 +572,40 @@ public class BasePage {
         typeWithStringBuilder(element, texts);
     }
 
-    public static void clearFirstAndEnterTexts(WebElement element, String texts, int timeOutSeconds) { // Added timeout
+    // Java
+    public static void clearFirstAndEnterTexts(WebElement element, String texts, int timeOutSeconds) {
         logger.info("******************** Attempting to clear and enter texts in: %s",
                 elementToString(element));
 
         try {
-            // Wait for the element to be visible and enabled before trying to clear
-            // You might even want a specific wait for it to be an input field if applicable
-            WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(timeOutSeconds));
             wait.until(ExpectedConditions.and(
                     ExpectedConditions.visibilityOf(element),
-                    ExpectedConditions.elementToBeClickable(element) // Ensures it's visible and enabled
+                    ExpectedConditions.elementToBeClickable(element)
             ));
 
-            logger.info("Element %s is visible and enabled. IsDisplayed: %s, IsEnabled: %s. Attempting " +
-                    "to clear...", elementToString(element), element.isDisplayed(), element.isEnabled());
+            String readOnly = element.getAttribute(READONLY);
+            logger.info("Element %s is visible and enabled. IsDisplayed: %s, IsEnabled: %s, ReadOnly: %s. " +
+                            "Attempting to clear...",
+                    elementToString(element), element.isDisplayed(), element.isEnabled(), readOnly);
 
-            element.clear(); // The problematic line
-            logger.info("Successfully cleared element: %s", elementToString(element));
-
-            typeWithStringBuilder(element, texts); // Assuming this method also needs the element to be interactable
+            if (readOnly == null || readOnly.equalsIgnoreCase("false")) {
+                element.clear();
+                logger.info("Successfully cleared element: %s", elementToString(element));
+                typeWithStringBuilder(element, texts);
+            } else {
+                logger.warn("Element %s is readonly. Skipping clear and type.", elementToString(element));
+            }
 
         } catch (TimeoutException e) {
             logger.error("TimeoutException: Element was not ready for clear/sendkeys after waiting for %s " +
                             "seconds. Element: %s",
                     timeOutSeconds, elementToString(element), e);
-            // Log current state if possible, even if it's about to throw
             try {
                 logger.error("Current state before throw - IsDisplayed: %s, IsEnabled: %s, TagName: %s, " +
-                                "ReadOnly: %s", element.isDisplayed(), element.isEnabled(), element.getTagName(),
-                        element.getAttribute("readonly"));
+                                "ReadOnly: %s",
+                        element.isDisplayed(), element.isEnabled(), element.getTagName(), element.getAttribute(
+                                READONLY));
             } catch (Exception ex) {
                 logger.error("Could not get element state during TimeoutException logging", ex);
             }
@@ -608,12 +613,8 @@ public class BasePage {
         } catch (InvalidElementStateException ies) {
             logger.error("InvalidElementStateException during clear or type. Element: %s. IsDisplayed: %s, " +
                             "IsEnabled: %s, TagName: %s, ReadOnly: %s",
-                    elementToString(element),
-                    element.isDisplayed(), // This might fail if element is truly weird
-                    element.isEnabled(),   // This might fail too
-                    element.getTagName(),
-                    element.getAttribute("readonly"),
-                    ies);
+                    elementToString(element), element.isDisplayed(), element.isEnabled(), element.getTagName(),
+                    element.getAttribute(READONLY), ies);
             throw ies;
         } catch (Exception exc) {
             logger.error("An unexpected error occurred in clearFirstAndEnterTexts for element: %s . " +

@@ -22,6 +22,7 @@ public class ProviderBillingInformationActions {
 
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
+    private static final String YML_FILE_SMOKE = "provider-create-smoke";
     private static final String EDIT_YML_FILE = "provider-edit";
     private static final String YML_FILE_PROVIDER = "provider-user-update-organization";
     private static final String YML_HEADER = "Billing Information";
@@ -315,5 +316,31 @@ public class ProviderBillingInformationActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Billing information success message is wrong!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(billingInformationPage.successMessage, 20);
+    }
+
+    public void savingGeneralBillingInformationForSmoke() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering General Billing Information >>>>>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable(PROVIDER_INCREMENT, Integer.class);
+
+        // Log the retrieved value
+        logger.info("< Retrieved provider increment value in BillingInformation: %s", incrementValue);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");
+        }
+
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.waitUntilElementDisplayed(billingInformationPage.addressBillsInAttentionTo, 60);
+
+        enterGeneralBillingDataWithoutPreferredPaymentPolicies(YML_FILE_SMOKE, ADD);
+        enterPreferredPaymentPolicies(YML_FILE_SMOKE, ADD);
+
+        BasePage.genericWait(5000);
+
+        BasePage.clickWithJavaScript(billingInformationPage.saveButton);
+
+        verifySuccessMessage();
     }
 }

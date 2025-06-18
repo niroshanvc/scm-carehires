@@ -39,6 +39,7 @@ public class CreateAgencyBasicInformationActions {
 
     private static final String ENTITY = "agency";
     private static final String YML_FILE = "agency-create";
+    private static final String YML_FILE_SMOKE = "agency-create-smoke";
     private static final String EDIT_YML_FILE = "agency-edit";
     private static final String YML_HEADER = "Basic Info";
     private static final String ADD = "Add";
@@ -169,12 +170,33 @@ public class CreateAgencyBasicInformationActions {
     public void completeCreateAgencyProcess() {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Completing new agency creation >>>>>>>>>>>>>>>>>>>>");
-        enterBasicInfo();
+        enterBasicInfoForSmoke();
         creditServiceActions.enterCreditServiceInformation();
         businessLocationsActions.addLocationDetails();
         staffActions.addStaff();
         billingProfileManagementActions.addBilling();
         userManagementActions.addUser();
         subContractingAgreementActions.clickOnCompleteProfileButton();
+    }
+
+    private void enterBasicInfoForSmoke()  {
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Entering basic information >>>>>>>>>>>>>>>>>>>>>>");
+
+        // Retrieve the current increment value for the agency
+        int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
+        logger.info("Initializing increment value retrieved for agency: {}", incrementValue);
+
+        enterData(YML_FILE_SMOKE, ADD);
+        BasePage.genericWait(5000);
+
+        BasePage.clickWithJavaScript(createAgencyBasicInfoPage.saveButton);
+        BasePage.waitUntilElementClickable(createAgencyBasicInfoPage.skipButton, 90);
+
+        isBasicInfoSaved();
+
+        // Store in GlobalVariables for use by subsequent methods
+        GlobalVariables.setVariable(ENTITY + "_incrementValue", incrementValue);
+        logger.info("<< Stored current agency_incrementValue {} in GlobalVariables >>", incrementValue);
     }
 }

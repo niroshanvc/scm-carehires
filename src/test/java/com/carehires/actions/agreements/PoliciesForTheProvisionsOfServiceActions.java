@@ -12,6 +12,7 @@ public class PoliciesForTheProvisionsOfServiceActions {
     PoliciesForTheProvisionsOfServicePage policiesPage;
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
+    private static final String YML_FILE_SMOKE = "agreement-create-smoke";
     private static final String SKILLS = "With Skills";
     private static final String YML_HEADER = "Policies for the Provisions of Service";
 
@@ -36,6 +37,46 @@ public class PoliciesForTheProvisionsOfServiceActions {
         }
 
         String creditPeriodStr = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Credit Period");
+        assert creditPeriodStr != null;
+        int creditPeriod = Integer.parseInt(creditPeriodStr);
+        switch(creditPeriod) {
+            case 7:
+                BasePage.clickWithJavaScript(policiesPage.sevenDaysCreditPeriod);
+                break;
+            case 14:
+                BasePage.clickWithJavaScript(policiesPage.fourteenDaysCreditPeriod);
+                break;
+            case 21:
+                BasePage.clickWithJavaScript(policiesPage.twentyOneDaysCreditPeriod);
+                break;
+            case 28:
+                BasePage.clickWithJavaScript(policiesPage.twentyEightDaysCreditPeriod);
+                break;
+            case 30:
+                BasePage.clickWithJavaScript(policiesPage.thirtyDaysCreditPeriod);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid credit period entered: " + creditPeriodStr);
+        }
+
+        BasePage.clickWithJavaScript(policiesPage.timesheetApprovalCheckbox);
+        BasePage.clickTabKey(policiesPage.timesheetApprovalCheckbox);
+        BasePage.waitUntilDisabledAttributeDisappears(policiesPage.continueButton, 30);
+        BasePage.clickWithJavaScript(policiesPage.continueButton);
+    }
+
+    public void enterPoliciesForSmokeTest() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Cancellation Policy Info >>>>>>>>>>>>>>>>>>>>>>>");
+        String billingCycle = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, SKILLS,
+                YML_HEADER, "Billing Cycle");
+        assert billingCycle != null;
+        if (billingCycle.equalsIgnoreCase("weekly")) {
+            BasePage.clickWithJavaScript(policiesPage.weeklyBillingCycle);
+        }
+
+        String creditPeriodStr = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, SKILLS,
+                YML_HEADER, "Credit Period");
         assert creditPeriodStr != null;
         int creditPeriod = Integer.parseInt(creditPeriodStr);
         switch(creditPeriod) {

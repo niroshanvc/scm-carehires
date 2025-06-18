@@ -204,4 +204,9 @@ public class WorkerBasicInformationPage {
     public String getWorkerTypeDropdownOptionXpath(String option) {
         return String.format("//nb-option[text()='%s ']", option);
     }
+
+    public static final By threeDotsMenuLocator = By.cssSelector("p.text-icon");
+
+    public static final By updateProfileLinkLocator = By.xpath(
+            "//span[@class='menu-text' and text()='Update Profile']");
 }

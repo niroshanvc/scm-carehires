@@ -24,6 +24,7 @@ public class WorkerDocumentsAndProofActions {
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
     private static final String EDIT_YML_FILE = "worker-edit";
+    private static final String YML_FILE_SMOKE = "worker-create-smoke";
     private static final String YML_FILE_NON_BRITISH = "scenario-non-British-worker";
     private static final String YML_HEADER = "Documents and Proof";
     private static final String YML_HEADER_BASIC_INFO = "Basic Information";
@@ -94,6 +95,44 @@ public class WorkerDocumentsAndProofActions {
         verifyDocumentUploadedSuccessfully(documentsAndProofPage.proofOfAddressStatus);
 
         enterDrivingLicence(YML_FILE, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.drivingLicenceStatus);
+
+        BasePage.clickWithJavaScript(documentsAndProofPage.saveButton);
+        verifySuccessMessage();
+    }
+
+    public void enterDocumentsAndProofDataForSmoke() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<< Entering Document and Proof Information >>>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for worker is not set in GlobalVariables.");
+        }
+
+        BasePage.waitUntilPageCompletelyLoaded();
+
+        // verify document upload field is available
+        By drivingLicenceTextField = By.xpath(WorkerDocumentsAndProofPage.DRIVING_LICENCE_FIELD_XPATH);
+        BasePage.verifyElementIsPresentAfterWait(drivingLicenceTextField, 60);
+
+        enterCvInfo(YML_FILE_SMOKE, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.cvFileStatus);
+
+        enterDbsCertificateInfo(YML_FILE_SMOKE, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.dbsCertificateStatus);
+
+        enterPassportDocument(YML_FILE_SMOKE, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.passportDocumentStatus);
+
+        enterNationalInsuranceDocument(YML_FILE_SMOKE, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.nationalInsuranceStatus);
+
+        enterProofOfAddress(YML_FILE_SMOKE, ADD);
+        verifyDocumentUploadedSuccessfully(documentsAndProofPage.proofOfAddressStatus);
+
+        enterDrivingLicence(YML_FILE_SMOKE, ADD);
         verifyDocumentUploadedSuccessfully(documentsAndProofPage.drivingLicenceStatus);
 
         BasePage.clickWithJavaScript(documentsAndProofPage.saveButton);

@@ -38,6 +38,7 @@ public class ProviderUserManagementActions {
 
     private static final String ENTITY = "provider";
     private static final String YML_FILE = "provider-create";
+    private static final String YML_FILE_SMOKE = "provider-create-smoke";
     private static final String EDIT_YML_FILE = "provider-edit";
     private static final String YML_FILE_PROVIDER = "provider-user-update-organization";
     private static final String YML_HEADER = "User";
@@ -324,5 +325,65 @@ public class ProviderUserManagementActions {
     private void moveToLastThreeDots() {
         List<WebElement> list = userManagement.threeDots;
         BasePage.mouseHoverOverElement(list.get(list.size() - 1));
+    }
+
+    public void addUserForSmoke() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Entering User Information >>>>>>>>>>>>>>>>>>>>>>>>>");
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("provider_incrementValue", Integer.class);
+
+        // Log the retrieved value
+        logger.info("< Retrieved provider increment value in UserManagement: %s", incrementValue);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for provider is not set in GlobalVariables.");
+        }
+
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.genericWait(3000);
+        BasePage.clickWithJavaScript(userManagement.addNewButton);
+
+        String email = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, YML_HEADER, ADD, "email");
+        BasePage.genericWait(2000);
+
+        //wait until email get validated
+        genericUtils.waitUntilEmailAddressValidatedForUniqueness(email, userManagement.emailAddress,
+                userManagement.name);
+        enterUserManagementData(YML_FILE_SMOKE, ADD);
+
+        BasePage.clickWithJavaScript(userManagement.assignToSiteDropdown);
+        BasePage.waitUntilElementClickable(userManagement.allAvailableOptions.get(0), 20);
+        // select all sites
+        BasePage.clickWithJavaScript(userManagement.allAvailableOptions.get(0));
+        // close the assign to site dropdown
+        BasePage.clickWithJavaScript(userManagement.phone);
+
+        String authoriser = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, YML_HEADER, ADD,
+                "MarkAsAnAuthoriser");
+        assert authoriser != null;
+        BasePage.scrollToWebElement(userManagement.addButton);
+        if(authoriser.equalsIgnoreCase("yes")) {
+            BasePage.clickWithJavaScript(userManagement.markAsAnAuthoriserToggle);
+        }
+
+        String[] userAccessLevel  = Objects.requireNonNull(DataConfigurationReader.readDataFromYmlFile(ENTITY,
+                YML_FILE_SMOKE, YML_HEADER, ADD, USER_ACCESS_LEVEL)).split(",");
+        BasePage.clickWithJavaScript(userManagement.userAccessLevel);
+        BasePage.genericWait(1000);
+        for (String accessLevel : userAccessLevel) {
+            BasePage.clickWithJavaScript(userManagement.getDropdownOptionXpath(accessLevel));
+        }
+
+        BasePage.genericWait(10000);
+        BasePage.clickWithJavaScript(userManagement.addButton);
+        verifySuccessMessage();
+        isUserAdded();
+
+        BasePage.genericWait(10000);
+        BasePage.clickWithJavaScript(userManagement.updateButton);
+        BasePage.genericWait(5000);
+        BasePage.waitUntilElementDisplayed(userManagement.nextButton, 60);
+        BasePage.clickWithJavaScript(userManagement.nextButton);
     }
 }

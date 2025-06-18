@@ -22,6 +22,7 @@ public class CreateAgreementsOverviewActions {
     private static final String ENTITY = "agreement";
     private static final String SKILLS = "With Skills";
     private static final String YML_FILE = "agreement-create";
+    private static final String YML_FILE_SMOKE = "agreement-create-smoke";
     private static final String YML_HEADER = "Agreement Overview";
 
     private static final Logger logger = LogManager.getLogger(CreateAgreementsOverviewActions.class);
@@ -47,7 +48,8 @@ public class CreateAgreementsOverviewActions {
         int providerIncrementValue = DataConfigurationReader.getCurrentIncrementValue("provider");
 
         // Read agency name from YAML and replace <agencyIncrement> placeholder
-        String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Agency");
+        String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS,
+                YML_HEADER, "Agency");
         assert agencyTemplate != null;
         String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
         agency = agency.replace("\"", "").trim();
@@ -70,8 +72,8 @@ public class CreateAgreementsOverviewActions {
         BasePage.clickWithJavaScript(agreementsOverviewPage.getDropdownOptionXpath(agencyLocation));
 
         // Read provider name from YAML and replace <providerIncrement> placeholder
-        String careProviderTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
-                "Care Provider");
+        String careProviderTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS,
+                YML_HEADER, "Care Provider");
         assert careProviderTemplate != null;
         String careProvider = careProviderTemplate.replace("<providerIncrement>", String.valueOf(
                 providerIncrementValue));
@@ -83,20 +85,23 @@ public class CreateAgreementsOverviewActions {
         BasePage.clickWithJavaScript(agreementsOverviewPage.getDropdownOptionXpath(careProvider));
         BasePage.genericWait(2000);
 
-        String siteTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER, "Site");
+        String siteTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS,
+                YML_HEADER, "Site");
         assert siteTemplate != null;
         String site = siteTemplate.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
         site = site.replace("\"", "").trim();
         BasePage.clickWithJavaScript(agreementsOverviewPage.siteDropdown);
         BasePage.waitUntilElementClickable(agreementsOverviewPage.getDropdownOptionXpath(site), 30);
         BasePage.clickWithJavaScript(agreementsOverviewPage.selectAllSitesCheckbox);
-        String isAllSelected = BasePage.getAttributeValue(agreementsOverviewPage.selectAllSitesCheckboxStatus, "class");
+        String isAllSelected = BasePage.getAttributeValue(agreementsOverviewPage.selectAllSitesCheckboxStatus,
+                "class");
 
         // Check if all sites are selected, if not, select all sites
         int tries = 0;
         while (!isAllSelected.contains("selected") && tries < 3) {
             BasePage.clickWithJavaScript(agreementsOverviewPage.selectAllSitesCheckbox);
-            isAllSelected = BasePage.getAttributeValue(agreementsOverviewPage.selectAllSitesCheckboxStatus, "class");
+            isAllSelected = BasePage.getAttributeValue(agreementsOverviewPage.selectAllSitesCheckboxStatus,
+                    "class");
             tries++;
         }
 
@@ -125,5 +130,80 @@ public class CreateAgreementsOverviewActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Agreement is not created!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(agreementsOverviewPage.successMessage, 20);
+    }
+
+    public void enterOverviewInfoForSmoke() {
+        BasePage.waitUntilPageCompletelyLoaded();
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering Agreement Overview Info >>>>>>>>>>>>>>>>>>>>>>>");
+
+        // Retrieve the current increment value for the provider (from the file)
+        int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
+
+        // Retrieve the latest agency and provider increment values
+        int agencyIncrementValue = DataConfigurationReader.getCurrentIncrementValue("agency");
+        int providerIncrementValue = DataConfigurationReader.getCurrentIncrementValue("provider");
+
+        // Read agency name from YAML and replace <agencyIncrement> placeholder
+        String agencyTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, SKILLS,
+                YML_HEADER, "Agency");
+        assert agencyTemplate != null;
+        String agency = agencyTemplate.replace("<agencyIncrement>", String.valueOf(agencyIncrementValue));
+        agency = agency.replace("\"", "").trim();
+
+        BasePage.waitUntilElementClickable(agreementsOverviewPage.agencyInput, 60);
+        BasePage.doubleClick(agreementsOverviewPage.agencyInput);
+        BasePage.genericWait(2000);
+        By by = By.xpath(agreementsOverviewPage.getDropdownOptionXpath(agency));
+        BasePage.waitUntilVisibilityOfElementLocated(by, 20);
+        BasePage.scrollToWebElement(agreementsOverviewPage.getDropdownOptionXpath(agency));
+        BasePage.clickWithJavaScript(agreementsOverviewPage.getDropdownOptionXpath(agency));
+        BasePage.genericWait(2000);
+
+        String agencyLocation = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE,
+                SKILLS, YML_HEADER, "Agency Location");
+        BasePage.clickWithJavaScript(agreementsOverviewPage.agencyLocationDropdown);
+        BasePage.waitUntilElementClickable(agreementsOverviewPage.getDropdownOptionXpath(agencyLocation), 30);
+        By agencyLocationBy = By.xpath(agreementsOverviewPage.getDropdownOptionXpath(agencyLocation));
+        BasePage.waitUntilVisibilityOfElementLocated(agencyLocationBy, 20);
+        BasePage.clickWithJavaScript(agreementsOverviewPage.getDropdownOptionXpath(agencyLocation));
+
+        // Read provider name from YAML and replace <providerIncrement> placeholder
+        String careProviderTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE,
+                SKILLS, YML_HEADER, "Care Provider");
+        assert careProviderTemplate != null;
+        String careProvider = careProviderTemplate.replace("<providerIncrement>", String.valueOf(
+                providerIncrementValue));
+        careProvider = careProvider.replace("\"", "").trim();
+        BasePage.doubleClick(agreementsOverviewPage.careProviderInput);
+        By careProviderBy = By.xpath(agreementsOverviewPage.getDropdownOptionXpath(careProvider));
+        BasePage.waitUntilVisibilityOfElementLocated(careProviderBy, 20);
+        BasePage.scrollToWebElement(agreementsOverviewPage.getDropdownOptionXpath(careProvider));
+        BasePage.clickWithJavaScript(agreementsOverviewPage.getDropdownOptionXpath(careProvider));
+        BasePage.genericWait(2000);
+
+        String siteTemplate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE,
+                SKILLS, YML_HEADER, "Site");
+        assert siteTemplate != null;
+        String site = siteTemplate.replace("<providerIncrement>", String.valueOf(providerIncrementValue));
+        site = site.replace("\"", "").trim();
+        BasePage.clickWithJavaScript(agreementsOverviewPage.siteDropdown);
+        BasePage.waitUntilElementClickable(agreementsOverviewPage.getDropdownOptionXpath(site), 30);
+        BasePage.clickWithJavaScript(agreementsOverviewPage.selectAllSitesCheckbox);
+        String isAllSelected = BasePage.getAttributeValue(agreementsOverviewPage.selectAllSitesCheckboxStatus, "class");
+
+        // Check if all sites are selected, if not, select all sites
+        int tries = 0;
+        while (!isAllSelected.contains("selected") && tries < 3) {
+            BasePage.clickWithJavaScript(agreementsOverviewPage.selectAllSitesCheckbox);
+            isAllSelected = BasePage.getAttributeValue(agreementsOverviewPage.selectAllSitesCheckboxStatus, "class");
+            tries++;
+        }
+
+        BasePage.waitUntilElementClickable(agreementsOverviewPage.continueButton, 60);
+        BasePage.clickWithJavaScript(agreementsOverviewPage.continueButton);
+        verifySuccessMessage();
+
+        // Store the increment value in GlobalVariables for reuse in other steps
+        GlobalVariables.setVariable("agreement_incrementValue", incrementValue);
     }
 }
