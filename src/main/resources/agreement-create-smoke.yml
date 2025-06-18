@@ -1,12 +1,9 @@
 With Skills:
   Agreement Overview:
-#    Agency: Automation Agency "<agencyIncrement>"
-    Agency: Automation Agency 559376
+    Agency: Automation Agency "<agencyIncrement>"
     Agency Location: North London
-#    Care Provider: Automation Provider "<providerIncrement>"
-    Care Provider: Automation Provider 797278
-#    Site: BioRevolution Care "<providerIncrement>"
-    Site: BioRevolution Care 797278
+    Care Provider: Automation Provider "<providerIncrement>"
+    Site: BioRevolution Care "<providerIncrement>"
   Worker Rates:
     Worker Type: Rehabilitation Worker
     Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
