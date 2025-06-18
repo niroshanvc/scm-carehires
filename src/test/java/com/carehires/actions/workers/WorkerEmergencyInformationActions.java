@@ -20,6 +20,7 @@ public class WorkerEmergencyInformationActions {
 
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
+    private static final String YML_FILE_SMOKE = "worker-create-smoke";
     private static final String EDIT_YML_FILE = "worker-edit";
     private static final String YML_HEADER = "Emergency Information";
     private static final String ADD = "Add";
@@ -161,5 +162,40 @@ public class WorkerEmergencyInformationActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Unable to edit emergency contact!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(emergencyInformationPage.successMessage, 20);
+    }
+
+    public void enterDataForEmergencyInformationForSmoke() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<< Entering Emergency Information Data >>>>>>>>>>>>>>>>>>>>>");
+
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for worker is not set in GlobalVariables.");
+        }
+
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.clickWithJavaScript(emergencyInformationPage.addNewButton);
+
+        //enter first set of data
+        enterEmergencyContactInfo(YML_FILE_SMOKE, ADD, YML_HEADER_DATASET1);
+        // click on the Add button
+        BasePage.clickWithJavaScript(emergencyInformationPage.addButton);
+        verifySuccessMessage();
+
+        //enter second set of data
+        BasePage.waitUntilElementClickable(emergencyInformationPage.addNewButton, 30);
+        BasePage.clickWithJavaScript(emergencyInformationPage.addNewButton);
+        enterEmergencyContactInfo(YML_FILE_SMOKE, ADD, YML_HEADER_DATASET2);
+        // click on the Add button
+        BasePage.clickWithJavaScript(emergencyInformationPage.addButton);
+        verifySuccessMessage();
+
+        // click on the Update button
+        BasePage.waitUntilElementClickable(emergencyInformationPage.updateButton, 90);
+        BasePage.clickWithJavaScript(emergencyInformationPage.updateButton);
+        BasePage.waitUntilElementClickable(emergencyInformationPage.saveButton, 90);
+        BasePage.clickWithJavaScript(emergencyInformationPage.saveButton);
     }
 }

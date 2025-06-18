@@ -1,0 +1,92 @@
+Company Information:
+  Add:
+    ProviderLogo: Provider101.png
+    CompanyName: Automation Provider {{increment}}
+    BusinessRegistrationNumber: 12346678
+    CompanyType: Limited Company
+    Website: https://www.automationproviders.com
+    ProviderPostCode: BL0 9YX
+    PhoneNumberType: Mobile
+    PhoneNumber: "07412001246"
+    AreYouVatRegistered: "Yes"
+    VatNo: "1025200012"
+    VatRegisteredDocumentName: VAT-Reg-doc.pdf
+    AreYouVatExempt: "Yes"
+    VatExemptDocumentName: vat-exemption-certificate.pdf
+    AnnualCompanyTurnOverIs: Equal or Over 10.2M
+    CompanyBalanceSheetTotalIs: Equal or Over 5.2M
+    AverageNumberOfEmployees: Equal or Over 50
+
+Site Management:
+  Add:
+    Dataset1:
+      SiteName: BioRevolution Care {{increment}}
+      SiteType: Nursing
+      SiteSpecialism: Adult,Autism,Elderly,Nursing
+      AlsoKnownAs: BioRevolution{{increment}}
+      SiteEmail: carehires+site1pr{{increment}}@zohomail.com
+      PostalCode: BL0 9YX
+      NoOfBeds: 25
+      SiteCode: "<siteCode>"
+      PhoneNumberType: "Other"
+      PhoneNumber: "07412001246"
+      JobNotificationAddress: carehires+prjobnot{{increment}}@zohomail.com
+      ApprovalNotificationAddress: carehires+prappnot{{increment}}@zohomail.com
+    Dataset2:
+      SiteName: Automation Master {{increment}}
+      SiteType: Nursing
+      SiteSpecialism: Mental Health,Learning
+      AlsoKnownAs: Master{{increment}}
+      SiteEmail: carehires+site2pr{{increment}}@zohomail.com
+      PostalCode: BL0 0AY
+      NoOfBeds: 20
+      SiteCode: "<siteCode>"
+      PhoneNumberType: "Other"
+      PhoneNumber: "07412001346"
+      JobNotificationAddress: carehires+prjobnot2-{{increment}}@zohomail.com
+      ApprovalNotificationAddress: carehires+prappnot2-{{increment}}@zohomail.com
+
+Worker Staff Management:
+  Add:
+    WorkerType: Rehabilitation Worker
+    Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
+    HourlyRate: 10
+    MonthlyAgencyHours: 350
+    ProofOfDemandDocument: Proof of demand document.pdf
+User:
+  Add:
+    email: carehires+prouser{{increment}}@zohomail.com
+    Name: Patrick Sams{{increment}}
+    JobTitle: Assistant Executive
+    Phone: "07874483609"
+    MarkAsAnAuthoriser: "Yes"
+    UserAccessLevel: Org Admin
+
+Billing Information:
+  General Billing Information:
+    Add:
+      AddressBillsInAttentionTo: IBS Solutions QQQQ
+      DigitalBillingAddress: carehires+progeneralbilling{{increment}}@zohomail.com
+      Postal Code: LE10 0AN
+      PhoneNumber: "07412001246"
+      CreditLimitAmount: 600
+      BillingCycle: Bi Weekly
+      CreditTerm: 28 Days
+      FirstName: Geoffrey
+      LastName: Joseph
+      EmailAddress: carehires+billingpro{{increment}}@zohomail.com
+      PhoneNumberContact: "07412001246"
+  Custom Billing Information:
+    Add:
+      Site: BioRevolution Care {{increment}}
+      Address bills in attention to: "Uber9s Ltd"
+      Digital Billing Address: carehires+procustombilling{{increment}}@zohomail.com
+      Postal Code: LE10 1AN
+      Cost Center: "<costCenterNumber>"
+      Phone Number: "07412001246"
+      Billing Cycle: Bi Weekly
+      Credit Term: 28 Days
+
+
+SubContract:
+  Note: Sub contract agreement note is entered.

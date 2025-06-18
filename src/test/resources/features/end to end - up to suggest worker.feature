@@ -35,12 +35,12 @@ Feature: Test CareHires System Check from E2E perspective
     And User verifies the provider profile status as Approved
 #    creating an agreement
     And User navigates to Agreement Create page
-    And user enters agreement overview data
+    And User enters agreement overview data
     And User enters Worker Rates
     And User enters Cancellation Policy
     And User enters Sleep In Rates
-    And User enters Policies for the provisions of service
-    And User enters Signatories information
+    And User enters Policies for the provisions of service in smoke test
+    And User enters Signatories information for the agreement
     And User clicks on Mark as signed button
     And User clicks on Active Agreement button
     And User verifies agreement signature status as ACTIVE

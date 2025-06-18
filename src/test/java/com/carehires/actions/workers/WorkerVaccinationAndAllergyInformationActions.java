@@ -33,6 +33,7 @@ public class WorkerVaccinationAndAllergyInformationActions {
 
     private static final String ENTITY = "worker";
     private static final String YML_FILE = "worker-create";
+    private static final String YML_FILE_SMOKE = "worker-create-smoke";
     private static final String EDIT_YML_FILE = "worker-edit";
     private static final String ADD = "Add";
     private static final String UPDATE = "Update";
@@ -196,5 +197,41 @@ public class WorkerVaccinationAndAllergyInformationActions {
         String expectedInLowerCase = expected.toLowerCase().trim();
         assertThat("Unable to edit emergency contact!", actualInLowerCase, is(expectedInLowerCase));
         BasePage.waitUntilElementDisappeared(vaccinationPage.successMessage, 20);
+    }
+
+    public void enterDataForVaccinationInformationForSmoke() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<< Entering Vaccination and Allergy Information Data >>>>>>>>>>>>>>>>>>>");
+
+        // Retrieve the incremented value
+        incrementValue = GlobalVariables.getVariable("worker_incrementValue", Integer.class);
+
+        // Check for null or default value
+        if (incrementValue == null) {
+            throw new NullPointerException("Increment value for worker is not set in GlobalVariables.");
+        }
+
+        BasePage.waitUntilPageCompletelyLoaded();
+        BasePage.clickWithJavaScript(vaccinationPage.addNewButton);
+        //enter first set of data
+        enterMedicalInfo(YML_FILE_SMOKE, ADD, YML_HEADER_DATASET1);
+        // click on the Add button
+        BasePage.clickWithJavaScript(vaccinationPage.addButton);
+        verifySuccessMessage();
+
+        //enter second set of data
+        BasePage.clickWithJavaScript(vaccinationPage.addNewButton);
+        enterMedicalInfo(YML_FILE_SMOKE, ADD, YML_HEADER_DATASET2);
+        // click on the Add button
+        BasePage.clickWithJavaScript(vaccinationPage.addButton);
+        verifySuccessMessage();
+
+        //click on Request to complete
+        BasePage.clickWithJavaScript(vaccinationPage.requestToCompleteButton);
+        verifyRequestToCompleteMessage();
+
+        // click on the save button
+        BasePage.clickWithJavaScript(vaccinationPage.updateButton);
+        BasePage.waitUntilElementClickable(vaccinationPage.saveButton, 90);
+        BasePage.clickWithJavaScript(vaccinationPage.saveButton);
     }
 }

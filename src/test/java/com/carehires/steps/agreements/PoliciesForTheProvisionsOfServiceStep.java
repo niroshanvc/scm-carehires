@@ -11,4 +11,9 @@ public class PoliciesForTheProvisionsOfServiceStep {
     public void enterPoliciesForTheProvisionOfService() {
         policies.enterPolicies();
     }
+
+    @And("User enters Policies for the provisions of service in smoke test")
+    public void enterPolicies() {
+        policies.enterPoliciesForSmokeTest();
+    }
 }

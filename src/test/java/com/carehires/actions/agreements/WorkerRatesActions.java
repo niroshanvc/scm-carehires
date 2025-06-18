@@ -27,6 +27,7 @@ public class WorkerRatesActions {
 
     private static final String ENTITY = "agreement";
     private static final String YML_FILE = "agreement-create";
+    private static final String YML_FILE_SMOKE = "agreement-create-smoke";
     private static final String SKILLS = "With Skills";
     private static final String YML_HEADER = "Worker Rates";
     private static final String NORMAL_RATE = "Normal Rate";
@@ -301,31 +302,31 @@ public class WorkerRatesActions {
 
         expandSubSection(workerRatesPage.rateBreakdownTableHeader, workerRatesPage.rateBreakdownTableHeaderExpandIcon);
 
-        hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
+        hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, SKILLS, YML_HEADER,
                 NORMAL_RATE, "Hourly Rate");
         BasePage.waitUntilElementDisplayed(workerRatesPage.hourlyRateInput, 20);
         BasePage.clearAndEnterTexts(workerRatesPage.hourlyRateInput, hourlyRate);
 
-        agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
+        agencyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, SKILLS, YML_HEADER,
                 NORMAL_RATE, "Agency Margin");
         BasePage.clearAndEnterTexts(workerRatesPage.agencyMarginInput, agencyMargin);
 
-        chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
+        chHourlyMargin = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, SKILLS, YML_HEADER,
                 NORMAL_RATE, "CH Hourly Margin");
         BasePage.clearAndEnterTexts(workerRatesPage.chHourlyMarginInput, chHourlyMargin);
         BasePage.clickTabKey(workerRatesPage.chHourlyMarginInput);
 
-        String specialHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
+        String specialHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, SKILLS, YML_HEADER,
                 SPECIAL_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
         enableRate(SPECIAL_HOLIDAY_RATE);
         fillFinalRateVat(SPECIAL_HOLIDAY_RATE, specialHolidayVat);
 
-        String bankHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
+        String bankHolidayVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, SKILLS, YML_HEADER,
                 BANK_HOLIDAY_RATE, FINAL_RATE_WITH_VAT);
         enableRate(BANK_HOLIDAY_RATE);
         fillFinalRateVat(BANK_HOLIDAY_RATE, bankHolidayVat);
 
-        String fridayNightVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE, SKILLS, YML_HEADER,
+        String fridayNightVat = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, SKILLS, YML_HEADER,
                 FRIDAY_NIGHT_RATE, FINAL_RATE_WITH_VAT);
         enableRate(FRIDAY_NIGHT_RATE);
         fillFinalRateVat(FRIDAY_NIGHT_RATE, fridayNightVat);

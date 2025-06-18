@@ -11,4 +11,9 @@ public class SignatoriesSteps {
     public void enterSignatories() {
         signatoriesActions.addSignatoryInfo();
     }
+
+    @And("User enters Signatories information for the agreement")
+    public void enterSignatoriesInfo() {
+        signatoriesActions.addSignatoryInfoForAgreement();
+    }
 }

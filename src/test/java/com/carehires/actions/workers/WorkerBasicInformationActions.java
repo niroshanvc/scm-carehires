@@ -47,6 +47,7 @@ public class WorkerBasicInformationActions {
     private static final String YML_FILE = "worker-create";
     private static final String EDIT_YML_FILE = "worker-edit";
     private static final String YML_FILE_NON_BRITISH = "scenario-non-British-worker";
+    private static final String YML_FILE_SMOKE = "worker-create-smoke";
     private static final String YML_HEADER = "Basic Information";
     private static final String YML_HEADER_B = "Basic Information B";
     private static final String YML_HEADER_C = "Basic Information C";
@@ -770,12 +771,33 @@ public class WorkerBasicInformationActions {
     public void completeCreateWorkerProcess() {
         BasePage.waitUntilPageCompletelyLoaded();
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Completing new worker creation >>>>>>>>>>>>>>>>>>>>");
-        enterWorkerBasicInformationData();
-        documentsAndProofActions.enterDocumentsAndProofData();
-        educationAndTrainingActions.enterDataForEducationAndTraining();
-        emergencyInformationActions.enterDataForEmergencyInformation();
-        vaccinationAndAllergyInformationActions.enterDataForVaccinationInformation();
-        employmentHistoryActions.enterDataForEmploymentHistory();
+        enterWorkerBasicInformationDataForSmoke();
+        documentsAndProofActions.enterDocumentsAndProofDataForSmoke();
+        educationAndTrainingActions.enterDataForEducationAndTrainingForSmoke();
+        emergencyInformationActions.enterDataForEmergencyInformationForSmoke();
+        vaccinationAndAllergyInformationActions.enterDataForVaccinationInformationForSmoke();
+        employmentHistoryActions.enterDataForEmploymentHistoryForSmoke();
+    }
+
+    private void enterWorkerBasicInformationDataForSmoke() {
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<<<< Creating a worker >>>>>>>>>>>>>>>>>>>>>>>>>");
+        BasePage.waitUntilPageCompletelyLoaded();
+
+        // Retrieve the current increment value for the worker (from the file)
+        int incrementValue = DataConfigurationReader.getCurrentIncrementValue(ENTITY);
+
+        BasePage.genericWait(2000);
+        enterAgencyInformation(YML_FILE_SMOKE, YML_HEADER, ADD);
+        enterPersonalInformation(YML_FILE_SMOKE);
+        enterResidentialAddressInformation(YML_FILE_SMOKE, ADD);
+        enterEmploymentInformation(YML_FILE_SMOKE, ADD);
+        enterPassportAndOtherInformation(YML_FILE_SMOKE, YML_HEADER, ADD);
+        enterTravelInformation(YML_FILE_SMOKE, ADD);
+
+        clickOnSaveButton();
+
+        // Store the increment value in GlobalVariables for reuse in other steps
+        GlobalVariables.setVariable("worker_incrementValue", incrementValue);
     }
 
     public void enterNonBritishWorkerBasicInformation() {
