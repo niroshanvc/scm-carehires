@@ -438,7 +438,7 @@ public class WorkerEmploymentHistoryActions {
         BasePage.clickWithJavaScript(employmentHistoryPage.referenceAddNewButton);
         BasePage.scrollToWebElement(employmentHistoryPage.addReferenceButton);
 
-        enterReferenceInfo(YML_FILE_SMOKE, YML_SUB_HEADER_DATASET1);
+        enterReferenceInfoForSmoke(YML_SUB_HEADER_DATASET1);
 
         // click on the Add button
         BasePage.clickWithJavaScript(employmentHistoryPage.addReferenceButton);
@@ -446,7 +446,7 @@ public class WorkerEmploymentHistoryActions {
 
         // add dataset2 - Reference section
         BasePage.clickWithJavaScript(employmentHistoryPage.referenceAddNewButton);
-        enterReferenceInfo(YML_FILE_SMOKE, YML_SUB_HEADER_DATASET2);
+        enterReferenceInfoForSmoke(YML_SUB_HEADER_DATASET2);
 
         // click on the Add button
         BasePage.clickWithJavaScript(employmentHistoryPage.addReferenceButton);
@@ -462,5 +462,53 @@ public class WorkerEmploymentHistoryActions {
         verifyEmploymentHistorySavedSuccessfully();
         BasePage.waitUntilElementPresent(employmentHistoryPage.successPopupNoLink, 30);
         BasePage.clickWithJavaScript(employmentHistoryPage.successPopupNoLink);
+    }
+
+    private void enterReferenceInfoForSmoke(String dataset) {
+        BasePage.waitUntilElementDisplayed(employmentHistoryPage.referenceTypeDropdown, 30);
+        String referenceType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, YML_HEADER,
+                YML_SUB_HEADER2, ADD, dataset, "ReferenceType");
+        BasePage.clickWithJavaScript(employmentHistoryPage.referenceTypeDropdown);
+        BasePage.genericWait(1000);
+        BasePage.waitUntilElementClickable(employmentHistoryPage.getDropdownOptionXpath(referenceType),
+                20);
+        BasePage.clickWithJavaScript(employmentHistoryPage.getDropdownOptionXpath(referenceType));
+
+        BasePage.clickWithJavaScript(employmentHistoryPage.selectWorkplaceDropdown);
+        String companyName = "";
+
+        if (dataset.equalsIgnoreCase(YML_SUB_HEADER_DATASET1)) {
+            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, YML_HEADER,
+                    YML_SUB_HEADER1, ADD, YML_SUB_HEADER_DATASET1, COMPANY_NAME);
+        } else if (dataset.equalsIgnoreCase(YML_SUB_HEADER_DATASET2)) {
+            companyName = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, YML_HEADER,
+                    YML_SUB_HEADER1, ADD, YML_SUB_HEADER_DATASET2, COMPANY_NAME);
+        }
+        BasePage.waitUntilElementClickable(employmentHistoryPage.getDropdownOptionXpath(companyName), 20);
+        BasePage.clickWithJavaScript(employmentHistoryPage.getDropdownOptionXpath(companyName));
+
+        String uploadFile = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, YML_HEADER,
+                YML_SUB_HEADER2, ADD, dataset, "UploadFile");
+        String absoluteFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "Upload" + File.separator + "Worker" + File.separator
+                + uploadFile;
+
+        BasePage.genericWait(3000);
+        try {
+            // Wait for the element to be PRESENT in the DOM, not visible.
+            // This finds the element and returns it.
+            WebElement uploadElement = BasePage.waitUntilElementPresent(employmentHistoryPage.getUploadFileLocator(), 20);
+
+            // Directly send the file path to the input element. No click is needed.
+            BasePage.sendKeys(uploadElement, absoluteFilePath);
+            logger.info("<< Successfully sent file path to the upload element.");
+
+        } catch (Exception e) {
+            logger.error("Failed to upload file. Path: %s. Error: %s", absoluteFilePath, e);
+        }
+
+        String referenceNote = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, YML_HEADER,
+                YML_SUB_HEADER2, ADD, dataset, "ReferenceNote");
+        BasePage.typeWithStringBuilder(employmentHistoryPage.referenceNote, referenceNote);
     }
 }

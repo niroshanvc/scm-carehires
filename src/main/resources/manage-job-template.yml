@@ -1,8 +1,8 @@
 Job Details:
   Job Type: General Job
   Care Provider / Site and Service Preferences:
-    Care Provider: Automation Provider 148428
-    Site: BioRevolution Care 148428
+    Care Provider: Automation Provider 578122
+    Site: BioRevolution Care 578122
     Using: Post Custom Job
     Worker Type: Rehabilitation Worker
     Number of Vacancies: 1
@@ -33,8 +33,8 @@ Job Preferences:
 Job Details A:
   Job Type: General Job
   Care Provider / Site and Service Preferences:
-    Care Provider: Automation Provider 709333
-    Site: BioRevolution Care 709333
+    Care Provider: Automation Provider 578122
+    Site: BioRevolution Care 578122
     Using: Post Custom Job
     Worker Type: Rehabilitation Worker
     Number of Vacancies: 1
@@ -86,7 +86,7 @@ New Template:
 
   Job Type: General Job
   Care Provider / Site and Service Preferences:
-    Site: BioRevolution Care 148428
+    Site: BioRevolution Care 578122
     Worker Type: Rehabilitation Worker
     Number of Vacancies: 2
 
