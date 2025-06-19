@@ -54,5 +54,5 @@ Feature: Test CareHires System Check from E2E perspective
     And User enters Job Details for end to end testing
     When User enters Job Preferences
     Then User enters Job Summary
-#    When User tries to suggesting a worker
-#    Then User moves to suggested workers tab and verifies Special Holiday worker rates
+    When User tries to suggesting a worker
+    Then User moves to suggested workers tab and verifies Special Holiday worker rates

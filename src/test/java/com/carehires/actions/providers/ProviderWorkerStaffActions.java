@@ -328,7 +328,7 @@ public class ProviderWorkerStaffActions {
         logger.info("<<<<<<<<<<<<<<<<<<<<<<< Entering staff information >>>>>>>>>>>>>>>>>>>>>>>");
         BasePage.clickWithJavaScript(workerStaffPage.addNewButton);
 
-        enterWorkerStaffManagementData(YML_FILE_SMOKE, ADD);
+        enterWorkerStaffManagementDataForSmoke();
 
         //select skill(s)
         // Add null check before calling split
@@ -346,5 +346,41 @@ public class ProviderWorkerStaffActions {
         }
 
         uploadProofOfDemandDocument(YML_FILE_SMOKE, ADD);
+    }
+
+    private void enterWorkerStaffManagementDataForSmoke() {
+        //select site
+        String site = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE,
+                YML_HEADER_SITE_MANAGEMENT, "Add", "Dataset1", "SiteName");
+
+        BasePage.waitUntilElementClickable(workerStaffPage.siteDropdown, 20);
+        BasePage.genericWait(2000);
+        BasePage.clickWithJavaScript(workerStaffPage.siteDropdown);
+        BasePage.genericWait(2000);
+        assert site != null;
+        if (site.contains("AAAA")) {
+            BasePage.clickWithJavaScript(workerStaffPage.firstOptionInSiteDropdown);
+        } else {
+            BasePage.clickWithJavaScript(WorkerStaffPage.getDropdownXpath(site));
+        }
+
+        //select worker type
+        BasePage.clickWithJavaScript(workerStaffPage.workerTypeDropdown);
+        String workerType = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, YML_HEADER,
+                "Add", "WorkerType");
+        BasePage.genericWait(500);
+        BasePage.clickWithJavaScript(WorkerStaffPage.getDropdownXpath(workerType));
+
+        //enter hourly rate
+        String hourlyRate = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, YML_HEADER,
+                "Add", "HourlyRate");
+        BasePage.clickWithJavaScript(workerStaffPage.hourlyRate);
+        BasePage.clearAndEnterTexts(workerStaffPage.hourlyRate, hourlyRate);
+
+        //enter monthly agency hours
+        String monthlyAgencyHours = DataConfigurationReader.readDataFromYmlFile(ENTITY, YML_FILE_SMOKE, YML_HEADER,
+                "Add", "MonthlyAgencyHours");
+        BasePage.clearAndEnterTexts(workerStaffPage.monthlyAgencyHours, monthlyAgencyHours);
+        BasePage.clickTabKey(workerStaffPage.monthlyAgencyHours);
     }
 }
