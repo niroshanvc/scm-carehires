@@ -2,9 +2,9 @@ Job Details:
   Job Type: General Job
   Care Provider / Site and Service Preferences:
 #    Care Provider: Automation Provider "<providerIncrement>"
-    Care Provider: Automation Provider 132068
+    Care Provider: Automation Provider 578122
 #    Site: BioRevolution Care "<providerIncrement>"
-    Site: BioRevolution Care 132068
+    Site: BioRevolution Care 578122
     Using: Post Custom Job
     Worker Type: Rehabilitation Worker
     Number of Vacancies: 1
@@ -27,6 +27,6 @@ Job Preferences:
   Gender: Male
   Preferred Skills: NVQ L3,Dementia,Autism,NVQ L2,Leadership,Driving
   Enable Block Booking: "Yes"
-  Agency: Automation Agency 769227
+  Agency: Automation Agency 433051
   #  Agency: Automation Agency "<agencyIncrement>"
   Job Notes: "Job notes will be visible to everyone, including agency users and workers."
